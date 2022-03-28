@@ -14,6 +14,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserRepository userRepository;
 
+    public User getByAuthKey(final String authKey) {
+        User user = userRepository.findByEmailAuthKey(authKey);
+        if (user == null) {
+            log.warn("Wrong AuthKey");
+        }
+        return user;
+    }
+
+    public User getByEmail(final String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            log.warn("이메일 인증이 완료되지 않은 이메일입니다.");
+        }
+        return user;
+    }
+
     @Transactional
     public User createUser(final User user) {
         if (user == null || user.getEmail() == null) {

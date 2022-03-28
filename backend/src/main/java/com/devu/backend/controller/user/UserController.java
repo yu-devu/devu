@@ -16,38 +16,52 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
     private final EmailServiceImpl emailService;
-    private static String authKey;// 두 가지 메서드에서 동시에 사용해야하기에 class 변수로 선언!
 
 
-    //회원가입 Form에서 이메일 검증 api
+    //회원가입 Form에서 이메일 검증 api => Form Data로 넘어와야함
     @PostMapping("/key")
     private ResponseEntity<?> getKeyFromUser(@RequestParam String postKey) {
-        if (!postKey.equals(authKey)) {
-            ResponseErrorDto errorDto = new ResponseErrorDto("Email key is not same.");
+        User user = userService.getByAuthKey(postKey);
+        if (user == null) {
+            return ResponseEntity.badRequest().body("Wrong AuthKey from User");
+        }
+        user.setEmailConfirm(true);
+        userService.createUser(user);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PostMapping("/email")
+    private ResponseEntity<?> sendEmail(@RequestParam String email) {
+        try{
+            //email로 인증번호 먼저 보내고, 인증번호 get
+            String authKey = emailService.sendValidationMail(email);
+            log.info("Email authKey = {}",authKey);
+            User user = User.builder()
+                    .email(email)
+                    .emailAuthKey(authKey)
+                    .emailConfirm(false)
+                    .build();
+            userService.createUser(user);
+            return ResponseEntity.ok().body("이메일 전송 완료");
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
             return ResponseEntity.badRequest().body(errorDto);
         }
-        return ResponseEntity.ok(HttpStatus.OK);
+
     }
 
 
     //회원가입 => 기본 EmailConfirm = false
+    //Json으로 넘어와야함
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userCreateRequestDto) {
         try {
-            //email로 인증번호 먼저 보내고, 인증번호 get
-            String to = userCreateRequestDto.getEmail();
-
-            authKey = emailService.sendValidationMail(to);
-            log.info("Email authKey = {}",authKey);
-
-            User user = User.builder()
-                    .email(userCreateRequestDto.getEmail())
-                    .username(userCreateRequestDto.getUsername())
-                    .password(userCreateRequestDto.getPassword())
-                    .emailConfirm(false)
-                    .emailAuthKey(authKey)
-                    .build();
-
+            User user = userService.getByEmail(userCreateRequestDto.getEmail());
+            user.setUsername(userCreateRequestDto.getUsername());
+            user.setPassword(userCreateRequestDto.getPassword());
             userService.createUser(user);
             UserDTO userDTO = UserDTO.builder()
                     .email(user.getEmail())
