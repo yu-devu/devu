@@ -27,4 +27,12 @@ public class User {
     private boolean emailConfirm;
 
     private String emailAuthKey;
+
+    public void updateAuthKey(String emailAuthKey) {
+        this.emailAuthKey = emailAuthKey;
+    }
+
+    public void updateEmailConfirm(boolean isConfirm) {
+        this.emailConfirm = isConfirm;
+    }
 }

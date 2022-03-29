@@ -1,5 +1,6 @@
 package com.devu.backend.service;
 
+import com.devu.backend.common.exception.AlreadyExistsEmailException;
 import com.devu.backend.common.exception.EmailConfirmNotCompleteException;
 import com.devu.backend.common.exception.PasswordNotSameException;
 import com.devu.backend.common.exception.UserNotFoundException;
@@ -34,16 +35,44 @@ public class UserService {
     }
 
     @Transactional
-    public User createUser(final User user) {
+    public User createUser(final String email,final String authKey) {
+        User user = User.builder()
+                .email(email)
+                .emailAuthKey(authKey)
+                .build();
+        log.info("Crate New User Id : {}, Email : {}",user.getId(),user.getEmail());
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    public void updateUserAuthKey(final String email, final String authKey) {
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        user.updateAuthKey(authKey);
+    }
+
+    @Transactional
+    public void updateUserConfirm(final User user) {
+        user.updateEmailConfirm(user.isEmailConfirm());
+    }
+
+    //회원가입용 createUser
+    @Transactional
+    public User updateUser(final User user) {
         if (user == null || user.getEmail() == null) {
             throw new RuntimeException("User Entity Error");
         }
         final String email = user.getEmail();
-        if (userRepository.existsByEmail(email)) {
-            log.warn("Email already exists = {}", email);
+        if (!userRepository.existsByEmail(email)) {
+            throw new UserNotFoundException();
         }
-        log.info("Crate New User Id : {}, Email : {}",user.getId(),user.getEmail());
+        if (!user.isEmailConfirm()) {
+            throw new EmailConfirmNotCompleteException();
+        }
         return userRepository.save(user);
+    }
+
+    public boolean isEmailExists(final String email) {
+        return userRepository.existsByEmail(email);
     }
 
     public User getByCredentials(final String email, final String password) {
