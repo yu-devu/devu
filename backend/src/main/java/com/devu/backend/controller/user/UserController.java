@@ -1,12 +1,9 @@
 package com.devu.backend.controller.user;
 
-import com.devu.backend.common.exception.AlreadyExistsEmailException;
-import com.devu.backend.common.exception.EmailConfirmNotCompleteException;
 import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.entity.User;
 import com.devu.backend.service.UserService;
 import com.devu.backend.service.email.EmailServiceImpl;
-import com.sun.xml.bind.v2.TODO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -74,10 +71,10 @@ public class UserController {
             User user = userService.getByEmail(userCreateRequestDto.getEmail());
             user.setUsername(userCreateRequestDto.getUsername());
             user.setPassword(userCreateRequestDto.getPassword());
-            userService.updateUser(user);
+            User updatedUser = userService.updateUser(user);
             UserDTO userDTO = UserDTO.builder()
-                    .email(user.getEmail())
-                    .username(user.getUsername())
+                    .email(updatedUser.getEmail())
+                    .username(updatedUser.getUsername())
                     .build();
             return ResponseEntity.ok().body(userDTO);
 
