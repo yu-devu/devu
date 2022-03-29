@@ -1,5 +1,6 @@
 package com.devu.backend.controller.user;
 
+import com.devu.backend.common.exception.EmailConfirmNotCompleteException;
 import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.entity.User;
 import com.devu.backend.service.UserService;
@@ -77,9 +78,24 @@ public class UserController {
         }
     }
 
-    /*@PostMapping("/sigin")
+    //Content-Type : JSON
+    @PostMapping("/signin")
     public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
+        try {
+            User user = userService.getByCredentials(userDTO.getEmail(), userDTO.getPassword());
 
-    }*/
+            UserDTO responseUserDTO = UserDTO.builder()
+                    .username(user.getUsername())
+                    .email(user.getEmail())
+                    .build();
+            return ResponseEntity.ok().body(responseUserDTO);
+        } catch (Exception e) {
+            log.warn(e.getMessage());
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
 
 }
