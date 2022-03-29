@@ -1,5 +1,8 @@
 package com.devu.backend.service;
 
+import com.devu.backend.common.exception.EmailConfirmNotCompleteException;
+import com.devu.backend.common.exception.PasswordNotSameException;
+import com.devu.backend.common.exception.UserNotFoundException;
 import com.devu.backend.entity.User;
 import com.devu.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +26,7 @@ public class UserService {
     }
 
     public User getByEmail(final String email) {
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         if (user == null) {
             log.warn("이메일 인증이 완료되지 않은 이메일입니다.");
         }
@@ -41,5 +44,16 @@ public class UserService {
         }
         log.info("Crate New User Id : {}, Email : {}",user.getId(),user.getEmail());
         return userRepository.save(user);
+    }
+
+    public User getByCredentials(final String email, final String password) {
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        if (!user.isEmailConfirm()) {
+            throw new EmailConfirmNotCompleteException();
+        }
+        if (!user.getPassword().equals(password)) {
+            throw new PasswordNotSameException();
+        }
+        return user;
     }
 }
