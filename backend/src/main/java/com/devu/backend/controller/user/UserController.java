@@ -3,7 +3,7 @@ package com.devu.backend.controller.user;
 import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.entity.User;
 import com.devu.backend.service.UserService;
-import com.devu.backend.service.email.EmailServiceImpl;
+import com.devu.backend.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController("/")
 public class UserController {
     private final UserService userService;
-    private final EmailServiceImpl emailService;
+    private final EmailService emailService;
 
 
     //회원가입 Form에서 이메일 검증 api => Form Data로 넘어와야함
@@ -30,17 +30,21 @@ public class UserController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+
     //TODO : 1) Email 전송 속도 개선(현재 5초), 2)Email AuthKey 제한시간 5분
     @PostMapping("/email")
     private ResponseEntity<?> sendEmail(@RequestParam String email){
         try {
             if (userService.isEmailExists(email)) {
-                userService.updateUserAuthKey(email,emailService.sendValidationMail(email));
+                String authKey = emailService.createKey();
+                emailService.sendValidationMail(email, authKey);
+                userService.updateUserAuthKey(email,authKey);
                 log.info("Email 재전송 완료 : {}",email);
                 return ResponseEntity.ok().body("이메일 재전송 완료");
             }
             //email로 인증번호 먼저 보내고, 인증번호 get
-            String authKey = emailService.sendValidationMail(email);
+            String authKey = emailService.createKey();
+            emailService.sendValidationMail(email,authKey);
             log.info("Email authKey = {}", authKey);
             User user = User.builder()
                     .email(email)

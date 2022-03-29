@@ -1,8 +1,10 @@
-package com.devu.backend.service.email;
+package com.devu.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.MailException;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.javamail.JavaMailSender;
 
@@ -15,11 +17,11 @@ import java.util.Random;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class EmailServiceImpl implements EmailService{
+public class EmailService{
     private final JavaMailSender emailSender;
 
 
-    public static String createKey() {
+    public String createKey() {
         StringBuffer key = new StringBuffer();
         Random rnd = new Random();
         for (int i = 0; i < 8; i++) { // 인증코드 8자리
@@ -71,10 +73,9 @@ public class EmailServiceImpl implements EmailService{
         return message;
     }
 
-    @Override
-    public String sendValidationMail(String to) throws Exception {
-        String key = createKey();
-        MimeMessage message = createMessage(to,key);
+    @Async("mailExecutor")
+    public void sendValidationMail(String to,String authKey) throws Exception {
+        MimeMessage message = createMessage(to,authKey);
         try {
             emailSender.send(message);
         } catch (MailException e) {
@@ -82,6 +83,5 @@ public class EmailServiceImpl implements EmailService{
             log.error("Mail error :  ",e);
             throw new IllegalArgumentException();
         }
-        return key;
     }
 }
