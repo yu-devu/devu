@@ -1,6 +1,5 @@
 package com.devu.backend.controller.user;
 
-import com.devu.backend.common.exception.EmailConfirmNotCompleteException;
 import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.entity.User;
 import com.devu.backend.service.UserService;
@@ -27,23 +26,33 @@ public class UserController {
             return ResponseEntity.badRequest().body("Wrong AuthKey from User");
         }
         user.setEmailConfirm(true);
-        userService.createUser(user);
+        userService.updateUserConfirm(user);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    //TODO : 1) Email 전송 속도 개선(현재 5초), 2)Email AuthKey 제한시간 5분
     @PostMapping("/email")
-    private ResponseEntity<?> sendEmail(@RequestParam String email) {
-        try{
+    private ResponseEntity<?> sendEmail(@RequestParam String email){
+        try {
+            if (userService.isEmailExists(email)) {
+                userService.updateUserAuthKey(email,emailService.sendValidationMail(email));
+                log.info("Email 재전송 완료 : {}",email);
+                return ResponseEntity.ok().body("이메일 재전송 완료");
+            }
             //email로 인증번호 먼저 보내고, 인증번호 get
             String authKey = emailService.sendValidationMail(email);
-            log.info("Email authKey = {}",authKey);
+            log.info("Email authKey = {}", authKey);
             User user = User.builder()
                     .email(email)
                     .emailAuthKey(authKey)
                     .emailConfirm(false)
                     .build();
-            userService.createUser(user);
-            return ResponseEntity.ok().body("이메일 전송 완료");
+            User savedUser = userService.createUser(user.getEmail(), user.getEmailAuthKey());
+            UserDTO userDTO = UserDTO.builder()
+                    .email(savedUser.getEmail())
+                    .build();
+            log.info("Email 전송 완료 : {}",email);
+            return ResponseEntity.ok(userDTO);
         } catch (Exception e) {
             e.printStackTrace();
             ResponseErrorDto errorDto = ResponseErrorDto.builder()
@@ -51,7 +60,6 @@ public class UserController {
                     .build();
             return ResponseEntity.badRequest().body(errorDto);
         }
-
     }
 
 
@@ -63,10 +71,10 @@ public class UserController {
             User user = userService.getByEmail(userCreateRequestDto.getEmail());
             user.setUsername(userCreateRequestDto.getUsername());
             user.setPassword(userCreateRequestDto.getPassword());
-            userService.createUser(user);
+            User updatedUser = userService.updateUser(user);
             UserDTO userDTO = UserDTO.builder()
-                    .email(user.getEmail())
-                    .username(user.getUsername())
+                    .email(updatedUser.getEmail())
+                    .username(updatedUser.getUsername())
                     .build();
             return ResponseEntity.ok().body(userDTO);
 
@@ -88,6 +96,7 @@ public class UserController {
                     .username(user.getUsername())
                     .email(user.getEmail())
                     .build();
+            log.info("username : {} -> 로그인 성공",user.getUsername());
             return ResponseEntity.ok().body(responseUserDTO);
         } catch (Exception e) {
             log.warn(e.getMessage());

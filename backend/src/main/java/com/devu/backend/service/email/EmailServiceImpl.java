@@ -18,7 +18,6 @@ import java.util.Random;
 public class EmailServiceImpl implements EmailService{
     private final JavaMailSender emailSender;
 
-    public static final String ePw = createKey();
 
     public static String createKey() {
         StringBuffer key = new StringBuffer();
@@ -44,9 +43,9 @@ public class EmailServiceImpl implements EmailService{
         return key.toString();
     }
 
-    private MimeMessage createMessage(String to)throws Exception{
+    private MimeMessage createMessage(String to,String key)throws Exception{
         log.info("Send To = {}",to);
-        log.info("Key Number = {}", ePw);
+        log.info("Key Number = {}", key);
         MimeMessage  message = emailSender.createMimeMessage();
 
         message.addRecipients(Message.RecipientType.TO, to);//보내는 대상
@@ -64,7 +63,7 @@ public class EmailServiceImpl implements EmailService{
         msgg+= "<h3 style='color:blue;'>회원가입 인증 코드입니다.</h3>";
         msgg+= "<div style='font-size:130%'>";
         msgg+= "CODE : <strong>";
-        msgg+= ePw+"</strong><div><br/> ";
+        msgg+= key+"</strong><div><br/> ";
         msgg+= "</div>";
         message.setText(msgg, "utf-8", "html");//내용
         message.setFrom(new InternetAddress("ynudev@gmail.com","DevU"));//보내는 사람
@@ -74,7 +73,8 @@ public class EmailServiceImpl implements EmailService{
 
     @Override
     public String sendValidationMail(String to) throws Exception {
-        MimeMessage message = createMessage(to);
+        String key = createKey();
+        MimeMessage message = createMessage(to,key);
         try {
             emailSender.send(message);
         } catch (MailException e) {
@@ -82,6 +82,6 @@ public class EmailServiceImpl implements EmailService{
             log.error("Mail error :  ",e);
             throw new IllegalArgumentException();
         }
-        return ePw;
+        return key;
     }
 }
