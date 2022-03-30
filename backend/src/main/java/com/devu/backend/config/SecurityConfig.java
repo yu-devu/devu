@@ -1,12 +1,15 @@
 package com.devu.backend.config;
 
 import com.devu.backend.config.auth.UserDetailsServiceImpl;
+import com.devu.backend.config.auth.token.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -18,6 +21,7 @@ import java.util.Arrays;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -30,8 +34,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 cors().configurationSource(corsConfigurationSource())
                     .and()
                 .httpBasic().disable()
+                .formLogin().disable()
                 .csrf().disable()
-                //TODO JWT 적용
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .and()
                 .authorizeRequests()
                     .antMatchers("/",
                         "/error",
@@ -44,7 +50,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js").permitAll()
                     .antMatchers("/", "/key", "/email", "/signup", "/signin").permitAll()
-                    .anyRequest().authenticated();
+                    .anyRequest().authenticated()
+                        .and()
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
     }
 
     @Bean
