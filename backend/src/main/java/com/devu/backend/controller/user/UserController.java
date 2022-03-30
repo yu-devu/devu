@@ -17,6 +17,10 @@ public class UserController {
     private final UserService userService;
     private final EmailService emailService;
 
+    @GetMapping("/")
+    private ResponseEntity home() {
+        return ResponseEntity.ok().body("홈 테스트");
+    }
 
     //회원가입 Form에서 이메일 검증 api => Form Data로 넘어와야함
     @PostMapping("/key")
