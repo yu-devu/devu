@@ -8,6 +8,7 @@ import com.devu.backend.entity.User;
 import com.devu.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public User getByAuthKey(final String authKey) {
         User user = userRepository.findByEmailAuthKey(authKey);
@@ -80,7 +82,7 @@ public class UserService {
         if (!user.isEmailConfirm()) {
             throw new EmailConfirmNotCompleteException();
         }
-        if (!user.getPassword().equals(password)) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new PasswordNotSameException();
         }
         return user;
