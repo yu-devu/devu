@@ -1,5 +1,6 @@
 package com.devu.backend.controller.user;
 
+import com.devu.backend.config.auth.token.TokenService;
 import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.entity.User;
 import com.devu.backend.service.UserService;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -16,7 +18,13 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
     private final EmailService emailService;
+    private final PasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
 
+    @GetMapping("/")
+    private ResponseEntity home() {
+        return ResponseEntity.ok().body("홈 테스트");
+    }
 
     //회원가입 Form에서 이메일 검증 api => Form Data로 넘어와야함
     @PostMapping("/key")
@@ -74,7 +82,7 @@ public class UserController {
         try {
             User user = userService.getByEmail(userCreateRequestDto.getEmail());
             user.setUsername(userCreateRequestDto.getUsername());
-            user.setPassword(userCreateRequestDto.getPassword());
+            user.setPassword(passwordEncoder.encode(userCreateRequestDto.getPassword()));
             User updatedUser = userService.updateUser(user);
             UserDTO userDTO = UserDTO.builder()
                     .email(updatedUser.getEmail())
@@ -95,10 +103,11 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
         try {
             User user = userService.getByCredentials(userDTO.getEmail(), userDTO.getPassword());
-
+            String jwt = tokenService.createToken(userDTO.getEmail());
             UserDTO responseUserDTO = UserDTO.builder()
                     .username(user.getUsername())
                     .email(user.getEmail())
+                    .token(jwt)
                     .build();
             log.info("username : {} -> 로그인 성공",user.getUsername());
             return ResponseEntity.ok().body(responseUserDTO);
