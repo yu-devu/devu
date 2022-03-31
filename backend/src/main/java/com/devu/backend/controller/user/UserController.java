@@ -25,13 +25,13 @@ public class UserController {
         if (user == null) {
             return ResponseEntity.badRequest().body("Wrong AuthKey from User");
         }
-        user.setEmailConfirm(true);
+        user.updateEmailConfirm(true);
         userService.updateUserConfirm(user);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
 
-    //TODO : 1) Email 전송 속도 개선(현재 5초), 2)Email AuthKey 제한시간 5분
+    //TODO : 1)Email AuthKey 제한시간 5분 걸기 2) Dummy User 처리
     @PostMapping("/email")
     private ResponseEntity<?> sendEmail(@RequestParam String email){
         try {
@@ -73,8 +73,7 @@ public class UserController {
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userCreateRequestDto) {
         try {
             User user = userService.getByEmail(userCreateRequestDto.getEmail());
-            user.setUsername(userCreateRequestDto.getUsername());
-            user.setPassword(userCreateRequestDto.getPassword());
+            user.updateUserInfo(userCreateRequestDto.getUsername(), userCreateRequestDto.getPassword());
             User updatedUser = userService.updateUser(user);
             UserDTO userDTO = UserDTO.builder()
                     .email(updatedUser.getEmail())
