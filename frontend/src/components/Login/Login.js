@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./login.css";
 
-const url = "localhost:8080"
+const url = "http://54.180.29.69:8080"
 
 const Login = () => {
   const navigate = useNavigate();

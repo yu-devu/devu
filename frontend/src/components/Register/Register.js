@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./register.css";
 
-const url = "localhost:8080"
+const url = "http://54.180.29.69:8080"
 
 const Register = () => {
   const navigate = useNavigate();
@@ -31,7 +31,9 @@ const Register = () => {
 
   const handleAuthorize = async (email) => {
     try {
-      const res = await axios.post(url + `/email`, email)
+      const formData = new FormData();
+      formData.append("email", email);
+      await axios.post(url + `/email`, formData)
         .then((res) => {
           if (res.status === 200) {
             console.log("authkey 전송 완료!");
@@ -46,7 +48,9 @@ const Register = () => {
 
   const checkAuthkey = async (authkey) => {
     try {
-      const res = await axios.post(url + `/key`, authkey)
+      const formData = new FormData();
+      formData.append("postKey", authkey);
+      await axios.post(url + `/key`, formData)
         .then((res) => {
           if (res.status === 200) {
             console.log("인증확인 완료!");
@@ -99,12 +103,12 @@ const Register = () => {
             id="email"
             name="email"
             value={email}
-            onChange={handleEmail}
+            onChange={(e) => { handleEmail(e) }}
             placeholder="이메일"
           />
           <button
             className="btn-validate"
-            onClick={handleAuthorize}
+            onClick={() => { handleAuthorize(email); }}
           >인증하기</button>
         </div>
         <div className="register-email">
@@ -113,12 +117,12 @@ const Register = () => {
             id="authkey"
             name="authkey"
             value={authkey}
-            onChange={handleAuthkey}
+            onChange={(e) => { handleAuthkey(e) }}
             placeholder="인증번호"
           />
           <button
             className="btn-validate"
-            onClick={checkAuthkey}
+            onClick={() => { checkAuthkey(authkey) }}
           >인증확인</button>
         </div>
         <input
@@ -126,7 +130,7 @@ const Register = () => {
           id="username"
           name="username"
           value={username}
-          onChange={handleUsername}
+          onChange={(e) => { handleUsername(e) }}
           placeholder="사용자 이름"
         />
         <input
@@ -134,7 +138,7 @@ const Register = () => {
           id="password"
           name="password"
           value={password}
-          onChange={handlePassword}
+          onChange={(e) => { handlePassword(e) }}
           type="password"
           placeholder="비밀번호"
         />
@@ -143,14 +147,14 @@ const Register = () => {
           id="password"
           name="password"
           value={checkPassword}
-          onChange={handleCheckPassword}
+          onChange={(e) => { handleCheckPassword(e) }}
           type="password"
           placeholder="비밀번호 확인"
         />
 
-        <button onClick={handleSignUp} className="btn-register">회원가입</button>
+        <button onClick={() => { handleSignUp(email, username, password) }} className="btn-register">회원가입</button>
       </div>
-    </div>
+    </div >
   );
 };
 

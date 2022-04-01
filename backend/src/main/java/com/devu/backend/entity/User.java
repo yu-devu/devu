@@ -4,7 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Getter @Setter
+
+//TODO : XtoOne 연관관계는 모두 LAZY로
+@Getter
 @Builder
 @Table(name = "users")
 @NoArgsConstructor
@@ -27,6 +29,11 @@ public class User {
     private boolean emailConfirm;
 
     private String emailAuthKey;
+
+    public void updateUserInfo(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public void updateAuthKey(String emailAuthKey) {
         this.emailAuthKey = emailAuthKey;
