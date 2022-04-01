@@ -13,80 +13,49 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
 
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
-  };
-  const handleAuthkey = (e) => {
-    setAuthkey(e.target.value);
-  };
-  const handleUsername = (e) => {
-    setUsername(e.target.value);
-  };
-  const handlePassword = (e) => {
-    setPassword(e.target.value);
-  };
-  const handleCheckPassword = (e) => {
-    setCheckPassword(e.target.value);
-  };
+  const handleEmail = (e) => setEmail(e.target.value);
+  const handleAuthkey = (e) => setAuthkey(e.target.value);
+  const handleUsername = (e) => setUsername(e.target.value);
+  const handlePassword = (e) => setPassword(e.target.value);
+  const handleCheckPassword = (e) => setCheckPassword(e.target.value);
 
-  const handleAuthorize = async (email) => {
+  const handleAuthorize = async () => {
     const formData = new FormData();
     formData.append('email', email);
     await axios
       .post(url + `/email`, formData)
-      .then((res) => {
-        if (res.status === 200) {
-          console.log('authkey 전송 완료!');
-        } else {
-          console.log('authkey 전송 실패..');
-        }
-      })
-      .catch(() => {});
+      .then(() => alert('authkey 전송 완료!'))
+      .catch(() => alert('authkey 전송 실패..'));
   };
 
-  const checkAuthkey = async (authkey) => {
+  const checkAuthkey = async () => {
     const formData = new FormData();
     formData.append('postKey', authkey);
     await axios
       .post(url + `/key`, formData)
-      .then((res) => {
-        if (res.status === 200) {
-          console.log('인증확인 완료!');
-        } else {
-          console.log('인증확인 실패..');
-        }
-      })
-      .catch(() => {});
+      .then(() => alert('인증확인 완료!'))
+      .catch(() => alert('인증확인 실패..'));
   };
 
-  const handleSignUp = async (email, username, password) => {
-    try {
-      const data = {
-        eamil: email,
-        username: username,
-        password: password,
-      };
+  const handleSignUp = async () => {
+    const data = {
+      email: email,
+      username: username,
+      password: password,
+    };
+    console.log(JSON.stringify(data));
 
-      const res = await axios
-        .post(url + `/signup`, JSON.stringify(data), {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
-            // bootstrap이나 antd등 라이브러리 사용해서 회원가입이 성공했다는 창을 보여줘야 함
-            // message.success("")
-            console.log('회원가입에 성공했습니다!');
-            navigate.go(0);
-          } else {
-            // message.error("")
-            console.log('회원가입에 실패했습니다..');
-          }
-        });
-    } catch (err) {
-      console.log(err);
-    }
+    await axios
+      .post(url + `/signup`, JSON.stringify(data), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(() => {
+        alert('회원가입에 성공했습니다!');
+        // navigate.go(0);
+      })
+      .catch(() => alert('회원가입에 실패했습니다..'));
   };
 
   return (
@@ -99,17 +68,10 @@ const Register = () => {
             id="email"
             name="email"
             value={email}
-            onChange={(e) => {
-              handleEmail(e);
-            }}
+            onChange={(e) => handleEmail(e)}
             placeholder="이메일"
           />
-          <button
-            className="btn-validate"
-            onClick={() => {
-              handleAuthorize(email);
-            }}
-          >
+          <button className="btn-validate" onClick={() => handleAuthorize()}>
             인증하기
           </button>
         </div>
@@ -119,17 +81,10 @@ const Register = () => {
             id="authkey"
             name="authkey"
             value={authkey}
-            onChange={(e) => {
-              handleAuthkey(e);
-            }}
+            onChange={(e) => handleAuthkey(e)}
             placeholder="인증번호"
           />
-          <button
-            className="btn-validate"
-            onClick={() => {
-              checkAuthkey(authkey);
-            }}
-          >
+          <button className="btn-validate" onClick={() => checkAuthkey()}>
             인증확인
           </button>
         </div>
@@ -138,9 +93,7 @@ const Register = () => {
           id="username"
           name="username"
           value={username}
-          onChange={(e) => {
-            handleUsername(e);
-          }}
+          onChange={(e) => handleUsername(e)}
           placeholder="사용자 이름"
         />
         <input
@@ -148,9 +101,7 @@ const Register = () => {
           id="password"
           name="password"
           value={password}
-          onChange={(e) => {
-            handlePassword(e);
-          }}
+          onChange={(e) => handlePassword(e)}
           type="password"
           placeholder="비밀번호"
         />
@@ -159,19 +110,12 @@ const Register = () => {
           id="password"
           name="password"
           value={checkPassword}
-          onChange={(e) => {
-            handleCheckPassword(e);
-          }}
+          onChange={(e) => handleCheckPassword(e)}
           type="password"
           placeholder="비밀번호 확인"
         />
 
-        <button
-          onClick={() => {
-            handleSignUp();
-          }}
-          className="btn-register"
-        >
+        <button className="btn-register" onClick={() => handleSignUp()}>
           회원가입
         </button>
       </div>
