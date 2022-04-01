@@ -4,13 +4,13 @@ import axios from 'axios';
 import './loginButton.css';
 import './loginModal.css';
 
-const url = "http://54.180.29.69:8080"
+const url = 'http://54.180.29.69:8080';
 
 function LoginButton() {
   // const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
@@ -18,21 +18,23 @@ function LoginButton() {
   const openModal = () => setShowModal(true);
 
   const handleLogin = async () => {
-    if (email === "" || password === "") {
-      alert("아이디와 비밀번호를 입력해주세요.");
+    if (email === '' || password === '') {
+      alert('아이디와 비밀번호를 입력해주세요.');
       return;
     }
     const data = {
       email: email,
       password: password,
-    }
-    await axios.post(url + `/signin`, JSON.stringify(data), {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then(() => { alert('로그인에 성공했습니다!'); })
-      .catch(() => { console.log("로그인에 실패했습니다."); });
-  }
+    };
+    await axios
+      .post(url + `/signin`, JSON.stringify(data), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(() => alert('로그인에 성공했습니다!'))
+      .catch(() => console.log('로그인에 실패했습니다.'));
+  };
 
   return (
     <>
@@ -59,14 +61,13 @@ function LoginButton() {
               id="password"
               name="password"
               value={password}
-              onChange={(e) => handlePassword(e)
-              }
+              onChange={(e) => handlePassword(e)}
               type="password"
               placeholder="비밀번호"
             />
-            <button
-              className="btn-validate"
-              onClick={() => { handleLogin() }}>로그인</button>
+            <button className="btn-validate" onClick={() => handleLogin()}>
+              로그인
+            </button>
           </div>
         </div>
       ) : null}
