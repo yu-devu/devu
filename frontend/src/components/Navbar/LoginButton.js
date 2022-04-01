@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import './loginButton.css';
 import './loginModal.css';
 
 const url = 'http://54.180.29.69:8080';
 
 function LoginButton() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,21 +26,14 @@ function LoginButton() {
       email: email,
       password: password,
     };
-    console.log(JSON.stringify(data));
-
     await axios
-      .post(url + `/signin  `, JSON.stringify(data), {
+      .post(url + `/signin`, JSON.stringify(data), {
         headers: {
           'Content-Type': 'application/json',
         },
       })
-      .then(() => {
-        alert('로그인에 성공했습니다!');
-        // navigate.go(0);
-      })
-      .catch(() => alert('로그인에 실패했습니다..'));
-    // localStorage.setItem('userId', res.data.id);
-    // navigate.go('/');
+      .then(() => alert('로그인에 성공했습니다!'))
+      .catch(() => console.log('로그인에 실패했습니다.'));
   };
 
   return (
