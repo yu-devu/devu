@@ -1,9 +1,12 @@
 package com.devu.backend.service;
 
-import com.devu.backend.common.exception.AlreadyExistsEmailException;
 import com.devu.backend.common.exception.EmailConfirmNotCompleteException;
 import com.devu.backend.common.exception.PasswordNotSameException;
 import com.devu.backend.common.exception.UserNotFoundException;
+import com.devu.backend.config.auth.token.RefreshToken;
+import com.devu.backend.config.auth.token.RefreshTokenRepository;
+import com.devu.backend.config.auth.token.TokenService;
+import com.devu.backend.controller.user.UserDTO;
 import com.devu.backend.entity.User;
 import com.devu.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -19,6 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final CookieService cookieService;
 
     public User getByAuthKey(final String authKey) {
         User user = userRepository.findByEmailAuthKey(authKey);
@@ -86,5 +96,22 @@ public class UserService {
             throw new PasswordNotSameException();
         }
         return user;
+    }
+
+    public UserDTO loginProcess(UserDTO userDTO, User user, HttpServletResponse response) {
+        String accessToken = tokenService.createAccessToken(userDTO.getEmail());
+        String refreshToken = tokenService.createRefreshToken(userDTO.getEmail());
+        RefreshToken token = RefreshToken.builder()
+                .refreshToken(refreshToken)
+                .build();
+        refreshTokenRepository.save(token);
+        Cookie cookie = cookieService.createCookie("X-AUTH-REFRESH-TOKEN", refreshToken);
+        response.addCookie(cookie);
+        UserDTO responseUserDTO = UserDTO.builder()
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .accessToken(accessToken)
+                .build();
+        return responseUserDTO;
     }
 }
