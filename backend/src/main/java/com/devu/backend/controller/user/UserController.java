@@ -81,7 +81,9 @@ public class UserController {
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userCreateRequestDto) {
         try {
             User user = userService.getByEmail(userCreateRequestDto.getEmail());
-            user.updateUserInfo(userCreateRequestDto.getUsername(), userCreateRequestDto.getPassword());
+            user.updateUserInfo(
+                    userCreateRequestDto.getUsername(),
+                    passwordEncoder.encode(userCreateRequestDto.getPassword()));
             User updatedUser = userService.updateUser(user);
             UserDTO userDTO = UserDTO.builder()
                     .email(updatedUser.getEmail())
