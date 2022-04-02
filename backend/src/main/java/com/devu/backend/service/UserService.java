@@ -1,5 +1,6 @@
 package com.devu.backend.service;
 
+
 import com.devu.backend.common.exception.EmailConfirmNotCompleteException;
 import com.devu.backend.common.exception.PasswordNotSameException;
 import com.devu.backend.common.exception.UserNotFoundException;
@@ -7,6 +8,8 @@ import com.devu.backend.config.auth.token.RefreshToken;
 import com.devu.backend.config.auth.token.RefreshTokenRepository;
 import com.devu.backend.config.auth.token.TokenService;
 import com.devu.backend.controller.user.UserDTO;
+import com.devu.backend.common.exception.*;
+
 import com.devu.backend.entity.User;
 import com.devu.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +34,7 @@ public class UserService {
     private final CookieService cookieService;
 
     public User getByAuthKey(final String authKey) {
-        User user = userRepository.findByEmailAuthKey(authKey);
-        if (user == null) {
-            log.warn("Wrong AuthKey");
-        }
-        return user;
+        return userRepository.findByEmailAuthKey(authKey).orElseThrow(EmailAuthKeyNotEqualException::new);
     }
 
     public User getByEmail(final String email) {
@@ -113,5 +112,10 @@ public class UserService {
                 .accessToken(accessToken)
                 .build();
         return responseUserDTO;
+    }
+
+    public boolean isEmailConfirmed(final String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        return user.isEmailConfirm();
     }
 }
