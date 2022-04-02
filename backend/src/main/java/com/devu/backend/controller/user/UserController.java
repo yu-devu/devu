@@ -1,6 +1,5 @@
 package com.devu.backend.controller.user;
 
-import com.devu.backend.config.auth.token.TokenService;
 import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.entity.User;
 import com.devu.backend.service.UserService;
@@ -12,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController("/")
@@ -19,7 +20,6 @@ public class UserController {
     private final UserService userService;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
-    private final TokenService tokenService;
 
     @GetMapping("/")
     private ResponseEntity home() {
@@ -38,7 +38,7 @@ public class UserController {
 
     //TODO : 1)Email AuthKey 제한시간 5분 걸기 2) Dummy User 처리
     @PostMapping("/email")
-    private ResponseEntity<?> sendEmail(@RequestParam String email){
+    private ResponseEntity<?> sendEmail(@RequestParam String email) {
         try {
             if (userService.isEmailConfirmed(email)) {
                 return ResponseEntity.ok().body("이미 가입 완료된 이메일입니다.");
@@ -46,13 +46,13 @@ public class UserController {
             if (userService.isEmailExists(email)) {
                 String authKey = emailService.createKey();
                 emailService.sendValidationMail(email, authKey);
-                userService.updateUserAuthKey(email,authKey);
-                log.info("Email 재전송 완료 : {}",email);
+                userService.updateUserAuthKey(email, authKey);
+                log.info("Email 재전송 완료 : {}", email);
                 return ResponseEntity.ok().body("이메일 재전송 완료");
             }
             //email로 인증번호 먼저 보내고, 인증번호 get
             String authKey = emailService.createKey();
-            emailService.sendValidationMail(email,authKey);
+            emailService.sendValidationMail(email, authKey);
             log.info("Email authKey = {}", authKey);
             User user = User.builder()
                     .email(email)
@@ -63,7 +63,7 @@ public class UserController {
             UserDTO userDTO = UserDTO.builder()
                     .email(savedUser.getEmail())
                     .build();
-            log.info("Email 전송 완료 : {}",email);
+            log.info("Email 전송 완료 : {}", email);
             return ResponseEntity.ok(userDTO);
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,9 +81,7 @@ public class UserController {
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userCreateRequestDto) {
         try {
             User user = userService.getByEmail(userCreateRequestDto.getEmail());
-            user.updateUserInfo(
-                    userCreateRequestDto.getUsername(),
-                    passwordEncoder.encode(userCreateRequestDto.getPassword()));
+            user.updateUserInfo(userCreateRequestDto.getUsername(), passwordEncoder.encode(userCreateRequestDto.getPassword()));
             User updatedUser = userService.updateUser(user);
             UserDTO userDTO = UserDTO.builder()
                     .email(updatedUser.getEmail())
@@ -101,16 +99,11 @@ public class UserController {
 
     //Content-Type : JSON
     @PostMapping("/signin")
-    public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> login(@RequestBody UserDTO userDTO, HttpServletResponse response) {
         try {
             User user = userService.getByCredentials(userDTO.getEmail(), userDTO.getPassword());
-            String jwt = tokenService.createToken(userDTO.getEmail());
-            UserDTO responseUserDTO = UserDTO.builder()
-                    .username(user.getUsername())
-                    .email(user.getEmail())
-                    .token(jwt)
-                    .build();
-            log.info("username : {} -> 로그인 성공",user.getUsername());
+            UserDTO responseUserDTO = userService.loginProcess(userDTO, user, response);
+            log.info("username : {} -> 로그인 성공", user.getUsername());
             return ResponseEntity.ok().body(responseUserDTO);
         } catch (Exception e) {
             log.warn(e.getMessage());

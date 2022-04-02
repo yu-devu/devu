@@ -1,5 +1,6 @@
 package com.devu.backend.config.auth.token;
 
+import com.devu.backend.config.auth.UserDetailsImpl;
 import com.devu.backend.config.auth.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,8 @@ import java.util.Date;
 public class TokenService {
 
     private String secretKey = "Devu";
-    private long tokenValidTime = 1000L * 60 * 30; // 30분
+    private long accessTokenValidTime = 1000L * 60 * 30; // 30분
+    private long refreshTokenValidTime = 1000L * 60 * 30 * (2 * 24 * 14); // 14일
     private final UserDetailsServiceImpl userDetailsService;
 
     @PostConstruct
@@ -26,16 +28,24 @@ public class TokenService {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String email) {
+    public String createToken(String email, long time) {
         Claims claims = Jwts.claims().setSubject(email);
         Date now = new Date();
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + tokenValidTime))
+                .setExpiration(new Date(now.getTime() + time))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
+    }
+
+    public String createAccessToken(String email) {
+        return createToken(email, accessTokenValidTime);
+    }
+
+    public String createRefreshToken(String email) {
+        return createToken(email, refreshTokenValidTime);
     }
 
     public Authentication getAuthentication(String token) {
@@ -51,14 +61,20 @@ public class TokenService {
         }
     }
 
-    public String resolveToken(HttpServletRequest req) {
-        return req.getHeader("X-AUTH-TOKEN");
+    public String resolveToken(HttpServletRequest req, String name) {
+        return req.getHeader("X-AUTH-" + name + "-TOKEN");
     }
 
-    public boolean validateTokenExceptExpiration(String token) {
+    public Boolean isTokenExpired(String token) {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+        return !claims.getBody().getExpiration().before(new Date());
+    }
+
+    public boolean validateTokenExceptExpiration(String token, UserDetailsImpl userDetailsimpl) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return !claims.getBody().getExpiration().before(new Date());
+            String email = getUserEmail(token);
+
+            return email.equals(userDetailsimpl.getUsername())&& isTokenExpired(token);
         } catch(Exception e) {
             return false;
         }
