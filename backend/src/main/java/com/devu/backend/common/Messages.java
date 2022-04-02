@@ -8,4 +8,6 @@ public class Messages {
     public static final String NO_EMAIL_CONFIRM = "이메일 인증이 완료되지 않은 사용자입니다.";
     public static final String PASSWORD_NOT_EQUAL = "비밀번호가 일치하지 않습니다.";
     public static final String ALREADY_EXIST_EMAIL = "이미 존재하는 이메일입니다.";
+    public static final String WRONG_AUTH_KEY = "입력한 인증키가 일치하지 않습니다.";
 }
+

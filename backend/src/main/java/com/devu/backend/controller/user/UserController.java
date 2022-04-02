@@ -30,9 +30,6 @@ public class UserController {
     @PostMapping("/key")
     private ResponseEntity<?> getKeyFromUser(@RequestParam String postKey) {
         User user = userService.getByAuthKey(postKey);
-        if (user == null) {
-            return ResponseEntity.badRequest().body("Wrong AuthKey from User");
-        }
         user.updateEmailConfirm(true);
         userService.updateUserConfirm(user);
         return ResponseEntity.ok(HttpStatus.OK);
@@ -43,6 +40,9 @@ public class UserController {
     @PostMapping("/email")
     private ResponseEntity<?> sendEmail(@RequestParam String email){
         try {
+            if (userService.isEmailConfirmed(email)) {
+                return ResponseEntity.ok().body("이미 가입 완료된 이메일입니다.");
+            }
             if (userService.isEmailExists(email)) {
                 String authKey = emailService.createKey();
                 emailService.sendValidationMail(email, authKey);
