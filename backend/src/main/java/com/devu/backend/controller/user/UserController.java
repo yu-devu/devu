@@ -26,7 +26,7 @@ public class UserController {
         return ResponseEntity.ok().body("홈 테스트");
     }
 
-    //회원가입 Form에서 이메일 검증 api => Form Data로 넘어와야함
+    // 회원가입 Form에서 이메일 검증 api => Form Data로 넘어와야함
     @PostMapping("/key")
     private ResponseEntity<?> getKeyFromUser(@RequestParam String postKey) {
         User user = userService.getByAuthKey(postKey);
@@ -38,21 +38,20 @@ public class UserController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-
-    //TODO : 1)Email AuthKey 제한시간 5분 걸기 2) Dummy User 처리
+    // TODO : 1)Email AuthKey 제한시간 5분 걸기 2) Dummy User 처리
     @PostMapping("/email")
-    private ResponseEntity<?> sendEmail(@RequestParam String email){
+    private ResponseEntity<?> sendEmail(@RequestParam String email) {
         try {
             if (userService.isEmailExists(email)) {
                 String authKey = emailService.createKey();
                 emailService.sendValidationMail(email, authKey);
-                userService.updateUserAuthKey(email,authKey);
-                log.info("Email 재전송 완료 : {}",email);
+                userService.updateUserAuthKey(email, authKey);
+                log.info("Email 재전송 완료 : {}", email);
                 return ResponseEntity.ok().body("이메일 재전송 완료");
             }
-            //email로 인증번호 먼저 보내고, 인증번호 get
+            // email로 인증번호 먼저 보내고, 인증번호 get
             String authKey = emailService.createKey();
-            emailService.sendValidationMail(email,authKey);
+            emailService.sendValidationMail(email, authKey);
             log.info("Email authKey = {}", authKey);
             User user = User.builder()
                     .email(email)
@@ -63,7 +62,7 @@ public class UserController {
             UserDTO userDTO = UserDTO.builder()
                     .email(savedUser.getEmail())
                     .build();
-            log.info("Email 전송 완료 : {}",email);
+            log.info("Email 전송 완료 : {}", email);
             return ResponseEntity.ok(userDTO);
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,9 +73,8 @@ public class UserController {
         }
     }
 
-
-    //회원가입 => 기본 EmailConfirm = false
-    //Json으로 넘어와야함
+    // 회원가입 => 기본 EmailConfirm = false
+    // Json으로 넘어와야함
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userCreateRequestDto) {
         try {
@@ -97,7 +95,7 @@ public class UserController {
         }
     }
 
-    //Content-Type : JSON
+    // Content-Type : JSON
     @PostMapping("/signin")
     public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
         try {
@@ -108,7 +106,7 @@ public class UserController {
                     .email(user.getEmail())
                     .token(jwt)
                     .build();
-            log.info("username : {} -> 로그인 성공",user.getUsername());
+            log.info("username : {} -> 로그인 성공", user.getUsername());
             return ResponseEntity.ok().body(responseUserDTO);
         } catch (Exception e) {
             log.warn(e.getMessage());

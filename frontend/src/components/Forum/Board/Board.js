@@ -293,6 +293,7 @@ const Board = () => {
                   </li>
                 </ul>
               </div>
+              {/* <button className="btn-write">글쓰기</button> */}
             </div>
           </div>
         </div>

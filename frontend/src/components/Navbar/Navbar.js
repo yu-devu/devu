@@ -6,6 +6,10 @@ import { navItems } from "./NavItems";
 import Dropdown from "./Dropdown";
 import LoginButton from "./LoginButton";
 import RegisterButton from "./RegisterButton";
+import LogoutButton from "./LogoutButton";
+import MyPageButton from "./MyPageButton";
+
+const isToken = localStorage.getokentItem('');
 
 function Navbar() {
   const [dropdown, setDropdown] = useState(false);
@@ -47,8 +51,7 @@ function Navbar() {
             );
           })}
         </ul>
-        <LoginButton />
-        <RegisterButton />
+        {isToken ? <div><LogoutButton /> <MyPageButton /></div> : <div><LoginButton /> <RegisterButton /></div>}
       </nav>
     </>
   );
