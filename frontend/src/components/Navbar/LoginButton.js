@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
 import './loginButton.css';
 import './loginModal.css';
 
 const url = 'http://54.180.29.69:8080';
 
 function LoginButton() {
-  // const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [tokenData, setTokenData] = useState('');
 
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
@@ -32,7 +31,12 @@ function LoginButton() {
           'Content-Type': 'application/json',
         },
       })
-      .then(() => alert('로그인에 성공했습니다!'))
+      .then((res) => {
+        alert('로그인에 성공했습니다!');
+        closeModal();
+        localStorage.setItem('token', res.data.accessToken);
+        window.location.reload(false);
+      })
       .catch(() => console.log('로그인에 실패했습니다.'));
   };
 

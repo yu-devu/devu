@@ -1,5 +1,6 @@
-import React from "react";
-import "./board.css";
+import React from 'react';
+import './board.css';
+import { Link } from 'react-router-dom';
 
 const Board = () => {
   return (
@@ -293,6 +294,9 @@ const Board = () => {
                   </li>
                 </ul>
               </div>
+              <Link to="write">
+                <button className="btn-write">글 쓰기</button>
+              </Link>
             </div>
           </div>
         </div>
