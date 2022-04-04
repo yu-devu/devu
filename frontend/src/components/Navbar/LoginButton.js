@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './loginButton.css';
 import './loginModal.css';
 
 const url = 'http://54.180.29.69:8080';
 
 function LoginButton() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,15 +32,35 @@ function LoginButton() {
           'Content-Type': 'application/json',
         },
       })
-      .then(() => alert('로그인에 성공했습니다!'))
+      .then((res) => {
+        alert('로그인에 성공했습니다!');
+        localStorage.setItem("accessToken", JSON.stringify(res.data.accessToken));
+        localStorage.setItem("isLoggedin", true);
+        navigate('/'); closeModal(); // 홈으로 이동 및 로그인 모달창 close
+        window.location.reload(false);
+      })
       .catch(() => console.log('로그인에 실패했습니다.'));
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("isLoggedin");
+  }
+
   return (
     <>
-      <button className="btn-login-nav" onClick={openModal}>
-        로그인
-      </button>
+      {
+        localStorage.getItem("isLoggedin") ? (
+          <button className="btn-login-nav" onClick={handleLogout}>
+            로그아웃
+          </button>
+        ) : (
+          <button className="btn-login-nav" onClick={openModal}>
+            로그인
+          </button>
+        )
+      }
+
       {showModal ? (
         <div className="background">
           <div className="container-modal">

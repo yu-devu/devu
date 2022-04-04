@@ -63,7 +63,10 @@ const Register = () => {
             'Content-Type': 'application/json',
           },
         })
-        .then(() => alert('회원가입에 성공했습니다!'))
+        .then(() => {
+          alert('회원가입에 성공했습니다!');
+          navigate('/');
+        })
         .catch(() => console.log('회원가입 실패..'));
     } else alert('비밀번호를 확인해주세요.');
   };
