@@ -1,16 +1,17 @@
 version: "3"
 
 services:
-  react:
+  frontend:
+    container_name: react-nginx
     volumes:
-      - ${PWD}/frontend:/app
+      - ${PWD}/frontend:/usr/src/app
     build:
       context: ${PWD}/frontend
       dockerfile: ${PWD}/frontend/Dockerfile
     ports:
-      - 3000:3000
+      - 80:80
 
-  spring:
+  backend:
     build:
       context: ${PWD}/backend
       dockerfile: ${PWD}/backend/Dockerfile
