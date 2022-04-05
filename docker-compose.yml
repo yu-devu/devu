@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  react:
+    volumes:
+      - ${PWD}/frontend:/app
+    build:
+      context: ${PWD}/frontend
+      dockerfile: ${PWD}/frontend/Dockerfile
+    ports:
+      - 3000:3000
+
+  spring:
+    build:
+      context: ${PWD}/backend
+      dockerfile: ${PWD}/backend/Dockerfile
+    ports:
+      - 8080:8080
