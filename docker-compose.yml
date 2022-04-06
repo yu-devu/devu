@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  frontend:
+    container_name: react-nginx
+    volumes:
+      - ${PWD}/frontend:/usr/src/app
+    build:
+      context: ${PWD}/frontend
+      dockerfile: ${PWD}/frontend/Dockerfile
+    ports:
+      - 80:80
+
+  backend:
+    build:
+      context: ${PWD}/backend
+      dockerfile: ${PWD}/backend/Dockerfile
+    ports:
+      - 8080:8080

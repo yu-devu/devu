@@ -97,6 +97,7 @@ public class UserService {
         return user;
     }
 
+    @Transactional
     public UserDTO loginProcess(UserDTO userDTO, User user, HttpServletResponse response) {
         String accessToken = tokenService.createAccessToken(userDTO.getEmail());
         String refreshToken = tokenService.createRefreshToken(userDTO.getEmail());

@@ -40,10 +40,10 @@ public class UserController {
     @PostMapping("/email")
     private ResponseEntity<?> sendEmail(@RequestParam String email) {
         try {
-            if (userService.isEmailConfirmed(email)) {
-                return ResponseEntity.ok().body("이미 가입 완료된 이메일입니다.");
-            }
             if (userService.isEmailExists(email)) {
+                if (userService.getByEmail(email).isEmailConfirm()) {
+                    return ResponseEntity.ok().body("이미 가입 완료된 이메일입니다.");
+                }
                 String authKey = emailService.createKey();
                 emailService.sendValidationMail(email, authKey);
                 userService.updateUserAuthKey(email, authKey);
