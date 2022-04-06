@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './loginButton.css';
 import './loginModal.css';
+import { useRecoilState } from 'recoil';
 
 const url = 'http://54.180.29.69:8080';
 
@@ -11,6 +12,7 @@ function LoginButton() {
   const [showModal, setShowModal] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [tokenData, setTokenData] = useState('');
 
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
@@ -26,41 +28,28 @@ function LoginButton() {
       email: email,
       password: password,
     };
+
+    console.log(JSON.stringify(data));
     await axios
-      .post(url + `/signin`, JSON.stringify(data), {
+      .post(url + '/signin', JSON.stringify(data), {
         headers: {
           'Content-Type': 'application/json',
         },
       })
       .then((res) => {
         alert('로그인에 성공했습니다!');
-        localStorage.setItem("accessToken", JSON.stringify(res.data.accessToken));
-        localStorage.setItem("isLoggedin", true);
-        navigate('/'); closeModal(); // 홈으로 이동 및 로그인 모달창 close
+        console.log(res);
+        localStorage.setItem('accessToken', res.data.accessToken);
         window.location.reload(false);
       })
-      .catch(() => console.log('로그인에 실패했습니다.'));
+      .catch((error) => console.log(error));
   };
-
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("isLoggedin");
-  }
 
   return (
     <>
-      {
-        localStorage.getItem("isLoggedin") ? (
-          <button className="btn-login-nav" onClick={handleLogout}>
-            로그아웃
-          </button>
-        ) : (
-          <button className="btn-login-nav" onClick={openModal}>
-            로그인
-          </button>
-        )
-      }
-
+      <button className="btn-login-nav" onClick={openModal}>
+        로그인
+      </button>
       {showModal ? (
         <div className="background">
           <div className="container-modal">

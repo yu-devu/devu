@@ -268,3 +268,24 @@ h2 {
   border-radius: 0.25rem;
   justify-content: center !important;
 }
+
+.btn-write {
+  word-wrap: break-word;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: var(--color-primary);
+  color: rgb(255, 255, 255);
+  border: none;
+  border-radius: 6px;
+  font-size: 20px;
+  line-height: 48px;
+  padding: 0 16px;
+  width: 200px;
+  margin: 40px 30px 40px 1300px;
+}
+
+.btn-write:hover {
+  background-color: var(--color-hover);
+}
