@@ -7,6 +7,6 @@ import javax.persistence.Entity;
 
 @Entity
 @Getter
-@DiscriminatorValue("G")
-public class GeneralPost extends Post{
+@DiscriminatorValue("F")
+public class FreePost extends Post{
 }

@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Getter
-@DiscriminatorColumn(name = "dtype")
+@DiscriminatorColumn(name = "postType")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Post {
 
@@ -22,8 +22,6 @@ public abstract class Post {
     private String title;
 
     private String content;
-
-    private String postType;
 
     private Long hit;
 
