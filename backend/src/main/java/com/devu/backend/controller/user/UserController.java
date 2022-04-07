@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 @RequiredArgsConstructor
-@RestController("/")
+@RestController
 public class UserController {
     private final UserService userService;
     private final EmailService emailService;
