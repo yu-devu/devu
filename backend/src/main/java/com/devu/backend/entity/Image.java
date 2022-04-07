@@ -1,5 +1,7 @@
 package com.devu.backend.entity;
 
+import com.devu.backend.entity.post.Post;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
