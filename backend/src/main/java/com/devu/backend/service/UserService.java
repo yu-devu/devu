@@ -119,4 +119,11 @@ public class UserService {
         User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         return user.isEmailConfirm();
     }
+
+    public void findByUserName(String username) {
+        if (userRepository.existsByUsername(username)) {
+            log.error("이미 존재하는 username = {}",username);
+            throw new IllegalStateException("이미 존재하는 username입니다.");
+        }
+    }
 }

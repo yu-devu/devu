@@ -42,7 +42,7 @@ public class UserController {
         try {
             if (userService.isEmailExists(email)) {
                 if (userService.getByEmail(email).isEmailConfirm()) {
-                    return ResponseEntity.ok().body("이미 가입 완료된 이메일입니다.");
+                    return ResponseEntity.badRequest().body("이미 가입 완료된 이메일입니다.");
                 }
                 String authKey = emailService.createKey();
                 emailService.sendValidationMail(email, authKey);
@@ -81,6 +81,7 @@ public class UserController {
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userCreateRequestDto) {
         try {
             User user = userService.getByEmail(userCreateRequestDto.getEmail());
+            userService.findByUserName(userCreateRequestDto.getUsername());
             user.updateUserInfo(userCreateRequestDto.getUsername(), passwordEncoder.encode(userCreateRequestDto.getPassword()));
             User updatedUser = userService.updateUser(user);
             UserDTO userDTO = UserDTO.builder()
