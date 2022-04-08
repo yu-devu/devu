@@ -2,10 +2,7 @@ package com.devu.backend.entity.post;
 
 import com.devu.backend.entity.Image;
 import com.devu.backend.entity.User;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 import javax.persistence.DiscriminatorValue;
@@ -15,6 +12,7 @@ import javax.persistence.Enumerated;
 import java.util.Set;
 
 @Entity
+@Getter
 @DiscriminatorValue("S")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Study extends Post{
@@ -22,9 +20,12 @@ public class Study extends Post{
     private StudyStatus studyStatus;
 
     @Builder
+    public Study(Long id, User user, String title, String content, Long hit, Long like, Set<Image> images, StudyStatus studyStatus) {
+        super(id, user, title, content, hit, like, images);
+        this.studyStatus = studyStatus;
+    }
 
-    public Study(Long id, User user, String title, String content, Long hit, Long recommendation, Set<Image> images, StudyStatus studyStatus) {
-        super(id, user, title, content, hit, recommendation, images);
+    public void updateStatus(StudyStatus studyStatus) {
         this.studyStatus = studyStatus;
     }
 }

@@ -17,7 +17,7 @@ import java.util.Set;
 public class Chat extends Post{
 
     @Builder
-    public Chat(Long id, User user, String title, String content, Long hit, Long recommendation, Set<Image> images) {
-        super(id, user, title, content, hit, recommendation, images);
+    public Chat(Long id, User user, String title, String content, Long hit, Long like, Set<Image> images) {
+        super(id, user, title, content, hit, like, images);
     }
 }
