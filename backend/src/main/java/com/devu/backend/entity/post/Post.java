@@ -1,29 +1,22 @@
 package com.devu.backend.entity.post;
 
+import com.devu.backend.common.exception.LikeZeroException;
 import com.devu.backend.entity.BaseTime;
 import com.devu.backend.entity.Image;
 import com.devu.backend.entity.User;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@SuperBuilder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Entity
 @Getter
 @DiscriminatorColumn(name = "dtype")
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Post extends BaseTime {
+public class Post extends BaseTime{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
@@ -37,13 +30,31 @@ public class Post extends BaseTime {
 
     private String content;
 
-    private String postType;
-
+    @Column(name = "hit_count")
     private Long hit;
 
-    private Long recommendation;
+    /*
+    * like column 그대로 쓰면 오류 발생 => like_count로 변경
+    * */
+    @Column(name = "like_count")
+    private Long like;
 
     @OneToMany(mappedBy = "post")
     private Set<Image> images = new HashSet<>();
 
+    //==비지니스 로직==//
+    public void plusHit() {
+        this.hit++;
+    }
+
+    public void plusRecommendation() {
+        this.like++;
+    }
+
+    public void minusRecommendation() {
+        if (this.like == 0) {
+            throw new LikeZeroException();
+        }
+        this.like++;
+    }
 }
