@@ -8,18 +8,25 @@ import com.devu.backend.entity.post.*;
 import com.devu.backend.repository.PostRepository;
 import com.devu.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@Transactional(readOnly = true)
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final UserService userService;
 
+
+    @Transactional
     public Chat createChat(RequestPostCreateDto requestCreateDto) {
         Chat chat = Chat.builder()
                 .user(
@@ -31,10 +38,11 @@ public class PostService {
                 .hit(0L)
                 .like(0L)
                 .build();
-
+        log.info("Create Chat {} By {}",chat.getTitle(),chat.getUser().getUsername());
         return postRepository.save(chat);
     }
 
+    @Transactional
     public Study createStudy(RequestPostCreateDto requestPostDto) {
         Study study = Study.builder()
                 .user(
@@ -47,10 +55,11 @@ public class PostService {
                 .hit(0L)
                 .like(0L)
                 .build();
-
+        log.info("Create Study {} By {}",study.getTitle(),study.getUser().getUsername());
         return postRepository.save(study);
     }
 
+    @Transactional
     public Question createQuestion(RequestPostCreateDto requestPostDto) {
         Question question = Question.builder()
                 .user(
@@ -63,23 +72,23 @@ public class PostService {
                 .hit(0L)
                 .like(0L)
                 .build();
-
+        log.info("Create Question {} By {}",question.getTitle(),question.getUser().getUsername());
         return postRepository.save(question);
     }
     /*
     * Test Data
     * */
+    @Transactional
     @PostConstruct
     public void init() {
         User test = User.builder()
                 .email("test@ynu.ac.kr")
                 .username("test")
+                .emailAuthKey("test")
                 .build();
-
-        userRepository.save(test);
-        RequestPostCreateDto dto;
+        userService.createUser(test.getEmail(), test.getEmailAuthKey());
         for (int i = 1; i <= 25; i++) {
-            dto = RequestPostCreateDto.builder()
+            RequestPostCreateDto dto = RequestPostCreateDto.builder()
                     .title("test" + i)
                     .username(test.getUsername())
                     .content("test-content" + i)
