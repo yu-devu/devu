@@ -1,12 +1,12 @@
 package com.devu.backend.controller.post;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RequestPostCreateDto {
     private String username;
     private String title;

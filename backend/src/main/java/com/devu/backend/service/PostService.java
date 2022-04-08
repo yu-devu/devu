@@ -99,6 +99,7 @@ public class PostService {
         }
     }
 
+
     public Page<ResponsePostDto> findAllChats(Pageable pageable) {
         return postRepository.findAllChats(pageable).map(
                 chat -> ResponsePostDto
