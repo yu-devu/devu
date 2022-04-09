@@ -37,20 +37,12 @@ function LoginButton() {
       })
       .then((res) => {
         alert('로그인에 성공했습니다!');
-<<<<<<< HEAD
         closeModal();
         localStorage.setItem('username', res.data.username);
         localStorage.setItem('token', res.data.accessToken);
         window.location.reload(false);
       })
       .catch(() => console.log('로그인에 실패했습니다.'));
-=======
-        console.log(res);
-        localStorage.setItem('token', res.data.accessToken);
-        window.location.reload(false);
-      })
-      .catch((error) => console.log(error));
->>>>>>> refs/remotes/origin/main
   };
 
   return (
