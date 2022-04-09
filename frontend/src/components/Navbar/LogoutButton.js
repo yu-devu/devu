@@ -4,7 +4,7 @@ import './logoutButton.css'
 const LogoutButton = () => {
 
     const logout = () => {
-        localStorage.removeItem('token');
+        localStorage.removeItem('accessToken');
         window.location.reload(false);
     }
     return (
