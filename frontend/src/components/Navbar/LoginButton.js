@@ -34,6 +34,7 @@ function LoginButton() {
       .then((res) => {
         alert('로그인에 성공했습니다!');
         closeModal();
+        localStorage.setItem('username', res.data.username);
         localStorage.setItem('token', res.data.accessToken);
         window.location.reload(false);
       })
