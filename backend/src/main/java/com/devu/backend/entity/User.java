@@ -25,7 +25,6 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @Column(unique = true)
     private String username;
 
     private String password;
@@ -35,7 +34,6 @@ public class User {
     private String emailAuthKey;
 
     @OneToMany(mappedBy = "user")
-
     private List<Post> posts = new ArrayList<>();
 
     public void updateUserInfo(String username, String password) {

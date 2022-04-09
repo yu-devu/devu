@@ -1,7 +1,9 @@
 package com.devu.backend.controller.post;
 
+import com.devu.backend.common.exception.PostNotFoundException;
 import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.entity.post.*;
+import com.devu.backend.repository.PostRepository;
 import com.devu.backend.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final PostRepository postRepository;
 
     @GetMapping
     private ResponseEntity home() {
@@ -121,6 +124,99 @@ public class PostController {
                     .username(question.getUser().getUsername())
                     .build();
             return ResponseEntity.ok(postDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    //chat update
+    @PatchMapping("/chat/{id}")
+    public ResponseEntity<?> updateChat(@PathVariable("id") Long id, @RequestBody RequestPostUpdateDto updateDto) {
+        try {
+            Chat chat = (Chat) postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+            postService.updateChat(chat, updateDto);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    //study update
+    @PatchMapping("/study/{id}")
+    public ResponseEntity<?> updateStudy(@PathVariable("id") Long id, @RequestBody RequestPostUpdateDto updateDto) {
+        try {
+            Study study = (Study) postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+            postService.updateStudy(study, updateDto);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    //qna update
+    @PatchMapping("/question/{id}")
+    public ResponseEntity<?> updateQuestion(@PathVariable("id") Long id, @RequestBody RequestPostUpdateDto updateDto) {
+        try {
+            Question question = (Question) postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+            postService.updateQuestion(question, updateDto);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    @DeleteMapping("/chat/{id}")
+    public ResponseEntity<?> deleteChat(@PathVariable("id") Long id) {
+        try {
+            Chat chat = (Chat) postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+            postService.deleteChat(chat);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    @DeleteMapping("/study/{id}")
+    public ResponseEntity<?> deleteStudy(@PathVariable("id") Long id) {
+        try {
+            Study study = (Study) postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+            postService.deleteStudy(study);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    @DeleteMapping("/question/{id}")
+    public ResponseEntity<?> deleteQuestion(@PathVariable("id") Long id) {
+        try {
+            Question question = (Question) postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+            postService.deleteQuestion(question);
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();
             ResponseErrorDto errorDto = ResponseErrorDto.builder()

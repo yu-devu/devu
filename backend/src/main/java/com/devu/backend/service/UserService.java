@@ -46,10 +46,11 @@ public class UserService {
     }
 
     @Transactional
-    public User createUser(final String email,final String authKey) {
+    public User createUser(final String email,final String authKey, final String username) {
         User user = User.builder()
                 .email(email)
                 .emailAuthKey(authKey)
+                .username(username)
                 .build();
         log.info("Crate New User Id : {}, Email : {}",user.getId(),user.getEmail());
         return userRepository.save(user);
