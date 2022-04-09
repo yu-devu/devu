@@ -59,7 +59,7 @@ public class UserController {
                     .emailAuthKey(authKey)
                     .emailConfirm(false)
                     .build();
-            User savedUser = userService.createUser(user.getEmail(), user.getEmailAuthKey());
+            User savedUser = userService.createUser(user.getEmail(), user.getEmailAuthKey(), "");
             UserDTO userDTO = UserDTO.builder()
                     .email(savedUser.getEmail())
                     .build();
