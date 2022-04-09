@@ -26,7 +26,7 @@ public class UserController {
         return ResponseEntity.ok().body("홈 테스트");
     }
 
-    //회원가입 Form에서 이메일 검증 api => Form Data로 넘어와야함
+    // 회원가입 Form에서 이메일 검증 api => Form Data로 넘어와야함
     @PostMapping("/key")
     private ResponseEntity<?> getKeyFromUser(@RequestParam String postKey) {
         User user = userService.getByAuthKey(postKey);
@@ -35,8 +35,7 @@ public class UserController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-
-    //TODO : 1)Email AuthKey 제한시간 5분 걸기 2) Dummy User 처리
+    // TODO : 1)Email AuthKey 제한시간 5분 걸기 2) Dummy User 처리
     @PostMapping("/email")
     private ResponseEntity<?> sendEmail(@RequestParam String email) {
         try {
@@ -50,7 +49,7 @@ public class UserController {
                 log.info("Email 재전송 완료 : {}", email);
                 return ResponseEntity.ok().body("이메일 재전송 완료");
             }
-            //email로 인증번호 먼저 보내고, 인증번호 get
+            // email로 인증번호 먼저 보내고, 인증번호 get
             String authKey = emailService.createKey();
             emailService.sendValidationMail(email, authKey);
             log.info("Email authKey = {}", authKey);
@@ -74,9 +73,8 @@ public class UserController {
         }
     }
 
-
-    //회원가입 => 기본 EmailConfirm = false
-    //Json으로 넘어와야함
+    // 회원가입 => 기본 EmailConfirm = false
+    // Json으로 넘어와야함
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userCreateRequestDto) {
         try {
@@ -98,12 +96,21 @@ public class UserController {
         }
     }
 
-    //Content-Type : JSON
+    // Content-Type : JSON
     @PostMapping("/signin")
     public ResponseEntity<?> login(@RequestBody UserDTO userDTO, HttpServletResponse response) {
         try {
             User user = userService.getByCredentials(userDTO.getEmail(), userDTO.getPassword());
+<<<<<<< HEAD
             UserDTO responseUserDTO = userService.loginProcess(userDTO, user, response);
+=======
+            String jwt = tokenService.createToken(userDTO.getEmail());
+            UserDTO responseUserDTO = UserDTO.builder()
+                    .username(user.getUsername())
+                    .email(user.getEmail())
+                    .token(jwt)
+                    .build();
+>>>>>>> refs/remotes/origin/main
             log.info("username : {} -> 로그인 성공", user.getUsername());
             return ResponseEntity.ok().body(responseUserDTO);
         } catch (Exception e) {

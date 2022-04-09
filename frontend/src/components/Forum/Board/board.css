@@ -64,6 +64,8 @@ h2 {
 
 .title {
   font-size: 1.25rem;
+  color: #000000;
+  font:bolder;
   font-weight: 700;
   word-break: break-word;
 }
@@ -71,7 +73,7 @@ h2 {
 .title a {
   display: flex;
   align-items: center;
-  color: #3f3f3f;
+  color: #000000;
   text-decoration: none;
 }
 
@@ -82,8 +84,10 @@ h2 {
   overflow: hidden;
   font-size: 0.875rem;
   color: #828086;
-  text-decoration: none;
-  word-break: break-word;
+  width: max-content;
+  position: absolute;
+  left: 300px;
+  bottom: -300px;
 }
 
 .metadata {
@@ -119,6 +123,7 @@ h2 {
   margin-left: 1.5rem;
   margin-right: 1.5rem;
   flex: 3;
+  width: max-content;
 }
 
 .filter-area {
@@ -156,6 +161,7 @@ h2 {
   border-radius: 0.5rem;
   box-shadow: 10px 10px 20px 1px rgb(0 0 0 / 5%);
   padding-bottom: 10px;
+  width: max-content;
 }
 
 .search {
@@ -193,6 +199,9 @@ h2 {
 }
 
 .item-body {
+  position: absolute;
+  margin-top: 70px;
+  margin-left: 15px;
   color: #828086;
 }
 
@@ -225,6 +234,12 @@ h2 {
   flex-direction: row;
   align-items: center;
   text-decoration: none;
+}
+
+.item-user {
+  position: absolute;
+  left: 85%;
+  margin-top: 80px;
 }
 
 .nickname {
@@ -267,6 +282,7 @@ h2 {
   list-style: none;
   border-radius: 0.25rem;
   justify-content: center !important;
+  margin-top: 40px;
 }
 
 .btn-write {
@@ -283,7 +299,8 @@ h2 {
   line-height: 48px;
   padding: 0 16px;
   width: 200px;
-  margin: 40px 30px 40px 1300px;
+  align-items: right;
+  margin: 10px 0px 10px 630px;
 }
 
 .btn-write:hover {

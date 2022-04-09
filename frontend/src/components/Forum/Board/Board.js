@@ -1,8 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import './board.css';
 import { Link } from 'react-router-dom';
 
+const url = 'http://54.180.29.69:8080';
+
 const Board = () => {
+  const [page, setPage] = useState(0);
+  const [postData, setPostData] = useState([{
+    title: '',
+    content: '',
+    username: '',
+    hit: '',
+    like: ''
+  }])
+  const [lastIdx, setLastIdx] = useState(0)
+
+
+  useEffect(() => {
+    fetchData();
+  }, [page, postData]);
+
+  const fetchData = async () => {
+    const res = await axios.get(url + `/community/chats`, {
+      params: {
+        page: page,
+      },
+    })
+
+    const _postData = await res.data.map((rowData) => (
+      setLastIdx(lastIdx + 1),
+      {
+        title: rowData.title,
+        content: rowData.content,
+        hit: rowData.hit,
+        like: rowData.like,
+        username: rowData.username,
+      })
+    )
+    setPostData(_postData)
+  }
+
   return (
     <div>
       <div className="qna-header">
@@ -123,150 +161,24 @@ const Board = () => {
                     />
                   </div>
                 </div>
-                <div className="article-item">
-                  <div className="item-content">
-                    <a className="item-link">
-                      <div className="title">안녕하세용!</div>
-                      <div className="item-body">
-                        <span className="body-link">반갑습니다요!</span>
-                      </div>
-                    </a>
-                    <div className="item-info">
-                      <div className="left">
-                        <div className="time">4시간 전</div>
-                      </div>
-                      <div className="right">
-                        <div className="item-user">
-                          <a className="profile-link">
-                            <span className="nickname">김철수</span>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="item-meta">
-                    <div className="metadata">
-                      <span className="key">답변</span>
-                      <span className="value">1 </span>
-                    </div>
-                    <div className="metadata">
-                      <span className="key">추천</span>
-                      <span className="value">6 </span>
-                    </div>
-                    <div className="metadata">
-                      <span className="key">조회</span>
-                      <span className="value">19 </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="article-item">
-                  <div className="item-content">
-                    <a className="item-link">
-                      <div className="title">안녕하세용!</div>
-                      <div className="item-body">
-                        <span className="body-link">반갑습니다요!</span>
-                      </div>
-                    </a>
-                    <div className="item-info">
-                      <div className="left">
-                        <div className="time">4시간 전</div>
-                      </div>
-                      <div className="right">
-                        <div className="item-user">
-                          <a className="profile-link">
-                            <span className="nickname">김철수</span>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="item-meta">
-                    <div className="metadata">
-                      <span className="key">답변</span>
-                      <span className="value">1</span>
-                    </div>
-                    <div className="metadata">
-                      <span className="key">추천</span>
-                      <span className="value">6</span>
-                    </div>
-                    <div className="metadata">
-                      <span className="key">조회</span>
-                      <span className="value">19</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="article-item">
-                  <div className="item-content">
-                    <a className="item-link">
-                      <div className="title">안녕하세용!</div>
-                      <div className="item-body">
-                        <span className="body-link">반갑습니다요!</span>
-                      </div>
-                    </a>
-                    <div className="item-info">
-                      <div className="left">
-                        <div className="time">4시간 전</div>
-                      </div>
-                      <div className="right">
-                        <div className="item-user">
-                          <a className="profile-link">
-                            <span className="nickname">김철수</span>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="item-meta">
-                    <div className="metadata">
-                      <span className="key">답변</span>
-                      <span className="value">1</span>
-                    </div>
-                    <div className="metadata">
-                      <span className="key">추천</span>
-                      <span className="value">6</span>
-                    </div>
-                    <div className="metadata">
-                      <span className="key">조회</span>
-                      <span className="value">19</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="article-item">
-                  <div className="item-content">
-                    <a className="item-link">
-                      <div className="title">안녕하세용!</div>
-                      <div className="item-body">
-                        <span className="body-link">반갑습니다요!</span>
-                      </div>
-                    </a>
-                    <div className="item-info">
-                      <div className="left">
-                        <div className="time">4시간 전</div>
-                      </div>
-                      <div className="right">
-                        <div className="item-user">
-                          <a className="profile-link">
-                            <span className="nickname">김철수</span>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="item-meta">
-                    <div className="metadata">
-                      <span className="key">답변</span>
-                      <span className="value">1</span>
-                    </div>
-                    <div className="metadata">
-                      <span className="key">추천</span>
-                      <span className="value">6</span>
-                    </div>
-                    <div className="metadata">
-                      <span className="key">조회</span>
-                      <span className="value">19</span>
-                    </div>
-                  </div>
-                </div>
+                {lastIdx !== 0 ?
+                  postData.map(rowData => (
+                    <tr className='article-item'>
+                      <td className='title'>{rowData.title}</td>
+                      <td className='item-body'>
+                        <span className='body-link'>{rowData.content}</span>
+                      </td>
+                      <td className='item-user'>
+                        <span className='nickname'>작성자 : {rowData.username}</span>
+                      </td>
+                    </tr>
+                  )) :
+                  <tr>
+                    <td>
+                      작성된 게시글이 없습니다.
+                    </td>
+                  </tr>}
+
                 <ul className="pagination">
                   <li className="page-item">
                     <button className="page-link">1</button>
@@ -294,9 +206,13 @@ const Board = () => {
                   </li>
                 </ul>
               </div>
+<<<<<<< HEAD
               <Link to="write">
                 <button className="btn-write">글 쓰기</button>
               </Link>
+=======
+              {/* <button className="btn-write">글쓰기</button> */}
+>>>>>>> refs/remotes/origin/main
             </div>
           </div>
         </div>
