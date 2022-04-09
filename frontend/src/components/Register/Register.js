@@ -60,8 +60,9 @@ const Register = () => {
         username: username,
         password: password,
       };
+      console.log(JSON.stringify(data));
       await axios
-        .post(url + `/signup`, JSON.stringify(data), {
+        .post(url + '/signup', data, {
           headers: {
             'Content-Type': 'application/json',
           },

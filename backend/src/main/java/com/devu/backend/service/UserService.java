@@ -46,13 +46,17 @@ public class UserService {
     }
 
     @Transactional
+<<<<<<< HEAD
     public User createUser(final String email,final String authKey, final String username) {
+=======
+    public User createUser(final String email, final String authKey) {
+>>>>>>> refs/remotes/origin/main
         User user = User.builder()
                 .email(email)
                 .emailAuthKey(authKey)
                 .username(username)
                 .build();
-        log.info("Crate New User Id : {}, Email : {}",user.getId(),user.getEmail());
+        log.info("Crate New User Id : {}, Email : {}", user.getId(), user.getEmail());
         return userRepository.save(user);
     }
 
@@ -67,7 +71,7 @@ public class UserService {
         user.updateEmailConfirm(user.isEmailConfirm());
     }
 
-    //회원가입용 createUser
+    // 회원가입용 createUser
     @Transactional
     public User updateUser(final User user) {
         if (user == null || user.getEmail() == null) {
