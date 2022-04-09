@@ -2,6 +2,7 @@ package com.devu.backend.service;
 
 import com.devu.backend.common.exception.UserNotFoundException;
 import com.devu.backend.controller.post.RequestPostCreateDto;
+import com.devu.backend.controller.post.RequestPostUpdateDto;
 import com.devu.backend.controller.post.ResponsePostDto;
 import com.devu.backend.entity.User;
 import com.devu.backend.entity.post.*;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.util.InputMismatchException;
 
 @Service
 @RequiredArgsConstructor
@@ -75,6 +77,7 @@ public class PostService {
         log.info("Create Question {} By {}",question.getTitle(),question.getUser().getUsername());
         return postRepository.save(question);
     }
+
     /*
     * Test Data
     * */
@@ -86,7 +89,7 @@ public class PostService {
                 .username("test")
                 .emailAuthKey("test")
                 .build();
-        userService.createUser(test.getEmail(), test.getEmailAuthKey());
+        userService.createUser(test.getEmail(), test.getEmailAuthKey(), test.getUsername());
         for (int i = 1; i <= 25; i++) {
             RequestPostCreateDto dto = RequestPostCreateDto.builder()
                     .title("test" + i)
@@ -139,5 +142,47 @@ public class PostService {
                         .questionStatus(question.getQuestionStatus())
                         .build()
         );
+    }
+
+    @Transactional
+    public void updateChat(Chat chat, RequestPostUpdateDto updateDto) {
+        chat.updatePost(updateDto);
+    }
+
+    @Transactional
+    public void updateStudy(Study study, RequestPostUpdateDto updateDto) {
+        study.updatePost(updateDto);
+        if (updateDto.getStatus().equals("ACTIVE"))
+            study.updateStatus(StudyStatus.ACTIVE);
+        else if (updateDto.getStatus().equals("CLOSED"))
+            study.updateStatus(StudyStatus.CLOSED);
+        else
+            throw new InputMismatchException("잘못된 입력입니다");
+    }
+
+    @Transactional
+    public void updateQuestion(Question question, RequestPostUpdateDto updateDto) {
+        question.updatePost(updateDto);
+        if (updateDto.getStatus().equals("SOLVED"))
+            question.updateStatus(QuestionStatus.SOLVED);
+        else if (updateDto.getStatus().equals("UNSOLVED"))
+            question.updateStatus(QuestionStatus.UNSOLVED);
+        else
+            throw new InputMismatchException("잘못된 입력입니다");
+    }
+
+    @Transactional
+    public void deleteChat(Chat chat) {
+        postRepository.delete(chat);
+    }
+
+    @Transactional
+    public void deleteStudy(Study study) {
+        postRepository.delete(study);
+    }
+
+    @Transactional
+    public void deleteQuestion(Question question) {
+        postRepository.delete(question);
     }
 }

@@ -1,6 +1,7 @@
 package com.devu.backend.entity.post;
 
 import com.devu.backend.common.exception.LikeZeroException;
+import com.devu.backend.controller.post.RequestPostUpdateDto;
 import com.devu.backend.entity.BaseTime;
 import com.devu.backend.entity.Image;
 import com.devu.backend.entity.User;
@@ -56,5 +57,10 @@ public class Post extends BaseTime{
             throw new LikeZeroException();
         }
         this.like++;
+    }
+
+    public void updatePost(RequestPostUpdateDto updateDto) {
+        this.title = updateDto.getTitle();
+        this.content = updateDto.getContent();
     }
 }
