@@ -1,24 +1,47 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './write.css';
+
+const url = 'http://54.180.29.69:8080';
 
 const Write = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
+  const username = localStorage.getItem('username');
+
   const handleTitle = (e) => setTitle(e.target.value);
   const handleContent = (e) => setContent(e.target.value);
-  const handleWrite = () => {
+  const handleWrite = async () => {
     if (title === '' || content === '') {
       alert('글을 작성해주세요!');
       return
     }
-    console.log("title: ", title);
-    console.log("content: ", content);
-    alert('글이 성공적으로 등록되었습니다!');
-    navigate(-1);
-  }
+    const data = {
+      username: username,
+      title: title,
+      content: content,
+    }
+    await axios
+      .post(url + `/community/chat`, JSON.stringify(data), {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        }
+      })
+      .then(() => {
+        console.log("title: ", title);
+        console.log("content: ", content);
+        alert('글이 성공적으로 등록되었습니다!');
+        navigate(-1);
+      })
+      .catch(() => {
+        console.log("글 등록 실패..");
+        console.log(data);
+      });
+  };
 
   return (
     <div className="container-write">

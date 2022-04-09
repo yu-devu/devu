@@ -1,8 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './board.css';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+const url = 'http://54.180.29.69:8080';
 
 const Board = () => {
+  const [page, setPage] = useState(0);
+  const [postData, setPostData] = useState([{
+    username: '',
+    title: '',
+    content: '',
+    hit: '',
+    like: '',
+    studyStatus: '',
+    questionStatus: '',
+  }])
+
+  useEffect(() => {
+    fetchData();
+  }, [page]);
+
+  const fetchData = async () => {
+    const chatsRes = await axios.get(url + `/community/chats`, {
+      params: {
+        page: page,
+      },
+    });
+    console.log(chatsRes.data);
+
+    const _postData = await chatsRes.data.map((rowData) => ({
+      username: rowData.username,
+      title: rowData.title,
+      content: rowData.content,
+      hit: rowData.hit,
+      like: rowData.like,
+      studyStatus: rowData.studyStatus,
+      questionStatus: rowData.questionStatus,
+    }))
+    setPostData(_postData);
+    console.log(postData);
+  }
   return (
     <div>
       <div className="qna-header">

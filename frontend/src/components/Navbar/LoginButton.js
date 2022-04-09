@@ -29,7 +29,6 @@ function LoginButton() {
       password: password,
     };
 
-    console.log(JSON.stringify(data));
     await axios
       .post(url + '/signin', JSON.stringify(data), {
         headers: {
@@ -38,7 +37,8 @@ function LoginButton() {
       })
       .then((res) => {
         alert('로그인에 성공했습니다!');
-        console.log(res);
+        localStorage.setItem('username', res.data.username);
+        // console.log(res);
         localStorage.setItem('accessToken', res.data.accessToken);
         window.location.reload(false);
       })

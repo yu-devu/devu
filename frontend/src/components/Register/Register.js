@@ -14,6 +14,7 @@ const Register = () => {
   const [checkPassword, setCheckPassword] = useState('');
   const [showValidate, setShowValidate] = useState(false);
   const [showInformation, setShowInformation] = useState(false);
+  const [clickAuthkey, setClickAuthkey] = useState(false);
 
   const handleEmail = (e) => setEmail(e.target.value);
   const handleAuthkey = (e) => setAuthkey(e.target.value);
@@ -30,9 +31,11 @@ const Register = () => {
       formData.append('email', email);
       await axios
         .post(url + `/email`, formData)
-        .then(() => {
+        .then((res) => {
           alert('authkey 전송 완료!');
+          setClickAuthkey(true);
           showValidateInput();
+          console.log(res);
         })
         .catch(() => alert('authkey 전송 실패..'));
     } else alert('이메일 형식을 확인해주세요!');
@@ -84,9 +87,17 @@ const Register = () => {
             onChange={(e) => handleEmail(e)}
             placeholder="이메일"
           />
-          <button className="btn-validate" onClick={() => handleAuthorize()}>
-            인증하기
-          </button>
+          {
+            !clickAuthkey
+              ?
+              <button className="btn-validate" onClick={() => handleAuthorize()}>
+                인증하기
+              </button>
+              :
+              <button className="btn-validate" onClick={() => handleAuthorize()}>
+                재전송
+              </button>
+          }
         </div>
         {showValidate ? (
           <div className="register-email">
