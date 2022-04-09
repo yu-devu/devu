@@ -7,15 +7,16 @@ const url = 'http://54.180.29.69:8080';
 
 const Board = () => {
   const [page, setPage] = useState(0);
-  const [postData, setPostData] = useState([{
-    title: '',
-    content: '',
-    username: '',
-    hit: '',
-    like: ''
-  }])
-  const [lastIdx, setLastIdx] = useState(0)
-
+  const [postData, setPostData] = useState([
+    {
+      title: '',
+      content: '',
+      username: '',
+      hit: '',
+      like: '',
+    },
+  ]);
+  const [lastIdx, setLastIdx] = useState(0);
 
   useEffect(() => {
     fetchData();
@@ -26,20 +27,22 @@ const Board = () => {
       params: {
         page: page,
       },
-    })
+    });
 
-    const _postData = await res.data.map((rowData) => (
-      setLastIdx(lastIdx + 1),
-      {
-        title: rowData.title,
-        content: rowData.content,
-        hit: rowData.hit,
-        like: rowData.like,
-        username: rowData.username,
-      })
-    )
-    setPostData(_postData)
-  }
+    const _postData = await res.data.map(
+      (rowData) => (
+        setLastIdx(lastIdx + 1),
+        {
+          title: rowData.title,
+          content: rowData.content,
+          hit: rowData.hit,
+          like: rowData.like,
+          username: rowData.username,
+        }
+      )
+    );
+    setPostData(_postData);
+  };
 
   return (
     <div>
@@ -161,23 +164,25 @@ const Board = () => {
                     />
                   </div>
                 </div>
-                {lastIdx !== 0 ?
-                  postData.map(rowData => (
-                    <tr className='article-item'>
-                      <td className='title'>{rowData.title}</td>
-                      <td className='item-body'>
-                        <span className='body-link'>{rowData.content}</span>
+                {lastIdx !== 0 ? (
+                  postData.map((rowData) => (
+                    <tr className="article-item">
+                      <td className="title">{rowData.title}</td>
+                      <td className="item-body">
+                        <span className="body-link">{rowData.content}</span>
                       </td>
-                      <td className='item-user'>
-                        <span className='nickname'>작성자 : {rowData.username}</span>
+                      <td className="item-user">
+                        <span className="nickname">
+                          작성자 : {rowData.username}
+                        </span>
                       </td>
                     </tr>
-                  )) :
+                  ))
+                ) : (
                   <tr>
-                    <td>
-                      작성된 게시글이 없습니다.
-                    </td>
-                  </tr>}
+                    <td>작성된 게시글이 없습니다.</td>
+                  </tr>
+                )}
 
                 <ul className="pagination">
                   <li className="page-item">
