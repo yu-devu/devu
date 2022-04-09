@@ -9,5 +9,6 @@ public class Messages {
     public static final String PASSWORD_NOT_EQUAL = "비밀번호가 일치하지 않습니다.";
     public static final String ALREADY_EXIST_EMAIL = "이미 존재하는 이메일입니다.";
     public static final String WRONG_AUTH_KEY = "입력한 인증키가 일치하지 않습니다.";
+    public static final String LIKE_ZERO = "좋아요는 0보다 작을 수 없습니다.";
 }
 
