@@ -206,9 +206,13 @@ const Board = () => {
                   </li>
                 </ul>
               </div>
+<<<<<<< HEAD
               <Link to="write">
                 <button className="btn-write">글 쓰기</button>
               </Link>
+=======
+              {/* <button className="btn-write">글쓰기</button> */}
+>>>>>>> refs/remotes/origin/main
             </div>
           </div>
         </div>
