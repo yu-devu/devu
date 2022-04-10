@@ -107,6 +107,7 @@ public class PostService {
         return postRepository.findAllChats(pageable).map(
                 chat -> ResponsePostDto
                         .builder()
+                        .id(chat.getId())
                         .title(chat.getTitle())
                         .content(chat.getContent())
                         .username(chat.getUser().getUsername())
