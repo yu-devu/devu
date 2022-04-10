@@ -46,11 +46,7 @@ public class UserService {
     }
 
     @Transactional
-<<<<<<< HEAD
     public User createUser(final String email,final String authKey, final String username) {
-=======
-    public User createUser(final String email, final String authKey) {
->>>>>>> refs/remotes/origin/main
         User user = User.builder()
                 .email(email)
                 .emailAuthKey(authKey)
