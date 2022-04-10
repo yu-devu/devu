@@ -32,12 +32,12 @@ const Register = () => {
       await axios
         .post(url + `/email`, formData)
         .then((res) => {
-          alert('authkey 전송 완료!');
+          alert(res.request.response);
           setClickAuthkey(true);
           showValidateInput();
           console.log(res);
         })
-        .catch(() => alert('authkey 전송 실패..'));
+        .catch((res) => alert(res.request.response));
     } else alert('이메일 형식을 확인해주세요!');
   };
 
