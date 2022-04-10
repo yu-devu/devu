@@ -14,7 +14,6 @@ const Register = () => {
   const [checkPassword, setCheckPassword] = useState('');
   const [showValidate, setShowValidate] = useState(false);
   const [showInformation, setShowInformation] = useState(false);
-  const [clickAuthkey, setClickAuthkey] = useState(false);
 
   const handleEmail = (e) => setEmail(e.target.value);
   const handleAuthkey = (e) => setAuthkey(e.target.value);
@@ -26,19 +25,17 @@ const Register = () => {
   const showInformationInput = () => setShowInformation(true);
 
   const handleAuthorize = async () => {
-    if (email.includes('@ynu.ac.kr') || email.includes('@yu.ac.kr')) {
-      const formData = new FormData();
-      formData.append('email', email);
-      await axios
-        .post(url + `/email`, formData)
-        .then((res) => {
-          alert('authkey 전송 완료!');
-          setClickAuthkey(true);
-          showValidateInput();
-          console.log(res);
-        })
-        .catch(() => alert('authkey 전송 실패..'));
-    } else alert('이메일 형식을 확인해주세요!');
+    // if (email.includes('@ynu.ac.kr') || email.includes('@yu.ac.kr')) {
+    const formData = new FormData();
+    formData.append('email', email);
+    await axios
+      .post(url + `/email`, formData)
+      .then(() => {
+        alert('authkey 전송 완료!');
+        showValidateInput();
+      })
+      .catch(() => alert('authkey 전송 실패..'));
+    // } else alert('이메일 형식을 확인해주세요!');
   };
 
   const checkAuthkey = async () => {
@@ -67,10 +64,7 @@ const Register = () => {
             'Content-Type': 'application/json',
           },
         })
-        .then(() => {
-          alert('회원가입에 성공했습니다!');
-          navigate('/');
-        })
+        .then(() => alert('회원가입에 성공했습니다!'))
         .catch(() => console.log('회원가입 실패..'));
     } else alert('비밀번호를 확인해주세요.');
   };
@@ -88,17 +82,9 @@ const Register = () => {
             onChange={(e) => handleEmail(e)}
             placeholder="이메일"
           />
-          {
-            !clickAuthkey
-              ?
-              <button className="btn-validate" onClick={() => handleAuthorize()}>
-                인증하기
-              </button>
-              :
-              <button className="btn-validate" onClick={() => handleAuthorize()}>
-                재전송
-              </button>
-          }
+          <button className="btn-validate" onClick={() => handleAuthorize()}>
+            인증하기
+          </button>
         </div>
         {showValidate ? (
           <div className="register-email">
