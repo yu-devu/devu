@@ -101,16 +101,7 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody UserDTO userDTO, HttpServletResponse response) {
         try {
             User user = userService.getByCredentials(userDTO.getEmail(), userDTO.getPassword());
-<<<<<<< HEAD
             UserDTO responseUserDTO = userService.loginProcess(userDTO, user, response);
-=======
-            String jwt = tokenService.createToken(userDTO.getEmail());
-            UserDTO responseUserDTO = UserDTO.builder()
-                    .username(user.getUsername())
-                    .email(user.getEmail())
-                    .token(jwt)
-                    .build();
->>>>>>> refs/remotes/origin/main
             log.info("username : {} -> 로그인 성공", user.getUsername());
             return ResponseEntity.ok().body(responseUserDTO);
         } catch (Exception e) {
