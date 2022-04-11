@@ -38,4 +38,4 @@ out/
 
 src/main/resources/config/email.properties
 src/main/resources/application-dev.yml
-src/main/resources/resources/aws.yml
+src/main/resources/resources/application-aws.yml

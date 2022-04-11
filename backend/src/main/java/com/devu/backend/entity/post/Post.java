@@ -13,9 +13,9 @@ import java.util.List;
 
 @Entity
 @Getter
-@DiscriminatorColumn(name = "dtype")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DiscriminatorColumn(name = "dtype")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Post extends BaseTime{
 
@@ -40,11 +40,7 @@ public class Post extends BaseTime{
     @Column(name = "like_count")
     private Long like;
 
-    @OneToMany(
-            mappedBy = "post",
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "post")
     private List<Image> images = new ArrayList<>();
 
     //==비지니스 로직==//

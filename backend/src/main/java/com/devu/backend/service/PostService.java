@@ -18,16 +18,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 @Transactional(readOnly = true)
 public class PostService {
     private final PostRepository postRepository;
@@ -38,6 +40,7 @@ public class PostService {
 
     @Transactional
     public Chat createChat(RequestPostCreateDto requestPostDto) throws IOException {
+        List<Image> images = new ArrayList<>();
         Chat chat = Chat.builder()
                 .user(
                         userRepository.getByUsername(requestPostDto.getUsername())
@@ -47,10 +50,9 @@ public class PostService {
                 .content(requestPostDto.getContent())
                 .hit(0L)
                 .like(0L)
+                .images(images)
                 .build();
-        for (MultipartFile file : requestPostDto.getImages()) {
-            s3Uploader.upload(file, "static", chat);
-        }
+        addImage(requestPostDto, chat);
         log.info("Create Chat {} By {}",chat.getTitle(),chat.getUser().getUsername());
         return postRepository.save(chat);
     }
@@ -68,9 +70,7 @@ public class PostService {
                 .hit(0L)
                 .like(0L)
                 .build();
-        for (MultipartFile file : requestPostDto.getImages()) {
-            s3Uploader.upload(file, "static", study);
-        }
+        addImage(requestPostDto, study);
         log.info("Create Study {} By {}",study.getTitle(),study.getUser().getUsername());
         return postRepository.save(study);
     }
@@ -88,16 +88,24 @@ public class PostService {
                 .hit(0L)
                 .like(0L)
                 .build();
-        for (MultipartFile file : requestPostDto.getImages()) {
-            s3Uploader.upload(file, "static", question);
-        }
+        addImage(requestPostDto, question);
         log.info("Create Question {} By {}",question.getTitle(),question.getUser().getUsername());
         return postRepository.save(question);
     }
 
+    @Transactional
+    public void addImage(RequestPostCreateDto requestPostDto, Post post) throws IOException {
+        if (!CollectionUtils.isEmpty(requestPostDto.getImages())) {
+            for (MultipartFile file : requestPostDto.getImages()) {
+                String url = s3Uploader.upload(file, "static", post);
+                log.info("s3 생성 {}", url);
+            }
+        }
+    }
+
     /*
-    * Test Data
-    * */
+     * Test Data
+     * */
     @Transactional
     @PostConstruct
     public void init() throws IOException {
@@ -162,19 +170,76 @@ public class PostService {
     }
 
     @Transactional
+    public ResponsePostDto findChatById(Long id) {
+        log.info("Selected Chat ID : {}",id);
+        Chat chat = postRepository.findChatById(id).orElseThrow(PostNotFoundException::new);
+        log.info("Selected Chat Title : {}", chat.getTitle());
+        chat.plusHit();
+        log.info("Current Hit : {}", chat.getHit());
+        return ResponsePostDto.builder()
+                .id(chat.getId())
+                .hit(chat.getHit())
+                .like(chat.getLike())
+                .username(chat.getUser().getUsername())
+                .content(chat.getContent())
+                .title(chat.getTitle())
+                .build();
+    }
+
+    @Transactional
+    public ResponsePostDto findStudyById(Long id) {
+        log.info("Selected Study ID : {}",id);
+        Study study = postRepository.findStudyById(id).orElseThrow(PostNotFoundException::new);
+        log.info("Selected Study Title : {}", study.getTitle());
+        study.plusHit();
+        log.info("Current Hit : {}", study.getHit());
+        return ResponsePostDto.builder()
+                .id(study.getId())
+                .hit(study.getHit())
+                .like(study.getLike())
+                .username(study.getUser().getUsername())
+                .content(study.getContent())
+                .title(study.getTitle())
+                .studyStatus(study.getStudyStatus())
+                .build();
+    }
+
+    @Transactional
+    public ResponsePostDto findQuestionById(Long id) {
+        log.info("Selected Question ID : {}",id);
+        Question question = postRepository.findQuestionById(id).orElseThrow(PostNotFoundException::new);
+        log.info("Selected Question Title : {}", question.getTitle());
+        question.plusHit();
+        log.info("Current Hit : {}", question.getHit());
+        return ResponsePostDto.builder()
+                .id(question.getId())
+                .hit(question.getHit())
+                .like(question.getLike())
+                .username(question.getUser().getUsername())
+                .content(question.getContent())
+                .title(question.getTitle())
+                .questionStatus(question.getQuestionStatus())
+                .build();
+    }
+
+    @Transactional
     public void updateChat(Chat chat, RequestPostUpdateDto updateDto) throws IOException {
         updateImage(chat, updateDto);
         chat.updatePost(updateDto);
     }
 
-    private void updateImage(Post post, RequestPostUpdateDto updateDto) throws IOException {
+    @Transactional
+    public void updateImage(Post post, RequestPostUpdateDto updateDto) throws IOException {
         List<Image> dbImages = post.getImages();
         for (Image image : dbImages) {
             s3Uploader.delete(image.getName());
+            log.info("{}", image);
             imageRepository.delete(image);
+            log.info("업데이트 삭제");
         }
         for (MultipartFile multipartFile : updateDto.getImages()) {
             s3Uploader.upload(multipartFile, "static", post);
+            log.info("업데이트 추가");
         }
     }
 
@@ -204,16 +269,30 @@ public class PostService {
 
     @Transactional
     public void deleteChat(Chat chat) {
+        deleteImage(chat);
         postRepository.delete(chat);
     }
 
     @Transactional
+    public void deleteImage(Post post) {
+        List<Image> dbImages = post.getImages();
+        for (Image image : dbImages) {
+            s3Uploader.delete(image.getName());
+            imageRepository.delete(image);
+        }
+        log.info("전체 삭제");
+    }
+
+    @Transactional
     public void deleteStudy(Study study) {
+        deleteImage(study);
         postRepository.delete(study);
     }
 
     @Transactional
     public void deleteQuestion(Question question) {
+        deleteImage(question);
         postRepository.delete(question);
     }
 }
+

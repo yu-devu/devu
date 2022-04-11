@@ -11,18 +11,19 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.util.Set;
+import java.util.List;
 
-@DiscriminatorValue("Q")
+
 @Entity
 @Getter
+@DiscriminatorValue("Q")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Question extends Post{
     @Enumerated(EnumType.STRING)
     private QuestionStatus questionStatus;
 
     @Builder
-    public Question(Long id, User user, String title, String content, Long hit, Long like, Set<Image> images, QuestionStatus qnaStatus) {
+    public Question(Long id, User user, String title, String content, Long hit, Long like, List<Image> images, QuestionStatus qnaStatus) {
         super(id, user, title, content, hit, like, images);
         this.questionStatus = qnaStatus;
     }

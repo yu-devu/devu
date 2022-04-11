@@ -152,7 +152,7 @@ public class PostController {
 
     //스터디 게시판 글 작성
     @PostMapping("/study")
-    public ResponseEntity<?> createStudy(@RequestBody RequestPostCreateDto requestPostDto) {
+    public ResponseEntity<?> createStudy(RequestPostCreateDto requestPostDto) {
         try {
             Study study = postService.createStudy(requestPostDto);
             log.info("{}님이 Study 게시글 생성",study.getUser().getUsername());
@@ -172,7 +172,7 @@ public class PostController {
 
     //질문 게시판 글 작성
     @PostMapping("/question")
-    public ResponseEntity<?> createQuestion(@RequestBody RequestPostCreateDto requestPostDto) {
+    public ResponseEntity<?> createQuestion(RequestPostCreateDto requestPostDto) {
         try {
             Question question = postService.createQuestion(requestPostDto);
             log.info("{}님이 Question 게시글 생성",question.getUser().getUsername());
