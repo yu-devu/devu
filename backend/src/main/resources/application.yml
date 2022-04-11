@@ -6,3 +6,11 @@ server:
 spring:
   profiles:
     active: local
+    include: aws
+
+cloud:
+  aws:
+    s3:
+      bucket: devu
+    region:
+      static: ap-northeast-2

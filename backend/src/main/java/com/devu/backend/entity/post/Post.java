@@ -8,8 +8,8 @@ import com.devu.backend.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,8 +40,12 @@ public class Post extends BaseTime{
     @Column(name = "like_count")
     private Long like;
 
-    @OneToMany(mappedBy = "post")
-    private Set<Image> images = new HashSet<>();
+    @OneToMany(
+            mappedBy = "post",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true
+    )
+    private List<Image> images = new ArrayList<>();
 
     //==비지니스 로직==//
     public void plusHit() {
@@ -62,5 +66,10 @@ public class Post extends BaseTime{
     public void updatePost(RequestPostUpdateDto updateDto) {
         this.title = updateDto.getTitle();
         this.content = updateDto.getContent();
+    }
+
+    public void addImage(Image image) {
+        this.images.add(image);
+        image.setPost(this);
     }
 }
