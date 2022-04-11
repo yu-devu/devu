@@ -75,6 +75,51 @@ public class PostController {
         }
     }
 
+    //자유 게시판 게시글 조회 By Post ID
+    @GetMapping("/chats/{id}")
+    public ResponseEntity<?> getChatById(@PathVariable("id") Long id) {
+        try {
+            ResponsePostDto chat = postService.findChatById(id);
+            return ResponseEntity.ok().body(chat);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    //스터디 게시판 게시글 조회 By Post ID
+    @GetMapping("/studies/{id}")
+    public ResponseEntity<?> getStudyById(@PathVariable("id") Long id) {
+        try {
+            ResponsePostDto chat = postService.findStudyById(id);
+            return ResponseEntity.ok().body(chat);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    //질문 게시판 게시글 조회 By Post ID
+    @GetMapping("/questions/{id}")
+    public ResponseEntity<?> getQuestionById(@PathVariable("id") Long id) {
+        try {
+            ResponsePostDto chat = postService.findQuestionById(id);
+            return ResponseEntity.ok().body(chat);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
     //자유 게시판 글 작성
     @PostMapping("/chat")
     public ResponseEntity<?> createChat(RequestPostCreateDto requestPostDto) {

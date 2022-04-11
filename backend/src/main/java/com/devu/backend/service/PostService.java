@@ -1,5 +1,6 @@
 package com.devu.backend.service;
 
+import com.devu.backend.common.exception.PostNotFoundException;
 import com.devu.backend.common.exception.UserNotFoundException;
 import com.devu.backend.config.s3.S3Uploader;
 import com.devu.backend.controller.post.RequestPostCreateDto;
@@ -122,6 +123,7 @@ public class PostService {
         return postRepository.findAllChats(pageable).map(
                 chat -> ResponsePostDto
                         .builder()
+                        .id(chat.getId())
                         .title(chat.getTitle())
                         .content(chat.getContent())
                         .username(chat.getUser().getUsername())
