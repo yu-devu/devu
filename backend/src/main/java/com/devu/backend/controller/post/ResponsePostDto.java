@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponsePostDto {
+    private Long id;
     private String username;
     private String title;
     private String content;

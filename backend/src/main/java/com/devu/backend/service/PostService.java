@@ -1,5 +1,6 @@
 package com.devu.backend.service;
 
+import com.devu.backend.common.exception.PostNotFoundException;
 import com.devu.backend.common.exception.UserNotFoundException;
 import com.devu.backend.controller.post.RequestPostCreateDto;
 import com.devu.backend.controller.post.RequestPostUpdateDto;
@@ -107,6 +108,7 @@ public class PostService {
         return postRepository.findAllChats(pageable).map(
                 chat -> ResponsePostDto
                         .builder()
+                        .id(chat.getId())
                         .title(chat.getTitle())
                         .content(chat.getContent())
                         .username(chat.getUser().getUsername())
@@ -142,6 +144,59 @@ public class PostService {
                         .questionStatus(question.getQuestionStatus())
                         .build()
         );
+    }
+
+    @Transactional
+    public ResponsePostDto findChatById(Long id) {
+        log.info("Selected Chat ID : {}",id);
+        Chat chat = postRepository.findChatById(id).orElseThrow(PostNotFoundException::new);
+        log.info("Selected Chat Title : {}", chat.getTitle());
+        chat.plusHit();
+        log.info("Current Hit : {}", chat.getHit());
+        return ResponsePostDto.builder()
+                .id(chat.getId())
+                .hit(chat.getHit())
+                .like(chat.getLike())
+                .username(chat.getUser().getUsername())
+                .content(chat.getContent())
+                .title(chat.getTitle())
+                .build();
+    }
+
+    @Transactional
+    public ResponsePostDto findStudyById(Long id) {
+        log.info("Selected Study ID : {}",id);
+        Study study = postRepository.findStudyById(id).orElseThrow(PostNotFoundException::new);
+        log.info("Selected Study Title : {}", study.getTitle());
+        study.plusHit();
+        log.info("Current Hit : {}", study.getHit());
+        return ResponsePostDto.builder()
+                .id(study.getId())
+                .hit(study.getHit())
+                .like(study.getLike())
+                .username(study.getUser().getUsername())
+                .content(study.getContent())
+                .title(study.getTitle())
+                .studyStatus(study.getStudyStatus())
+                .build();
+    }
+
+    @Transactional
+    public ResponsePostDto findQuestionById(Long id) {
+        log.info("Selected Question ID : {}",id);
+        Question question = postRepository.findQuestionById(id).orElseThrow(PostNotFoundException::new);
+        log.info("Selected Question Title : {}", question.getTitle());
+        question.plusHit();
+        log.info("Current Hit : {}", question.getHit());
+        return ResponsePostDto.builder()
+                .id(question.getId())
+                .hit(question.getHit())
+                .like(question.getLike())
+                .username(question.getUser().getUsername())
+                .content(question.getContent())
+                .title(question.getTitle())
+                .questionStatus(question.getQuestionStatus())
+                .build();
     }
 
     @Transactional
