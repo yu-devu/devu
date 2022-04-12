@@ -5,5 +5,4 @@ server:
 
 spring:
   profiles:
-    active: local
-    include: aws
+    active: dev
