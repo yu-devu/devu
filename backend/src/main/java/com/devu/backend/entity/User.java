@@ -1,6 +1,7 @@
 package com.devu.backend.entity;
 
 import com.devu.backend.entity.post.Post;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,8 +34,17 @@ public class User {
 
     private String emailAuthKey;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "user")
     private List<Post> posts = new ArrayList<>();
+
+    //<--연관관계 편의 메서드-->//
+    public void addPost(Post post) {
+        this.posts.add(post);
+        if (post.getUser() != this) {
+            post.setUser(this);
+        }
+    }
 
     public void updateUserInfo(String username, String password) {
         this.username = username;

@@ -5,6 +5,7 @@ import com.devu.backend.controller.post.RequestPostUpdateDto;
 import com.devu.backend.entity.BaseTime;
 import com.devu.backend.entity.Image;
 import com.devu.backend.entity.User;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class Post extends BaseTime{
     @Column(name = "post_id")
     private Long id;
 
+    @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -67,5 +69,14 @@ public class Post extends BaseTime{
     public void addImage(Image image) {
         this.images.add(image);
         image.setPost(this);
+    }
+
+    //<--연관관계 편의 메서드-->//
+    public void setUser(User user) {
+        if (this.user != null) {
+            this.user.getPosts().remove(this);
+        }
+        this.user = user;
+        user.getPosts().add(this);
     }
 }

@@ -120,6 +120,9 @@ public class PostController {
         }
     }
 
+    /*
+    * Controller에서 객체 생성 하지 않는 방향
+    * */
     //자유 게시판 글 작성
     @PostMapping("/chat")
     public ResponseEntity<?> createChat(RequestPostCreateDto requestPostDto) {
