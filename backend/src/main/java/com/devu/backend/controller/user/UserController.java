@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,6 +25,12 @@ public class UserController {
     @GetMapping("/")
     private ResponseEntity home() {
         return ResponseEntity.ok().body("홈 테스트");
+    }
+
+    @GetMapping("/users")
+    private ResponseEntity<?> getAllUsers() {
+        List<User> users = userService.getUsers();
+        return ResponseEntity.ok(users);
     }
 
     // 회원가입 Form에서 이메일 검증 api => Form Data로 넘어와야함

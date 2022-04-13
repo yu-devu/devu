@@ -45,6 +45,10 @@ public class UserService {
         return user;
     }
 
+    public List<User> getUsers() {
+        return userRepository.findAll();
+    }
+
     @Transactional
     public User createUser(final String email,final String authKey, final String username) {
         User user = User.builder()
