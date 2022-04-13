@@ -1,28 +1,37 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './write.css';
 
 const url = 'http://54.180.29.69:8080';
 
 const Write = () => {
   const navigate = useNavigate();
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [postContent, setPostContent] = useState({
+    title: '',
+    content: ''
+  })
 
   const username = localStorage.getItem('username');
 
-  const handleTitle = (e) => setTitle(e.target.value);
-  const handleContent = (e) => setContent(e.target.value);
+  const handleTitle = e => {
+    const { name, value } = e.target;
+    setPostContent({
+      ...postContent,
+      [name]: value
+    })
+  }
   const handleWrite = async () => {
-    if (title === '' || content === '') {
+    if (postContent === '') {
       alert('글을 작성해주세요!');
       return
     }
     const data = {
       username: username,
-      title: title,
-      content: content,
+      title: postContent.title,
+      content: postContent.content,
     }
     await axios
       .post(url + `/community/chat`, JSON.stringify(data), {
@@ -32,14 +41,11 @@ const Write = () => {
         }
       })
       .then(() => {
-        console.log("title: ", title);
-        console.log("content: ", content);
         alert('글이 성공적으로 등록되었습니다!');
         navigate(-1);
       })
       .catch(() => {
-        console.log("글 등록 실패..");
-        console.log(data);
+        alert("글 등록 실패..");
       });
   };
 
@@ -59,17 +65,21 @@ const Write = () => {
             onChange={(e) => handleTitle(e)}
           ></textarea>
         </div>
-        <div className="in_content">
-          <textarea
-            name="content"
-            id="content"
-            rows="1"
-            cols="55"
-            placeholder="내용"
-            required
-            onChange={(e) => handleContent(e)}
-          ></textarea>
-        </div>
+        <CKEditor
+          editor={ClassicEditor}
+          data=""
+          onChange={(event, editor) => {
+            const data = editor.getData();
+            setPostContent({
+              ...postContent,
+              content: data
+            })
+          }}
+          onBlur={(event, editor) => {
+          }}
+          onFocus={(event, editor) => {
+          }}
+        />
         <div className="bt_se">
           <button className="btn-post" onClick={() => handleWrite()}>
             글 작성
