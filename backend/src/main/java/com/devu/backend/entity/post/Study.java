@@ -9,7 +9,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,7 +20,7 @@ public class Study extends Post{
     private StudyStatus studyStatus;
 
     @Builder
-    public Study(Long id, User user, String title, String content, Long hit, Long like, Set<Image> images, StudyStatus studyStatus) {
+    public Study(Long id, User user, String title, String content, Long hit, Long like, List<Image> images, StudyStatus studyStatus) {
         super(id, user, title, content, hit, like, images);
         this.studyStatus = studyStatus;
     }

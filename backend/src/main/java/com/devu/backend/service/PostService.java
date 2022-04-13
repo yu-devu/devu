@@ -2,11 +2,14 @@ package com.devu.backend.service;
 
 import com.devu.backend.common.exception.PostNotFoundException;
 import com.devu.backend.common.exception.UserNotFoundException;
+import com.devu.backend.config.s3.S3Uploader;
 import com.devu.backend.controller.post.RequestPostCreateDto;
 import com.devu.backend.controller.post.RequestPostUpdateDto;
 import com.devu.backend.controller.post.ResponsePostDto;
+import com.devu.backend.entity.Image;
 import com.devu.backend.entity.User;
 import com.devu.backend.entity.post.*;
+import com.devu.backend.repository.ImageRepository;
 import com.devu.backend.repository.PostRepository;
 import com.devu.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,38 +18,47 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-@Slf4j
 @Transactional(readOnly = true)
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final UserService userService;
-
+    private final S3Uploader s3Uploader;
+    private final ImageRepository imageRepository;
 
     @Transactional
-    public Chat createChat(RequestPostCreateDto requestCreateDto) {
+    public Chat createChat(RequestPostCreateDto requestPostDto) throws IOException {
+        List<Image> images = new ArrayList<>();
         Chat chat = Chat.builder()
                 .user(
-                        userRepository.getByUsername(requestCreateDto.getUsername())
+                        userRepository.getByUsername(requestPostDto.getUsername())
                                 .orElseThrow(UserNotFoundException::new)
                 )
-                .title(requestCreateDto.getTitle())
-                .content(requestCreateDto.getContent())
+                .title(requestPostDto.getTitle())
+                .content(requestPostDto.getContent())
                 .hit(0L)
                 .like(0L)
+                .images(images)
                 .build();
+        addImage(requestPostDto, chat);
         log.info("Create Chat {} By {}",chat.getTitle(),chat.getUser().getUsername());
         return postRepository.save(chat);
     }
 
     @Transactional
-    public Study createStudy(RequestPostCreateDto requestPostDto) {
+    public Study createStudy(RequestPostCreateDto requestPostDto) throws IOException {
         Study study = Study.builder()
                 .user(
                         userRepository.getByUsername(requestPostDto.getUsername())
@@ -58,12 +70,13 @@ public class PostService {
                 .hit(0L)
                 .like(0L)
                 .build();
+        addImage(requestPostDto, study);
         log.info("Create Study {} By {}",study.getTitle(),study.getUser().getUsername());
         return postRepository.save(study);
     }
 
     @Transactional
-    public Question createQuestion(RequestPostCreateDto requestPostDto) {
+    public Question createQuestion(RequestPostCreateDto requestPostDto) throws IOException {
         Question question = Question.builder()
                 .user(
                         userRepository.getByUsername(requestPostDto.getUsername())
@@ -75,16 +88,27 @@ public class PostService {
                 .hit(0L)
                 .like(0L)
                 .build();
+        addImage(requestPostDto, question);
         log.info("Create Question {} By {}",question.getTitle(),question.getUser().getUsername());
         return postRepository.save(question);
     }
 
+    @Transactional
+    public void addImage(RequestPostCreateDto requestPostDto, Post post) throws IOException {
+        if (!CollectionUtils.isEmpty(requestPostDto.getImages())) {
+            for (MultipartFile file : requestPostDto.getImages()) {
+                String url = s3Uploader.upload(file, "static", post);
+                log.info("s3 생성 {}", url);
+            }
+        }
+    }
+
     /*
-    * Test Data
-    * */
+     * Test Data
+     * */
     @Transactional
     @PostConstruct
-    public void init() {
+    public void init() throws IOException {
         User test = User.builder()
                 .email("test@ynu.ac.kr")
                 .username("test")
@@ -102,7 +126,6 @@ public class PostService {
             createStudy(dto);
         }
     }
-
 
     public Page<ResponsePostDto> findAllChats(Pageable pageable) {
         return postRepository.findAllChats(pageable).map(
@@ -200,12 +223,29 @@ public class PostService {
     }
 
     @Transactional
-    public void updateChat(Chat chat, RequestPostUpdateDto updateDto) {
+    public void updateChat(Chat chat, RequestPostUpdateDto updateDto) throws IOException {
+        updateImage(chat, updateDto);
         chat.updatePost(updateDto);
     }
 
     @Transactional
-    public void updateStudy(Study study, RequestPostUpdateDto updateDto) {
+    public void updateImage(Post post, RequestPostUpdateDto updateDto) throws IOException {
+        List<Image> dbImages = post.getImages();
+        for (Image image : dbImages) {
+            s3Uploader.delete(image.getName());
+            log.info("{}", image);
+            imageRepository.delete(image);
+            log.info("업데이트 삭제");
+        }
+        for (MultipartFile multipartFile : updateDto.getImages()) {
+            s3Uploader.upload(multipartFile, "static", post);
+            log.info("업데이트 추가");
+        }
+    }
+
+    @Transactional
+    public void updateStudy(Study study, RequestPostUpdateDto updateDto) throws IOException {
+        updateImage(study, updateDto);
         study.updatePost(updateDto);
         if (updateDto.getStatus().equals("ACTIVE"))
             study.updateStatus(StudyStatus.ACTIVE);
@@ -216,7 +256,8 @@ public class PostService {
     }
 
     @Transactional
-    public void updateQuestion(Question question, RequestPostUpdateDto updateDto) {
+    public void updateQuestion(Question question, RequestPostUpdateDto updateDto) throws IOException {
+        updateImage(question, updateDto);
         question.updatePost(updateDto);
         if (updateDto.getStatus().equals("SOLVED"))
             question.updateStatus(QuestionStatus.SOLVED);
@@ -228,16 +269,30 @@ public class PostService {
 
     @Transactional
     public void deleteChat(Chat chat) {
+        deleteImage(chat);
         postRepository.delete(chat);
     }
 
     @Transactional
+    public void deleteImage(Post post) {
+        List<Image> dbImages = post.getImages();
+        for (Image image : dbImages) {
+            s3Uploader.delete(image.getName());
+            imageRepository.delete(image);
+        }
+        log.info("전체 삭제");
+    }
+
+    @Transactional
     public void deleteStudy(Study study) {
+        deleteImage(study);
         postRepository.delete(study);
     }
 
     @Transactional
     public void deleteQuestion(Question question) {
+        deleteImage(question);
         postRepository.delete(question);
     }
 }
+

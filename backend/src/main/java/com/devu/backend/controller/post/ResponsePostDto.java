@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,6 +18,7 @@ public class ResponsePostDto {
     private String username;
     private String title;
     private String content;
+    private List<String> url;
     private Long hit;
     private Long like;
     private StudyStatus studyStatus;
