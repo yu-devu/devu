@@ -2,6 +2,7 @@ package com.devu.backend.controller.post;
 
 import com.devu.backend.common.exception.PostNotFoundException;
 import com.devu.backend.controller.ResponseErrorDto;
+import com.devu.backend.entity.Image;
 import com.devu.backend.entity.post.*;
 import com.devu.backend.repository.PostRepository;
 import com.devu.backend.service.PostService;
@@ -12,6 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -120,13 +122,15 @@ public class PostController {
 
     //자유 게시판 글 작성
     @PostMapping("/chat")
-    public ResponseEntity<?> createChat(@RequestBody RequestPostCreateDto requestPostDto) {
+    public ResponseEntity<?> createChat(RequestPostCreateDto requestPostDto) {
         try {
             Chat chat = postService.createChat(requestPostDto);
             log.info("{}님이 chat 게시글 생성",chat.getUser().getUsername());
+            List<String> images = getImageUrl(chat);
             ResponsePostDto postDto = ResponsePostDto.builder()
                     .title(chat.getTitle())
                     .username(chat.getUser().getUsername())
+                    .url(images)
                     .build();
             return ResponseEntity.ok(postDto);
         } catch (Exception e) {
@@ -138,9 +142,17 @@ public class PostController {
         }
     }
 
+    private List<String> getImageUrl(Chat chat) {
+        List<String> images = new ArrayList<>();
+        for (Image image : chat.getImages()) {
+            images.add(image.getPath());
+        }
+        return images;
+    }
+
     //스터디 게시판 글 작성
     @PostMapping("/study")
-    public ResponseEntity<?> createStudy(@RequestBody RequestPostCreateDto requestPostDto) {
+    public ResponseEntity<?> createStudy(RequestPostCreateDto requestPostDto) {
         try {
             Study study = postService.createStudy(requestPostDto);
             log.info("{}님이 Study 게시글 생성",study.getUser().getUsername());
@@ -160,7 +172,7 @@ public class PostController {
 
     //질문 게시판 글 작성
     @PostMapping("/question")
-    public ResponseEntity<?> createQuestion(@RequestBody RequestPostCreateDto requestPostDto) {
+    public ResponseEntity<?> createQuestion(RequestPostCreateDto requestPostDto) {
         try {
             Question question = postService.createQuestion(requestPostDto);
             log.info("{}님이 Question 게시글 생성",question.getUser().getUsername());
@@ -180,7 +192,7 @@ public class PostController {
 
     //chat update
     @PatchMapping("/chat/{id}")
-    public ResponseEntity<?> updateChat(@PathVariable("id") Long id, @RequestBody RequestPostUpdateDto updateDto) {
+    public ResponseEntity<?> updateChat(@PathVariable("id") Long id, RequestPostUpdateDto updateDto) {
         try {
             Chat chat = (Chat) postRepository.findById(id).orElseThrow(PostNotFoundException::new);
             postService.updateChat(chat, updateDto);

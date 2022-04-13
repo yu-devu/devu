@@ -8,14 +8,14 @@ import com.devu.backend.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
-@DiscriminatorColumn(name = "dtype")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DiscriminatorColumn(name = "dtype")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Post extends BaseTime{
 
@@ -41,7 +41,7 @@ public class Post extends BaseTime{
     private Long like;
 
     @OneToMany(mappedBy = "post")
-    private Set<Image> images = new HashSet<>();
+    private List<Image> images = new ArrayList<>();
 
     //==비지니스 로직==//
     public void plusHit() {
@@ -62,5 +62,10 @@ public class Post extends BaseTime{
     public void updatePost(RequestPostUpdateDto updateDto) {
         this.title = updateDto.getTitle();
         this.content = updateDto.getContent();
+    }
+
+    public void addImage(Image image) {
+        this.images.add(image);
+        image.setPost(this);
     }
 }
