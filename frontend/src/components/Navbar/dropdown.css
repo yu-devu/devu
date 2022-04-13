@@ -1,4 +1,5 @@
 .community-submenu {
+    z-index: 100;
     width: 8rem;
     position: absolute;
     top: 67px;
