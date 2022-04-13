@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './board.css';
 import { Link } from 'react-router-dom';
+import ReactHtmlParser from 'react-html-parser';
 
 const url = 'http://54.180.29.69:8080';
 
@@ -34,7 +35,7 @@ const Board = () => {
         setLastIdx(lastIdx + 1),
         {
           title: rowData.title,
-          content: rowData.content,
+          content: ReactHtmlParser(rowData.content),
           hit: rowData.hit,
           like: rowData.like,
           username: rowData.username,
