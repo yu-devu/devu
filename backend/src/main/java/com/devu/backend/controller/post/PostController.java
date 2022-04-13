@@ -208,7 +208,7 @@ public class PostController {
 
     //study update
     @PatchMapping("/study/{id}")
-    public ResponseEntity<?> updateStudy(@PathVariable("id") Long id, @RequestBody RequestPostUpdateDto updateDto) {
+    public ResponseEntity<?> updateStudy(@PathVariable("id") Long id, RequestPostUpdateDto updateDto) {
         try {
             Study study = (Study) postRepository.findById(id).orElseThrow(PostNotFoundException::new);
             postService.updateStudy(study, updateDto);
@@ -224,7 +224,7 @@ public class PostController {
 
     //qna update
     @PatchMapping("/question/{id}")
-    public ResponseEntity<?> updateQuestion(@PathVariable("id") Long id, @RequestBody RequestPostUpdateDto updateDto) {
+    public ResponseEntity<?> updateQuestion(@PathVariable("id") Long id, RequestPostUpdateDto updateDto) {
         try {
             Question question = (Question) postRepository.findById(id).orElseThrow(PostNotFoundException::new);
             postService.updateQuestion(question, updateDto);
