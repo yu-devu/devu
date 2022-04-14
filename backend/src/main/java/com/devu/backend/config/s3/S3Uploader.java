@@ -44,12 +44,15 @@ public class S3Uploader {
 
     private String upload(File uploadFile, String dirName, Post post) {
         String fileName = dirName + "/" + UUID.randomUUID() + "_" + uploadFile.getName();
+        log.info("New Image File Name : {}",fileName);
+        log.info("New Image File Name By : {}",post.getUser().getUsername());
         String uploadImageUrl = putS3(uploadFile, fileName);
         removeNewFile(uploadFile);
         Image image = Image.builder()
                 .name(fileName)
                 .path(uploadImageUrl)
                 .build();
+        log.info("image : {}",image);
         post.addImage(imageRepository.save(image));
         return uploadImageUrl;
     }
