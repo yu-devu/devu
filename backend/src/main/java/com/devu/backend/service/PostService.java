@@ -38,6 +38,9 @@ public class PostService {
     private final S3Uploader s3Uploader;
     private final ImageRepository imageRepository;
 
+    /*
+    * images 초기화 하는 방식 리팩토링 필요!
+    * */
     @Transactional
     public Chat createChat(RequestPostCreateDto requestPostDto) throws IOException {
         List<Image> images = new ArrayList<>();
@@ -59,6 +62,7 @@ public class PostService {
 
     @Transactional
     public Study createStudy(RequestPostCreateDto requestPostDto) throws IOException {
+        List<Image> images = new ArrayList<>();
         Study study = Study.builder()
                 .user(
                         userRepository.getByUsername(requestPostDto.getUsername())
@@ -69,6 +73,7 @@ public class PostService {
                 .studyStatus(StudyStatus.ACTIVE)
                 .hit(0L)
                 .like(0L)
+                .images(images)
                 .build();
         addImage(requestPostDto, study);
         log.info("Create Study {} By {}",study.getTitle(),study.getUser().getUsername());
@@ -77,6 +82,7 @@ public class PostService {
 
     @Transactional
     public Question createQuestion(RequestPostCreateDto requestPostDto) throws IOException {
+        List<Image> images = new ArrayList<>();
         Question question = Question.builder()
                 .user(
                         userRepository.getByUsername(requestPostDto.getUsername())
@@ -87,6 +93,7 @@ public class PostService {
                 .qnaStatus(QuestionStatus.UNSOLVED)
                 .hit(0L)
                 .like(0L)
+                .images(images)
                 .build();
         addImage(requestPostDto, question);
         log.info("Create Question {} By {}",question.getTitle(),question.getUser().getUsername());

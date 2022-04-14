@@ -129,11 +129,10 @@ public class PostController {
         try {
             Chat chat = postService.createChat(requestPostDto);
             log.info("{}님이 chat 게시글 생성",chat.getUser().getUsername());
-            List<String> images = getImageUrl(chat);
             ResponsePostDto postDto = ResponsePostDto.builder()
                     .title(chat.getTitle())
                     .username(chat.getUser().getUsername())
-                    .url(images)
+                    .url(getImageUrl(chat))
                     .build();
             return ResponseEntity.ok(postDto);
         } catch (Exception e) {
@@ -145,9 +144,9 @@ public class PostController {
         }
     }
 
-    private List<String> getImageUrl(Chat chat) {
+    private List<String> getImageUrl(Post post) {
         List<String> images = new ArrayList<>();
-        for (Image image : chat.getImages()) {
+        for (Image image : post.getImages()) {
             images.add(image.getPath());
         }
         return images;
@@ -159,9 +158,11 @@ public class PostController {
         try {
             Study study = postService.createStudy(requestPostDto);
             log.info("{}님이 Study 게시글 생성",study.getUser().getUsername());
+
             ResponsePostDto postDto = ResponsePostDto.builder()
                     .title(study.getTitle())
                     .username(study.getUser().getUsername())
+                    .url(getImageUrl(study))
                     .build();
             return ResponseEntity.ok(postDto);
         } catch (Exception e) {
@@ -182,6 +183,7 @@ public class PostController {
             ResponsePostDto postDto = ResponsePostDto.builder()
                     .title(question.getTitle())
                     .username(question.getUser().getUsername())
+                    .url(getImageUrl(question))
                     .build();
             return ResponseEntity.ok(postDto);
         } catch (Exception e) {
