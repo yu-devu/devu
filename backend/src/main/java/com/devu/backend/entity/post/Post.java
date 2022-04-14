@@ -1,6 +1,5 @@
 package com.devu.backend.entity.post;
 
-import com.devu.backend.common.exception.LikeZeroException;
 import com.devu.backend.controller.post.RequestPostUpdateDto;
 import com.devu.backend.entity.BaseTime;
 import com.devu.backend.entity.Image;
@@ -40,6 +39,7 @@ public class Post extends BaseTime{
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private List<Like> likes = new ArrayList<>();
 
+    //cascadeType.ALL 설정해보기
     @OneToMany(mappedBy = "post")
     private List<Image> images = new ArrayList<>();
 

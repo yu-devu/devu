@@ -11,6 +11,7 @@ public class Messages {
     public static final String WRONG_AUTH_KEY = "입력한 인증키가 일치하지 않습니다.";
     public static final String LIKE_ZERO = "좋아요는 0보다 작을 수 없습니다.";
     public static final String NO_POST = "존재하지 않는 게시글입니다.";
-    public static final String ALREADY_LIKED = "이미 좋아요를 누른 게시물입니다.";
+    public static final String NO_LIKE = "존재하지 않는 좋아요 엔티티입니다.";
+    public static final String UNLIKE = "좋아요를 삭제합니다.";
 }
 

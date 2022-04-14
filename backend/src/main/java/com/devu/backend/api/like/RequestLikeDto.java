@@ -1,4 +1,4 @@
-package com.devu.backend.api;
+package com.devu.backend.api.like;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

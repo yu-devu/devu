@@ -1,5 +1,6 @@
-package com.devu.backend.api;
+package com.devu.backend.api.like;
 
+import com.devu.backend.common.exception.UnlikedPostException;
 import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.service.LikeService;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,14 @@ public class LikeApiController {
     public ResponseEntity<?> addLike(@RequestBody RequestLikeDto requestLikeDto) {
         try {
             likeService.addLike(requestLikeDto.getUsername(), requestLikeDto.getPostId());
-            log.info("Post {} is Liked by {}",requestLikeDto.getPostId(),requestLikeDto.getUsername());
-            return ResponseEntity.ok().body("OK");
-        } catch (Exception e) {
-            log.warn(e.getMessage());
+            log.info("Post {} is liked by {}",requestLikeDto.getPostId(),requestLikeDto.getUsername());
+            return ResponseEntity.ok().body("좋아요");
+        } catch (UnlikedPostException e) {
+            likeService.dislike();
+            log.info("Post {} is unliked by {}",requestLikeDto.getPostId(),requestLikeDto.getUsername());
+            return ResponseEntity.ok().body("좋아요 해제");
+        } catch (Exception e){
+            e.printStackTrace();
             ResponseErrorDto errorDto = ResponseErrorDto.builder()
                     .error(e.getMessage())
                     .build();
