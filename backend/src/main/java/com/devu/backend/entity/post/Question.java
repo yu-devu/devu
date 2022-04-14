@@ -1,6 +1,7 @@
 package com.devu.backend.entity.post;
 
 import com.devu.backend.entity.Image;
+import com.devu.backend.entity.Like;
 import com.devu.backend.entity.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -23,8 +24,8 @@ public class Question extends Post{
     private QuestionStatus questionStatus;
 
     @Builder
-    public Question(Long id, User user, String title, String content, Long hit, Long like, List<Image> images, QuestionStatus qnaStatus) {
-        super(id, user, title, content, hit, like, images);
+    public Question(Long id, User user, String title, String content, Long hit, List<Like> likes, List<Image> images, QuestionStatus qnaStatus) {
+        super(id, user, title, content, hit, likes, images);
         this.questionStatus = qnaStatus;
     }
 

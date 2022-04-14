@@ -40,19 +40,19 @@ public class PostService {
 
     /*
     * images 초기화 하는 방식 리팩토링 필요!
+    * likes => list 넣어줄 필요 없음
     * */
     @Transactional
     public Chat createChat(RequestPostCreateDto requestPostDto) throws IOException {
         List<Image> images = new ArrayList<>();
         Chat chat = Chat.builder()
                 .user(
-                        userRepository.getByUsername(requestPostDto.getUsername())
+                        userRepository.findByUsername(requestPostDto.getUsername())
                                 .orElseThrow(UserNotFoundException::new)
                 )
                 .title(requestPostDto.getTitle())
                 .content(requestPostDto.getContent())
                 .hit(0L)
-                .like(0L)
                 .images(images)
                 .build();
         addImage(requestPostDto, chat);
@@ -65,14 +65,13 @@ public class PostService {
         List<Image> images = new ArrayList<>();
         Study study = Study.builder()
                 .user(
-                        userRepository.getByUsername(requestPostDto.getUsername())
+                        userRepository.findByUsername(requestPostDto.getUsername())
                                 .orElseThrow(UserNotFoundException::new)
                 )
                 .title(requestPostDto.getTitle())
                 .content(requestPostDto.getContent())
                 .studyStatus(StudyStatus.ACTIVE)
                 .hit(0L)
-                .like(0L)
                 .images(images)
                 .build();
         addImage(requestPostDto, study);
@@ -85,14 +84,13 @@ public class PostService {
         List<Image> images = new ArrayList<>();
         Question question = Question.builder()
                 .user(
-                        userRepository.getByUsername(requestPostDto.getUsername())
+                        userRepository.findByUsername(requestPostDto.getUsername())
                                 .orElseThrow(UserNotFoundException::new)
                 )
                 .title(requestPostDto.getTitle())
                 .content(requestPostDto.getContent())
                 .qnaStatus(QuestionStatus.UNSOLVED)
                 .hit(0L)
-                .like(0L)
                 .images(images)
                 .build();
         addImage(requestPostDto, question);
@@ -143,7 +141,7 @@ public class PostService {
                         .content(chat.getContent())
                         .username(chat.getUser().getUsername())
                         .hit(chat.getHit())
-                        .like(chat.getLike())
+                        .like(chat.getLikes().size())
                         .build()
         );
     }
@@ -156,8 +154,8 @@ public class PostService {
                         .content(study.getContent())
                         .username(study.getUser().getUsername())
                         .hit(study.getHit())
-                        .like(study.getLike())
                         .studyStatus(study.getStudyStatus())
+                        .like(study.getLikes().size())
                         .build()
         );
     }
@@ -170,8 +168,8 @@ public class PostService {
                         .content(question.getContent())
                         .username(question.getUser().getUsername())
                         .hit(question.getHit())
-                        .like(question.getLike())
                         .questionStatus(question.getQuestionStatus())
+                        .like(question.getLikes().size())
                         .build()
         );
     }
@@ -186,10 +184,10 @@ public class PostService {
         return ResponsePostDto.builder()
                 .id(chat.getId())
                 .hit(chat.getHit())
-                .like(chat.getLike())
                 .username(chat.getUser().getUsername())
                 .content(chat.getContent())
                 .title(chat.getTitle())
+                .like(chat.getLikes().size())
                 .build();
     }
 
@@ -203,11 +201,11 @@ public class PostService {
         return ResponsePostDto.builder()
                 .id(study.getId())
                 .hit(study.getHit())
-                .like(study.getLike())
                 .username(study.getUser().getUsername())
                 .content(study.getContent())
                 .title(study.getTitle())
                 .studyStatus(study.getStudyStatus())
+                .like(study.getLikes().size())
                 .build();
     }
 
@@ -221,11 +219,11 @@ public class PostService {
         return ResponsePostDto.builder()
                 .id(question.getId())
                 .hit(question.getHit())
-                .like(question.getLike())
                 .username(question.getUser().getUsername())
                 .content(question.getContent())
                 .title(question.getTitle())
                 .questionStatus(question.getQuestionStatus())
+                .like(question.getLikes().size())
                 .build();
     }
 
