@@ -20,7 +20,7 @@ public class ResponsePostDto {
     private String content;
     private List<String> url;
     private Long hit;
-    private Long like;
+    private Integer like;
     private StudyStatus studyStatus;
     private QuestionStatus questionStatus;
 }
