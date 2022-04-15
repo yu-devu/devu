@@ -39,7 +39,7 @@ public class UserService {
 
     public User getByEmail(final String email) {
         User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-        if (user == null) {
+        if (user.isEmailConfirm() == false) {
             log.warn("이메일 인증이 완료되지 않은 이메일입니다.");
         }
         return user;
