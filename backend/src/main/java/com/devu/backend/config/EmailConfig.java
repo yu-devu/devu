@@ -9,7 +9,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
-@Configuration
+//@Configuration
 @PropertySource("classpath:config/email.properties")
 public class EmailConfig {
     @Value("${mail.smtp.port}")
@@ -29,7 +29,7 @@ public class EmailConfig {
     @Value("${AdminMail.password}")
     private String password;
 
-    @Bean
+    //@Bean
     public JavaMailSender javaMailService() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost("smtp.gmail.com");

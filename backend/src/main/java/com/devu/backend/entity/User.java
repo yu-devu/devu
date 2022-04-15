@@ -46,6 +46,10 @@ public class User {
         }
     }
 
+    public void changePassword(String password) {
+        this.password = password;
+    }
+
     public void updateUserInfo(String username, String password) {
         this.username = username;
         this.password = password;

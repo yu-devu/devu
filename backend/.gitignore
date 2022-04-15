@@ -42,3 +42,4 @@ src/main/resources/aws.yml
 /src/main/resources/config/aws.yml
 /src/main/resources/config/aws.properties
 src/main/resources/application-aws.yml
+src/main/resources/application-email.yml
