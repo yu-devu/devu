@@ -1,5 +1,6 @@
 package com.devu.backend.controller.user;
 
+import com.devu.backend.common.exception.EmailConfirmNotCompleteException;
 import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.entity.User;
 import com.devu.backend.service.UserService;
@@ -36,10 +37,17 @@ public class UserController {
     // 회원가입 Form에서 이메일 검증 api => Form Data로 넘어와야함
     @PostMapping("/key")
     private ResponseEntity<?> getKeyFromUser(@RequestParam String postKey) {
-        User user = userService.getByAuthKey(postKey);
-        user.updateEmailConfirm(true);
-        userService.updateUserConfirm(user);
-        return ResponseEntity.ok(HttpStatus.OK);
+        try {
+            User user = userService.getByAuthKey(postKey);
+            user.updateEmailConfirm(true);
+            userService.updateUserConfirm(user);
+            return ResponseEntity.ok(HttpStatus.OK);
+        } catch (Exception e) {
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
     }
 
     // TODO : 1)Email AuthKey 제한시간 5분 걸기 2) Dummy User 처리
@@ -48,13 +56,19 @@ public class UserController {
         try {
             if (userService.isEmailExists(email)) {
                 if (userService.getByEmail(email).isEmailConfirm()) {
-                    return ResponseEntity.badRequest().body("이미 가입 완료된 이메일입니다.");
+                    ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                            .error("이미 가입 완료된 이메일입니다.")
+                            .build();
+                    return ResponseEntity.badRequest().body(errorDto);
                 }
                 String authKey = emailService.createKey();
                 emailService.sendValidationMail(email, authKey);
                 userService.updateUserAuthKey(email, authKey);
                 log.info("Email 재전송 완료 : {}", email);
-                return ResponseEntity.ok().body("이메일 재전송 완료");
+                ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                        .error("이메일 재전송 완료")
+                        .build();
+                return ResponseEntity.ok().body(errorDto);
             }
             // email로 인증번호 먼저 보내고, 인증번호 get
             String authKey = emailService.createKey();
@@ -86,6 +100,9 @@ public class UserController {
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userCreateRequestDto) {
         try {
             User user = userService.getByEmail(userCreateRequestDto.getEmail());
+            if (user.isEmailConfirm() == false) {
+                throw new EmailConfirmNotCompleteException();
+            }
             userService.findByUserName(userCreateRequestDto.getUsername());
             user.updateUserInfo(userCreateRequestDto.getUsername(), passwordEncoder.encode(userCreateRequestDto.getPassword()));
             User updatedUser = userService.updateUser(user);
