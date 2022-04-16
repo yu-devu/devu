@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -18,6 +19,7 @@ const Modify = () => {
   let pathname = location.pathname;
   let [a, b, postId, c] = pathname.split('/');
 
+
   const handleTitle = (e) => {
     const { name, value } = e.target;
     setPostContent({
@@ -26,6 +28,7 @@ const Modify = () => {
     });
   };
   const handleModify = async () => {
+
     if (postContent === '') {
       alert('글을 작성해주세요!');
       return;
