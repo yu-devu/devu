@@ -15,13 +15,13 @@ const Register = () => {
   const [showValidate, setShowValidate] = useState(false);
   const [showInformation, setShowInformation] = useState(false);
   const [clickAuthkey, setClickAuthkey] = useState(false);
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/
 
-  const handleEmail = (e) => setEmail(e.target.value);
-  const handleAuthkey = (e) => setAuthkey(e.target.value);
-  const handleUsername = (e) => setUsername(e.target.value);
-  const handlePassword = (e) => setPassword(e.target.value);
-  const handleCheckPassword = (e) => setCheckPassword(e.target.value);
-
+  const onChangeEmail = (e) => setEmail(e.target.value);
+  const onChangeAuthkey = (e) => setAuthkey(e.target.value);
+  const onChangeUsername = (e) => setUsername(e.target.value);
+  const onChangePassword = (e) => setPassword(e.target.value);
+  const onChangeCheckPassword = (e) => setCheckPassword(e.target.value);
   const showValidateInput = () => setShowValidate(true);
   const showInformationInput = () => setShowInformation(true);
 
@@ -32,12 +32,14 @@ const Register = () => {
       await axios
         .post(url + `/email`, formData)
         .then((res) => {
-          alert(res.request.response);
+          if (res.data.error) {
+            alert(res.data.error);
+          }
           setClickAuthkey(true);
           showValidateInput();
           console.log(res);
         })
-        .catch((res) => alert(res.request.response));
+        .catch((res) => alert(JSON.parse(res.request.response).error));
     } else alert('이메일 형식을 확인해주세요!');
   };
 
@@ -85,7 +87,7 @@ const Register = () => {
             id="email"
             name="email"
             value={email}
-            onChange={(e) => handleEmail(e)}
+            onChange={(e) => onChangeEmail(e)}
             placeholder="이메일"
           />
           {
@@ -107,7 +109,7 @@ const Register = () => {
               id="authkey"
               name="authkey"
               value={authkey}
-              onChange={(e) => handleAuthkey(e)}
+              onChange={(e) => onChangeAuthkey(e)}
               placeholder="인증번호"
             />
             <button className="btn-validate" onClick={() => checkAuthkey()}>
@@ -122,7 +124,7 @@ const Register = () => {
               id="username"
               name="username"
               value={username}
-              onChange={(e) => handleUsername(e)}
+              onChange={(e) => onChangeUsername(e)}
               placeholder="사용자 이름"
             />
             <input
@@ -130,16 +132,21 @@ const Register = () => {
               id="password"
               name="password"
               value={password}
-              onChange={(e) => handlePassword(e)}
+              onChange={(e) => onChangePassword(e)}
               type="password"
               placeholder="비밀번호"
             />
+            {
+              !passwordRegex.test(password)
+                ? <p>숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요</p>
+                : <p>안전한 비밀번호입니다.</p>
+            }
             <input
               className="register-input"
               id="checkPassword"
               name="checkPassword"
               value={checkPassword}
-              onChange={(e) => handleCheckPassword(e)}
+              onChange={(e) => onChangeCheckPassword(e)}
               type="password"
               placeholder="비밀번호 확인"
             />

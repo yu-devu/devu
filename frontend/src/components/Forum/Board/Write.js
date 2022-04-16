@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ReactHtmlParser from "react-html-parser";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './write.css';
@@ -32,7 +33,9 @@ const Write = () => {
       username: username,
       title: postContent.title,
       content: postContent.content,
+      images: '',
     }
+    console.log(data)
     await axios
       .post(url + `/community/chat`, JSON.stringify(data), {
         headers: {
