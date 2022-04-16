@@ -20,11 +20,7 @@ function App() {
           <Route path="/board" exact element={<Board />}></Route>
           <Route path="/board/write" exact element={<Write />}></Route>
           <Route path="/postDetail/:no" exact element={<PostView />}></Route>
-          <Route
-            path="/postDetail/:no/modify"
-            exact
-            element={<Modify />}
-          ></Route>
+          <Route path="/postDetail/:no/modify" exact element={<Modify />}></Route>
         </Routes>
       </Router>
     </>

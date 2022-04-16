@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useLocation, Link } from 'react-router-dom';
-import './postView.css';
+import "./postView.css"
 
 const url = 'http://54.180.29.69:8080';
 
@@ -35,19 +35,24 @@ const PostView = () => {
     <div className="post-view">
       {postData ? (
         <div className="container-read">
-          <h2 className="chat-title">{postData.title}</h2>
-          <label className="user-info">작성자 : {postData.username}</label>
-          <div className="bo-line"></div>
-          <label className="chat-content">{postData.content}</label>
+          <h2 className="chat-detail-title">{postData.title}</h2>
+          <div className="chat-detail-head">
+            <label className="chat-post-owner">작성자 : {postData.username}</label>
+            <label className="chat-detail-hit">조회수 : {postData.hit}</label>
+          </div>
+          <label className="chat-detail-content">{postData.content}</label>
           <div class="read-btns">
             <Link to="modify">
-              <a className="btn-modify">수정하기</a>
+              <a className="btn-modify">
+                수정하기
+              </a>
             </Link>
-            <a className="btn-delete">삭제하기</a>
+            <a className="btn-delete">
+              삭제하기
+            </a>
           </div>
-        </div>
-      ) : (
-        '해당 게시글을 찾을 수 없습니다.'
+        </div>) : (
+        "해당 게시글을 찾을 수 없습니다."
       )}
     </div>
   );
