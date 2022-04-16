@@ -4,24 +4,19 @@ import './board.css';
 import { Link } from 'react-router-dom';
 import ReactHtmlParser from 'react-html-parser';
 import Posts from './Posts';
-import Pagination from './Pagination';
+import ReactPaginate from 'react-paginate'
+import './pagination.css'
 
 const url = 'http://54.180.29.69:8080';
 
 const Board = () => {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage] = useState(0);
   const [postsPerPage] = useState(10);
-  const [postData, setPostData] = useState([
-    {
-      id: '',
-      title: '',
-      content: '',
-      username: '',
-      hit: '',
-      like: '',
-    },
-  ]);
+  const [postData, setPostData] = useState([]);
   const [lastIdx, setLastIdx] = useState(0);
+
+  const [pageNumber, setPageNumber] = useState(0)
+  const pagesVisited = pageNumber * postsPerPage
 
   useEffect(() => {
     fetchData();
@@ -50,21 +45,29 @@ const Board = () => {
     setPostData(_postData);
   };
 
-  const indexOfLastPost = (currentPage + 1) * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = postData.slice(indexOfFirstPost, indexOfLastPost);
+  const pageCount = Math.ceil(postData.length / postsPerPage);
 
-  const paginate = pageNumber => {
-    setCurrentPage(pageNumber);
-  };
+  const changePage = ({ selected }) => {
+    setPageNumber(selected)
+  }
 
   return (
     <div>
       {/* 게시판 */}
       <div className="content">
         <div className="article-list">
-          <Posts postData={currentPosts} />
-          <Pagination postsPerPage={postsPerPage} totalPosts={postData.length} paginate={paginate} />
+          <Posts postData={postData} pagesVisited={pagesVisited} postsPerPage={postsPerPage} />
+          <ReactPaginate
+            previousLabel={"<"}
+            nextLabel={">"}
+            pageCount={pageCount}
+            onPageChange={changePage}
+            containerClassName={"btn-pagination"}
+            previousLinkClassName={"btn-pagination-previous"}
+            nextLinkClassName={"btn-pagination-next"}
+            disabledClassName={"btn-pagination-disabled"}
+            activeClassName={"btn-pagination-active"}
+          />
         </div>
         <Link to="write">
           <button className="btn-write">글 쓰기</button>
