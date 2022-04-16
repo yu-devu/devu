@@ -79,6 +79,7 @@ public class EmailService{
     * => 비밀번호 변경 진행
     * */
     private MimeMessage createPasswordChangeMail(String to)throws Exception{
+        String api = "http://localhost:8080/change_password/";
         log.info("Password Change Mail Send To = {}",to);
         MimeMessage message = emailSender.createMimeMessage();
 
@@ -87,9 +88,12 @@ public class EmailService{
 
         String msgg="";
         msgg+= "<div style='margin:100px;'>";
-        msgg+= "<h1> 비밀번호 변경 링크입니다.. </h1>";
+        msgg+= "<h1> 비밀번호 변경 링크입니다.</h1>";
+        msgg += "<div>";
+        msgg += api + to;
+        msgg += "/<div>";
+
         message.setText(msgg, "utf-8", "html");//내용
-        message.setText("http://localhost:8080/change_password/" + to);
         message.setFrom(new InternetAddress("ynudev@gmail.com","DevU"));//보내는 사람
 
         return message;
