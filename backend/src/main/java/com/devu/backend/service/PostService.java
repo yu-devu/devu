@@ -115,7 +115,7 @@ public class PostService {
     @PostConstruct
     public void init() throws IOException {
         User test = User.builder()
-                .email("test@ynu.ac.kr")
+                .email("hcs4125@gmail.com")
                 .username("test")
                 .emailAuthKey("test")
                 .build();
