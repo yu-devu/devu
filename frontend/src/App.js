@@ -7,6 +7,7 @@ import Register from './components/Register/Register';
 import Board from './components/Forum/Board/Board';
 import Write from './components/Forum/Board/Write';
 import PostView from './components/Forum/Board/PostView';
+import Modify from './components/Forum/Board/Modify';
 
 function App() {
   return (
@@ -19,6 +20,11 @@ function App() {
           <Route path="/board" exact element={<Board />}></Route>
           <Route path="/board/write" exact element={<Write />}></Route>
           <Route path="/postDetail/:no" exact element={<PostView />}></Route>
+          <Route
+            path="/postDetail/:no/modify"
+            exact
+            element={<Modify />}
+          ></Route>
         </Routes>
       </Router>
     </>

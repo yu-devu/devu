@@ -12,18 +12,25 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
+  const [passwordAvailability, setPasswordAvailability] = useState(false);
   const [showValidate, setShowValidate] = useState(false);
   const [showInformation, setShowInformation] = useState(false);
+
+  const [clickAuthkey, setClickAuthkey] = useState(false);
 
   const handleEmail = (e) => setEmail(e.target.value);
   const handleAuthkey = (e) => setAuthkey(e.target.value);
   const handleUsername = (e) => setUsername(e.target.value);
-  const handlePassword = (e) => setPassword(e.target.value);
+
+  const handlePassword = (e) => {
+    var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/;
+    setPassword(e.target.value);
+    setPasswordAvailability(regExp.test(e.target.value));
+  };
   const handleCheckPassword = (e) => setCheckPassword(e.target.value);
 
   const showValidateInput = () => setShowValidate(true);
   const showInformationInput = () => setShowInformation(true);
-
   const handleAuthorize = async () => {
     if (email.includes('@ynu.ac.kr') || email.includes('@yu.ac.kr')) {
       const formData = new FormData();
@@ -31,12 +38,14 @@ const Register = () => {
       await axios
         .post(url + `/email`, formData)
         .then((res) => {
-          alert(res.request.response);
+          if (res.data.error) {
+            alert(res.data.error);
+          }
           setClickAuthkey(true);
           showValidateInput();
           console.log(res);
         })
-        .catch((res) => alert(res.request.response));
+        .catch((res) => alert(JSON.parse(res.request.response).error));
     } else alert('이메일 형식을 확인해주세요!');
   };
 
@@ -54,20 +63,22 @@ const Register = () => {
 
   const handleSignUp = async () => {
     if (password === checkPassword) {
-      const data = {
-        email: email,
-        username: username,
-        password: password,
-      };
-      console.log(JSON.stringify(data));
-      await axios
-        .post(url + '/signup', data, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        .then(() => alert('회원가입에 성공했습니다!'))
-        .catch(() => console.log('회원가입 실패..'));
+      if (passwordAvailability == true) {
+        const data = {
+          email: email,
+          username: username,
+          password: password,
+        };
+        console.log(JSON.stringify(data));
+        await axios
+          .post(url + '/signup', data, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+          .then(() => alert('회원가입에 성공했습니다!'))
+          .catch(() => console.log('회원가입 실패..'));
+      } else alert('비밀번호를 양식에 맞게 입력해주세요');
     } else alert('비밀번호를 확인해주세요.');
   };
 
@@ -84,9 +95,15 @@ const Register = () => {
             onChange={(e) => handleEmail(e)}
             placeholder="이메일"
           />
-          <button className="btn-validate" onClick={() => handleAuthorize()}>
-            인증하기
-          </button>
+          {!clickAuthkey ? (
+            <button className="btn-validate" onClick={() => handleAuthorize()}>
+              인증하기
+            </button>
+          ) : (
+            <button className="btn-validate" onClick={() => handleAuthorize()}>
+              재전송
+            </button>
+          )}
         </div>
         {showValidate ? (
           <div className="register-email">
@@ -122,6 +139,9 @@ const Register = () => {
               type="password"
               placeholder="비밀번호"
             />
+            {password && !passwordAvailability ? (
+              <p>영문+숫자 조합으로 8~10자리로 생성하여야 합니다.</p>
+            ) : null}
             <input
               className="register-input"
               id="checkPassword"
@@ -131,7 +151,9 @@ const Register = () => {
               type="password"
               placeholder="비밀번호 확인"
             />
-
+            {checkPassword && password !== checkPassword ? (
+              <p>비밀번호가 일치하지 않습니다.</p>
+            ) : null}
             <button onClick={() => handleSignUp()} className="btn-register">
               회원가입
             </button>
