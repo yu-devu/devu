@@ -1,57 +1,60 @@
-import React from "react";
-import { useState } from "react/cjs/react.production.min";
-import { useEffect } from "react/cjs/react.production.min";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import ReactHtmlParser from "react-html-parser";
+import { useLocation, Link } from 'react-router-dom';
+import "./postView.css"
 
 const url = "http://54.180.29.69:8080";
 
-const PostView = ({ postData }) => {
-  //   const [postData, setPostData] = useState([]);
-  //   useEffect(() => {
-  //     fetchData();
-  //   }, []);
+const PostView = () => {
+  const location = useLocation();
+  const [postData, setPostData] = useState([]);
+  let pathname = location.pathname;
+  let [a, b, postId] = pathname.split('/');
 
-  //   const fetchData = async () => {
-  //     const res = await axios.get(url + `/community/chats`, { props });
+  useEffect(() => {
+    fetchData();
+    console.log(location);
+  }, [location]);
 
-  //     const _postData = await res.data.map((rowData) => ({
-  //       id: rowData.id,
-  //       title: rowData.title,
-  //       content: ReactHtmlParser(rowData.content),
-  //       hit: rowData.hit,
-  //       like: rowData.like,
-  //       username: rowData.username,
-  //     }));
-  //     setPostData(_postData);
-
-  //     console.log(postData);
-  //   };
+  const fetchData = async () => {
+    const res = await axios.get(url + `/community/chats/${postId}`);
+    console.log(res.data);
+    const _postData = {
+      id: res.data.id,
+      title: res.data.title,
+      content: res.data.content,
+      hit: res.data.hit,
+      like: res.data.like,
+      username: res.data.username,
+    };
+    setPostData(_postData);
+    console.log(postData);
+  };
 
   return (
-    <>
-      <h2>게시글 상세 정보</h2>
-      <div className="post-view">
-        {postData ? (
-          <>
-            <div>
-              <label>제목</label>
-              <label>{postData.title}</label>
-            </div>
-            <div>
-              <label>작성자</label>
-              <label>{postData.username}</label>
-            </div>
-            <div>
-              <label>내용</label>
-              <label>{postData.content}</label>
-            </div>
-          </>
-        ) : (
-          "해당 게시글을 찾을 수 없습니다."
-        )}
-      </div>
-    </>
+    <div className="post-view">
+      {postData ? (
+        <div className="container-read">
+          <h2 className="chat-detail-title">{postData.title}</h2>
+          <div className="chat-detail-head">
+            <label className="chat-post-owner">작성자 : {postData.username}</label>
+            <label className="chat-detail-hit">조회수 : {postData.hit}</label>
+          </div>
+          <label className="chat-detail-content">{postData.content}</label>
+          <div class="read-btns">
+            <Link to="modify">
+              <a className="btn-modify">
+                수정하기
+              </a>
+            </Link>
+            <a className="btn-delete">
+              삭제하기
+            </a>
+          </div>
+        </div>) : (
+        "해당 게시글을 찾을 수 없습니다."
+      )}
+    </div>
   );
 };
 
