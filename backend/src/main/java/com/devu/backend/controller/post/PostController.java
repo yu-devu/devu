@@ -2,6 +2,7 @@ package com.devu.backend.controller.post;
 
 import com.devu.backend.common.exception.PostNotFoundException;
 import com.devu.backend.controller.ResponseErrorDto;
+import com.devu.backend.entity.Image;
 import com.devu.backend.entity.post.*;
 import com.devu.backend.repository.PostRepository;
 import com.devu.backend.service.PostService;
@@ -12,6 +13,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -73,15 +75,64 @@ public class PostController {
         }
     }
 
+    //자유 게시판 게시글 조회 By Post ID
+    @GetMapping("/chats/{id}")
+    public ResponseEntity<?> getChatById(@PathVariable("id") Long id) {
+        try {
+            ResponsePostDto chat = postService.findChatById(id);
+            return ResponseEntity.ok().body(chat);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    //스터디 게시판 게시글 조회 By Post ID
+    @GetMapping("/studies/{id}")
+    public ResponseEntity<?> getStudyById(@PathVariable("id") Long id) {
+        try {
+            ResponsePostDto chat = postService.findStudyById(id);
+            return ResponseEntity.ok().body(chat);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    //질문 게시판 게시글 조회 By Post ID
+    @GetMapping("/questions/{id}")
+    public ResponseEntity<?> getQuestionById(@PathVariable("id") Long id) {
+        try {
+            ResponsePostDto chat = postService.findQuestionById(id);
+            return ResponseEntity.ok().body(chat);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    /*
+    * Controller에서 객체 생성 하지 않는 방향
+    * */
     //자유 게시판 글 작성
     @PostMapping("/chat")
-    public ResponseEntity<?> createChat(@RequestBody RequestPostCreateDto requestPostDto) {
+    public ResponseEntity<?> createChat(RequestPostCreateDto requestPostDto) {
         try {
             Chat chat = postService.createChat(requestPostDto);
             log.info("{}님이 chat 게시글 생성",chat.getUser().getUsername());
             ResponsePostDto postDto = ResponsePostDto.builder()
                     .title(chat.getTitle())
                     .username(chat.getUser().getUsername())
+                    .url(getImageUrl(chat))
                     .build();
             return ResponseEntity.ok(postDto);
         } catch (Exception e) {
@@ -93,15 +144,25 @@ public class PostController {
         }
     }
 
+    private List<String> getImageUrl(Post post) {
+        List<String> images = new ArrayList<>();
+        for (Image image : post.getImages()) {
+            images.add(image.getPath());
+        }
+        return images;
+    }
+
     //스터디 게시판 글 작성
     @PostMapping("/study")
-    public ResponseEntity<?> createStudy(@RequestBody RequestPostCreateDto requestPostDto) {
+    public ResponseEntity<?> createStudy(RequestPostCreateDto requestPostDto) {
         try {
             Study study = postService.createStudy(requestPostDto);
             log.info("{}님이 Study 게시글 생성",study.getUser().getUsername());
+
             ResponsePostDto postDto = ResponsePostDto.builder()
                     .title(study.getTitle())
                     .username(study.getUser().getUsername())
+                    .url(getImageUrl(study))
                     .build();
             return ResponseEntity.ok(postDto);
         } catch (Exception e) {
@@ -115,13 +176,14 @@ public class PostController {
 
     //질문 게시판 글 작성
     @PostMapping("/question")
-    public ResponseEntity<?> createQuestion(@RequestBody RequestPostCreateDto requestPostDto) {
+    public ResponseEntity<?> createQuestion(RequestPostCreateDto requestPostDto) {
         try {
             Question question = postService.createQuestion(requestPostDto);
             log.info("{}님이 Question 게시글 생성",question.getUser().getUsername());
             ResponsePostDto postDto = ResponsePostDto.builder()
                     .title(question.getTitle())
                     .username(question.getUser().getUsername())
+                    .url(getImageUrl(question))
                     .build();
             return ResponseEntity.ok(postDto);
         } catch (Exception e) {
@@ -135,7 +197,7 @@ public class PostController {
 
     //chat update
     @PatchMapping("/chat/{id}")
-    public ResponseEntity<?> updateChat(@PathVariable("id") Long id, @RequestBody RequestPostUpdateDto updateDto) {
+    public ResponseEntity<?> updateChat(@PathVariable("id") Long id, RequestPostUpdateDto updateDto) {
         try {
             Chat chat = (Chat) postRepository.findById(id).orElseThrow(PostNotFoundException::new);
             postService.updateChat(chat, updateDto);
@@ -151,7 +213,7 @@ public class PostController {
 
     //study update
     @PatchMapping("/study/{id}")
-    public ResponseEntity<?> updateStudy(@PathVariable("id") Long id, @RequestBody RequestPostUpdateDto updateDto) {
+    public ResponseEntity<?> updateStudy(@PathVariable("id") Long id, RequestPostUpdateDto updateDto) {
         try {
             Study study = (Study) postRepository.findById(id).orElseThrow(PostNotFoundException::new);
             postService.updateStudy(study, updateDto);
@@ -167,7 +229,7 @@ public class PostController {
 
     //qna update
     @PatchMapping("/question/{id}")
-    public ResponseEntity<?> updateQuestion(@PathVariable("id") Long id, @RequestBody RequestPostUpdateDto updateDto) {
+    public ResponseEntity<?> updateQuestion(@PathVariable("id") Long id, RequestPostUpdateDto updateDto) {
         try {
             Question question = (Question) postRepository.findById(id).orElseThrow(PostNotFoundException::new);
             postService.updateQuestion(question, updateDto);

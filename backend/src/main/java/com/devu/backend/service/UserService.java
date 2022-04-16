@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -39,10 +40,14 @@ public class UserService {
 
     public User getByEmail(final String email) {
         User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
-        if (user == null) {
+        if (!user.isEmailConfirm()) {
             log.warn("이메일 인증이 완료되지 않은 이메일입니다.");
         }
         return user;
+    }
+
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 
     @Transactional
@@ -126,5 +131,13 @@ public class UserService {
             log.error("이미 존재하는 username = {}",username);
             throw new IllegalStateException("이미 존재하는 username입니다.");
         }
+    }
+
+    @Transactional
+    public void changePassword(String email,String password) {
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        log.info("User {} 's before password was {}",user.getUsername(),user.getPassword());
+        user.changePassword(passwordEncoder.encode(password));
+        log.info("User {} 's password was changed to {}",user.getUsername(),user.getPassword());
     }
 }

@@ -1,6 +1,7 @@
 package com.devu.backend.entity.post;
 
 import com.devu.backend.entity.Image;
+import com.devu.backend.entity.Like;
 import com.devu.backend.entity.User;
 import lombok.*;
 
@@ -9,7 +10,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,8 +21,8 @@ public class Study extends Post{
     private StudyStatus studyStatus;
 
     @Builder
-    public Study(Long id, User user, String title, String content, Long hit, Long like, Set<Image> images, StudyStatus studyStatus) {
-        super(id, user, title, content, hit, like, images);
+    public Study(Long id, User user, String title, String content, Long hit, List<Like> likes, List<Image> images, StudyStatus studyStatus) {
+        super(id, user, title, content, hit, likes, images);
         this.studyStatus = studyStatus;
     }
 

@@ -49,7 +49,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.html",
                         "/**/*.css",
                         "/**/*.js").permitAll()
-                    .antMatchers("/", "/key", "/email", "/signup", "/signin","/community/**").permitAll()
+                    .antMatchers(
+                            "/", "/key",
+                            "/email", "/signup", "/signin",
+                            "/community/**","/users","/like",
+                            "/password_url_email","/change_password/**"
+                    )
+                    .permitAll()
                     .anyRequest().authenticated()
                         .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

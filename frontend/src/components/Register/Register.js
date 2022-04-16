@@ -25,17 +25,19 @@ const Register = () => {
   const showInformationInput = () => setShowInformation(true);
 
   const handleAuthorize = async () => {
-    // if (email.includes('@ynu.ac.kr') || email.includes('@yu.ac.kr')) {
-    const formData = new FormData();
-    formData.append('email', email);
-    await axios
-      .post(url + `/email`, formData)
-      .then(() => {
-        alert('authkey 전송 완료!');
-        showValidateInput();
-      })
-      .catch(() => alert('authkey 전송 실패..'));
-    // } else alert('이메일 형식을 확인해주세요!');
+    if (email.includes('@ynu.ac.kr') || email.includes('@yu.ac.kr')) {
+      const formData = new FormData();
+      formData.append('email', email);
+      await axios
+        .post(url + `/email`, formData)
+        .then((res) => {
+          alert(res.request.response);
+          setClickAuthkey(true);
+          showValidateInput();
+          console.log(res);
+        })
+        .catch((res) => alert(res.request.response));
+    } else alert('이메일 형식을 확인해주세요!');
   };
 
   const checkAuthkey = async () => {

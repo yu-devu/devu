@@ -1,21 +1,22 @@
 package com.devu.backend.entity.post;
 
-import com.devu.backend.common.exception.LikeZeroException;
 import com.devu.backend.controller.post.RequestPostUpdateDto;
 import com.devu.backend.entity.BaseTime;
 import com.devu.backend.entity.Image;
+import com.devu.backend.entity.Like;
 import com.devu.backend.entity.User;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
-@DiscriminatorColumn(name = "dtype")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DiscriminatorColumn(name = "dtype")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Post extends BaseTime{
 
@@ -23,6 +24,7 @@ public class Post extends BaseTime{
     @Column(name = "post_id")
     private Long id;
 
+    @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -34,33 +36,34 @@ public class Post extends BaseTime{
     @Column(name = "hit_count")
     private Long hit;
 
-    /*
-    * like column 그대로 쓰면 오류 발생 => like_count로 변경
-    * */
-    @Column(name = "like_count")
-    private Long like;
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
+    private List<Like> likes = new ArrayList<>();
 
+    //cascadeType.ALL 설정해보기
     @OneToMany(mappedBy = "post")
-    private Set<Image> images = new HashSet<>();
+    private List<Image> images = new ArrayList<>();
 
     //==비지니스 로직==//
     public void plusHit() {
         this.hit++;
     }
 
-    public void plusRecommendation() {
-        this.like++;
-    }
-
-    public void minusRecommendation() {
-        if (this.like == 0) {
-            throw new LikeZeroException();
-        }
-        this.like++;
-    }
-
     public void updatePost(RequestPostUpdateDto updateDto) {
         this.title = updateDto.getTitle();
         this.content = updateDto.getContent();
+    }
+
+    public void addImage(Image image) {
+        this.images.add(image);
+        image.setPost(this);
+    }
+
+    //<--연관관계 편의 메서드-->//
+    public void setUser(User user) {
+        if (this.user != null) {
+            this.user.getPosts().remove(this);
+        }
+        this.user = user;
+        user.getPosts().add(this);
     }
 }

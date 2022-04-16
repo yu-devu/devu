@@ -7,16 +7,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponsePostDto {
+    private Long id;
     private String username;
     private String title;
     private String content;
+    private List<String> url;
     private Long hit;
-    private Long like;
+    private Integer like;
     private StudyStatus studyStatus;
     private QuestionStatus questionStatus;
 }

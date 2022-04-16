@@ -73,12 +73,50 @@ public class EmailService{
         return message;
     }
 
+    /*
+    * modal로 비밀번호 변경용 이메일 창 띄우기 => 이메일 입력 => /password_url_email POST
+    * => 해당 메일 전송 => 메일 링크 접속 => /change_password GET & PathVariable로 userEmail 전송
+    * => 비밀번호 변경 진행
+    * */
+    private MimeMessage createPasswordChangeMail(String to)throws Exception{
+        String api = "http://localhost:8080/change_password/";
+        log.info("Password Change Mail Send To = {}",to);
+        MimeMessage message = emailSender.createMimeMessage();
+
+        message.addRecipients(Message.RecipientType.TO, to);//보내는 대상
+        message.setSubject("[DevU] 비밀번호 변경 링크입니다.");//제목
+
+        String msgg="";
+        msgg+= "<div style='margin:100px;'>";
+        msgg+= "<h1> 비밀번호 변경 링크입니다.</h1>";
+        msgg += "<div>";
+        msgg += api + to;
+        msgg += "/<div>";
+
+        message.setText(msgg, "utf-8", "html");//내용
+        message.setFrom(new InternetAddress("ynudev@gmail.com","DevU"));//보내는 사람
+
+        return message;
+    }
+
     @Async("mailExecutor")
     public void sendValidationMail(String to,String authKey) throws Exception {
         MimeMessage message = createMessage(to,authKey);
         try {
             emailSender.send(message);
         } catch (MailException e) {
+            e.printStackTrace();
+            log.error("Mail error :  ",e);
+            throw new IllegalArgumentException();
+        }
+    }
+
+    @Async("mailExecutor")
+    public void sendPasswordChangeMail(String to) throws Exception {
+        MimeMessage message = createPasswordChangeMail(to);
+        try {
+            emailSender.send(message);
+        }catch (MailException e) {
             e.printStackTrace();
             log.error("Mail error :  ",e);
             throw new IllegalArgumentException();
