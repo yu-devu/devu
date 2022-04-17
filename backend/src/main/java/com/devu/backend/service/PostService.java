@@ -108,29 +108,6 @@ public class PostService {
         }
     }
 
-    /*
-     * Test Data
-     * */
-    @Transactional
-    @PostConstruct
-    public void init() throws IOException {
-        User test = User.builder()
-                .email("hcs4125@gmail.com")
-                .username("test")
-                .emailAuthKey("test")
-                .build();
-        userService.createUser(test.getEmail(), test.getEmailAuthKey(), test.getUsername());
-        for (int i = 1; i <= 25; i++) {
-            RequestPostCreateDto dto = RequestPostCreateDto.builder()
-                    .title("test" + i)
-                    .username(test.getUsername())
-                    .content("test-content" + i)
-                    .build();
-            createQuestion(dto);
-            createChat(dto);
-            createStudy(dto);
-        }
-    }
 
     public Page<ResponsePostDto> findAllChats(Pageable pageable) {
         return postRepository.findAllChats(pageable).map(
