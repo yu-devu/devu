@@ -1,6 +1,5 @@
 package com.devu.backend.controller.user;
 
-import com.devu.backend.common.exception.EmailConfirmNotCompleteException;
 import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.entity.User;
 import com.devu.backend.service.UserService;
@@ -9,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +19,6 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final EmailService emailService;
-    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/")
     private ResponseEntity home() {
