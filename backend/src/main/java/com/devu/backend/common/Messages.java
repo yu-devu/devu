@@ -13,5 +13,6 @@ public class Messages {
     public static final String NO_POST = "존재하지 않는 게시글입니다.";
     public static final String NO_LIKE = "존재하지 않는 좋아요 엔티티입니다.";
     public static final String UNLIKE = "좋아요를 삭제합니다.";
+    public static final String DUP_PASSWORD = "이전 비밀번호와 동일합니다.";
 }
 

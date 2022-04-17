@@ -14,6 +14,7 @@ import com.devu.backend.entity.User;
 import com.devu.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -117,12 +118,11 @@ public class UserService {
         refreshTokenRepository.save(token);
         Cookie cookie = cookieService.createCookie("X-AUTH-REFRESH-TOKEN", refreshToken);
         response.addCookie(cookie);
-        UserDTO responseUserDTO = UserDTO.builder()
+        return UserDTO.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .accessToken(accessToken)
                 .build();
-        return responseUserDTO;
     }
 
     /*
@@ -132,6 +132,9 @@ public class UserService {
     public void changePassword(String email,String password) {
         User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         log.info("User {} 's before password was {}",user.getUsername(),user.getPassword());
+        if (passwordEncoder.matches(password, user.getPassword())) {
+            throw new PasswordDupException();
+        }
         user.changePassword(passwordEncoder.encode(password));
         log.info("User {} 's password was changed to {}",user.getUsername(),user.getPassword());
     }
