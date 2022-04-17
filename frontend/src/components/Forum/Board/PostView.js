@@ -3,7 +3,7 @@ import axios from "axios";
 import { useLocation, Link } from 'react-router-dom';
 import "./postView.css"
 
-const url = "http://54.180.29.69:8080";
+const url = 'http://54.180.29.69:8080';
 
 const PostView = () => {
   const location = useLocation();

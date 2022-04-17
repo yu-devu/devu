@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './write.css';
+import ReactHtmlParser from 'react-html-parser';
 
 const url = 'http://54.180.29.69:8080';
 
@@ -11,41 +12,43 @@ const Write = () => {
   const navigate = useNavigate();
   const [postContent, setPostContent] = useState({
     title: '',
-    content: ''
-  })
+    content: '',
+  });
 
   const username = localStorage.getItem('username');
 
-  const handleTitle = e => {
+  const handleTitle = (e) => {
     const { name, value } = e.target;
     setPostContent({
       ...postContent,
-      [name]: value
-    })
-  }
+      [name]: value,
+    });
+  };
   const handleWrite = async () => {
     if (postContent === '') {
       alert('글을 작성해주세요!');
-      return
+      return;
     }
     const data = {
       username: username,
       title: postContent.title,
       content: postContent.content,
-    }
+      // content: ReactHtmlParser(postContent.content),
+    };
+    console.log(data);
     await axios
       .post(url + `/community/chat`, JSON.stringify(data), {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `${localStorage.getItem("accessToken")}`,
-        }
+          Authorization: `${localStorage.getItem('accessToken')}`,
+        },
       })
       .then(() => {
         alert('글이 성공적으로 등록되었습니다!');
         navigate(-1);
       })
       .catch(() => {
-        alert("글 등록 실패..");
+        alert('글 등록 실패..');
       });
   };
 
@@ -72,13 +75,11 @@ const Write = () => {
             const data = editor.getData();
             setPostContent({
               ...postContent,
-              content: data
-            })
+              content: data,
+            });
           }}
-          onBlur={(event, editor) => {
-          }}
-          onFocus={(event, editor) => {
-          }}
+          onBlur={(event, editor) => {}}
+          onFocus={(event, editor) => {}}
         />
         <div className="bt_se">
           <button className="btn-post" onClick={() => handleWrite()}>
@@ -86,7 +87,7 @@ const Write = () => {
           </button>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 
