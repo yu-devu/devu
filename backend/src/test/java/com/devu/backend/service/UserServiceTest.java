@@ -1,11 +1,14 @@
 package com.devu.backend.service;
 
+import com.devu.backend.common.exception.UserNotFoundException;
 import com.devu.backend.config.auth.token.RefreshTokenRepository;
 import com.devu.backend.config.auth.token.TokenService;
+import com.devu.backend.controller.user.UserDTO;
 import com.devu.backend.entity.User;
 import com.devu.backend.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
@@ -16,15 +19,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
     @InjectMocks
     private UserService userService;
+
+    @Mock
+    private EmailService emailService;
 
     @Mock
     private UserRepository userRepository;
@@ -42,30 +52,74 @@ class UserServiceTest {
     private BCryptPasswordEncoder passwordEncoder;
 
 
-    @Test
-    void createUser() throws Exception {
+    private User createUser() {
         String email = "test@test.com";
-        String authKey = "test";
-
-        //given
         User user = User.builder()
                 .email(email)
-                .emailAuthKey(authKey)
+                .username("test")
+                .emailConfirm(false)
                 .build();
-
         Long fakeUserId = 1L;
-        ReflectionTestUtils.setField(user,"id",fakeUserId);
-
-        //Mocking
-        Mockito.when(userRepository.save(any(User.class))).thenReturn(user);
-
-        //when
-        User save = userService.createUser(email);
-
-
-        //then
-        Assertions.assertThat(save.getId()).isEqualTo(1L);
-        //assertEquals(user.getUsername(), save.getUsername());
+        ReflectionTestUtils.setField(user, "id", fakeUserId);
+        return user;
     }
 
+    @Test
+    @DisplayName("Create User - Success")
+    void saveUser() throws Exception {
+        //given
+        User user = createUser();
+
+        //Mocking
+        given(userRepository.save(any(User.class))).willReturn(user);
+        given(userRepository.findById(user.getId())).willReturn(Optional.of(user));
+
+        //when
+        User save = userService.createUser(user.getEmail());
+
+        //then
+        User findUser = userRepository.findById(user.getId()).get();
+        assertEquals(user.getEmail(), findUser.getEmail());
+        assertEquals(user.getId(), findUser.getId());
+        assertEquals(user.getUsername(), findUser.getUsername());
+    }
+
+    @Test
+    @DisplayName("update Email Confirm")
+    void updateUserConfirm() {
+        //given
+        User user = createUser();
+        ReflectionTestUtils.setField(user, "emailAuthKey", "test");
+        userRepository.save(user);
+
+        given(userRepository.findByEmailAuthKey("test")).willReturn(Optional.of(user));
+        //when
+        userService.updateUserConfirm("test");
+        //then
+        User findUser = userRepository.findByEmailAuthKey("test").get();
+        assertTrue(findUser.isEmailConfirm());
+        assertEquals(user.getEmail(), findUser.getEmail());
+    }
+
+    @Test
+    @DisplayName("Update User")
+    void updateUser() throws Exception {
+        //given
+        User user = createUser();
+        ReflectionTestUtils.setField(user, "emailConfirm", true);
+        userRepository.save(user);
+        UserDTO updateDto = UserDTO.builder()
+                .email(user.getEmail())
+                .password("hcshcs")
+                .username("test")
+                .build();
+        //Mocking
+        given(userRepository.findByEmail(user.getEmail())).willReturn(Optional.of(user));
+        //when
+        userService.updateUser(updateDto);
+        //then
+        User findUser = userRepository.findByEmail(user.getEmail()).get();
+        assertEquals(updateDto.getUsername(), findUser.getUsername());
+        assertNotEquals(updateDto.getUsername(),findUser.getPassword());
+    }
 }

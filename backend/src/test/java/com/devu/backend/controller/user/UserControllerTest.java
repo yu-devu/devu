@@ -68,7 +68,7 @@ class UserControllerTest {
         String url = "/email";
         String email = "test@yu.ac.kr";
 
-        User user = userService.createUser(email, "test-key");
+        User user = userService.createUser(email);
         user.updateEmailConfirm(true);
         ResultActions actions = mockMvc.perform(post(url)
                 .param("email", email));
@@ -87,7 +87,7 @@ class UserControllerTest {
         String url = "/email";
         String email = "test@yu.ac.kr";
 
-        userService.createUser(email, "test-key");
+        userService.createUser(email);
         ResultActions actions = mockMvc.perform(post(url)
                 .param("email", email));
 
@@ -136,14 +136,12 @@ class UserControllerTest {
         assertFalse(savedUser.isEmailConfirm());
     }
 
-    private User createUser(String email) {
-        String authKey = emailService.createKey();
+    private User createUser(String email) throws Exception {
         User user = User.builder()
                 .email(email)
-                .emailAuthKey(authKey)
                 .emailConfirm(false)
                 .build();
-        User savedUser = userService.createUser(user.getEmail(), user.getEmailAuthKey());
+        User savedUser = userService.createUser(user.getEmail());
         return savedUser;
     }
 
@@ -223,7 +221,7 @@ class UserControllerTest {
                 });
     }
 
-    private void register(String email, String username, String password) {
+    private void register(String email, String username, String password) throws Exception {
         User user = createUser(email);
         user.updateUserInfo(username, passwordEncoder.encode(password));
         user.updateEmailConfirm(true);
