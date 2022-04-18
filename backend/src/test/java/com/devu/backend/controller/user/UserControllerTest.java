@@ -40,7 +40,7 @@ class UserControllerTest {
     @Autowired WebApplicationContext context;
 
     @BeforeEach public void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(new UserController(userService, emailService, passwordEncoder))
+        mockMvc = MockMvcBuilders.standaloneSetup(new UserController(userService, emailService))
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))
                 .build();
     }
@@ -197,8 +197,8 @@ class UserControllerTest {
                     assertTrue(response.getContentAsString().equals("{\"error\":\"이메일 인증이 완료되지 않은 사용자입니다.\"}"));
                 });
         User user = userRepository.findByEmail(email).orElseThrow();
-        assertFalse(user.getUsername().equals("testUser"));
-        assertFalse(passwordEncoder.matches("1234", user.getPassword()));
+        assertNull(user.getUsername());
+        assertNull(user.getPassword());
     }
 
     @Test
