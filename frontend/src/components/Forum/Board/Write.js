@@ -29,15 +29,13 @@ const Write = () => {
       alert('글을 작성해주세요!');
       return;
     }
-    const data = {
-      username: username,
-      title: postContent.title,
-      content: postContent.content,
-      // content: ReactHtmlParser(postContent.content),
-    };
-    console.log(data);
+    const formData = new FormData();
+    formData.append('title', postContent.title);
+    formData.append('username', username);
+    formData.append('content', postContent.content);
+    // formData.append('content', ReactHtmlParser(postContent.content));
     await axios
-      .post(url + `/community/chat`, JSON.stringify(data), {
+      .post(url + `/community/chat`, formData, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `${localStorage.getItem('accessToken')}`,
