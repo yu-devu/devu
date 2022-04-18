@@ -4,84 +4,68 @@ import com.devu.backend.config.auth.token.RefreshTokenRepository;
 import com.devu.backend.config.auth.token.TokenService;
 import com.devu.backend.entity.User;
 import com.devu.backend.repository.UserRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.nullable;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-    @Mock private UserRepository userRepository;
-    @Mock private TokenService tokenService;
-    @Mock private RefreshTokenRepository refreshTokenRepository;
-    @Mock private CookieService cookieService;
-
+    @InjectMocks
     private UserService userService;
-    private PasswordEncoder passwordEncoder;
 
-    @BeforeEach
-    void setUp() {
-        this.userService = new UserService(userRepository,passwordEncoder,tokenService,refreshTokenRepository,cookieService);
-        this.passwordEncoder = new BCryptPasswordEncoder();
-    }
+    @Mock
+    private UserRepository userRepository;
+
+    @Mock
+    private TokenService tokenService;
+
+    @Mock
+    private CookieService cookieService;
+
+    @Mock
+    private RefreshTokenRepository tokenRepository;
+
+    @Spy
+    private BCryptPasswordEncoder passwordEncoder;
+
 
     @Test
-    void createUser() {
-        //given
+    void createUser() throws Exception {
         String email = "test@test.com";
         String authKey = "test";
+
+        //given
+        User user = User.builder()
+                .email(email)
+                .emailAuthKey(authKey)
+                .build();
+
+        Long fakeUserId = 1L;
+        ReflectionTestUtils.setField(user,"id",fakeUserId);
+
+        //Mocking
+        Mockito.when(userRepository.save(any(User.class))).thenReturn(user);
+
         //when
-        User user = userService.createUser(email, authKey);
-        ReflectionTestUtils.setField(user,"id",1L);
+        User save = userService.createUser(email);
+
+
         //then
-        assertEquals(email, user.getEmail());
+        Assertions.assertThat(save.getId()).isEqualTo(1L);
+        //assertEquals(user.getUsername(), save.getUsername());
     }
 
-    @Test
-    void isEmailExists() {
-    }
-
-    @Test
-    void getByEmail() {
-    }
-
-    @Test
-    void updateUserAuthKey() {
-    }
-
-    @Test
-    void getByAuthKey() {
-    }
-
-    @Test
-    void updateUserConfirm() {
-    }
-
-    @Test
-    void updateUser() {
-    }
-
-    @Test
-    void getByCredentials() {
-    }
-
-    @Test
-    void loginProcess() {
-    }
-
-    @Test
-    void changePassword() {
-    }
-
-    @Test
-    void getUsers() {
-    }
 }
