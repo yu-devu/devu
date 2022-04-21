@@ -14,5 +14,7 @@ public class Messages {
     public static final String NO_LIKE = "존재하지 않는 좋아요 엔티티입니다.";
     public static final String UNLIKE = "좋아요를 삭제합니다.";
     public static final String DUP_PASSWORD = "이전 비밀번호와 동일합니다.";
+    public static final String COMMENT_CONTENT_EMPTY = "댓글의 내용이 없습니다.";
+    public static final String COMMENT_NOT_FOUND = "해당 댓글은 존재하지 않습니다.";
 }
 

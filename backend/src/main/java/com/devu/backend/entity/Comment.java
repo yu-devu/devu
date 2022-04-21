@@ -18,12 +18,16 @@ public class Comment extends BaseTime{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String contents;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    /*
+    * comment 작성 할때만, User and Post 영속성 전이를 통해 Persist
+    * */
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
     private Post post;
 
     public void updateContent(String contents) {
