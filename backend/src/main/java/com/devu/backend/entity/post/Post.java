@@ -1,10 +1,7 @@
 package com.devu.backend.entity.post;
 
 import com.devu.backend.controller.post.RequestPostUpdateDto;
-import com.devu.backend.entity.BaseTime;
-import com.devu.backend.entity.Image;
-import com.devu.backend.entity.Like;
-import com.devu.backend.entity.User;
+import com.devu.backend.entity.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -38,6 +35,9 @@ public class Post extends BaseTime{
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private List<Like> likes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
     //cascadeType.ALL 설정해보기
     @OneToMany(mappedBy = "post")

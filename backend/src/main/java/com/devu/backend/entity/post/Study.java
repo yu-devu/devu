@@ -1,5 +1,6 @@
 package com.devu.backend.entity.post;
 
+import com.devu.backend.entity.Comment;
 import com.devu.backend.entity.Image;
 import com.devu.backend.entity.Like;
 import com.devu.backend.entity.User;
@@ -21,8 +22,8 @@ public class Study extends Post{
     private StudyStatus studyStatus;
 
     @Builder
-    public Study(Long id, User user, String title, String content, Long hit, List<Like> likes, List<Image> images, StudyStatus studyStatus) {
-        super(id, user, title, content, hit, likes, images);
+    public Study(Long id, User user, String title, String content, Long hit, List<Like> likes, List<Image> images, List<Comment> comments, StudyStatus studyStatus) {
+        super(id, user, title, content, hit, likes, comments,images);
         this.studyStatus = studyStatus;
     }
 
