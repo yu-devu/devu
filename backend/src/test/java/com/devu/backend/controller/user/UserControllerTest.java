@@ -40,7 +40,7 @@ class UserControllerTest {
     @Autowired WebApplicationContext context;
 
     @BeforeEach public void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(new UserController(userService, emailService, passwordEncoder))
+        mockMvc = MockMvcBuilders.standaloneSetup(new UserController(userService, emailService))
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))
                 .build();
     }
@@ -68,7 +68,7 @@ class UserControllerTest {
         String url = "/email";
         String email = "test@yu.ac.kr";
 
-        User user = userService.createUser(email, "test-key", "test");
+        User user = userService.createUser(email, "test-key");
         user.updateEmailConfirm(true);
         ResultActions actions = mockMvc.perform(post(url)
                 .param("email", email));
@@ -87,7 +87,7 @@ class UserControllerTest {
         String url = "/email";
         String email = "test@yu.ac.kr";
 
-        userService.createUser(email, "test-key", "test");
+        userService.createUser(email, "test-key");
         ResultActions actions = mockMvc.perform(post(url)
                 .param("email", email));
 
@@ -143,7 +143,7 @@ class UserControllerTest {
                 .emailAuthKey(authKey)
                 .emailConfirm(false)
                 .build();
-        User savedUser = userService.createUser(user.getEmail(), user.getEmailAuthKey(), "");
+        User savedUser = userService.createUser(user.getEmail(), user.getEmailAuthKey());
         return savedUser;
     }
 
@@ -197,8 +197,8 @@ class UserControllerTest {
                     assertTrue(response.getContentAsString().equals("{\"error\":\"이메일 인증이 완료되지 않은 사용자입니다.\"}"));
                 });
         User user = userRepository.findByEmail(email).orElseThrow();
-        assertFalse(user.getUsername().equals("testUser"));
-        assertFalse(passwordEncoder.matches("1234", user.getPassword()));
+        assertNull(user.getUsername());
+        assertNull(user.getPassword());
     }
 
     @Test
