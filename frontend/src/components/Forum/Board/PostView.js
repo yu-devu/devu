@@ -4,13 +4,14 @@ import { useLocation, Link } from 'react-router-dom';
 import ReactHtmlParser from "react-html-parser";
 import "./postView.css"
 
-const url = "http://54.180.29.69:8080";
+const url = 'http://54.180.29.69:8080';
 
 const PostView = () => {
   const location = useLocation();
   const [postData, setPostData] = useState([]);
   let pathname = location.pathname;
   let [a, b, postId] = pathname.split('/');
+  // useLocation으로 pathname을 추출한 후, '/'를 기준으로 parameter를 분리함
 
   useEffect(() => {
     fetchData();

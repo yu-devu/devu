@@ -1,19 +1,20 @@
-import axios from "axios";
-import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import ReactHtmlParser from "react-html-parser";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import "./modify.css";
 
-const url = "http://54.180.29.69:8080";
+import axios from 'axios';
+import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter';
+import './modify.css';
+
+const url = 'http://54.180.29.69:8080';
 
 const Modify = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [postContent, setPostContent] = useState({
-        title: "",
-        content: "",
+        title: '',
+        content: '',
     });
     let pathname = location.pathname;
     let [a, b, postId, c] = pathname.split('/');
@@ -26,29 +27,32 @@ const Modify = () => {
         });
     };
     const handleModify = async () => {
-        if (postContent === "") {
-            alert("글을 작성해주세요!");
+
+        if (postContent === '') {
+            alert('글을 작성해주세요!');
             return;
         }
-        const data = {
-            title: postContent.title,
-            content: postContent.content,
-        };
-        console.log(data);
+        // const data = {
+        //     title: postContent.title,
+        //     //   content: postContent.content,
+        // };
+        const formData = new FormData();
+        formData.append('title', postContent.title);
+        formData.append('content', postContent.content);
 
         await axios
-            .patch(url + `/community/chat/${postId}`, JSON.stringify(data), {
+            .patch(url + `/community/chat/${postId}`, formData, {
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `${localStorage.getItem("accessToken")}`,
+                    'Content-Type': 'application/json',
+                    Authorization: `${localStorage.getItem('accessToken')}`,
                 },
             })
             .then(() => {
-                alert("글이 성공적으로 수정되었습니다!");
+                alert('글이 성공적으로 수정되었습니다!');
                 navigate(-1);
             })
             .catch(() => {
-                alert("글 수정 실패..");
+                alert('글 수정 실패..');
             });
     };
 
