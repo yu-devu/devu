@@ -32,9 +32,13 @@ public class UserService {
     private final TokenService tokenService;
     private final RefreshTokenRepository refreshTokenRepository;
     private final CookieService cookieService;
+    private final EmailService emailService;
 
     @Transactional
-    public User createUser(final String email,final String authKey) {
+    public User createUser(final String email) throws Exception {
+        String authKey = emailService.createKey();
+        log.info("Email authKey = {}", authKey);
+        emailService.sendValidationMail(email, authKey);
         User user = User.builder()
                 .email(email)
                 .emailAuthKey(authKey)
