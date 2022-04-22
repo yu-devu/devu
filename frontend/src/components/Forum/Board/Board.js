@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './board.css';
 import { Link } from 'react-router-dom';
-import ReactHtmlParser from 'react-html-parser';
+import ReactHtmlParser from 'html-react-parser';
 import Posts from './Posts';
 import ReactPaginate from 'react-paginate'
 import './pagination.css'
