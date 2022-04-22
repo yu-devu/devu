@@ -1,6 +1,7 @@
 package com.devu.backend.entity;
 
 import com.devu.backend.entity.post.Post;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,9 +25,11 @@ public class Comment extends BaseTime{
     /*
     * comment 작성 할때만, User and Post 영속성 전이를 통해 Persist
     * */
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
     private User user;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
     private Post post;
 
