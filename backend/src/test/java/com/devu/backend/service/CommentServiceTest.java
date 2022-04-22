@@ -1,7 +1,11 @@
 package com.devu.backend.service;
 
+import com.devu.backend.common.Messages;
+import com.devu.backend.common.exception.CommentContentNullException;
+import com.devu.backend.common.exception.CommentNotFoundException;
 import com.devu.backend.controller.comment.CommentCreateRequestDto;
 import com.devu.backend.controller.comment.CommentResponseDto;
+import com.devu.backend.controller.comment.CommentUpdateRequestDto;
 import com.devu.backend.entity.Comment;
 import com.devu.backend.entity.User;
 import com.devu.backend.entity.post.Chat;
@@ -9,10 +13,12 @@ import com.devu.backend.entity.post.Post;
 import com.devu.backend.repository.CommentRepository;
 import com.devu.backend.repository.PostRepository;
 import com.devu.backend.repository.UserRepository;
+import org.assertj.core.api.BDDAssumptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -20,9 +26,11 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.BDDAssumptions.given;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+
 
 
 @ExtendWith(MockitoExtension.class)
@@ -48,8 +56,8 @@ class CommentServiceTest {
         CommentCreateRequestDto createRequestDto = createCreateRequestDto(user, chat);
         Comment comment = createComment(user, chat, createRequestDto);
         //Mocking
-        given(commentRepository.save(any(Comment.class))).willReturn(comment);
-        given(commentRepository.findById(comment.getId())).willReturn(Optional.of(comment));
+        BDDMockito.given(commentRepository.save(any(Comment.class))).willReturn(comment);
+        BDDMockito.given(commentRepository.findById(comment.getId())).willReturn(Optional.of(comment));
         //when
         commentService.saveComment(createRequestDto);
         //then
@@ -59,12 +67,28 @@ class CommentServiceTest {
     }
 
     @Test
-    void saveFail() {
+    void update() {
+        //given
+        User user = createUser();
+        Chat chat = createChat(user);
+        CommentCreateRequestDto createRequestDto = createCreateRequestDto(user, chat);
+        Comment comment = createComment(user, chat, createRequestDto);
+        commentRepository.save(comment);
+        CommentUpdateRequestDto updateRequestDto = createUpdateRequestDto(comment);
+        //Mocking
+        BDDMockito.given(commentRepository.findById(comment.getId())).willReturn(Optional.of(comment));
+        //when
+        commentService.updateComment(updateRequestDto);
+        //then
+        Comment find = commentRepository.findById(chat.getId()).get();
+        assertEquals(updateRequestDto.getContent(), find.getContents());
     }
 
-    @Test
-    void update() {
-
+    private CommentUpdateRequestDto createUpdateRequestDto(Comment comment) {
+        return CommentUpdateRequestDto.builder()
+                .content("update content")
+                .commentId(comment.getId())
+                .build();
     }
 
     private Comment createComment(User user, Post post, CommentCreateRequestDto dto) {
@@ -78,7 +102,15 @@ class CommentServiceTest {
         return comment;
     }
 
-
+    private Comment createNullComment(User user, Post post, CommentCreateRequestDto dto) {
+        Comment comment = Comment.builder()
+                .user(user)
+                .post(post)
+                .build();
+        Long fakeUserId = 1L;
+        ReflectionTestUtils.setField(comment, "id", fakeUserId);
+        return comment;
+    }
 
     private CommentCreateRequestDto createCreateRequestDto(User user,Chat chat) {
         return CommentCreateRequestDto.builder()

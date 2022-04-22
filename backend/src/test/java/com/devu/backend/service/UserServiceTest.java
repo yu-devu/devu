@@ -1,31 +1,23 @@
 package com.devu.backend.service;
 
-import com.devu.backend.common.exception.UserNotFoundException;
 import com.devu.backend.config.auth.token.RefreshTokenRepository;
 import com.devu.backend.config.auth.token.TokenService;
 import com.devu.backend.controller.user.UserDTO;
 import com.devu.backend.entity.User;
 import com.devu.backend.repository.UserRepository;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {

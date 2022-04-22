@@ -1,10 +1,12 @@
 package com.devu.backend.service;
 
 import com.devu.backend.common.exception.CommentContentNullException;
+import com.devu.backend.common.exception.CommentNotFoundException;
 import com.devu.backend.common.exception.PostNotFoundException;
 import com.devu.backend.common.exception.UserNotFoundException;
 import com.devu.backend.controller.comment.CommentCreateRequestDto;
 import com.devu.backend.controller.comment.CommentResponseDto;
+import com.devu.backend.controller.comment.CommentUpdateRequestDto;
 import com.devu.backend.entity.Comment;
 import com.devu.backend.entity.User;
 import com.devu.backend.entity.post.Post;
@@ -25,7 +27,7 @@ public class CommentService {
     public Comment saveComment(CommentCreateRequestDto requestDto) {
         User user = userRepository.getById(requestDto.getUserId());
         Post post = postRepository.getById(requestDto.getPostId());
-        if (requestDto.getContents().isEmpty()) {
+        if (requestDto.getContents() == null) {
             throw new CommentContentNullException();
         }
         Comment comment = Comment.builder()
@@ -34,5 +36,11 @@ public class CommentService {
                 .contents(requestDto.getContents())
                 .build();
         return commentRepository.save(comment);
+    }
+
+    public Comment updateComment(CommentUpdateRequestDto updateRequestDto) {
+        Comment comment = commentRepository.findById(updateRequestDto.getCommentId()).orElseThrow(CommentNotFoundException::new);
+        comment.updateContent(updateRequestDto.getContent());
+        return comment;
     }
 }
