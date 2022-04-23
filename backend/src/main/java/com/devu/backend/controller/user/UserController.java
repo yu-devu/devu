@@ -45,11 +45,7 @@ public class UserController {
                         .build();
                 return ResponseEntity.ok().body(errorDto);
             }
-            // email로 인증번호 먼저 보내고, 인증번호 get
-            String authKey = emailService.createKey();
-            emailService.sendValidationMail(email, authKey);
-            log.info("Email authKey = {}", authKey);
-            User savedUser = userService.createUser(email, authKey);
+            User savedUser = userService.createUser(email);
             UserDTO userDTO = UserDTO.builder()
                     .email(savedUser.getEmail())
                     .build();

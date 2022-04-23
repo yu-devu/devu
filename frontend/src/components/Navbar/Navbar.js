@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as Icons from 'react-icons/fa';
 import './navbar.css';
@@ -8,6 +8,7 @@ import LoginButton from './LoginButton';
 import RegisterButton from './RegisterButton';
 import LogoutButton from './LogoutButton';
 import MyPageButton from './MyPageButton';
+import Service from './Service';
 
 const isToken = localStorage.getItem('accessToken');
 
@@ -29,8 +30,8 @@ function Navbar() {
         onMouseOut={onMouseOverOut}
         style={
           changing
-            ? { backgroundColor: '#5ADAFC' }
-            : { backgroundColor: '#0E3F7A' }
+            ? { backgroundColor: '#white' }
+            : { backgroundColor: '#white' }
         }
       >
         <Link to="/" className="navbar-logo">
@@ -61,11 +62,11 @@ function Navbar() {
         </ul>
         {isToken ? (
           <div>
-            <LogoutButton /> <MyPageButton />
+            <MyPageButton /> <LogoutButton /> <Service />
           </div>
         ) : (
           <div>
-            <LoginButton /> <RegisterButton />
+            <LoginButton /> <RegisterButton /> <Service />
           </div>
         )}
       </nav>

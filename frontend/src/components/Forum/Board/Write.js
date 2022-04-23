@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './write.css';
-import ReactHtmlParser from 'react-html-parser';
+import ReactHtmlParser from 'html-react-parser';
 
 const url = 'http://54.180.29.69:8080';
 
@@ -32,8 +32,8 @@ const Write = () => {
     const formData = new FormData();
     formData.append('title', postContent.title);
     formData.append('username', username);
-    formData.append('content', postContent.content);
-    // formData.append('content', ReactHtmlParser(postContent.content));
+    // formData.append('content', postContent.content);
+    formData.append('content', ReactHtmlParser(postContent.content));
     await axios
       .post(url + `/community/chat`, formData, {
         headers: {

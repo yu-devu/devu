@@ -2,13 +2,14 @@
     border: none;
     background: transparent;
     padding: 6px 16px;
-    font-size: 1.1rem;
-    color: white;
+    font-size: 15px;
+    color: var(--color-gray);
     border-radius: 5px;
     transition: 0.3s all ease-out;
     cursor: pointer;
+
   }
   
   .btn-mypage-nav:hover {
-    color: rgba(187, 187, 187, 0.562);
+    color: var(--color-primary);
   }
