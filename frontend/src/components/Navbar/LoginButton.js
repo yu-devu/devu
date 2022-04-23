@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './loginButton.css';
 import './loginModal.css';
+import ChangePasswordModal from './ChangePasswordModal.js'
 import { useRecoilState } from 'recoil';
 
 const url = 'http://54.180.29.69:8080';
@@ -77,6 +78,7 @@ function LoginButton() {
             <button className="btn-validate" onClick={() => handleLogin()}>
               로그인
             </button>
+            <ChangePasswordModal />
           </div>
         </div>
       ) : null}

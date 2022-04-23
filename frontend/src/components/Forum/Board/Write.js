@@ -30,10 +30,10 @@ const Write = () => {
       return;
     }
     const formData = new FormData();
-    formData.append('username', username);
     formData.append('title', postContent.title);
+    formData.append('username', username);
     formData.append('content', postContent.content);
-
+    // formData.append('content', ReactHtmlParser(postContent.content));
     await axios
       .post(url + `/community/chat`, formData, {
         headers: {
