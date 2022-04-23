@@ -1,14 +1,14 @@
-.btn-login-nav {
+.btn-service-nav {
     border: none;
     background: transparent;
     padding: 6px 16px;
     font-size: 15px;
     color: var(--color-gray);
-    /* border-radius: 5px; */
-    /* transition: 0.3s all ease-out; */
+    border-radius: 5px;
+    transition: 0.3s all ease-out;
     cursor: pointer;
-  }
+}
   
-  .btn-login-nav:hover {
+.btn-service-nav:hover {
     color: var(--color-primary);
-  }
+}

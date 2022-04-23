@@ -4,16 +4,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: var(--color-white);
 }
 
 .navbar-logo {
-  color: white;
+  color: black;
   text-decoration: none;
   font-size: 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 7rem;
+  position: absolute;
+  left: 18%;
 }
 
 .nav-items {
@@ -33,13 +36,13 @@
 
 .nav-item a {
   text-decoration: none;
-  color: white;
-  font-size: 1.1rem;
+  color: black;
+  font-size: 15px;
   margin-right: 2rem;
   padding: 6px 16px;
   border-radius: 5px;
 }
 
 .nav-item a:hover {
-  background: #6d93c29d;
+  color: var(--color-primary);
 }
