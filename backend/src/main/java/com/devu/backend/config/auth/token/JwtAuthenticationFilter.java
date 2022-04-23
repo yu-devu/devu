@@ -41,6 +41,9 @@ public class JwtAuthenticationFilter extends GenericFilter {
                     log.info("유효x");
                     refreshToken = cookieService.getCookie((HttpServletRequest) request, "X-AUTH-REFRESH-TOKEN").getValue();
                 }
+            }else{
+                log.info("accessToken x");
+                refreshToken = cookieService.getCookie((HttpServletRequest) request, "X-AUTH-REFRESH-TOKEN").getValue();
             }
         } catch (ExpiredJwtException e) {
 
@@ -56,7 +59,7 @@ public class JwtAuthenticationFilter extends GenericFilter {
                     Authentication auth = tokenService.getAuthentication(dbRefreshToken.getRefreshToken());
                     SecurityContextHolder.getContext().setAuthentication(auth);
                     UserDetailsImpl principal = (UserDetailsImpl) auth.getPrincipal();
-                    ((HttpServletResponse) response).addHeader("X-AUTH-ACCESS-TOKEN", tokenService.createAccessToken(principal.getUsername()));
+                    ((HttpServletResponse) response).setHeader("X-AUTH-ACCESS-TOKEN", tokenService.createAccessToken(principal.getUsername()));
                 }
             }
         } catch (ExpiredJwtException e) {

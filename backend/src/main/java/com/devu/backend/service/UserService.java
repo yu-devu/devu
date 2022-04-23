@@ -14,11 +14,12 @@ import com.devu.backend.entity.User;
 import com.devu.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -118,14 +119,29 @@ public class UserService {
         RefreshToken token = RefreshToken.builder()
                 .refreshToken(refreshToken)
                 .build();
+
         refreshTokenRepository.save(token);
-        Cookie cookie = cookieService.createCookie("X-AUTH-REFRESH-TOKEN", refreshToken);
-        response.addCookie(cookie);
+        ResponseCookie cookie = cookieService.createCookie("X-AUTH-REFRESH-TOKEN", refreshToken);
+        response.setHeader("X-AUTH-ACCESS-TOKEN", accessToken);
+        response.setHeader("Set-Cookie", cookie.toString());
         return UserDTO.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .accessToken(accessToken)
                 .build();
+    }
+
+    @Transactional
+    public void logoutProcess(HttpServletRequest request, HttpServletResponse response) {
+        String refreshToken = cookieService.getCookie(request, "X-AUTH-REFRESH-TOKEN").getValue();
+        if (refreshToken != null) {
+            RefreshToken dbRefreshToken = refreshTokenRepository.findByRefreshToken(refreshToken);
+            if (dbRefreshToken != null) {
+                refreshTokenRepository.delete(dbRefreshToken);
+            }
+        }
+
+        ResponseCookie cookie = cookieService.deleteCookie("X-AUTH-REFRESH-TOKEN");
+        response.setHeader("Set-Cookie", cookie.toString());
     }
 
     /*
