@@ -9,6 +9,7 @@ import RegisterButton from './RegisterButton';
 import LogoutButton from './LogoutButton';
 import MyPageButton from './MyPageButton';
 import Service from './Service';
+import MainLogo from "../../img/logo_main.png"
 
 const isToken = localStorage.getItem('accessToken');
 
@@ -35,8 +36,7 @@ function Navbar() {
         }
       >
         <Link to="/" className="navbar-logo">
-          Devu
-          <Icons.FaHome />
+          <img className="nav-main" alt="" src={MainLogo} />
         </Link>
         <ul className="nav-items">
           {navItems.map((item) => {
