@@ -16,7 +16,7 @@
   justify-content: space-between;
   width: 7rem;
   position: absolute;
-  left: 18%;
+  left: 22%;
 }
 
 .nav-items {
@@ -25,7 +25,7 @@
   text-align: center;
   width: 70vw;
   justify-content: center;
-  margin-right: 2rem;
+  margin-left: -300px;
 }
 
 .nav-item {
@@ -62,4 +62,9 @@
     height: 70px;
     position: absolute;
     filter: brightness(80%);
+}
+
+.nav-right {
+  position: absolute;
+  right: 20.6%;
 }
