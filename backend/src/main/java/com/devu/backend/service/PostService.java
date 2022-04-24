@@ -165,6 +165,7 @@ public class PostService {
                 .content(chat.getContent())
                 .title(chat.getTitle())
                 .like(chat.getLikes().size())
+                .comments(chat.getComments())
                 .build();
     }
 
@@ -183,6 +184,7 @@ public class PostService {
                 .title(study.getTitle())
                 .studyStatus(study.getStudyStatus())
                 .like(study.getLikes().size())
+                .comments(study.getComments())
                 .build();
     }
 
@@ -201,6 +203,7 @@ public class PostService {
                 .title(question.getTitle())
                 .questionStatus(question.getQuestionStatus())
                 .like(question.getLikes().size())
+                .comments(question.getComments())
                 .build();
     }
 

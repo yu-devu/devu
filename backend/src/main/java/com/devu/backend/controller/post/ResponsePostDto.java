@@ -1,5 +1,6 @@
 package com.devu.backend.controller.post;
 
+import com.devu.backend.entity.Comment;
 import com.devu.backend.entity.post.QuestionStatus;
 import com.devu.backend.entity.post.StudyStatus;
 import lombok.AllArgsConstructor;
@@ -23,4 +24,5 @@ public class ResponsePostDto {
     private Integer like;
     private StudyStatus studyStatus;
     private QuestionStatus questionStatus;
+    private List<Comment> comments;
 }
