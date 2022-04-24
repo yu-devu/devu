@@ -28,6 +28,7 @@
 
 html {
     scroll-behavior: smooth;
+    /* height: max-content; */
 }
 
 ::-webkit-scrollbar {
@@ -36,6 +37,9 @@ html {
 
 body {
     line-height: 1.7;
+/* 
+    width: 1920px;
+    height: 1320px; */
 }
 
 hr {
@@ -51,11 +55,13 @@ h1, h2, h3, h4, h5 {
 }
 
 h1 {
-    font-size: 2.5rem;
+    font-size: 30px;
+    word-spacing: -5.5px;
 }
 
 h2 {
-    font-size: 18px;
+    font-size: 15px;
+    word-spacing: -2.5px;
 }
 
 h3 {
@@ -96,14 +102,10 @@ a:hover {
     height: max-content;
 } */
 
-/* ================= MEDIA QUERIES (MEDIUM DEVICES) =================
+/* ================= MEDIA QUERIES (MEDIUM DEVICES) ================= */
 @media screen and (max-width: 1024px){
     .container {
         width: var(--container-width-md);
-    }
-
-    section {
-        margin-top: 6rem;
     }
 }
 
