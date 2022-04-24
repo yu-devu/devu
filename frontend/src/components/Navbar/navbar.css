@@ -46,3 +46,20 @@
 .nav-item a:hover {
   color: var(--color-primary);
 }
+
+.nav-item .submenu-item {
+  color: var(--color-gray);
+}
+
+.nav-item .submenu-item:hover{
+  color: black;
+}
+
+.nav-main {
+    z-index: 100;
+    object-fit: cover;
+    width: 140px;
+    height: 70px;
+    position: absolute;
+    filter: brightness(80%);
+}

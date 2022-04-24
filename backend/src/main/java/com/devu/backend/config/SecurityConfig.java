@@ -36,6 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .formLogin().disable()
                 .csrf().disable()
+                .logout()
+                    .disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                 .authorizeRequests()
@@ -51,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js").permitAll()
                     .antMatchers(
                             "/", "/key",
-                            "/email", "/signup", "/signin",
+                            "/email", "/signup", "/signin", "/silent-refresh",
                             "/community/**","/users","/like",
                             "/password_url_email","/change_password/**",
                             "/comment/**","/comments/**"
@@ -66,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("http://127.0.0.1:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

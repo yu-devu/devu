@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -103,6 +104,35 @@ public class UserController {
             UserDTO responseUserDTO = userService.loginProcess(userDTO, user, response);
             log.info("username : {} -> 로그인 성공", user.getUsername());
             return ResponseEntity.ok().body(responseUserDTO);
+        } catch (Exception e) {
+            log.warn(e.getMessage());
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            userService.logoutProcess(request, response);
+            return ResponseEntity.ok().body("로그아웃 완료");
+        } catch (Exception e) {
+            log.warn(e.getMessage());
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    //jwtAuthenticationFilter 한번 탔다가 나감
+    @PostMapping("/silent-refresh")
+    public ResponseEntity<?> silentRefresh() {
+        try {
+            log.info("silent - refresh");
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             log.warn(e.getMessage());
             ResponseErrorDto errorDto = ResponseErrorDto.builder()

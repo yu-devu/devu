@@ -4,6 +4,7 @@ import "./home.css";
 import { footerItems } from "./FooterItems";
 import { Link } from "react-router-dom";
 import Main from "../../img/main.png"
+import Footer from "../../img/logo_black.png"
 
 const Home = () => {
   return (
@@ -12,8 +13,8 @@ const Home = () => {
       <div className="main-all">
         <div className="intro">
           <div className="intro-content">
-            <h3>나누는 지식만큼</h3>
-            <h3>커지는 보람과 보상</h3>
+            <h1>나누는 지식만큼</h1>
+            <h1>커지는 보람과 보상</h1>
             <br></br>
             <h2>
               데뷰 지식공유자로
@@ -36,10 +37,11 @@ const Home = () => {
           </ul>
           <hr className="line" />
           <div className="footer-intro">
-            <h3>(주)데뷰   대표자 : 홍길동   사업자등록번호 : 123-456-789</h3>
+            <img className="img-footer" alt="" src={Footer} />
+            <h3>(주)데뷰   대표자 : 홍길동  | 사업자등록번호 : 123-456-789</h3>
             <h3>주소 : 경상북도 경산시 대학로 280</h3>
             <br></br>
-            <h3>@DEVU.ALL.RIGHTS RESERVED</h3>
+            <h3 className="copyright">@DEVU.ALL.RIGHTS RESERVED</h3>
           </div>
         </div>
       </div>
