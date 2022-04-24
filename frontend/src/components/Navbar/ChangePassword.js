@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const url = 'http://54.180.29.69:8080';
 
 function ChangePassword() {
     const navigate = useNavigate();
-    const [email, setEmail] = useState('');
+    const location = useLocation();
+
     const [password, setPassword] = useState('');
     const [checkPassword, setCheckPassword] = useState('');
+    let pathname = location.pathname;
+    let [a, b, email] = pathname.split('/'); // 추후에 바꿔야 함
+    // console.log(email)
+
+    // const [email, setEmail] = useState('');
+    // setEmail(response);
+    // console.log(email)
 
     const onChangePassword = (e) => setPassword(e.target.value);
     const onChangeCheckPassword = (e) => setCheckPassword(e.target.value);
@@ -16,15 +24,18 @@ function ChangePassword() {
     useEffect(() => {
         getChangePassword();
     }, []);
+
     const getChangePassword = async () => {
         const res = await axios.get(url + `change_password/${email}`);
         console.log(res);
     }
+
     const postChangePassword = async () => {
         if (password == checkPassword) {
             const data = {
                 password: password,
             }
+            console.log(data);
             await axios.post(url + `change_password/${email}`, JSON.stringify(data), {
                 header: {
                     'Content-Type': 'application/json',
@@ -35,7 +46,9 @@ function ChangePassword() {
                 navigate.go(0);
             }
             ).catch((res) => {
-                alert(JSON.parse(res.request.response).error);
+                // alert(JSON.parse(res.request.response).error);
+                alert("error");
+                console.log(res);
             });
         }
         else {

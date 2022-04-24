@@ -25,18 +25,13 @@ function ChangePasswordModal() {
                 }
             })
                 .then(() => {
-                    getChangePassword();
+                    alert('이메일 전송 완료!')
                 }).catch((res) => alert(JSON.parse(res.request.response).error));
             // axios 통신 실패시, '정상적인 접근 경로가 아닙니다.'
         } else {
             alert('이메일 형식을 확인해주세요!');
         }
     };
-
-    const getChangePassword = async () => {
-        const res = await axios.get(url + `/change_password/${email}`);
-        console.log(res);
-    }
 
     return (
         <>
