@@ -9,13 +9,14 @@ import com.devu.backend.repository.PostRepository;
 import com.devu.backend.repository.TagRepository;
 import com.devu.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -51,8 +52,11 @@ public class TagService {
     * 5) 태그 수만 줄어드는 경우
     * */
     @Transactional
-    public void updateTag(Long tagId,Long postId) {
-
+    public void deleteTags(List<Tag> tags) {
+        for (Tag tag : tags) {
+            log.info("remove Tag : {}",tag.getPostTags());
+            log.info("remove Tag Post Id : {}",tag.getPost().getId());
+            tagRepository.deleteById(tag.getId());
+        }
     }
-
 }

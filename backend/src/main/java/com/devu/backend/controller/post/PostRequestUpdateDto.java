@@ -15,5 +15,5 @@ public class PostRequestUpdateDto {
     private String content;
     private String status;
     private List<MultipartFile> images;
-    //tag 추후에 필요
+    private List<String> tags;
 }

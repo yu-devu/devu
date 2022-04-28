@@ -7,6 +7,7 @@ import com.devu.backend.controller.post.PostRequestCreateDto;
 import com.devu.backend.controller.post.PostRequestUpdateDto;
 import com.devu.backend.controller.post.PostResponseDto;
 import com.devu.backend.entity.Image;
+import com.devu.backend.entity.Tag;
 import com.devu.backend.entity.post.*;
 import com.devu.backend.repository.ImageRepository;
 import com.devu.backend.repository.PostRepository;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.LinkedList;
 import java.util.List;
 
 @Slf4j
@@ -45,7 +47,8 @@ public class PostService {
     }
 
     /*
-    * images,tags 엔티티가 생성되지 않은 시점에서 응답으로 필요한 데이터라서 new ArrayList<>로 직접 넣어줘야하지 않을까
+    * images,tags 엔티티가 생성되지 않은 시점에서 응답으로 필요한 데이터라서 new ArrayList<>로 직접 넣어줘야함
+    * 즉,Image 엔티티와 Tag 엔티티가 생성되기 전에 chat 인스턴스에서 접근해서 우선적으로 만드는것
     * likes => list 넣어줄 필요 없음
     * */
     @Transactional
@@ -59,7 +62,7 @@ public class PostService {
                 .content(requestPostDto.getContent())
                 .hit(0L)
                 .images(new ArrayList<>())
-                .tags(new ArrayList<>())
+                .tags(new LinkedList<>())
                 .build();
         addImage(requestPostDto, chat);
         log.info("Create Chat {} By {}",chat.getTitle(),chat.getUser().getUsername());
@@ -85,7 +88,7 @@ public class PostService {
                 .studyStatus(StudyStatus.ACTIVE)
                 .hit(0L)
                 .images(new ArrayList<>())
-                .tags(new ArrayList<>())
+                .tags(new LinkedList<>())
                 .build();
         addImage(requestPostDto, study);
         log.info("Create Study {} By {}",study.getTitle(),study.getUser().getUsername());
@@ -111,7 +114,7 @@ public class PostService {
                 .qnaStatus(QuestionStatus.UNSOLVED)
                 .hit(0L)
                 .images(new ArrayList<>())
-                .tags(new ArrayList<>())
+                .tags(new LinkedList<>())
                 .build();
         addImage(requestPostDto, question);
         log.info("Create Question {} By {}",question.getTitle(),question.getUser().getUsername());
@@ -155,6 +158,7 @@ public class PostService {
         return postRepository.findAllStudies(pageable).map(
                 study -> PostResponseDto
                         .builder()
+                        .id(study.getId())
                         .title(study.getTitle())
                         .content(study.getContent())
                         .username(study.getUser().getUsername())
@@ -170,6 +174,7 @@ public class PostService {
         return postRepository.findAllQuestions(pageable).map(
                 question -> PostResponseDto
                         .builder()
+                        .id(question.getId())
                         .title(question.getTitle())
                         .content(question.getContent())
                         .username(question.getUser().getUsername())
@@ -258,6 +263,14 @@ public class PostService {
     @Transactional
     public void updateChat(Chat chat, PostRequestUpdateDto updateDto) throws IOException {
         updateImage(chat, updateDto);
+        //valid가 true면 실행
+        if (chat.tagUpdateValidation(updateDto)) {
+            List<Tag> tags = chat.updateWithTags(updateDto);
+            for (Tag tag : tags) {
+                log.info("removed tag : {}",tag.getPostTags());
+            }
+            tagService.deleteTags(tags);
+        }
         chat.updatePost(updateDto);
     }
 
