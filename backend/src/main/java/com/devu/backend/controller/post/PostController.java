@@ -144,14 +144,6 @@ public class PostController {
         }
     }
 
-    private List<String> getImageUrl(Post post) {
-        List<String> images = new ArrayList<>();
-        for (Image image : post.getImages()) {
-            images.add(image.getPath());
-        }
-        return images;
-    }
-
     //스터디 게시판 글 작성
     @PostMapping("/study")
     public ResponseEntity<?> createStudy(RequestPostCreateDto requestPostDto) {
@@ -193,6 +185,14 @@ public class PostController {
                     .build();
             return ResponseEntity.badRequest().body(errorDto);
         }
+    }
+
+    private List<String> getImageUrl(Post post) {
+        List<String> images = new ArrayList<>();
+        for (Image image : post.getImages()) {
+            images.add(image.getPath());
+        }
+        return images;
     }
 
     //chat update

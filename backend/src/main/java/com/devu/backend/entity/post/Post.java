@@ -40,8 +40,11 @@ public class Post extends BaseTime{
     private List<Comment> comments = new ArrayList<>();
 
     //cascadeType.ALL 설정해보기
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private List<Image> images = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Tag> tags = new ArrayList<>();
 
     //==비지니스 로직==//
     public void plusHit() {

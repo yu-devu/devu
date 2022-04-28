@@ -15,5 +15,6 @@ public class RequestPostCreateDto {
     private String title;
     private String content;
     private List<MultipartFile> images;
+    private List<String> tags;
     //tag 추후에 필요
 }

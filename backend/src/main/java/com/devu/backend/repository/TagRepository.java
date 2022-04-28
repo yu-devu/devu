@@ -1,0 +1,10 @@
+package com.devu.backend.repository;
+
+import com.devu.backend.entity.Tag;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface TagRepository extends JpaRepository<Tag, Long> {
+    
+}
