@@ -13,4 +13,7 @@ public class CommentResponseDto {
     private String username;
     private String title;
     private Long commentId;
+    private String contents;
+    private Long group;
+    private String parent;
 }
