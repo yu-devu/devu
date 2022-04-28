@@ -10,10 +10,10 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestPostCreateDto {
-    private String username;
+public class PostRequestUpdateDto {
     private String title;
     private String content;
+    private String status;
     private List<MultipartFile> images;
-    private List<String> tags;
+    //tag 추후에 필요
 }

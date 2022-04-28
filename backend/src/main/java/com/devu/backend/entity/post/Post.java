@@ -1,6 +1,6 @@
 package com.devu.backend.entity.post;
 
-import com.devu.backend.controller.post.RequestPostUpdateDto;
+import com.devu.backend.controller.post.PostRequestUpdateDto;
 import com.devu.backend.entity.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
@@ -51,7 +51,7 @@ public class Post extends BaseTime{
         this.hit++;
     }
 
-    public void updatePost(RequestPostUpdateDto updateDto) {
+    public void updatePost(PostRequestUpdateDto updateDto) {
         this.title = updateDto.getTitle();
         this.content = updateDto.getContent();
     }

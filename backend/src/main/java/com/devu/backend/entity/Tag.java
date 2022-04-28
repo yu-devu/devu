@@ -2,6 +2,7 @@ package com.devu.backend.entity;
 
 import com.devu.backend.entity.post.Post;
 import com.devu.backend.entity.post.PostTags;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class Tag {
     @Enumerated(EnumType.STRING)
     private PostTags postTags;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;

@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponsePostDto {
+public class PostResponseDto {
     private Long id;
     private String username;
     private String title;
