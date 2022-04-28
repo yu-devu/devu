@@ -1,5 +1,6 @@
 package com.devu.backend.repository;
 
+import com.devu.backend.common.exception.PostNotFoundException;
 import com.devu.backend.entity.Tag;
 import com.devu.backend.entity.User;
 import com.devu.backend.entity.post.Chat;
@@ -46,7 +47,7 @@ class TagRepositoryTest {
         Chat chat = createChat(user);
         Tag springTag = createSpringTag(chat);
         tagRepository.save(springTag);
-        PostTags updateTag = PostTags.NODE;
+        PostTags updateTag = PostTags.NODEJS;
         //when
         Tag tag = tagRepository.findById(springTag.getId()).get();//IDENTITY라서 query가 commit하기 전에 먼저 나가서 가능
         tag.updateTag(updateTag);
@@ -79,7 +80,7 @@ class TagRepositoryTest {
         postRepository.save(chat);
         userRepository.save(user);
         //when
-        List<Tag> allByPostId = tagRepository.findAllByPostId(chat.getId());
+        List<Tag> allByPostId = tagRepository.findAllByPostId(chat.getId()).orElseThrow(PostNotFoundException::new);
         //then
         assertThat(allByPostId.size()).isEqualTo(2);
     }

@@ -34,9 +34,9 @@ import java.util.List;
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final UserService userService;
     private final S3Uploader s3Uploader;
     private final ImageRepository imageRepository;
+    private final TagService tagService;
 
     /*
     * images 초기화 하는 방식 리팩토링 필요!
@@ -56,6 +56,7 @@ public class PostService {
                 .images(images)
                 .build();
         addImage(requestPostDto, chat);
+        tagService.saveTags(requestPostDto.getTags(), chat.getId());
         log.info("Create Chat {} By {}",chat.getTitle(),chat.getUser().getUsername());
         return postRepository.save(chat);
     }
@@ -75,6 +76,7 @@ public class PostService {
                 .images(images)
                 .build();
         addImage(requestPostDto, study);
+        tagService.saveTags(requestPostDto.getTags(), study.getId());
         log.info("Create Study {} By {}",study.getTitle(),study.getUser().getUsername());
         return postRepository.save(study);
     }
@@ -94,6 +96,7 @@ public class PostService {
                 .images(images)
                 .build();
         addImage(requestPostDto, question);
+        tagService.saveTags(requestPostDto.getTags(), question.getId());
         log.info("Create Question {} By {}",question.getTitle(),question.getUser().getUsername());
         return postRepository.save(question);
     }
@@ -119,6 +122,7 @@ public class PostService {
                         .username(chat.getUser().getUsername())
                         .hit(chat.getHit())
                         .like(chat.getLikes().size())
+                        .tags(chat.getTags())
                         .build()
         );
     }
@@ -133,6 +137,7 @@ public class PostService {
                         .hit(study.getHit())
                         .studyStatus(study.getStudyStatus())
                         .like(study.getLikes().size())
+                        .tags(study.getTags())
                         .build()
         );
     }
@@ -147,6 +152,7 @@ public class PostService {
                         .hit(question.getHit())
                         .questionStatus(question.getQuestionStatus())
                         .like(question.getLikes().size())
+                        .tags(question.getTags())
                         .build()
         );
     }
@@ -166,6 +172,7 @@ public class PostService {
                 .title(chat.getTitle())
                 .like(chat.getLikes().size())
                 .comments(chat.getComments())
+                .tags(chat.getTags())
                 .build();
     }
 
@@ -185,6 +192,7 @@ public class PostService {
                 .studyStatus(study.getStudyStatus())
                 .like(study.getLikes().size())
                 .comments(study.getComments())
+                .tags(study.getTags())
                 .build();
     }
 
@@ -204,13 +212,8 @@ public class PostService {
                 .questionStatus(question.getQuestionStatus())
                 .like(question.getLikes().size())
                 .comments(question.getComments())
+                .tags(question.getTags())
                 .build();
-    }
-
-    @Transactional
-    public void updateChat(Chat chat, RequestPostUpdateDto updateDto) throws IOException {
-        updateImage(chat, updateDto);
-        chat.updatePost(updateDto);
     }
 
     @Transactional
@@ -226,6 +229,12 @@ public class PostService {
             s3Uploader.upload(multipartFile, "static", post);
             log.info("업데이트 추가");
         }
+    }
+
+    @Transactional
+    public void updateChat(Chat chat, RequestPostUpdateDto updateDto) throws IOException {
+        updateImage(chat, updateDto);
+        chat.updatePost(updateDto);
     }
 
     @Transactional

@@ -4,12 +4,12 @@ package com.devu.backend.entity.post;
 public enum PostTags {
     SPRING("Spring"),
     C("C"),
-    CPP("C++"),
-    CSHARP("C#"),
+    CPP("Cpp"),
+    CSHARP("Csharp"),
     JS("JavaScript"),
-    REACT("React.js"),
-    VUE("Vue.js"),
-    NODE("Node.js"),
+    REACT("React"),
+    VUE("Vue"),
+    NODEJS("NodeJS"),
     PYTHON("Python"),
     DJANGO("Django"),
     FLASK("Flask"),
@@ -37,4 +37,8 @@ public enum PostTags {
     }
 
     PostTags() {}
+
+    public String title() {
+        return title;
+    }
 }
