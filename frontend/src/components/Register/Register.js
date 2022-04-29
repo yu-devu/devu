@@ -13,8 +13,8 @@ const Register = () => {
   const [passwordAvailability, setPasswordAvailability] = useState(false);
   const [showValidate, setShowValidate] = useState(false);
   const [showInformation, setShowInformation] = useState(false);
-
   const [clickAuthkey, setClickAuthkey] = useState(false);
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/
 
   const handleEmail = (e) => setEmail(e.target.value);
   const handleAuthkey = (e) => setAuthkey(e.target.value);

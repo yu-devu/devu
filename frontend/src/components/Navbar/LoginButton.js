@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './loginButton.css';
 import './loginModal.css';
+import ChangePasswordModal from './ChangePasswordModal.js'
 
 function LoginButton() {
   const [showModal, setShowModal] = useState(false);
@@ -24,7 +25,6 @@ function LoginButton() {
       password: password,
     };
 
-    console.log(JSON.stringify(data));
     await axios
       .post('/signin', JSON.stringify(data), {
         headers: {
@@ -73,6 +73,7 @@ function LoginButton() {
             <button className="btn-validate" onClick={() => handleLogin()}>
               로그인
             </button>
+            <ChangePasswordModal />
           </div>
         </div>
       ) : null}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation, Link } from 'react-router-dom';
+import ReactHtmlParser from "react-html-parser";
 import "./postView.css"
 
 const PostView = () => {
@@ -8,6 +9,7 @@ const PostView = () => {
   const [postData, setPostData] = useState([]);
   let pathname = location.pathname;
   let [a, b, postId] = pathname.split('/');
+  // useLocation으로 pathname을 추출한 후, '/'를 기준으로 parameter를 분리함
 
   useEffect(() => {
     fetchData();

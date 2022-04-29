@@ -8,6 +8,7 @@ import Board from './components/Forum/Board/Board';
 import Write from './components/Forum/Board/Write';
 import PostView from './components/Forum/Board/PostView';
 import Modify from './components/Forum/Board/Modify';
+import ChangePassword from './components/Navbar/ChangePassword';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/board/write" exact element={<Write />}></Route>
           <Route path="/postDetail/:no" exact element={<PostView />}></Route>
           <Route path="/postDetail/:no/modify" exact element={<Modify />}></Route>
+          <Route path="/change_password/*" element={<ChangePassword />}></Route>
         </Routes>
       </Router>
     </>
