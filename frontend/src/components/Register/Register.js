@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './register.css';
 
-const url = 'http://54.180.29.69:8080';
-
 const Register = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -15,8 +13,8 @@ const Register = () => {
   const [passwordAvailability, setPasswordAvailability] = useState(false);
   const [showValidate, setShowValidate] = useState(false);
   const [showInformation, setShowInformation] = useState(false);
-
   const [clickAuthkey, setClickAuthkey] = useState(false);
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/
 
   const handleEmail = (e) => setEmail(e.target.value);
   const handleAuthkey = (e) => setAuthkey(e.target.value);
@@ -36,7 +34,7 @@ const Register = () => {
       const formData = new FormData();
       formData.append('email', email);
       await axios
-        .post(url + `/email`, formData)
+        .post(`/email`, formData)
         .then((res) => {
           if (res.data.error) {
             alert(res.data.error);
@@ -53,7 +51,7 @@ const Register = () => {
     const formData = new FormData();
     formData.append('postKey', authkey);
     await axios
-      .post(url + `/key`, formData)
+      .post(`/key`, formData)
       .then(() => {
         alert('인증확인 완료!');
         showInformationInput();
@@ -71,7 +69,7 @@ const Register = () => {
         };
         console.log(JSON.stringify(data));
         await axios
-          .post(url + '/signup', data, {
+          .post('/signup', data, {
             headers: {
               'Content-Type': 'application/json',
             },

@@ -7,8 +7,6 @@ import Posts from './Posts';
 import ReactPaginate from 'react-paginate'
 import './pagination.css'
 
-const url = 'http://54.180.29.69:8080';
-
 const Board = () => {
   const [currentPage] = useState(0);
   const [postsPerPage] = useState(10);
@@ -23,7 +21,7 @@ const Board = () => {
   }, []);
 
   const fetchData = async () => {
-    const res = await axios.get(url + `/community/chats`, {
+    const res = await axios.get(`/community/chats`, {
       params: {
         page: currentPage,
       },
