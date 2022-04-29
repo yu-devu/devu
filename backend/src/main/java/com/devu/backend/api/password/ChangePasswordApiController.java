@@ -24,9 +24,9 @@ public class ChangePasswordApiController {
     ResponseEntity<?> sendEmail(@RequestBody RequestPasswordUrlDto requestPasswordUrlDto) {
         try {
             String referUrl = requestPasswordUrlDto.getReferUrl();
-            if (!referUrl.equals("http://54.180.29.69/")) {
+            /*if (!referUrl.equals("http://54.180.29.69/")) {
                 throw new IllegalArgumentException("정상적인 접근 경로가 아닙니다.");
-            }
+            }*/
             if (!userService.isEmailExists(requestPasswordUrlDto.getEmail())) {
                 throw new UserNotFoundException();
             }

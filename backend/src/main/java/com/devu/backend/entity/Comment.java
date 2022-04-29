@@ -22,6 +22,11 @@ public class Comment extends BaseTime{
     @Column(nullable = false)
     private String contents;
 
+    private boolean deleted;
+
+    private Long groupNum;
+
+    private String parent;
     /*
     * comment 작성 할때만, User and Post 영속성 전이를 통해 Persist
     * */
@@ -37,7 +42,8 @@ public class Comment extends BaseTime{
         this.contents = contents;
     }
 
-    /*
-    * 댓글 삭제 시 "삭제된 댓글입니다." 흔적 남기기
-    * */
+    public void updateGroup(Long group) {
+        this.groupNum = group;
+    }
+
 }

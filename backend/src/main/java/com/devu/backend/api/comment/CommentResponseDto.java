@@ -1,4 +1,4 @@
-package com.devu.backend.controller.comment;
+package com.devu.backend.api.comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,4 +13,7 @@ public class CommentResponseDto {
     private String username;
     private String title;
     private Long commentId;
+    private String contents;
+    private Long group;
+    private String parent;
 }

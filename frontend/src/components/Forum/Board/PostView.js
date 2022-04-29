@@ -4,8 +4,6 @@ import { useLocation, Link } from 'react-router-dom';
 import ReactHtmlParser from "react-html-parser";
 import "./postView.css"
 
-const url = 'http://54.180.29.69:8080';
-
 const PostView = () => {
   const location = useLocation();
   const [postData, setPostData] = useState([]);
@@ -19,7 +17,7 @@ const PostView = () => {
   }, [location]);
 
   const fetchData = async () => {
-    const res = await axios.get(url + `/community/chats/${postId}`);
+    const res = await axios.get(`/community/chats/${postId}`);
     console.log(res.data);
     const _postData = {
       id: res.data.id,

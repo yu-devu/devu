@@ -1,5 +1,7 @@
 package com.devu.backend.controller.post;
 
+import com.devu.backend.entity.Comment;
+import com.devu.backend.entity.Tag;
 import com.devu.backend.entity.post.QuestionStatus;
 import com.devu.backend.entity.post.StudyStatus;
 import lombok.AllArgsConstructor;
@@ -13,7 +15,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponsePostDto {
+public class PostResponseDto {
     private Long id;
     private String username;
     private String title;
@@ -23,4 +25,6 @@ public class ResponsePostDto {
     private Integer like;
     private StudyStatus studyStatus;
     private QuestionStatus questionStatus;
+    private List<Comment> comments;
+    private List<Tag> tags;
 }

@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const url = 'http://54.180.29.69:8080';
-
 function ChangePassword() {
     const navigate = useNavigate();
     const location = useLocation();
@@ -26,7 +24,7 @@ function ChangePassword() {
     }, []);
 
     const getChangePassword = async () => {
-        const res = await axios.get(url + `change_password/${email}`);
+        const res = await axios.get(`/change_password/${email}`);
         console.log(res);
     }
 
@@ -36,7 +34,7 @@ function ChangePassword() {
                 password: password,
             }
             console.log(data);
-            await axios.post(url + `change_password/${email}`, JSON.stringify(data), {
+            await axios.post(`/change_password/${email}`, JSON.stringify(data), {
                 header: {
                     'Content-Type': 'application/json',
                 }

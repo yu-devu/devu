@@ -4,15 +4,11 @@ import axios from 'axios';
 import './loginButton.css';
 import './loginModal.css';
 import ChangePasswordModal from './ChangePasswordModal.js'
-import { useRecoilState } from 'recoil';
-
-const url = 'http://54.180.29.69:8080';
 
 function LoginButton() {
   const [showModal, setShowModal] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [tokenData, setTokenData] = useState('');
 
   const handleEmail = (e) => setEmail(e.target.value);
   const handlePassword = (e) => setPassword(e.target.value);
@@ -29,9 +25,8 @@ function LoginButton() {
       password: password,
     };
 
-    console.log(JSON.stringify(data));
     await axios
-      .post(url + '/signin', JSON.stringify(data), {
+      .post('/signin', JSON.stringify(data), {
         headers: {
           'Content-Type': 'application/json',
         },

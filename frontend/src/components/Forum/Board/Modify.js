@@ -1,13 +1,10 @@
-
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-// import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter';
 import './modify.css';
 
-const url = 'http://54.180.29.69:8080';
 
 const Modify = () => {
     const location = useLocation();
@@ -18,6 +15,7 @@ const Modify = () => {
     });
     let pathname = location.pathname;
     let [a, b, postId, c] = pathname.split('/');
+
 
     const handleTitle = (e) => {
         const { name, value } = e.target;
@@ -32,16 +30,12 @@ const Modify = () => {
             alert('글을 작성해주세요!');
             return;
         }
-        // const data = {
-        //     title: postContent.title,
-        //     //   content: postContent.content,
-        // };
-        const formData = new FormData();
-        formData.append('title', postContent.title);
-        formData.append('content', postContent.content);
-
+        const data = {
+            title: postContent.title,
+            //   content: postContent.content,
+        };
         await axios
-            .patch(url + `/community/chat/${postId}`, formData, {
+            .patch(`/community/chat/${postId}`, JSON.stringify(data), {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `${localStorage.getItem('accessToken')}`,

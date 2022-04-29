@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-const url = 'http://54.180.29.69:8080';
-
 function ChangePasswordModal() {
     const [showModal, setShowModal] = useState(false);
     const [email, setEmail] = useState('');
@@ -19,7 +17,7 @@ function ChangePasswordModal() {
                 referUrl: referUrl,
                 email: email,
             }
-            await axios.post(url + `/password_url_email`, JSON.stringify(data), {
+            await axios.post(`/password_url_email`, JSON.stringify(data), {
                 headers: {
                     'Content-Type': 'application/json',
                 }

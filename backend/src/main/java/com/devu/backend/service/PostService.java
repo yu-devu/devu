@@ -3,11 +3,11 @@ package com.devu.backend.service;
 import com.devu.backend.common.exception.PostNotFoundException;
 import com.devu.backend.common.exception.UserNotFoundException;
 import com.devu.backend.config.s3.S3Uploader;
-import com.devu.backend.controller.post.RequestPostCreateDto;
-import com.devu.backend.controller.post.RequestPostUpdateDto;
-import com.devu.backend.controller.post.ResponsePostDto;
+import com.devu.backend.controller.post.PostRequestCreateDto;
+import com.devu.backend.controller.post.PostRequestUpdateDto;
+import com.devu.backend.controller.post.PostResponseDto;
 import com.devu.backend.entity.Image;
-import com.devu.backend.entity.User;
+import com.devu.backend.entity.Tag;
 import com.devu.backend.entity.post.*;
 import com.devu.backend.repository.ImageRepository;
 import com.devu.backend.repository.PostRepository;
@@ -21,11 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -34,17 +31,25 @@ import java.util.List;
 public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final UserService userService;
     private final S3Uploader s3Uploader;
     private final ImageRepository imageRepository;
+    private final TagService tagService;
+
+    private List<String> getImageUrl(Post post) {
+        List<String> images = new ArrayList<>();
+        for (Image image : post.getImages()) {
+            images.add(image.getPath());
+        }
+        return images;
+    }
 
     /*
-    * images 초기화 하는 방식 리팩토링 필요!
+    * images,tags 엔티티가 생성되지 않은 시점에서 응답으로 필요한 데이터라서 new ArrayList<>로 직접 넣어줘야함
+    * 즉,Image 엔티티와 Tag 엔티티가 생성되기 전에 chat 인스턴스에서 접근해서 우선적으로 만드는것
     * likes => list 넣어줄 필요 없음
     * */
     @Transactional
-    public Chat createChat(RequestPostCreateDto requestPostDto) throws IOException {
-        List<Image> images = new ArrayList<>();
+    public PostResponseDto createChat(PostRequestCreateDto requestPostDto) throws IOException {
         Chat chat = Chat.builder()
                 .user(
                         userRepository.findByUsername(requestPostDto.getUsername())
@@ -53,16 +58,23 @@ public class PostService {
                 .title(requestPostDto.getTitle())
                 .content(requestPostDto.getContent())
                 .hit(0L)
-                .images(images)
+                .images(new ArrayList<>())
+                .tags(new LinkedList<>())
                 .build();
         addImage(requestPostDto, chat);
         log.info("Create Chat {} By {}",chat.getTitle(),chat.getUser().getUsername());
-        return postRepository.save(chat);
+        postRepository.save(chat);
+        tagService.saveTags(requestPostDto.getTags(), chat.getId());
+        return PostResponseDto.builder()
+                .title(chat.getTitle())
+                .url(getImageUrl(chat))
+                .username(chat.getUser().getUsername())
+                .tags(chat.getTags())
+                .build();
     }
 
     @Transactional
-    public Study createStudy(RequestPostCreateDto requestPostDto) throws IOException {
-        List<Image> images = new ArrayList<>();
+    public PostResponseDto createStudy(PostRequestCreateDto requestPostDto) throws IOException {
         Study study = Study.builder()
                 .user(
                         userRepository.findByUsername(requestPostDto.getUsername())
@@ -72,16 +84,23 @@ public class PostService {
                 .content(requestPostDto.getContent())
                 .studyStatus(StudyStatus.ACTIVE)
                 .hit(0L)
-                .images(images)
+                .images(new ArrayList<>())
+                .tags(new LinkedList<>())
                 .build();
         addImage(requestPostDto, study);
         log.info("Create Study {} By {}",study.getTitle(),study.getUser().getUsername());
-        return postRepository.save(study);
+        postRepository.save(study);
+        tagService.saveTags(requestPostDto.getTags(), study.getId());
+        return PostResponseDto.builder()
+                .title(study.getTitle())
+                .url(getImageUrl(study))
+                .username(study.getUser().getUsername())
+                .tags(study.getTags())
+                .build();
     }
 
     @Transactional
-    public Question createQuestion(RequestPostCreateDto requestPostDto) throws IOException {
-        List<Image> images = new ArrayList<>();
+    public PostResponseDto createQuestion(PostRequestCreateDto requestPostDto) throws IOException {
         Question question = Question.builder()
                 .user(
                         userRepository.findByUsername(requestPostDto.getUsername())
@@ -91,15 +110,23 @@ public class PostService {
                 .content(requestPostDto.getContent())
                 .qnaStatus(QuestionStatus.UNSOLVED)
                 .hit(0L)
-                .images(images)
+                .images(new ArrayList<>())
+                .tags(new LinkedList<>())
                 .build();
         addImage(requestPostDto, question);
         log.info("Create Question {} By {}",question.getTitle(),question.getUser().getUsername());
-        return postRepository.save(question);
+        postRepository.save(question);
+        tagService.saveTags(requestPostDto.getTags(), question.getId());
+        return PostResponseDto.builder()
+                .title(question.getTitle())
+                .url(getImageUrl(question))
+                .username(question.getUser().getUsername())
+                .tags(question.getTags())
+                .build();
     }
 
     @Transactional
-    public void addImage(RequestPostCreateDto requestPostDto, Post post) throws IOException {
+    public void addImage(PostRequestCreateDto requestPostDto, Post post) throws IOException {
         if (!CollectionUtils.isEmpty(requestPostDto.getImages())) {
             for (MultipartFile file : requestPostDto.getImages()) {
                 String url = s3Uploader.upload(file, "static", post);
@@ -109,9 +136,9 @@ public class PostService {
     }
 
 
-    public Page<ResponsePostDto> findAllChats(Pageable pageable) {
+    public Page<PostResponseDto> findAllChats(Pageable pageable) {
         return postRepository.findAllChats(pageable).map(
-                chat -> ResponsePostDto
+                chat -> PostResponseDto
                         .builder()
                         .id(chat.getId())
                         .title(chat.getTitle())
@@ -119,63 +146,70 @@ public class PostService {
                         .username(chat.getUser().getUsername())
                         .hit(chat.getHit())
                         .like(chat.getLikes().size())
+                        .tags(chat.getTags())
                         .build()
         );
     }
 
-    public Page<ResponsePostDto> findAllStudies(Pageable pageable) {
+    public Page<PostResponseDto> findAllStudies(Pageable pageable) {
         return postRepository.findAllStudies(pageable).map(
-                study -> ResponsePostDto
+                study -> PostResponseDto
                         .builder()
+                        .id(study.getId())
                         .title(study.getTitle())
                         .content(study.getContent())
                         .username(study.getUser().getUsername())
                         .hit(study.getHit())
                         .studyStatus(study.getStudyStatus())
                         .like(study.getLikes().size())
+                        .tags(study.getTags())
                         .build()
         );
     }
 
-    public Page<ResponsePostDto> findAllQuestions(Pageable pageable) {
+    public Page<PostResponseDto> findAllQuestions(Pageable pageable) {
         return postRepository.findAllQuestions(pageable).map(
-                question -> ResponsePostDto
+                question -> PostResponseDto
                         .builder()
+                        .id(question.getId())
                         .title(question.getTitle())
                         .content(question.getContent())
                         .username(question.getUser().getUsername())
                         .hit(question.getHit())
                         .questionStatus(question.getQuestionStatus())
                         .like(question.getLikes().size())
+                        .tags(question.getTags())
                         .build()
         );
     }
 
     @Transactional
-    public ResponsePostDto findChatById(Long id) {
+    public PostResponseDto findChatById(Long id) {
         log.info("Selected Chat ID : {}",id);
         Chat chat = postRepository.findChatById(id).orElseThrow(PostNotFoundException::new);
         log.info("Selected Chat Title : {}", chat.getTitle());
         chat.plusHit();
         log.info("Current Hit : {}", chat.getHit());
-        return ResponsePostDto.builder()
+        return PostResponseDto.builder()
                 .id(chat.getId())
                 .hit(chat.getHit())
                 .username(chat.getUser().getUsername())
                 .content(chat.getContent())
                 .title(chat.getTitle())
                 .like(chat.getLikes().size())
+                .comments(chat.getComments())
+                .tags(chat.getTags())
                 .build();
     }
 
     @Transactional
-    public ResponsePostDto findStudyById(Long id) {
+    public PostResponseDto findStudyById(Long id) {
         log.info("Selected Study ID : {}",id);
         Study study = postRepository.findStudyById(id).orElseThrow(PostNotFoundException::new);
         log.info("Selected Study Title : {}", study.getTitle());
         study.plusHit();
         log.info("Current Hit : {}", study.getHit());
-        return ResponsePostDto.builder()
+        return PostResponseDto.builder()
                 .id(study.getId())
                 .hit(study.getHit())
                 .username(study.getUser().getUsername())
@@ -183,17 +217,19 @@ public class PostService {
                 .title(study.getTitle())
                 .studyStatus(study.getStudyStatus())
                 .like(study.getLikes().size())
+                .comments(study.getComments())
+                .tags(study.getTags())
                 .build();
     }
 
     @Transactional
-    public ResponsePostDto findQuestionById(Long id) {
+    public PostResponseDto findQuestionById(Long id) {
         log.info("Selected Question ID : {}",id);
         Question question = postRepository.findQuestionById(id).orElseThrow(PostNotFoundException::new);
         log.info("Selected Question Title : {}", question.getTitle());
         question.plusHit();
         log.info("Current Hit : {}", question.getHit());
-        return ResponsePostDto.builder()
+        return PostResponseDto.builder()
                 .id(question.getId())
                 .hit(question.getHit())
                 .username(question.getUser().getUsername())
@@ -201,17 +237,13 @@ public class PostService {
                 .title(question.getTitle())
                 .questionStatus(question.getQuestionStatus())
                 .like(question.getLikes().size())
+                .comments(question.getComments())
+                .tags(question.getTags())
                 .build();
     }
 
     @Transactional
-    public void updateChat(Chat chat, RequestPostUpdateDto updateDto) throws IOException {
-        updateImage(chat, updateDto);
-        chat.updatePost(updateDto);
-    }
-
-    @Transactional
-    public void updateImage(Post post, RequestPostUpdateDto updateDto) throws IOException {
+    public void updateImage(Post post, PostRequestUpdateDto updateDto) throws IOException {
         List<Image> dbImages = post.getImages();
         for (Image image : dbImages) {
             s3Uploader.delete(image.getName());
@@ -225,28 +257,48 @@ public class PostService {
         }
     }
 
-    @Transactional
-    public void updateStudy(Study study, RequestPostUpdateDto updateDto) throws IOException {
-        updateImage(study, updateDto);
-        study.updatePost(updateDto);
-        if (updateDto.getStatus().equals("ACTIVE"))
-            study.updateStatus(StudyStatus.ACTIVE);
-        else if (updateDto.getStatus().equals("CLOSED"))
-            study.updateStatus(StudyStatus.CLOSED);
-        else
-            throw new InputMismatchException("잘못된 입력입니다");
+    private void updatePostTags(PostRequestUpdateDto updateDto, Post post) {
+        //updateWithTags의 리턴값 -> 태그를 새로 설정하기 위해 지워야하는 tags -> 즉, 기존에 설정된 태그들 중, 지워야할 태그
+        //but tag id가 존재하지 않음 -> repository에서 find 필수
+        List<Tag> orphanTags = new LinkedList<>();
+        for (Tag tag : post.updateWithTags(updateDto)) {
+            Tag deleteTag = tagService.getTagByPostAndPostTag(tag.getPost().getId(), tag.getPostTags());
+            orphanTags.add(deleteTag);
+        }
+        for (Tag tag : orphanTags) {
+            post.getTags().remove(tag);//orphan = true로 인해서 삭제 가능
+        }
     }
 
     @Transactional
-    public void updateQuestion(Question question, RequestPostUpdateDto updateDto) throws IOException {
+    public void updateChat(Long chatId, PostRequestUpdateDto updateDto) throws IOException {
+        Chat chat = postRepository.findChatById(chatId).orElseThrow(PostNotFoundException::new);
+        updateImage(chat, updateDto);
+        //valid가 true면 실행
+        if (chat.tagUpdateValidation(updateDto)) {
+            updatePostTags(updateDto, chat);
+        }
+        chat.updatePost(updateDto);
+    }
+
+    @Transactional
+    public void updateStudy(Long studyId, PostRequestUpdateDto updateDto) throws IOException {
+        Study study = postRepository.findStudyById(studyId).orElseThrow(PostNotFoundException::new);
+        updateImage(study, updateDto);
+        if (study.tagUpdateValidation(updateDto)) {
+            updatePostTags(updateDto, study);
+        }
+        study.updatePost(updateDto);
+    }
+
+    @Transactional
+    public void updateQuestion(Long questionId, PostRequestUpdateDto updateDto) throws IOException {
+        Question question = postRepository.findQuestionById(questionId).orElseThrow(PostNotFoundException::new);
         updateImage(question, updateDto);
+        if (question.tagUpdateValidation(updateDto)) {
+            updatePostTags(updateDto,question);
+        }
         question.updatePost(updateDto);
-        if (updateDto.getStatus().equals("SOLVED"))
-            question.updateStatus(QuestionStatus.SOLVED);
-        else if (updateDto.getStatus().equals("UNSOLVED"))
-            question.updateStatus(QuestionStatus.UNSOLVED);
-        else
-            throw new InputMismatchException("잘못된 입력입니다");
     }
 
     @Transactional
