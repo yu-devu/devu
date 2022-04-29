@@ -6,8 +6,6 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './write.css';
 import ReactHtmlParser from 'html-react-parser';
 
-const url = 'http://54.180.29.69:8080';
-
 const Write = () => {
   const navigate = useNavigate();
   const [postContent, setPostContent] = useState({
@@ -35,7 +33,7 @@ const Write = () => {
     // formData.append('content', postContent.content);
     formData.append('content', ReactHtmlParser(postContent.content));
     await axios
-      .post(url + `/community/chat`, formData, {
+      .post(`/community/chat`, formData, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `${localStorage.getItem('accessToken')}`,
