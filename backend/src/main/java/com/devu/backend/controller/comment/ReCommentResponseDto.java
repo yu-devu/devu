@@ -1,4 +1,4 @@
-package com.devu.backend.api.comment;
+package com.devu.backend.controller.comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class CommentResponseDto {
+public class ReCommentResponseDto {
     private String username;
     private String title;
     private Long commentId;
-    private String contents;
     private Long group;
     private String parent;
 }
