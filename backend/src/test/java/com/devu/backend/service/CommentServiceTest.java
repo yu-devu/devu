@@ -1,7 +1,7 @@
 package com.devu.backend.service;
 
-import com.devu.backend.controller.comment.CommentCreateRequestDto;
-import com.devu.backend.controller.comment.CommentUpdateRequestDto;
+import com.devu.backend.api.comment.CommentCreateRequestDto;
+import com.devu.backend.api.comment.CommentUpdateRequestDto;
 import com.devu.backend.entity.Comment;
 import com.devu.backend.entity.User;
 import com.devu.backend.entity.post.Chat;

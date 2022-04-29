@@ -1,4 +1,4 @@
-package com.devu.backend.controller.comment;
+package com.devu.backend.api.comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

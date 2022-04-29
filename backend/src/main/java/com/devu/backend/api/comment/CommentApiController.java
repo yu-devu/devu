@@ -1,4 +1,4 @@
-package com.devu.backend.controller.comment;
+package com.devu.backend.api.comment;
 
 import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.entity.Comment;
@@ -8,12 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-public class CommentController {
+public class CommentApiController {
 
     private final CommentService commentService;
 
@@ -34,20 +33,6 @@ public class CommentController {
                     .build();
             return ResponseEntity.ok().body(responseDto);
         } catch (Exception e) {
-            e.printStackTrace();
-            ResponseErrorDto errorDto = ResponseErrorDto.builder()
-                    .error(e.getMessage())
-                    .build();
-            return ResponseEntity.badRequest().body(errorDto);
-        }
-    }
-
-    @GetMapping("/comments/{postId}")
-    ResponseEntity<?> getComments(@PathVariable(name = "postId") Long postId) {
-        try {
-            List<Comment> comments = commentService.commentsByPost(postId);
-            return ResponseEntity.ok().body(comments);
-        }catch (Exception e) {
             e.printStackTrace();
             ResponseErrorDto errorDto = ResponseErrorDto.builder()
                     .error(e.getMessage())
