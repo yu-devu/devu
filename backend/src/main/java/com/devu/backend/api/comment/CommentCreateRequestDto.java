@@ -13,4 +13,6 @@ public class CommentCreateRequestDto {
     private Long userId;
     private Long postId;
     private String contents;
+    private String parent;
+    private Long group;
 }
