@@ -13,7 +13,7 @@ const Home = () => {
       <div className="main-all">
         <div className="intro">
           <div className="intro-content">
-            <h1>나누는 지식만큼</h1>
+            <h1 class="top-word">나누는 지식만큼</h1>
             <h1>커지는 보람과 보상</h1>
             <br></br>
             <h2>

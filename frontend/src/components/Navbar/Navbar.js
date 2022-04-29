@@ -61,11 +61,11 @@ function Navbar() {
           })}
         </ul>
         {isToken ? (
-          <div>
+          <div className='nav-right'>
             <MyPageButton /> <LogoutButton /> <Service />
           </div>
         ) : (
-          <div>
+          <div className='nav-right'>
             <LoginButton /> <RegisterButton /> <Service />
           </div>
         )}
