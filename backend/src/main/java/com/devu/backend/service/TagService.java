@@ -2,6 +2,7 @@ package com.devu.backend.service;
 
 import com.devu.backend.api.tag.TagResponseDto;
 import com.devu.backend.common.exception.PostNotFoundException;
+import com.devu.backend.common.exception.TagNotFoundException;
 import com.devu.backend.entity.Tag;
 import com.devu.backend.entity.post.Post;
 import com.devu.backend.entity.post.PostTags;
@@ -51,12 +52,8 @@ public class TagService {
     * 4) 태그 수만 늘어나는 경우
     * 5) 태그 수만 줄어드는 경우
     * */
-    @Transactional
-    public void deleteTags(List<Tag> tags) {
-        for (Tag tag : tags) {
-            log.info("remove Tag : {}",tag.getPostTags());
-            log.info("remove Tag Post Id : {}",tag.getPost().getId());
-            tagRepository.deleteById(tag.getId());
-        }
+
+    public Tag getTagByPostAndPostTag(Long postId, PostTags postTags) {
+        return tagRepository.findByPostIdAndPostTags(postId, postTags).orElseThrow(TagNotFoundException::new);
     }
 }

@@ -22,10 +22,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -260,42 +257,48 @@ public class PostService {
         }
     }
 
+    private void updatePostTags(PostRequestUpdateDto updateDto, Post post) {
+        //updateWithTags의 리턴값 -> 태그를 새로 설정하기 위해 지워야하는 tags -> 즉, 기존에 설정된 태그들 중, 지워야할 태그
+        //but tag id가 존재하지 않음 -> repository에서 find 필수
+        List<Tag> orphanTags = new LinkedList<>();
+        for (Tag tag : post.updateWithTags(updateDto)) {
+            Tag deleteTag = tagService.getTagByPostAndPostTag(tag.getPost().getId(), tag.getPostTags());
+            orphanTags.add(deleteTag);
+        }
+        for (Tag tag : orphanTags) {
+            post.getTags().remove(tag);//orphan = true로 인해서 삭제 가능
+        }
+    }
+
     @Transactional
-    public void updateChat(Chat chat, PostRequestUpdateDto updateDto) throws IOException {
+    public void updateChat(Long chatId, PostRequestUpdateDto updateDto) throws IOException {
+        Chat chat = postRepository.findChatById(chatId).orElseThrow(PostNotFoundException::new);
         updateImage(chat, updateDto);
         //valid가 true면 실행
         if (chat.tagUpdateValidation(updateDto)) {
-            List<Tag> tags = chat.updateWithTags(updateDto);
-            for (Tag tag : tags) {
-                log.info("removed tag : {}",tag.getPostTags());
-            }
-            tagService.deleteTags(tags);
+            updatePostTags(updateDto, chat);
         }
         chat.updatePost(updateDto);
     }
 
     @Transactional
-    public void updateStudy(Study study, PostRequestUpdateDto updateDto) throws IOException {
+    public void updateStudy(Long studyId, PostRequestUpdateDto updateDto) throws IOException {
+        Study study = postRepository.findStudyById(studyId).orElseThrow(PostNotFoundException::new);
         updateImage(study, updateDto);
+        if (study.tagUpdateValidation(updateDto)) {
+            updatePostTags(updateDto, study);
+        }
         study.updatePost(updateDto);
-        if (updateDto.getStatus().equals("ACTIVE"))
-            study.updateStatus(StudyStatus.ACTIVE);
-        else if (updateDto.getStatus().equals("CLOSED"))
-            study.updateStatus(StudyStatus.CLOSED);
-        else
-            throw new InputMismatchException("잘못된 입력입니다");
     }
 
     @Transactional
-    public void updateQuestion(Question question, PostRequestUpdateDto updateDto) throws IOException {
+    public void updateQuestion(Long questionId, PostRequestUpdateDto updateDto) throws IOException {
+        Question question = postRepository.findQuestionById(questionId).orElseThrow(PostNotFoundException::new);
         updateImage(question, updateDto);
+        if (question.tagUpdateValidation(updateDto)) {
+            updatePostTags(updateDto,question);
+        }
         question.updatePost(updateDto);
-        if (updateDto.getStatus().equals("SOLVED"))
-            question.updateStatus(QuestionStatus.SOLVED);
-        else if (updateDto.getStatus().equals("UNSOLVED"))
-            question.updateStatus(QuestionStatus.UNSOLVED);
-        else
-            throw new InputMismatchException("잘못된 입력입니다");
     }
 
     @Transactional

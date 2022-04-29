@@ -170,8 +170,7 @@ public class PostController {
     @PatchMapping("/chat/{id}")
     public ResponseEntity<?> updateChat(@PathVariable("id") Long id, PostRequestUpdateDto updateDto) {
         try {
-            Chat chat = (Chat) postRepository.findById(id).orElseThrow(PostNotFoundException::new);
-            postService.updateChat(chat, updateDto);
+            postService.updateChat(id, updateDto);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -186,8 +185,7 @@ public class PostController {
     @PatchMapping("/study/{id}")
     public ResponseEntity<?> updateStudy(@PathVariable("id") Long id, PostRequestUpdateDto updateDto) {
         try {
-            Study study = (Study) postRepository.findById(id).orElseThrow(PostNotFoundException::new);
-            postService.updateStudy(study, updateDto);
+            postService.updateStudy(id, updateDto);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -202,8 +200,7 @@ public class PostController {
     @PatchMapping("/question/{id}")
     public ResponseEntity<?> updateQuestion(@PathVariable("id") Long id, PostRequestUpdateDto updateDto) {
         try {
-            Question question = (Question) postRepository.findById(id).orElseThrow(PostNotFoundException::new);
-            postService.updateQuestion(question, updateDto);
+            postService.updateQuestion(id, updateDto);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();

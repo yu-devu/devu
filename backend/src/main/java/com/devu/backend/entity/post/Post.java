@@ -45,8 +45,9 @@ public class Post extends BaseTime{
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private List<Image> images = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private List<Tag> tags = new LinkedList<>();//tags는 index와 상관없이 자주 변경 될 수 있어서 LinkedList
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tag> tags = new ArrayList<>();//tags는 index와 상관없이 자주 변경 될 수 있어서 LinkedList
+
 
     //==비지니스 로직==//
     public void plusHit() {

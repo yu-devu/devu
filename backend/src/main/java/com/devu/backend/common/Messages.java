@@ -16,5 +16,6 @@ public class Messages {
     public static final String DUP_PASSWORD = "이전 비밀번호와 동일합니다.";
     public static final String COMMENT_CONTENT_EMPTY = "댓글의 내용이 없습니다.";
     public static final String COMMENT_NOT_FOUND = "해당 댓글은 존재하지 않습니다.";
+    public static final String TAG_NOT_FOUND = "기존 게시글에 설정된 태그가 아닙니다.";
 }
 
