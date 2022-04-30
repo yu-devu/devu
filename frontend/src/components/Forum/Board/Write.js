@@ -33,7 +33,7 @@ const Write = () => {
     // formData.append('content', postContent.content);
     formData.append('content', ReactHtmlParser(postContent.content));
     await axios
-      .post(`/community/chat`, formData, {
+      .post(process.env.REACT_APP_DB_HOST + `/community/chat`, formData, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `${localStorage.getItem('accessToken')}`,

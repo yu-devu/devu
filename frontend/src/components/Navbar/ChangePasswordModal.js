@@ -17,7 +17,7 @@ function ChangePasswordModal() {
                 referUrl: referUrl,
                 email: email,
             }
-            await axios.post(`/password_url_email`, JSON.stringify(data), {
+            await axios.post(process.env.REACT_APP_DB_HOST + `/password_url_email`, JSON.stringify(data), {
                 headers: {
                     'Content-Type': 'application/json',
                 }
