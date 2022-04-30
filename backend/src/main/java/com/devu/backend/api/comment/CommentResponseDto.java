@@ -16,4 +16,5 @@ public class CommentResponseDto {
     private String contents;
     private Long group;
     private String parent;
+    private boolean deleted;
 }

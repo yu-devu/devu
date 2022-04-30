@@ -75,12 +75,12 @@ class CommentServiceTest {
         commentService.updateComment(updateRequestDto);
         //then
         Comment find = commentRepository.findById(chat.getId()).get();
-        assertEquals(updateRequestDto.getContent(), find.getContents());
+        assertEquals(updateRequestDto.getContents(), find.getContents());
     }
 
     private CommentUpdateRequestDto createUpdateRequestDto(Comment comment) {
         return CommentUpdateRequestDto.builder()
-                .content("update content")
+                .contents("update content")
                 .commentId(comment.getId())
                 .build();
     }

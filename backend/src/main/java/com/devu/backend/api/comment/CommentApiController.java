@@ -1,7 +1,9 @@
 package com.devu.backend.api.comment;
 
+import com.devu.backend.common.exception.CommentNotFoundException;
 import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.entity.Comment;
+import com.devu.backend.repository.CommentRepository;
 import com.devu.backend.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +22,9 @@ import java.util.List;
 public class CommentApiController {
 
     private final CommentService commentService;
+    private final CommentRepository commentRepository;
 
-    @PostMapping("/comment")
+    @PostMapping("/comments")
     ResponseEntity<?> createComment(@RequestBody CommentCreateRequestDto requestDto) {
         try {
             log.info("Post Id : {}",requestDto.getPostId());
@@ -50,7 +53,7 @@ public class CommentApiController {
         }
     }
 
-    @PostMapping("/reComment")
+    @PostMapping("/reComments")
     ResponseEntity<?> createReComment(@RequestBody CommentCreateRequestDto requestDto) {
         try {
             log.info("Post Id : {}",requestDto.getPostId());
@@ -95,7 +98,7 @@ public class CommentApiController {
         }
     }
 
-    @PatchMapping("/comment/{id}")
+    @PatchMapping("/comments/{id}")
     ResponseEntity<?> updateComment(@PathVariable(name = "id") Long commentId,
                                     @RequestBody CommentUpdateRequestDto updateRequestDto) {
         try {
@@ -111,6 +114,37 @@ public class CommentApiController {
                     .title(comment.getPost().getTitle())
                     .build();
             return ResponseEntity.ok().body(responseDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    @DeleteMapping("/comments/{id}")
+    ResponseEntity<?> deleteComment(@PathVariable(name = "id") Long commentId) {
+        try {
+            Comment comment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
+            commentService.deleteComment(comment);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    @DeleteMapping("/reComments/{id}")
+    ResponseEntity<?> deleteReComment(@PathVariable(name = "id") Long commentId) {
+        try {
+            Comment comment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
+            Comment originalComment = commentRepository.findById(comment.getGroupNum()).orElseThrow(CommentNotFoundException::new);
+            commentService.deleteReComment(originalComment, comment);
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();
             ResponseErrorDto errorDto = ResponseErrorDto.builder()

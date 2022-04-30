@@ -66,7 +66,7 @@ public class CommentService {
     @Transactional
     public Comment updateComment(CommentUpdateRequestDto updateRequestDto) {
         Comment comment = commentRepository.findById(updateRequestDto.getCommentId()).orElseThrow(CommentNotFoundException::new);
-        comment.updateContent(updateRequestDto.getContent());
+        comment.updateContent(updateRequestDto.getContents());
         return comment;
     }
 
@@ -80,7 +80,27 @@ public class CommentService {
                         .group(comment.getGroupNum())
                         .contents(comment.getContents())
                         .parent(comment.getParent())
+                        .deleted(comment.isDeleted())
                         .build()
         );
+    }
+
+    @Transactional
+    public void deleteComment(Comment comment) {
+        if(commentRepository.countByGroupNum(comment.getGroupNum()) == 1)
+            commentRepository.delete(comment);
+        else
+            comment.updateDeleted();
+    }
+
+    @Transactional
+    public void deleteReComment(Comment originalComment, Comment comment) {
+        if (originalComment.isDeleted()) {
+            if (commentRepository.countByGroupNum(comment.getGroupNum()) == 2) {
+                commentRepository.delete(comment);
+                commentRepository.delete(originalComment);
+            }
+        }else
+            commentRepository.delete(comment);
     }
 }
