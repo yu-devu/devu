@@ -34,7 +34,7 @@ const Register = () => {
       const formData = new FormData();
       formData.append('email', email);
       await axios
-        .post(`/email`, formData)
+        .post(process.env.REACT_APP_DB_HOST + `/email`, formData)
         .then((res) => {
           if (res.data.error) {
             alert(res.data.error);
@@ -51,7 +51,7 @@ const Register = () => {
     const formData = new FormData();
     formData.append('postKey', authkey);
     await axios
-      .post(`/key`, formData)
+      .post(process.env.REACT_APP_DB_HOST + `/key`, formData)
       .then(() => {
         alert('인증확인 완료!');
         showInformationInput();
@@ -69,7 +69,7 @@ const Register = () => {
         };
         console.log(JSON.stringify(data));
         await axios
-          .post('/signup', data, {
+          .post(process.env.REACT_APP_DB_HOST + '/signup', data, {
             headers: {
               'Content-Type': 'application/json',
             },
