@@ -35,7 +35,7 @@ const Modify = () => {
             //   content: postContent.content,
         };
         await axios
-            .patch(`/community/chat/${postId}`, JSON.stringify(data), {
+            .patch(process.env.REACT_APP_DB_HOST + `/community/chat/${postId}`, JSON.stringify(data), {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `${localStorage.getItem('accessToken')}`,
