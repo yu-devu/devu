@@ -46,4 +46,7 @@ public class Comment extends BaseTime{
         this.groupNum = group;
     }
 
+    public void updateDeleted() {
+        this.deleted = true;
+    }
 }
