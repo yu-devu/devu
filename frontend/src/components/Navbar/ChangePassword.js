@@ -8,6 +8,7 @@ function ChangePassword() {
 
     const [password, setPassword] = useState('');
     const [checkPassword, setCheckPassword] = useState('');
+    const [passwordAvailability, setPasswordAvailability] = useState(false);
     let pathname = location.pathname;
     let [a, b, email] = pathname.split('/'); // 추후에 바꿔야 함
     // console.log(email)
@@ -16,7 +17,11 @@ function ChangePassword() {
     // setEmail(response);
     // console.log(email)
 
-    const onChangePassword = (e) => setPassword(e.target.value);
+    const onChangePassword = (e) => {
+        var regExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+        setPassword(e.target.value);
+        setPasswordAvailability(regExp.test(e.target.value));
+    }
     const onChangeCheckPassword = (e) => setCheckPassword(e.target.value);
 
     useEffect(() => {
@@ -24,34 +29,33 @@ function ChangePassword() {
     }, []);
 
     const getChangePassword = async () => {
-        const res = await axios.get(process.env.REACT_APP_DB_HOST + `/change_password/${email}`);
-        console.log(res);
+        await axios.get(process.env.REACT_APP_DB_HOST + `/change_password/${email}`)
+            .then((res) => { console.log(res) });
     }
 
     const postChangePassword = async () => {
-        if (password == checkPassword) {
-            const data = {
-                password: password,
-            }
-            console.log(data);
-            await axios.post(process.env.REACT_APP_DB_HOST + `/change_password/${email}`, JSON.stringify(data), {
-                header: {
-                    'Content-Type': 'application/json',
+        if (password === checkPassword) {
+            if (passwordAvailability == true) {
+                const data = {
+                    password: password,
                 }
-            }).then((res) => {
-                console.log(res);
-                alert('비밀번호 변경 완료');
-                navigate.go(0);
-            }
-            ).catch((res) => {
-                // alert(JSON.parse(res.request.response).error);
-                alert("error");
-                console.log(res);
-            });
-        }
-        else {
-            alert('비밀번호가 일치하지 않습니다.');
-        }
+
+                await axios.post(process.env.REACT_APP_DB_HOST + `/change_password/${email}`, JSON.stringify(data), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }).then((res) => {
+                    console.log(res);
+                    alert('비밀번호 변경 완료');
+                    navigate('/');
+                }
+                ).catch((res) => {
+                    // alert(JSON.parse(res.request.response).error);
+                    alert("error");
+                    console.log(res);
+                });
+            } else alert('비밀번호를 양식에 맞게 입력해주세요.');
+        } else alert('비밀번호가 일치하지 않습니다.');
     }
 
     return (
@@ -66,6 +70,9 @@ function ChangePassword() {
                     onChange={(e) => onChangePassword(e)}
                     placeholder="비밀번호"
                 />
+                {password && !passwordAvailability ? (
+                    <p>특수문자, 문자, 숫자를 포함해 8자 이상 입력해주세요.</p>
+                ) : null}
             </div>
             <div>
                 <input
@@ -76,6 +83,9 @@ function ChangePassword() {
                     onChange={(e) => onChangeCheckPassword(e)}
                     placeholder="비밀번호 확인"
                 />
+                {checkPassword && password !== checkPassword ? (
+                    <p>비밀번호가 일치하지 않습니다.</p>
+                ) : null}
             </div>
             <div>
                 <button onClick={() => { postChangePassword(); }}>비밀번호 변경</button>

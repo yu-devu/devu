@@ -11,6 +11,7 @@ const Write = () => {
   const [postContent, setPostContent] = useState({
     title: '',
     content: '',
+    tags: '',
   });
 
   const username = localStorage.getItem('username');
@@ -32,11 +33,13 @@ const Write = () => {
     formData.append('username', username);
     // formData.append('content', postContent.content);
     formData.append('content', ReactHtmlParser(postContent.content));
+    formData.append('tags', postContent.tags);
     await axios
       .post(process.env.REACT_APP_DB_HOST + `/community/chat`, formData, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `${localStorage.getItem('accessToken')}`,
+          'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
         },
       })
       .then(() => {

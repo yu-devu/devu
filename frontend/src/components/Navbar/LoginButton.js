@@ -29,16 +29,19 @@ function LoginButton() {
       .post(process.env.REACT_APP_DB_HOST + '/signin', JSON.stringify(data), {
         headers: {
           'Content-Type': 'application/json',
+          'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
         },
       })
       .then((res) => {
         alert('로그인에 성공했습니다!');
         localStorage.setItem('username', res.data.username);
-        // console.log(res);
         localStorage.setItem('accessToken', res.data.accessToken);
         window.location.reload(false);
       })
-      .catch((error) => console.log(error));
+      .catch((res) => {
+        console.log(res);
+        alert(JSON.parse(res.request.response).error); // 이메일, 비밀번호 오류 출력
+      });
   };
 
   return (
