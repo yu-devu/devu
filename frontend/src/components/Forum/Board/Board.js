@@ -8,7 +8,7 @@ import ReactPaginate from 'react-paginate'
 import './pagination.css'
 
 const Board = () => {
-  const [currentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const [postsPerPage] = useState(10);
   const [postData, setPostData] = useState([]);
   const [lastIdx, setLastIdx] = useState(0);
@@ -18,7 +18,7 @@ const Board = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, []); // 글 목록 page 버튼 누를 때 마다 버튼 값 가져와서 setCurrentPage 하면 될 듯함.
 
   const fetchData = async () => {
     const res = await axios.get(process.env.REACT_APP_DB_HOST + `/community/chats`, {

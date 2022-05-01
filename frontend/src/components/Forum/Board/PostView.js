@@ -7,6 +7,8 @@ import "./postView.css";
 const PostView = () => {
   const location = useLocation();
   const [postData, setPostData] = useState([]);
+  const [isLike, setLike] = useState(false);
+  const username = localStorage.getItem("username");
   // const [comment, setComment] = useState('');
   // const onChangeComment = (e) => { setComment(e.target.value) }
 
@@ -34,9 +36,25 @@ const PostView = () => {
       // comment: res.data.comment,
     };
     setPostData(_postData);
-    console.log(postData);
+    console.log(JSON.stringify(postData.content));
   };
 
+  const handleLike = async () => {
+    const data = {
+      username: username,
+      postId: postId,
+    };
+    await axios.post(process.env.REACT_APP_DB_HOST + `/like`, JSON.stringify(data), {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }).then((res) => {
+      console.log(res.data);
+      if (res.data === '좋아요') setLike(true);
+      else if (res.data === '좋아요해제') setLike(false);
+    })
+      .catch((res) => { console.log(res); });
+  }
   // const handleComment = async () => {
   //   const commentData = {
   //     userId: userId,
@@ -55,10 +73,17 @@ const PostView = () => {
           <div className="container-read">
             <h2 className="chat-detail-title">{postData.title}</h2>
             <div className="chat-detail-head">
+              {
+                isLike
+                  ? (<button onClick={() => { handleLike(); }}>♥︎</button>)
+                  : (<button onClick={() => { handleLike(); }}>♡</button>)
+              }
               <label className="chat-post-owner">
                 작성자 : {postData.username}
               </label>
               <label className="chat-detail-hit">조회수 : {postData.hit}</label>
+              <label className="chat-detail-hit">좋아요 : {postData.like}</label>
+              {/* 좋아요 개수는 추후에 삭제해도 됨 */}
             </div>
             <label className="chat-detail-content">{postData.content}</label>
             <div class="read-btns">

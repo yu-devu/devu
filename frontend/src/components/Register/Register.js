@@ -21,7 +21,7 @@ const Register = () => {
   const handleUsername = (e) => setUsername(e.target.value);
 
   const handlePassword = (e) => {
-    var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/;
+    var regExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     setPassword(e.target.value);
     setPasswordAvailability(regExp.test(e.target.value));
   };
@@ -138,7 +138,7 @@ const Register = () => {
               placeholder="비밀번호"
             />
             {password && !passwordAvailability ? (
-              <p>영문+숫자 조합으로 8~10자리로 생성하여야 합니다.</p>
+              <p>특수문자, 문자, 숫자를 포함해 8자 이상 입력해주세요.</p>
             ) : null}
             <input
               className="register-input"
