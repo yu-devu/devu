@@ -273,7 +273,9 @@ public class PostService {
     @Transactional
     public void updateChat(Long chatId, PostRequestUpdateDto updateDto) throws IOException {
         Chat chat = postRepository.findChatById(chatId).orElseThrow(PostNotFoundException::new);
-        updateImage(chat, updateDto);
+        if (!updateDto.getImages().isEmpty()) {
+            updateImage(chat, updateDto);
+        }
         //valid가 true면 실행
         if (chat.tagUpdateValidation(updateDto)) {
             updatePostTags(updateDto, chat);
