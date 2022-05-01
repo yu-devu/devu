@@ -22,11 +22,19 @@ public class LikeApiController {
             if (!likeService.isAlreadyLiked(requestLikeDto.getUsername(), requestLikeDto.getPostId())) {
                 likeService.addLike(requestLikeDto.getUsername(), requestLikeDto.getPostId());
                 log.info("Post {} is liked by {}",requestLikeDto.getPostId(),requestLikeDto.getUsername());
-                return ResponseEntity.ok().body("좋아요");
+                ResponseLikeDto likeDto = ResponseLikeDto.builder()
+                        .liked(true)
+                        .username(requestLikeDto.getUsername())
+                        .build();
+                return ResponseEntity.ok().body(likeDto);
             }
             likeService.dislike(requestLikeDto.getUsername(), requestLikeDto.getPostId());
             log.info("Post {} is disliked by {}",requestLikeDto.getPostId(),requestLikeDto.getUsername());
-            return ResponseEntity.ok().body("좋아요 해제");
+            ResponseLikeDto likeDto = ResponseLikeDto.builder()
+                    .liked(false)
+                    .username(requestLikeDto.getUsername())
+                    .build();
+            return ResponseEntity.ok().body(likeDto);
         } catch (Exception e){
             e.printStackTrace();
             ResponseErrorDto errorDto = ResponseErrorDto.builder()
