@@ -19,12 +19,13 @@ public class LikeApiController {
     @PostMapping("/like")
     public ResponseEntity<?> addLike(@RequestBody RequestLikeDto requestLikeDto) {
         try {
-            likeService.addLike(requestLikeDto.getUsername(), requestLikeDto.getPostId());
-            log.info("Post {} is liked by {}",requestLikeDto.getPostId(),requestLikeDto.getUsername());
-            return ResponseEntity.ok().body("좋아요");
-        } catch (UnlikedPostException e) {
-            likeService.dislike();
-            log.info("Post {} is unliked by {}",requestLikeDto.getPostId(),requestLikeDto.getUsername());
+            if (!likeService.isAlreadyLiked(requestLikeDto.getUsername(), requestLikeDto.getPostId())) {
+                likeService.addLike(requestLikeDto.getUsername(), requestLikeDto.getPostId());
+                log.info("Post {} is liked by {}",requestLikeDto.getPostId(),requestLikeDto.getUsername());
+                return ResponseEntity.ok().body("좋아요");
+            }
+            likeService.dislike(requestLikeDto.getUsername(), requestLikeDto.getPostId());
+            log.info("Post {} is disliked by {}",requestLikeDto.getPostId(),requestLikeDto.getUsername());
             return ResponseEntity.ok().body("좋아요 해제");
         } catch (Exception e){
             e.printStackTrace();
