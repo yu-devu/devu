@@ -190,6 +190,7 @@ public class PostService {
         log.info("Selected Chat Title : {}", chat.getTitle());
         chat.plusHit();
         log.info("Current Hit : {}", chat.getHit());
+        log.info("Current Like : {}", chat.getLikes().size());
         return PostResponseDto.builder()
                 .id(chat.getId())
                 .hit(chat.getHit())
@@ -209,6 +210,7 @@ public class PostService {
         log.info("Selected Study Title : {}", study.getTitle());
         study.plusHit();
         log.info("Current Hit : {}", study.getHit());
+        log.info("Current Like : {}", study.getLikes().size());
         return PostResponseDto.builder()
                 .id(study.getId())
                 .hit(study.getHit())
@@ -229,6 +231,7 @@ public class PostService {
         log.info("Selected Question Title : {}", question.getTitle());
         question.plusHit();
         log.info("Current Hit : {}", question.getHit());
+        log.info("Current Like : {}", question.getLikes().size());
         return PostResponseDto.builder()
                 .id(question.getId())
                 .hit(question.getHit())

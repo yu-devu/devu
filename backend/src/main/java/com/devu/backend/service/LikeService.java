@@ -32,11 +32,13 @@ public class LikeService {
     public void addLike(String username, Long postId) {
         User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
         Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-        likeRepository.save(Like.builder()
+
+        Like like = likeRepository.save(Like.builder()
                 .post(post)
                 .user(user)
                 .build()
         );
+        like.changePost(post);
     }
 
     /*
