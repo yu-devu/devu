@@ -97,10 +97,9 @@ public class CommentService {
     public void deleteReComment(Comment originalComment, Comment comment) {
         if (originalComment.isDeleted()) {
             if (commentRepository.countByGroupNum(comment.getGroupNum()) == 2) {
-                commentRepository.delete(comment);
                 commentRepository.delete(originalComment);
             }
-        }else
-            commentRepository.delete(comment);
+        }
+        commentRepository.delete(comment);
     }
 }
