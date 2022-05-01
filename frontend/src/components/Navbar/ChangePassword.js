@@ -24,7 +24,7 @@ function ChangePassword() {
     }, []);
 
     const getChangePassword = async () => {
-        const res = await axios.get(`/change_password/${email}`);
+        const res = await axios.get(process.env.REACT_APP_DB_HOST + `/change_password/${email}`);
         console.log(res);
     }
 
@@ -34,7 +34,7 @@ function ChangePassword() {
                 password: password,
             }
             console.log(data);
-            await axios.post(`/change_password/${email}`, JSON.stringify(data), {
+            await axios.post(process.env.REACT_APP_DB_HOST + `/change_password/${email}`, JSON.stringify(data), {
                 header: {
                     'Content-Type': 'application/json',
                 }
