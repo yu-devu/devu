@@ -21,7 +21,7 @@ const Board = () => {
   }, []);
 
   const fetchData = async () => {
-    const res = await axios.get(`/community/chats`, {
+    const res = await axios.get(process.env.REACT_APP_DB_HOST + `/community/chats`, {
       params: {
         page: currentPage,
       },
