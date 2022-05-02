@@ -1,13 +1,16 @@
 package com.devu.backend.service;
 
+import com.devu.backend.api.status.ResponseStatusDto;
 import com.devu.backend.common.exception.PostNotFoundException;
 import com.devu.backend.common.exception.UserNotFoundException;
+import com.devu.backend.common.exception.UserNotMatchException;
 import com.devu.backend.config.s3.S3Uploader;
 import com.devu.backend.controller.post.PostRequestCreateDto;
 import com.devu.backend.controller.post.PostRequestUpdateDto;
 import com.devu.backend.controller.post.PostResponseDto;
 import com.devu.backend.entity.Image;
 import com.devu.backend.entity.Tag;
+import com.devu.backend.entity.User;
 import com.devu.backend.entity.post.*;
 import com.devu.backend.repository.ImageRepository;
 import com.devu.backend.repository.PostRepository;
@@ -332,6 +335,48 @@ public class PostService {
     public void deleteQuestion(Question question) {
         deleteImage(question);
         postRepository.delete(question);
+    }
+
+    @Transactional
+    public ResponseStatusDto updateStudyStatus(Long studyId,String username) {
+        Study study = postRepository.findStudyById(studyId).orElseThrow(PostNotFoundException::new);
+        isOwner(study, username);
+        if (study.getStudyStatus() == StudyStatus.ACTIVE) {
+            study.updateStatus(StudyStatus.CLOSED);
+            return ResponseStatusDto.builder()
+                    .studyStatus(study.getStudyStatus())
+                    .id(study.getId())
+                    .build();
+        }
+        study.updateStatus(StudyStatus.ACTIVE);
+        return ResponseStatusDto.builder()
+                .studyStatus(study.getStudyStatus())
+                .id(study.getId())
+                .build();
+    }
+
+    @Transactional
+    public ResponseStatusDto updateQuestionStatus(Long questionId,String username) {
+        Question question = postRepository.findQuestionById(questionId).orElseThrow(PostNotFoundException::new);
+        isOwner(question, username);
+        if (question.getQuestionStatus() == QuestionStatus.UNSOLVED) {
+            question.updateStatus(QuestionStatus.SOLVED);
+            return ResponseStatusDto.builder()
+                    .questionStatus(question.getQuestionStatus())
+                    .id(question.getId())
+                    .build();
+        }
+        question.updateStatus(QuestionStatus.UNSOLVED);
+        return ResponseStatusDto.builder()
+                .questionStatus(question.getQuestionStatus())
+                .id(question.getId())
+                .build();
+    }
+
+    private void isOwner(Post post, String username) {
+        if (!post.getUser().getUsername().equals(username)) {
+            throw new UserNotMatchException();
+        }
     }
 }
 
