@@ -25,14 +25,19 @@ public class LikeService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    public User findUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+    }
+
+    public Post findPostById(Long postId) {
+        return postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+    }
+
     /*
     * like => 4 query
     * */
     @Transactional(readOnly = false)
-    public void addLike(String username, Long postId) {
-        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
-        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-
+    public void addLike(User user,Post post) {
         Like like = likeRepository.save(Like.builder()
                 .post(post)
                 .user(user)
@@ -44,9 +49,7 @@ public class LikeService {
     /*
     * isPresent() true => 이미 좋아요를 누름
     * */
-    public boolean isAlreadyLiked(String username, Long postId) {
-        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
-        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+    public boolean isAlreadyLiked(User user,Post post) {
         return likeRepository.findByUserAndPost(user, post).isPresent();
     }
 
@@ -54,9 +57,7 @@ public class LikeService {
     * dislike => 5 query
     * */
     @Transactional(readOnly = false)
-    public void dislike(String username, Long postId) {
-        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
-        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+    public void dislike(User user,Post post) {
         Like like = likeRepository.findByUserAndPost(user, post).orElseThrow(LikeNotFoundException::new);
         likeRepository.delete(like);
     }

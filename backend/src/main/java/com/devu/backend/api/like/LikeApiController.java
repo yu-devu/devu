@@ -2,6 +2,8 @@ package com.devu.backend.api.like;
 
 import com.devu.backend.common.exception.UnlikedPostException;
 import com.devu.backend.controller.ResponseErrorDto;
+import com.devu.backend.entity.User;
+import com.devu.backend.entity.post.Post;
 import com.devu.backend.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +21,11 @@ public class LikeApiController {
     @PostMapping("/like")
     public ResponseEntity<?> addLike(@RequestBody RequestLikeDto requestLikeDto) {
         try {
-            if (!likeService.isAlreadyLiked(requestLikeDto.getUsername(), requestLikeDto.getPostId())) {
-                likeService.addLike(requestLikeDto.getUsername(), requestLikeDto.getPostId());
+            User user = likeService.findUserByUsername(requestLikeDto.getUsername());
+            Post post = likeService.findPostById(requestLikeDto.getPostId());
+
+            if (!likeService.isAlreadyLiked(user,post)) {
+                likeService.addLike(user,post);
                 log.info("Post {} is liked by {}",requestLikeDto.getPostId(),requestLikeDto.getUsername());
                 ResponseLikeDto likeDto = ResponseLikeDto.builder()
                         .liked(true)
@@ -28,7 +33,7 @@ public class LikeApiController {
                         .build();
                 return ResponseEntity.ok().body(likeDto);
             }
-            likeService.dislike(requestLikeDto.getUsername(), requestLikeDto.getPostId());
+            likeService.dislike(user,post);
             log.info("Post {} is disliked by {}",requestLikeDto.getPostId(),requestLikeDto.getUsername());
             ResponseLikeDto likeDto = ResponseLikeDto.builder()
                     .liked(false)
