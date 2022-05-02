@@ -14,7 +14,6 @@ import java.util.List;
 public class PostRequestUpdateDto {
     private String title;
     private String content;
-    private String status;
     private List<MultipartFile> images = new ArrayList<>();
     private List<String> tags = new ArrayList<>();
 }

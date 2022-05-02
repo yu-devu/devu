@@ -56,8 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             "/email", "/signup", "/signin", "/silent-refresh",
                             "/community/**","/users","/like",
                             "/password_url_email","/change_password/**",
-                            "/comments/**", "/reComments/**"
-                    )
+                            "/comments/**", "/reComments/**","/api/**")
                     .permitAll()
                     .anyRequest().authenticated()
                         .and()
@@ -68,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("http://54.180.29.69:8080"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("http://54.180.29.69"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

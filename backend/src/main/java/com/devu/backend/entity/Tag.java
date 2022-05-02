@@ -25,7 +25,7 @@ public class Tag {
     private PostTags postTags;
 
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 

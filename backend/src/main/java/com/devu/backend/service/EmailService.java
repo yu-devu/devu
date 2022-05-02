@@ -79,7 +79,7 @@ public class EmailService{
     * => 비밀번호 변경 진행
     * */
     private MimeMessage createPasswordChangeMail(String to)throws Exception{
-        String api = "http://localhost:8080/change_password/";
+        String api = "http://54.180.29.69/api/change_password/";
         log.info("Password Change Mail Send To = {}",to);
         MimeMessage message = emailSender.createMimeMessage();
 

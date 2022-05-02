@@ -25,32 +25,31 @@ public class LikeService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    //dislike query 감소용 container
-    private final ConcurrentHashMap<User, Post> container = new ConcurrentHashMap<>();
+    public User findUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+    }
+
+    public Post findPostById(Long postId) {
+        return postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+    }
 
     /*
     * like => 4 query
     * */
     @Transactional(readOnly = false)
-    public void addLike(String username, Long postId) {
-        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
-        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-        container.put(user, post);
-        //이미 좋아요가 되어있으면 좋아요 해제
-        if (isAlreadyLiked(user,post)){
-            throw new UnlikedPostException();
-        }
-        likeRepository.save(Like.builder()
+    public void addLike(User user,Post post) {
+        Like like = likeRepository.save(Like.builder()
                 .post(post)
                 .user(user)
                 .build()
         );
+        like.changePost(post);
     }
 
     /*
     * isPresent() true => 이미 좋아요를 누름
     * */
-    private boolean isAlreadyLiked(User user, Post post) {
+    public boolean isAlreadyLiked(User user,Post post) {
         return likeRepository.findByUserAndPost(user, post).isPresent();
     }
 
@@ -58,10 +57,7 @@ public class LikeService {
     * dislike => 5 query
     * */
     @Transactional(readOnly = false)
-    public void dislike() {
-        Enumeration<User> keys = container.keys();
-        User user = keys.nextElement();
-        Post post = container.get(user);
+    public void dislike(User user,Post post) {
         Like like = likeRepository.findByUserAndPost(user, post).orElseThrow(LikeNotFoundException::new);
         likeRepository.delete(like);
     }
