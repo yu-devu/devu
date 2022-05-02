@@ -56,8 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             "/email", "/signup", "/signin", "/silent-refresh",
                             "/community/**","/users","/like",
                             "/password_url_email","/change_password/**",
-                            "/comments/**", "/reComments/**"
-                    )
+                            "/comments/**", "/reComments/**","/api/**")
                     .permitAll()
                     .anyRequest().authenticated()
                         .and()
