@@ -5,11 +5,14 @@ import com.devu.backend.entity.post.Post;
 import com.devu.backend.entity.post.Question;
 import com.devu.backend.entity.post.Study;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -28,4 +31,19 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Optional<Question> findQuestionById(Long id);
 
     Optional<Study> findStudyById(Long id);
+
+    Optional<List<Chat>> findTop3ChatByOrderByHitDesc();
+
+    @Query(value = "select p from Post p" +
+            " left join Like l on p.id = l.post.id " +
+            " where Type(p) IN(Chat)" +
+            " group by p.id order by count(l.post.id) desc")
+    Optional<List<Chat>> findTop3ChatByOrderByLikes(Pageable pageable);
+
+    /*
+    * @Query를 사용하는데 들고오는 갯수의 제한이 필요한 경우 아래처럼
+    * */
+    default Optional<List<Chat>> findTop3ChatByOrderByLikes() {
+        return findTop3ChatByOrderByLikes(PageRequest.of(0,3));
+    }
 }
