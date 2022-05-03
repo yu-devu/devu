@@ -36,6 +36,8 @@ dependencies {
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+	implementation group: 'org.jsoup', name: 'jsoup', version: '1.14.3'
+	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.1.1'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'mysql:mysql-connector-java'
