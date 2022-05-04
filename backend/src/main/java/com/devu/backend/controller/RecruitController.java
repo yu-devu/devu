@@ -1,5 +1,7 @@
 package com.devu.backend.controller;
 
+import com.devu.backend.entity.CompanyType;
+import com.devu.backend.entity.Recruit;
 import com.devu.backend.repository.RecruitRepository;
 import com.devu.backend.service.RecruitService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +31,16 @@ public class RecruitController {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        recruitService.getNaver("https://recruit.navercorp.com/naver/job/list/developer");
+        recruitService.getNaver(url);
     }
+
+    //selenium
+    @GetMapping("/baemin")
+    public void getBaemin() {
+        int cnt = recruitService.getBaeminPage();
+        for (int i =0; i <= cnt; i++)
+            recruitService.getBaemin(i);
+    }
+
 
 }

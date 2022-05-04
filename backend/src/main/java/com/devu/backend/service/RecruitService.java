@@ -5,16 +5,18 @@ import com.devu.backend.entity.Recruit;
 import com.devu.backend.repository.RecruitRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -99,6 +101,64 @@ public class RecruitService {
         }
 
         quitDriver();
+    }
+
+    @Transactional
+    public void getBaemin(int page) {
+        try {
+            String url = "https://career.woowahan.com/w1/recruits?category=jobGroupCodes%3ABA005001&" +
+                    "recruitCampaignSeq=0&jobGroupCodes=BA005001&page=" + page + "&size=21&sort=updateDate%2Cdesc";
+            Document doc = Jsoup.connect(url)
+                    .header("origin", "https://career.woowahan.com")
+                    .header("referer", "https://career.woowahan.com/?category=jobGroupCodes%3ABA005001&keyword=&jobCodes=&employmentTypeCodes=")
+                    .header("accept-encoding", "gzip, deflate, br")
+                    .ignoreContentType(true)
+                    .get();
+            JSONObject jsonObject = new JSONObject(doc.text());
+            JSONObject dataObject = jsonObject.getJSONObject("data");
+            JSONArray lists = dataObject.getJSONArray("list");
+            for (int i = 0; i < lists.length(); i++) {
+                String recruitNumber = lists.getJSONObject(i).getString("recruitNumber");
+                String openDate = lists.getJSONObject(i).getString("recruitOpenDate").substring(0, 10);
+                String title = lists.getJSONObject(i).getString("recruitName");
+                log.info("link: {}, date: {}, title: {}", recruitNumber, openDate, title);
+
+                String link = "https://career.woowahan.com/recruitment/"+ recruitNumber +
+                        "/detail?category=jobGroupCodes%3ABA005001&keyword=&jobCodes=&employmentTypeCodes=";
+                String duration = openDate + " ~ 영입 종료시";
+                Recruit recruit = Recruit.builder()
+                        .link(link)
+                        .title(title)
+                        .company(CompanyType.BAEMIN)
+                        .duration(duration)
+                        .build();
+
+                recruitRepository.save(recruit);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getBaeminPage() {
+        String url = "https://career.woowahan.com/w1/recruits?category=jobGroupCodes%3ABA005001&recruitCampaignSeq=0&jobGroupCodes=BA005001&page=0&size=21&sort=updateDate%2Cdesc";
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(url)
+                    .header("origin", "https://career.woowahan.com")
+                    .header("referer", "https://career.woowahan.com/?category=jobGroupCodes%3ABA005001&keyword=&jobCodes=&employmentTypeCodes=")
+                    .header("accept-encoding", "gzip, deflate, br")
+                    .ignoreContentType(true)
+                    .get();
+            JSONObject jsonObject = new JSONObject(doc.text());
+            JSONObject dataObject = jsonObject.getJSONObject("data");
+            int cnt = dataObject.getInt("totalSize") / dataObject.getInt("pageSize");
+            log.info("cnt: {}", cnt);
+            return cnt;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     private void quitDriver() {
