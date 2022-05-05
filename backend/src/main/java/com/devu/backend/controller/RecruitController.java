@@ -1,8 +1,5 @@
 package com.devu.backend.controller;
 
-import com.devu.backend.entity.CompanyType;
-import com.devu.backend.entity.Recruit;
-import com.devu.backend.repository.RecruitRepository;
 import com.devu.backend.service.RecruitService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,24 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class RecruitController {
 
     private final RecruitService recruitService;
-    private final RecruitRepository recruitRepository;
 
-    //selenium
     @GetMapping("/naver")
     public void getNaver() {
-        String url = "https://recruit.navercorp.com/naver/job/list/developer";
-
-//        Connection con = Jsoup.connect(url);
-//        Document document = null;
-//        try {
-//            document = con.get();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        recruitService.getNaver(url);
+        recruitService.getNaver();
     }
 
-    //selenium
     @GetMapping("/baemin")
     public void getBaemin() {
         int cnt = recruitService.getBaeminPage();
@@ -42,5 +27,22 @@ public class RecruitController {
             recruitService.getBaemin(i);
     }
 
+    @GetMapping("/kakao")
+    public void getKakao() {
+        int cnt = recruitService.getKakaoPage();
+        for (int i =1; i <= cnt; i++)
+            recruitService.getKakao(i);
+    }
 
+    @GetMapping("/line")
+    public void getLine() {
+        recruitService.getLine();
+    }
+
+    @GetMapping("/coupang")
+    public void getCoupang() {
+        int cnt = recruitService.getCoupangPage();
+        for (int i = 1; i <= cnt; i++)
+            recruitService.getCoupang(i);
+    }
 }

@@ -7,8 +7,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -54,8 +57,8 @@ public class RecruitService {
     }
 
     @Transactional
-    public void getNaver(String url) {
-        driver.get(url) ;
+    public void getNaver() {
+        driver.get("https://recruit.navercorp.com/naver/job/list/developer") ;
         driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);  // 페이지 불러오는 여유시간.
 
         Long lastHeight = (Long)(((JavascriptExecutor) driver).executeScript("return document.body.scrollHeight"));
@@ -155,6 +158,139 @@ public class RecruitService {
             int cnt = dataObject.getInt("totalSize") / dataObject.getInt("pageSize");
             log.info("cnt: {}", cnt);
             return cnt;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Transactional
+    public void getKakao(int page) {
+        Document document = null;
+        String url = "https://careers.kakao.com/jobs?company=ALL&keyword=&page="+ page;
+        Connection con = Jsoup.connect(url);
+        try {
+            document = con.get();
+            Elements links = document.select(".list_jobs li .link_jobs");
+            Elements titles = document.select(".list_jobs li .tit_jobs");
+            Elements durations = document.select(".list_jobs li .list_info > dd:first-of-type");
+            for (int i =0; i < titles.size(); i++) {
+                String link = links.get(i).attr("href");
+                String title = titles.get(i).text();
+                String duration = durations.get(i).text();
+                log.info("link: {}, title: {}, duration: {}", link, title, duration);
+
+                Recruit recruit = Recruit.builder()
+                        .link(link)
+                        .title(title)
+                        .company(CompanyType.KAKAO)
+                        .duration(duration)
+                        .build();
+
+                recruitRepository.save(recruit);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getKakaoPage() {
+        String url = "https://careers.kakao.com/jobs?company=ALL&keyword=&page=1";
+        Document document = null;
+        Connection con = Jsoup.connect(url);
+        try {
+            document = con.get();
+            Elements num = document.select(".link_job1 .emph_num");
+            int limit = 15;
+            int cnt = Integer.parseInt(num.text()) / limit;
+            log.info("cnt: {}", cnt);
+            return cnt+1;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Transactional
+    public void getLine() {
+        Document document = null;
+        String url = "https://careers.linecorp.com/ko/jobs?ca=All&ci=Seoul,Bundang&co=East%20Asia";
+        Connection con = Jsoup.connect(url);
+        try {
+            document = con.get();
+            Elements links = document.select(".job_list li a");
+            Elements titles = document.select(".job_list li .title");
+            Elements durations = document.select(".job_list li .date");
+            for (int i =0; i < titles.size(); i++) {
+                String link = "https://careers.linecorp.com/" + links.get(i).attr("href");
+                String title = titles.get(i).text();
+                if(title.endsWith(" NEW"))
+                    title = title.substring(0, title.length()-4);
+                String duration = durations.get(i).text();
+                log.info("link: {}, title: {}, duration: {}", link, title, duration);
+
+                Recruit recruit = Recruit.builder()
+                        .link(link)
+                        .title(title)
+                        .company(CompanyType.LINE)
+                        .duration(duration)
+                        .build();
+
+                recruitRepository.save(recruit);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Transactional
+    public void getCoupang(int page) {
+        Document document = null;
+        String url = "https://www.coupang.jobs/kr/jobs/?" + page + "department=Ecommerce+Engineering&department=Play" +
+                "+Engineering&department=Product+UX&department=Search+and+Discovery&department=Search+and" +
+                "+Discovery+Core+Infrastructure&department=Cloud+Platform&department=Corporate+IT&department=eCommerce" +
+                "+Product&department=FTS+(Fulfillment+and+Transportation+System)&department=Marketplace%2c+Catalog+%26" +
+                "+Pricing+Systems&department=Program+Management+Office&department=Customer+Experience+Product#results";
+        Connection con = Jsoup.connect(url);
+        try {
+            document = con.get();
+            Elements links = document.select(".job-listing .card-title a");
+            Elements titles = document.select(".job-listing .card-title .stretched-link");
+            for (int i =0; i < titles.size(); i++) {
+                String link = "https://www.coupang.jobs" + links.get(i).attr("href");
+                String title = titles.get(i).text();
+                String duration = "공고 확인";
+                log.info("link: {}, title: {}, duration: {}", link, title, duration);
+
+                Recruit recruit = Recruit.builder()
+                        .link(link)
+                        .title(title)
+                        .company(CompanyType.COUPANG)
+                        .duration(duration)
+                        .build();
+
+                recruitRepository.save(recruit);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getCoupangPage() {
+        String url = "https://www.coupang.jobs/kr/jobs/?department=Ecommerce+Engineering&department=Play" +
+                "+Engineering&department=Product+UX&department=Search+and+Discovery&department=Search+and" +
+                "+Discovery+Core+Infrastructure&department=Cloud+Platform&department=Corporate+IT&department=eCommerce" +
+                "+Product&department=FTS+(Fulfillment+and+Transportation+System)&department=Marketplace%2c+Catalog+%26" +
+                "+Pricing+Systems&department=Program+Management+Office&department=Customer+Experience+Product#results";
+        Document document = null;
+        Connection con = Jsoup.connect(url);
+        try {
+            document = con.get();
+            Element num = document.select(".job-count strong").get(2);
+            int limit = 20;
+            int cnt = Integer.parseInt(num.text()) / limit;
+            log.info("cnt: {}", cnt);
+            return cnt+1;
         } catch (IOException e) {
             e.printStackTrace();
         }
