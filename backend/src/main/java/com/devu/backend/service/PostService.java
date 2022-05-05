@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -378,6 +379,35 @@ public class PostService {
         if (!post.getUser().getUsername().equals(username)) {
             throw new UserNotMatchException();
         }
+    }
+
+    public List<PostResponseDto> getTop3ChatByHits() {
+        return postRepository.findTop3ChatByOrderByHitDesc()
+                .orElseThrow(PostNotFoundException::new)
+                .stream().map(c -> PostResponseDto.builder()
+                        .id(c.getId())
+                        .title(c.getTitle())
+                        .hit(c.getHit())
+                        .content(c.getContent())
+                        .like(c.getLikes().size())
+                        .tags(c.getTags())
+                        .username(c.getUser().getUsername())
+                        .build()
+                ).collect(Collectors.toList());
+    }
+
+    public List<PostResponseDto> getTop3ChatByLikes() {
+        return postRepository.findTop3ChatByOrderByLikes().orElseThrow(PostNotFoundException::new)
+                .stream().map(c -> PostResponseDto.builder()
+                        .id(c.getId())
+                        .title(c.getTitle())
+                        .hit(c.getHit())
+                        .content(c.getContent())
+                        .like(c.getLikes().size())
+                        .tags(c.getTags())
+                        .username(c.getUser().getUsername())
+                        .build()
+                ).collect(Collectors.toList());
     }
 }
 
