@@ -15,10 +15,11 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -28,21 +29,17 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class RecruitService {
 
-    private final RecruitRepository recruitRepository;
-
+    @Value("${webDriverId}")
+    private String WEB_DRIVER_ID;
+    @Value("${webDriverPath}")
+    private String WEB_DRIVER_PATH;
     private WebDriver driver;
-    public static String WEB_DRIVER_ID = "webdriver.chrome.driver"; // Properties 설정
-    public static String WEB_DRIVER_PATH = "C:/chromedriver.exe"; // WebDriver 경로
 
-    @PostConstruct
-    public void init() {
-        chrome();
-    }
+    private final RecruitRepository recruitRepository;
 
     private void chrome() {
         System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
 
-        // webDriver 옵션 설정.
         ChromeOptions options = new ChromeOptions();
         options.setHeadless(true);
         options.addArguments("--lang=ko");
@@ -51,15 +48,15 @@ public class RecruitService {
         options.addArguments("--disable-gpu");
         options.setCapability("ignoreProtectedModeSettings", true);
 
-        // webDriver 생성.
         driver = new ChromeDriver(options);
         driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
     }
 
     @Transactional
     public void getNaver() {
+        chrome();
         driver.get("https://recruit.navercorp.com/naver/job/list/developer") ;
-        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);  // 페이지 불러오는 여유시간.
+        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
 
         Long lastHeight = (Long)(((JavascriptExecutor) driver).executeScript("return document.body.scrollHeight"));
         Long newHeight = 0L;
@@ -298,7 +295,28 @@ public class RecruitService {
     }
 
     private void quitDriver() {
-        driver.quit(); // webDriver 종료
+        driver.quit();
     }
 
+    @Transactional
+//    @Scheduled(cron = "0 0 4 * * *")  매일 새벽4시마다 실행(혹시몰라 잠시중단)
+    public void getAllRecruit() {
+        recruitRepository.deleteAll();
+        //Naver 크롤링
+        getNaver();
+        //Baemin 크롤링
+        int cnt = getBaeminPage();
+        for (int i =0; i <= cnt; i++)
+            getBaemin(i);
+        //Kakao 크롤링
+        cnt = getKakaoPage();
+        for (int i =1; i <= cnt; i++)
+            getKakao(i);
+        // Line 크롤링
+        getLine();
+        // Coupang 크롤링
+        cnt = getCoupangPage();
+        for (int i = 1; i <= cnt; i++)
+            getCoupang(i);
+    }
 }
