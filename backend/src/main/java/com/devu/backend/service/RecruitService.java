@@ -1,5 +1,6 @@
 package com.devu.backend.service;
 
+import com.devu.backend.api.recruit.RecruitResponseDto;
 import com.devu.backend.entity.CompanyType;
 import com.devu.backend.entity.Recruit;
 import com.devu.backend.repository.RecruitRepository;
@@ -13,10 +14,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -285,5 +289,35 @@ public class RecruitService {
         cnt = getCoupangPage();
         for (int i = 1; i <= cnt; i++)
             collectCoupang(i);
+    }
+
+    public List<RecruitResponseDto> getAllRecruit(Pageable pageable) {
+        Page<RecruitResponseDto> allRecruit = recruitRepository.findAll(pageable).map(RecruitResponseDto::new);
+        return allRecruit.getContent();
+    }
+
+    public List<RecruitResponseDto> getNaver(Pageable pageable) {
+        return getRecruitByCompany(pageable, CompanyType.NAVER);
+    }
+
+    private List<RecruitResponseDto> getRecruitByCompany(Pageable pageable, CompanyType company) {
+        Page<RecruitResponseDto> companyRecruit = recruitRepository.findByCompany(company, pageable).map(RecruitResponseDto::new);
+        return companyRecruit.getContent();
+    }
+
+    public List<RecruitResponseDto> getKakao(Pageable pageable) {
+        return getRecruitByCompany(pageable, CompanyType.KAKAO);
+    }
+
+    public List<RecruitResponseDto> getLine(Pageable pageable) {
+        return getRecruitByCompany(pageable, CompanyType.LINE);
+    }
+
+    public List<RecruitResponseDto> getCoupang(Pageable pageable) {
+        return getRecruitByCompany(pageable, CompanyType.COUPANG);
+    }
+
+    public List<RecruitResponseDto> getBaemin(Pageable pageable) {
+        return getRecruitByCompany(pageable, CompanyType.BAEMIN);
     }
 }
