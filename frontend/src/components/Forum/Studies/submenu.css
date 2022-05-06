@@ -1,0 +1,19 @@
+.sub-menu{
+    position: relative;
+    box-shadow: 1px 6px 8px 1px rgb(0 0 0 / 12%) inset;
+    line-height: 3.2;
+    height: 40px;
+}
+
+.sub-menu-items {
+    position: relative;
+    width: 1130px;
+    padding: 0 133px;
+    margin: 0 auto;
+}
+
+.sub-item {
+    margin-right: 12px;
+    color: var(--color-gray);
+    font-size: large;
+}

@@ -1,0 +1,120 @@
+.top-studies {
+    position: relative;
+    overflow: visible;
+    background-color: rgb(242, 242, 242, 1);
+    width: 1920px;
+    height: 368px;
+    top: 10px;
+    left: 0px;
+}
+
+.top-msg {
+    position: absolute;
+    left: 450px;
+    top: 37px;
+    text-align: left;
+}
+
+.top-msg-gray {
+    position: absolute;
+    left: 450px;
+    top: 77px;
+    text-align: left;
+}
+
+.top-cards {
+    position: absolute;
+    left: 450px;
+    top: 131px;
+    margin-top: 30px;
+    display: flex;
+    width: 850px;
+}
+
+.top-card {
+    filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.102));
+    border-radius: 0.5rem;
+    background: #fff;
+    display: flex;
+    width: 317px;
+    height: 178px;
+    margin-right: 20px;
+}
+
+.top-title {
+    font-size: 15px;
+    font-style: normal;
+    font-weight: normal;
+    margin-top: 10px;
+}
+
+.top-people {
+    font-size: 15px;
+    font-style: normal;
+    font-weight: normal;
+    color: rgba(128,128,128,1);
+}
+
+.top-content {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: normal;
+    color: rgba(80,80,80,1);
+    margin-bottom: 20px;
+    margin-right: 30px;
+}
+
+.top-date {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    color: rgba(80,80,80,1);
+}
+
+.top-circle {
+    border-radius: 10rem;
+}
+
+.top-photo {
+    width: 100px;
+    height: 100px;
+    filter: brightness(80%);
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+.body-studies {
+    display: block;
+}
+
+.search-and-write {
+    display: flex;
+    position: relative;
+    top: 40px;
+    left: 400px;
+}
+
+.studies-search {
+    display: flex;
+    /* z-index: 100; */
+    width: 450px;
+    height: 100px;
+    stroke: rgba(219,219,219,1)
+}
+
+.search-input {
+    width: 489px;
+    border-radius: 100px;
+    border: 1px solid rgba(219,219,219,1);
+    padding: 0.5rem;
+    height: 2.75rem;
+}
+
+.studies-write-btn {
+    margin-left: 330px;
+    border-radius: 100px;
+    color: white;
+    background-color: rgba(112,112,112,1);
+    width: 90px;
+    height: 40px;
+}
