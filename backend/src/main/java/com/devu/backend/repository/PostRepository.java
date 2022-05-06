@@ -34,6 +34,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Optional<List<Chat>> findTop3ChatByOrderByHitDesc();
 
+    Optional<List<Study>> findTop3StudyByOrderByHitDesc();
+
+    Optional<List<Question>> findTop3QuestionByOrderByHitDesc();
+
     @Query(value = "select p from Post p" +
             " left join Like l on p.id = l.post.id " +
             " where Type(p) IN(Chat)" +
@@ -45,5 +49,25 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     * */
     default Optional<List<Chat>> findTop3ChatByOrderByLikes() {
         return findTop3ChatByOrderByLikes(PageRequest.of(0,3));
+    }
+
+    @Query(value = "select p from Post p" +
+            " left join Like l on p.id = l.post.id " +
+            " where Type(p) IN(Study)" +
+            " group by p.id order by count(l.post.id) desc")
+    Optional<List<Study>> findTop3StudyByOrderByLikes(Pageable pageable);
+
+    default Optional<List<Study>> findTop3StudyByOrderByLikes() {
+        return findTop3StudyByOrderByLikes(PageRequest.of(0,3));
+    }
+
+    @Query(value = "select p from Post p" +
+            " left join Like l on p.id = l.post.id " +
+            " where Type(p) IN(Question )" +
+            " group by p.id order by count(l.post.id) desc")
+    Optional<List<Question>> findTop3QuestionByOrderByLikes(Pageable pageable);
+
+    default Optional<List<Question>> findTop3QuestionByOrderByLikes() {
+        return findTop3QuestionByOrderByLikes(PageRequest.of(0,3));
     }
 }
