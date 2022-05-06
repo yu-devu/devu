@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,4 +71,24 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     default Optional<List<Question>> findTop3QuestionByOrderByLikes() {
         return findTop3QuestionByOrderByLikes(PageRequest.of(0,3));
     }
+
+    @Query("select s from Study s " +
+            "where Type(s) In(Study) and " +
+            "s.studyStatus = com.devu.backend.entity.post.StudyStatus.ACTIVE")
+    Optional<List<Study>> findAllActiveStudy();
+
+    @Query("select s from Study s " +
+            "where Type(s) In(Study) and " +
+            "s.studyStatus = com.devu.backend.entity.post.StudyStatus.CLOSED")
+    Optional<List<Study>> findAllClosedStudy();
+
+    @Query("select q from Question q " +
+            "where Type(q) In(Question) and " +
+            "q.questionStatus = com.devu.backend.entity.post.QuestionStatus.SOLVED")
+    Optional<List<Question>> findAllSolvedQuestion();
+
+    @Query("select q from Question q " +
+            "where Type(q) In(Question) and " +
+            "q.questionStatus = com.devu.backend.entity.post.QuestionStatus.UNSOLVED")
+    Optional<List<Question>> findAllUnSolvedQuestion();
 }
