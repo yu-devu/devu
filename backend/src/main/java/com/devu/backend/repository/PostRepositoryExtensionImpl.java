@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+import static com.devu.backend.entity.QLike.like;
 import static com.devu.backend.entity.post.QPost.post;
 import static com.devu.backend.entity.post.QStudy.study;
 
@@ -56,10 +57,27 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
     @Override
     public Page<Study> findAllStudy(Pageable pageable, PostSearch postSearch) {
 
+        if (!StringUtils.hasText(postSearch.getOrder())) {
+            QueryResults<Study> results = queryFactory
+                    .select(study)
+                    .from(study)
+                    .orderBy(study.createAt.desc())
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .fetchResults();
+
+            List<Study> studies = results.getResults();
+            long total = results.getTotal();
+            return new PageImpl<Study>(studies, pageable, total);
+        }
         QueryResults<Study> results = queryFactory
                 .select(study)
                 .from(study)
+                .leftJoin(like)
+                .on(study.id.eq(like.post.id))
                 .orderBy(study.createAt.desc())
+                .groupBy(study.id)
+                .orderBy(like.post.id.count().desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();

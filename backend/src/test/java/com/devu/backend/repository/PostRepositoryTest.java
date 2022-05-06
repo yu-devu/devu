@@ -40,19 +40,24 @@ class PostRepositoryTest {
     @Test
     void findAllStudy() {
         //given
-        User user = createUser("brido");
-        Study study1 = createStudy(user);
+        User user1 = createUser("brido1");
+        User user2 = createUser("brido2");
+        Study study1 = createStudy(user1);
         study1.getTags().add(createTag());
-        Study study2 = createStudy(user);
+        Study study2 = createStudy(user1);
+        createLike(user1, study1);
+        createLike(user1, study2);
+        createLike(user1, study2);
         ArrayList<PostTags> tags = new ArrayList<>();
         tags.add(PostTags.SPRING);
         PostSearch search = PostSearch.builder()
+                .order("likes")
                 .build();
         //when
         List<PostResponseDto> responseDtos = postRepository.findAllStudy(Pageable.ofSize(10),search)
                 .stream().map(p -> PostResponseDto.builder()
                         .id(p.getId())
-
+                        .like(p.getLikes().size())
                         .title(p.getTitle())
                         .content(p.getContent())
                         .username(p.getUser().getUsername())
@@ -60,8 +65,8 @@ class PostRepositoryTest {
                 ).collect(Collectors.toList());
         //then
         Assertions.assertThat(responseDtos.size()).isEqualTo(2);
-        Assertions.assertThat(responseDtos.get(0).getId()).isEqualTo(study2.getId());
-        Assertions.assertThat(responseDtos.get(1).getId()).isEqualTo(study1.getId());
+        Assertions.assertThat(responseDtos.get(0).getLike()).isEqualTo(study2.getLikes().size());
+        Assertions.assertThat(responseDtos.get(1).getLike()).isEqualTo(study1.getLikes().size());
 
     }
 
