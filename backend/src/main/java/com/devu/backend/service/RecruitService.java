@@ -26,7 +26,7 @@ public class RecruitService {
     private final RecruitRepository recruitRepository;
 
     @Transactional
-    public void getNaver() {
+    public void collectNaver() {
         int startNum = 1;
         int endNum = 10;
         while (true) {
@@ -75,7 +75,7 @@ public class RecruitService {
     }
 
     @Transactional
-    public void getBaemin(int page) {
+    public void collectBaemin(int page) {
         try {
             String url = "https://career.woowahan.com/w1/recruits?category=jobGroupCodes%3ABA005001&" +
                     "recruitCampaignSeq=0&jobGroupCodes=BA005001&page=" + page + "&size=21&sort=updateDate%2Cdesc";
@@ -133,7 +133,7 @@ public class RecruitService {
     }
 
     @Transactional
-    public void getKakao(int page) {
+    public void collectKakao(int page) {
         Document document = null;
         String url = "https://careers.kakao.com/jobs?company=ALL&keyword=&page="+ page;
         Connection con = Jsoup.connect(url);
@@ -180,7 +180,7 @@ public class RecruitService {
     }
 
     @Transactional
-    public void getLine() {
+    public void collectLine() {
         Document document = null;
         String url = "https://careers.linecorp.com/ko/jobs?ca=All&ci=Seoul,Bundang&co=East%20Asia";
         Connection con = Jsoup.connect(url);
@@ -212,7 +212,7 @@ public class RecruitService {
     }
 
     @Transactional
-    public void getCoupang(int page) {
+    public void collectCoupang(int page) {
         Document document = null;
         String url = "https://www.coupang.jobs/kr/jobs/?" + page + "department=Ecommerce+Engineering&department=Play" +
                 "+Engineering&department=Product+UX&department=Search+and+Discovery&department=Search+and" +
@@ -267,23 +267,23 @@ public class RecruitService {
 
     @Transactional
 //    @Scheduled(cron = "0 0 4 * * *")  매일 새벽4시마다 실행(혹시몰라 잠시중단)
-    public void getAllRecruit() {
+    public void collectAllRecruit() {
         recruitRepository.deleteAll();
         //Naver 크롤링
-        getNaver();
+        collectNaver();
         //Baemin 크롤링
         int cnt = getBaeminPage();
         for (int i =0; i <= cnt; i++)
-            getBaemin(i);
+            collectBaemin(i);
         //Kakao 크롤링
         cnt = getKakaoPage();
         for (int i =1; i <= cnt; i++)
-            getKakao(i);
+            collectKakao(i);
         // Line 크롤링
-        getLine();
+        collectLine();
         // Coupang 크롤링
         cnt = getCoupangPage();
         for (int i = 1; i <= cnt; i++)
-            getCoupang(i);
+            collectCoupang(i);
     }
 }
