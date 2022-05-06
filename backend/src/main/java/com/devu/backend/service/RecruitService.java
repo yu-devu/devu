@@ -12,95 +12,66 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class RecruitService {
 
-    @Value("${webDriverId}")
-    private String WEB_DRIVER_ID;
-    @Value("${webDriverPath}")
-    private String WEB_DRIVER_PATH;
-    private WebDriver driver;
-
     private final RecruitRepository recruitRepository;
-
-    private void chrome() {
-        System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
-
-        ChromeOptions options = new ChromeOptions();
-        options.setHeadless(true);
-        options.addArguments("--lang=ko");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--disable-gpu");
-        options.setCapability("ignoreProtectedModeSettings", true);
-
-        driver = new ChromeDriver(options);
-        driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
-    }
 
     @Transactional
     public void getNaver() {
-        chrome();
-        driver.get("https://recruit.navercorp.com/naver/job/list/developer") ;
-        driver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
-
-        Long lastHeight = (Long)(((JavascriptExecutor) driver).executeScript("return document.body.scrollHeight"));
-        Long newHeight = 0L;
-        try {
-            while (true){
-                log.info("{}, {}", newHeight, lastHeight);
-                ((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
-                if (!driver.findElement(By.cssSelector("div#moreDiv")).getAttribute("style").equals("display: none;")) {
-                    driver.findElement(By.cssSelector("div#moreDiv")).click();
-                }
-                Thread.sleep(500);
-                newHeight = (Long)(((JavascriptExecutor) driver).executeScript("return document.body.scrollHeight"));
-
-                if (newHeight.equals(lastHeight))
-                    break;
-                lastHeight = newHeight;
+        int startNum = 1;
+        int endNum = 10;
+        while (true) {
+            String url = "https://recruit.navercorp.com/naver/job/listJson";
+            Document doc = null;
+            try {
+                doc = Jsoup.connect(url)
+                        .header("origin", "https://recruit.navercorp.com")
+                        .header("referer", "Referer: https://recruit.navercorp.com/naver/job/list/developer")
+                        .header("accept-encoding", "gzip, deflate, br")
+                        .data("classNm", "developer")
+                        .data("startNum", Integer.toString(startNum))
+                        .data("endNum", Integer.toString(endNum))
+                        .ignoreContentType(true)
+                        .post();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            JSONArray jsonArray = new JSONArray(doc.text());
+            if (jsonArray.length() == 0)
+                break;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String start = jsonObject.getString("staYmd");
+                String end = jsonObject.getString("endYmd");
+                String annoId = Integer.toString(jsonObject.getInt("annoId"));
+                String title =  jsonObject.getString("jobNm");
+
+                String link = "https://recruit.navercorp.com/naver/job/detail/developer?annoId=" + annoId +
+                        "&classId=&jobId=&entTypeCd=&searchTxt=&searchSysComCd=";
+                String duration = start + " ~ " + end;
+                log.info("link: {}, date: {}, title: {}", link, duration, title);
+
+                Recruit recruit = Recruit.builder()
+                        .link(link)
+                        .title(title)
+                        .company(CompanyType.NAVER)
+                        .duration(duration)
+                        .build();
+
+                recruitRepository.save(recruit);
+            }
+            startNum += 10;
+            endNum += 10;
         }
-
-        List<WebElement> elements = driver.findElements(By.cssSelector("#jobListDiv ul li"));
-        int idx = 0;
-        for (WebElement element : elements) {
-            idx++;
-            log.info("----------" + idx + "----------------");
-            String link = element.findElement(By.cssSelector("a")).getAttribute("href");
-            log.info("link: {}", link);
-            String title = element.findElement(By.cssSelector(".crd_tit")).getText();
-            log.info("title: {}", title);
-            String duration = element.findElement(By.cssSelector(".crd_date")).getText();
-            log.info("duration: {}", duration);
-
-            Recruit recruit = Recruit.builder()
-                    .link(link)
-                    .title(title)
-                    .company(CompanyType.NAVER)
-                    .duration(duration)
-                    .build();
-
-            recruitRepository.save(recruit);
-        }
-
-        quitDriver();
     }
 
     @Transactional
@@ -292,10 +263,6 @@ public class RecruitService {
             e.printStackTrace();
         }
         return 0;
-    }
-
-    private void quitDriver() {
-        driver.quit();
     }
 
     @Transactional
