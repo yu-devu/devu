@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -377,6 +379,105 @@ public class PostService {
         if (!post.getUser().getUsername().equals(username)) {
             throw new UserNotMatchException();
         }
+    }
+
+    public List<PostResponseDto> getTop3ChatByHits() {
+        return postRepository.findTop3ChatByOrderByHitDesc()
+                .orElseThrow(PostNotFoundException::new)
+                .stream().map(c -> PostResponseDto.builder()
+                        .id(c.getId())
+                        .title(c.getTitle())
+                        .hit(c.getHit())
+                        .content(c.getContent())
+                        .like(c.getLikes().size())
+                        .tags(c.getTags())
+                        .username(c.getUser().getUsername())
+                        .build()
+                ).collect(Collectors.toList());
+    }
+
+    public List<PostResponseDto> getTop3ChatByLikes() {
+        return postRepository.findTop3ChatByOrderByLikes().orElseThrow(PostNotFoundException::new)
+                .stream().map(c -> PostResponseDto.builder()
+                        .id(c.getId())
+                        .title(c.getTitle())
+                        .hit(c.getHit())
+                        .content(c.getContent())
+                        .like(c.getLikes().size())
+                        .tags(c.getTags())
+                        .username(c.getUser().getUsername())
+                        .build()
+                ).collect(Collectors.toList());
+    }
+
+    public List<PostResponseDto> getTop3StudyByHits() {
+        return postRepository.findTop3StudyByOrderByHitDesc().orElseThrow(PostNotFoundException::new)
+                .stream().map(s -> PostResponseDto.builder()
+                        .id(s.getId())
+                        .title(s.getTitle())
+                        .hit(s.getHit())
+                        .content(s.getContent())
+                        .like(s.getLikes().size())
+                        .tags(s.getTags())
+                        .username(s.getUser().getUsername())
+                        .build()
+                ).collect(Collectors.toList());
+    }
+
+    public List<PostResponseDto> getTop3StudyByLikes() {
+        return postRepository.findTop3StudyByOrderByLikes().orElseThrow(PostNotFoundException::new)
+                .stream().map(s -> PostResponseDto.builder()
+                        .id(s.getId())
+                        .title(s.getTitle())
+                        .hit(s.getHit())
+                        .content(s.getContent())
+                        .like(s.getLikes().size())
+                        .tags(s.getTags())
+                        .username(s.getUser().getUsername())
+                        .build()
+                ).collect(Collectors.toList());
+    }
+
+    public List<PostResponseDto> getTop3QuestionByHits() {
+        return postRepository.findTop3QuestionByOrderByHitDesc().orElseThrow(PostNotFoundException::new)
+                .stream().map(q -> PostResponseDto.builder()
+                        .id(q.getId())
+                        .title(q.getTitle())
+                        .hit(q.getHit())
+                        .content(q.getContent())
+                        .like(q.getLikes().size())
+                        .tags(q.getTags())
+                        .username(q.getUser().getUsername())
+                        .build()
+                ).collect(Collectors.toList());
+    }
+
+    public List<PostResponseDto> getTop3QuestionByLikes() {
+        return postRepository.findTop3QuestionByOrderByLikes().orElseThrow(PostNotFoundException::new)
+                .stream().map(q -> PostResponseDto.builder()
+                        .id(q.getId())
+                        .title(q.getTitle())
+                        .hit(q.getHit())
+                        .content(q.getContent())
+                        .like(q.getLikes().size())
+                        .tags(q.getTags())
+                        .username(q.getUser().getUsername())
+                        .build()
+                ).collect(Collectors.toList());
+    }
+
+    public List<PostResponseDto> getStudiesByStatus(Pageable pageable,StudyStatus studyStatus) {
+        return postRepository.findAllStudyByStatus(pageable,studyStatus)
+                .stream().map(s -> PostResponseDto.builder()
+                        .username(s.getUser().getUsername())
+                        .id(s.getId())
+                        .content(s.getContent())
+                        .title(s.getTitle())
+                        .like(s.getLikes().size())
+                        .tags(s.getTags())
+                        .hit(s.getHit())
+                        .build()
+                ).collect(Collectors.toList());
     }
 }
 
