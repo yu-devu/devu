@@ -1,9 +1,6 @@
 package com.devu.backend.repository;
 
-import com.devu.backend.entity.post.Chat;
-import com.devu.backend.entity.post.Post;
-import com.devu.backend.entity.post.Question;
-import com.devu.backend.entity.post.Study;
+import com.devu.backend.entity.post.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,14 +14,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Long> {
-    @Query("select p from Post p where TYPE(p) IN(Chat)")
+public interface PostRepository extends JpaRepository<Post, Long> ,PostRepositoryExtension{
+    @Query("select p from Post p where TYPE(p) IN(Chat) order by p.createAt desc")
     Page<Chat> findAllChats(Pageable pageable);
 
-    @Query("select p from Post p where TYPE(p) IN(Study)")
+    @Query("select p from Post p where TYPE(p) IN(Study) order by p.createAt desc")
     Page<Study> findAllStudies(Pageable pageable);
 
-    @Query("select p from Post p where TYPE(p) IN(Question)")
+    @Query("select p from Post p where TYPE(p) IN(Question) order by p.createAt desc")
     Page<Question> findAllQuestions(Pageable pageable);
 
     Optional<Chat> findChatById(Long id);
@@ -74,21 +71,15 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("select s from Study s " +
             "where Type(s) In(Study) and " +
-            "s.studyStatus = com.devu.backend.entity.post.StudyStatus.ACTIVE")
-    Optional<List<Study>> findAllActiveStudy();
+            "s.studyStatus = :studyStatus " +
+            "order by s.createAt desc")
+    Page<Study> findAllStudyByStatus(Pageable pageable, @Param("studyStatus") StudyStatus studyStatus);
 
-    @Query("select s from Study s " +
-            "where Type(s) In(Study) and " +
-            "s.studyStatus = com.devu.backend.entity.post.StudyStatus.CLOSED")
-    Optional<List<Study>> findAllClosedStudy();
 
     @Query("select q from Question q " +
             "where Type(q) In(Question) and " +
-            "q.questionStatus = com.devu.backend.entity.post.QuestionStatus.SOLVED")
-    Optional<List<Question>> findAllSolvedQuestion();
+            "q.questionStatus = :questionStatus " +
+            "order by q.createAt desc")
+    Page<Question> findAllQuestionByStatus(Pageable pageable,@Param("questionStatus") QuestionStatus questionStatus);
 
-    @Query("select q from Question q " +
-            "where Type(q) In(Question) and " +
-            "q.questionStatus = com.devu.backend.entity.post.QuestionStatus.UNSOLVED")
-    Optional<List<Question>> findAllUnSolvedQuestion();
 }

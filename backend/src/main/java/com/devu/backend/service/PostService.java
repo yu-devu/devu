@@ -465,5 +465,19 @@ public class PostService {
                         .build()
                 ).collect(Collectors.toList());
     }
+
+    public List<PostResponseDto> getStudiesByStatus(Pageable pageable,StudyStatus studyStatus) {
+        return postRepository.findAllStudyByStatus(pageable,studyStatus)
+                .stream().map(s -> PostResponseDto.builder()
+                        .username(s.getUser().getUsername())
+                        .id(s.getId())
+                        .content(s.getContent())
+                        .title(s.getTitle())
+                        .like(s.getLikes().size())
+                        .tags(s.getTags())
+                        .hit(s.getHit())
+                        .build()
+                ).collect(Collectors.toList());
+    }
 }
 
