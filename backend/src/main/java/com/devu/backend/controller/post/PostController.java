@@ -33,15 +33,8 @@ public class PostController {
     public ResponseEntity<?> getChats(
             @PageableDefault(size = 10)Pageable pageable,
             @RequestParam(value = "order",required = false) String order,
-            @RequestParam(value = "tags",required = false) List<String> tags
-            ) {
+            @RequestParam(value = "tags",required = false) List<String> tags) {
         try {
-            log.info("order : {}",order);
-            if (tags != null) {
-                for (String tag : tags) {
-                    log.info("tag : {}",tag);
-                }
-            }
             List<PostResponseDto> chats = postService.findAllChats(pageable).getContent();
             return ResponseEntity.ok(chats);
         } catch (Exception e) {
@@ -62,9 +55,6 @@ public class PostController {
             @RequestParam(value = "tags",required = false) List<String> tags
     ) {
         try {
-            if (status.equals("SOLVED")) {
-
-            }
             List<PostResponseDto> studies = postService.findAllStudies(pageable).getContent();
             return ResponseEntity.ok(studies);
         } catch (Exception e) {

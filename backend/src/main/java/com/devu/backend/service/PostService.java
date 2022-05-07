@@ -55,7 +55,7 @@ public class PostService {
     @Transactional
     public PostResponseDto createChat(PostRequestCreateDto requestPostDto) throws IOException {
         List<PostTag> postTags = new ArrayList<>();
-        List<Tag> tags = findTags(requestPostDto, postTags);
+        List<Tag> tags = createTags(requestPostDto, postTags);
         Chat chat = Chat.builder()
                 .user(
                         userRepository.findByUsername(requestPostDto.getUsername())
@@ -79,27 +79,10 @@ public class PostService {
                 .build();
     }
 
-    private void setPostOnPostTag(List<PostTag> postTags, Post post) {
-        for (PostTag postTag : postTags) {
-            postTag.changePost(post);
-        }
-    }
-
-    private List<Tag> findTags(PostRequestCreateDto requestPostDto, List<PostTag> postTags) {
-        List<Tag> tags = tagService.findTags(
-                requestPostDto.getTags()
-                        .stream().map(String::toUpperCase)
-                        .collect(Collectors.toList()));
-        for (Tag tag : tags) {
-            postTags.add(PostTag.builder().tag(tag).build());
-        }
-        return tags;
-    }
-
     @Transactional
     public PostResponseDto createStudy(PostRequestCreateDto requestPostDto) throws IOException {
         List<PostTag> postTags = new ArrayList<>();
-        List<Tag> tags = findTags(requestPostDto, postTags);
+        List<Tag> tags = createTags(requestPostDto, postTags);
         Study study = Study.builder()
                 .user(
                         userRepository.findByUsername(requestPostDto.getUsername())
@@ -127,7 +110,7 @@ public class PostService {
     @Transactional
     public PostResponseDto createQuestion(PostRequestCreateDto requestPostDto) throws IOException {
         List<PostTag> postTags = new ArrayList<>();
-        List<Tag> tags = findTags(requestPostDto, postTags);
+        List<Tag> tags = createTags(requestPostDto, postTags);
         Question question = Question.builder()
                 .user(
                         userRepository.findByUsername(requestPostDto.getUsername())
@@ -150,6 +133,23 @@ public class PostService {
                 .username(question.getUser().getUsername())
                 .tags(tags.stream().map(Tag::getName).collect(Collectors.toList()))
                 .build();
+    }
+
+    private void setPostOnPostTag(List<PostTag> postTags, Post post) {
+        for (PostTag postTag : postTags) {
+            postTag.changePost(post);
+        }
+    }
+
+    private List<Tag> createTags(PostRequestCreateDto requestPostDto, List<PostTag> postTags) {
+        List<Tag> tags = tagService.findTags(
+                requestPostDto.getTags()
+                        .stream().map(String::toUpperCase)
+                        .collect(Collectors.toList()));
+        for (Tag tag : tags) {
+            postTags.add(PostTag.builder().tag(tag).build());
+        }
+        return tags;
     }
 
     @Transactional
@@ -291,12 +291,14 @@ public class PostService {
         }
     }
 
-
     @Transactional
     public void updateChat(Long chatId, PostRequestUpdateDto updateDto) throws IOException {
         Chat chat = postRepository.findChatById(chatId).orElseThrow(PostNotFoundException::new);
         if (!updateDto.getImages().isEmpty()) {
             updateImage(chat, updateDto);
+        }
+        if (!isSameTags(chat.getPostTags(), updateDto.getTags().stream().map(String::toUpperCase).collect(Collectors.toList()))) {
+            updateTags(updateDto, chat);
         }
         chat.updatePost(updateDto);
     }
@@ -305,6 +307,9 @@ public class PostService {
     public void updateStudy(Long studyId, PostRequestUpdateDto updateDto) throws IOException {
         Study study = postRepository.findStudyById(studyId).orElseThrow(PostNotFoundException::new);
         updateImage(study, updateDto);
+        if (!isSameTags(study.getPostTags(), updateDto.getTags().stream().map(String::toUpperCase).collect(Collectors.toList()))) {
+            updateTags(updateDto, study);
+        }
         study.updatePost(updateDto);
     }
 
@@ -312,7 +317,33 @@ public class PostService {
     public void updateQuestion(Long questionId, PostRequestUpdateDto updateDto) throws IOException {
         Question question = postRepository.findQuestionById(questionId).orElseThrow(PostNotFoundException::new);
         updateImage(question, updateDto);
+        if (!isSameTags(question.getPostTags(), updateDto.getTags().stream().map(String::toUpperCase).collect(Collectors.toList()))) {
+            updateTags(updateDto, question);
+        }
         question.updatePost(updateDto);
+    }
+
+    private void updateTags(PostRequestUpdateDto updateDto, Post post) {
+        clearPostTagList(post);
+        List<Tag> tags = tagService.findTags(updateDto.getTags().stream().map(String::toUpperCase).collect(Collectors.toList()));
+        List<PostTag> collect = tags.stream().map(t -> PostTag.builder().tag(t).post(post).build()).collect(Collectors.toList());
+        for (PostTag postTag : collect) {
+            post.getPostTags().add(postTag);
+        }
+    }
+
+    private void clearPostTagList(Post post) {
+        post.getPostTags().clear();
+    }
+
+    private boolean isSameTags(List<PostTag> postTags,List<String> input) {
+        for (PostTag postTag : postTags) {
+            String tagName = tagService.findTagName(postTag);
+            if (!input.contains(tagName)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Transactional
