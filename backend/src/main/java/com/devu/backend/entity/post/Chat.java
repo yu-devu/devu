@@ -18,8 +18,8 @@ public class Chat extends Post{
     public Chat(Long id, User user, String title,
                 String content, Long hit, List<Like> likes,
                 List<Image> images, List<Comment> comments,
-                List<Tag> tags) {
-        super(id, user, title, content, hit, likes, comments,images,tags);
+                List<PostTag> tags) {
+        super(id, user, title, content, hit, likes, comments,images, tags);
     }
 }
 

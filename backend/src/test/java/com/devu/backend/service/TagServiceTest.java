@@ -1,16 +1,13 @@
 package com.devu.backend.service;
 
-import com.devu.backend.common.exception.PostNotFoundException;
 import com.devu.backend.entity.Tag;
 import com.devu.backend.entity.User;
 import com.devu.backend.entity.post.Chat;
 import com.devu.backend.entity.post.Post;
-import com.devu.backend.entity.post.PostTags;
 import com.devu.backend.repository.PostRepository;
 import com.devu.backend.repository.TagRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -18,10 +15,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 class TagServiceTest {

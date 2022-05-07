@@ -1,6 +1,5 @@
 package com.devu.backend.repository;
 
-import com.devu.backend.entity.QTag;
 import com.devu.backend.entity.post.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -202,8 +201,4 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
         return chat.title.contains(sentence);
     }
 
-
-    private BooleanExpression joinPostAndTag(Post post) {
-        return tag.post.id.eq(post.getId());
-    }
 }

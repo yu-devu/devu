@@ -25,7 +25,7 @@ public class Question extends Post{
     public Question(Long id, User user, String title,
                     String content, Long hit, List<Like> likes,
                     List<Image> images, List<Comment> comments,
-                    List<Tag> tags, QuestionStatus qnaStatus) {
+                    List<PostTag> tags, QuestionStatus qnaStatus) {
         super(id, user, title, content, hit, likes, comments,images,tags);
         this.questionStatus = qnaStatus;
     }

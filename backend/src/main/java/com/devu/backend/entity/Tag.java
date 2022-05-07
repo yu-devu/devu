@@ -1,14 +1,13 @@
 package com.devu.backend.entity;
 
-import com.devu.backend.entity.post.Post;
-import com.devu.backend.entity.post.PostTags;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,24 +20,12 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private PostTags postTags;
+    @Column(nullable = false,unique = true)
+    private String name;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post post;
+    @OneToMany(mappedBy = "tag",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<PostTag> postTagList = new ArrayList<>();
 
-    public void updateTag(PostTags tag) {
-        this.postTags = tag;
-    }
 
-    /*
-    * 연관관계 편의 메서드
-    * */
-    public void changePost(Post post){
-        this.post = post;
-        this.post.getTags().add(this);
-    }
 
 }
