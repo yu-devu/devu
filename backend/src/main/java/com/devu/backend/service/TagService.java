@@ -39,5 +39,8 @@ public class TagService {
         return tag.getName();
     }
 
+    public Long findTagIdByString(String name) {
+        return tagRepository.findTagByName(name).orElseThrow(TagNotFoundException::new).getId();
+    }
 
 }

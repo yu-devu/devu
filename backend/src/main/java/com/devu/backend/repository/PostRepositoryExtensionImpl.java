@@ -1,5 +1,6 @@
 package com.devu.backend.repository;
 
+import com.devu.backend.entity.QTag;
 import com.devu.backend.entity.post.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -23,7 +24,7 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<Chat> findAllChat(Pageable pageable, PostSearch postSearch) {
+    public Page<Chat> findAllChats(Pageable pageable, PostSearch postSearch) {
         if (!StringUtils.hasText(postSearch.getOrder())) {
             List<Chat> fetch = queryFactory
                     .select(chat)
@@ -68,9 +69,8 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
     }
 
     @Override
-    public Page<Study> findAllStudy(Pageable pageable, PostSearch postSearch) {
+    public Page<Study> findAllStudies(Pageable pageable, PostSearch postSearch) {
         if (!StringUtils.hasText(postSearch.getOrder())) {
-
             List<Study> fetch = queryFactory
                     .select(study)
                     .from(study)
@@ -119,7 +119,7 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
     }
 
     @Override
-    public Page<Question> findAllQuestion(Pageable pageable, PostSearch postSearch) {
+    public Page<Question> findAllQuestions(Pageable pageable, PostSearch postSearch) {
         if (!StringUtils.hasText(postSearch.getOrder())) {
             List<Question> fetch = queryFactory
                     .select(question)

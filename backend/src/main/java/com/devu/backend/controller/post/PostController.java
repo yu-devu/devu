@@ -33,9 +33,10 @@ public class PostController {
     public ResponseEntity<?> getChats(
             @PageableDefault(size = 10)Pageable pageable,
             @RequestParam(value = "order",required = false) String order,
-            @RequestParam(value = "tags",required = false) List<String> tags) {
+            @RequestParam(value = "tags",required = false) List<String> tags,
+            @RequestParam(value = "s",required = false)String s) {
         try {
-            List<PostResponseDto> chats = postService.findAllChats(pageable).getContent();
+            List<PostResponseDto> chats = postService.findAllChats(pageable,order,tags,s).getContent();
             return ResponseEntity.ok(chats);
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,12 +51,13 @@ public class PostController {
     @GetMapping("/studies")
     public ResponseEntity<?> getStudies(
             @PageableDefault(size = 10)Pageable pageable,
-            @RequestParam(value = "status",required = false) String status,
+            @RequestParam(value = "status",required = false) StudyStatus status,
             @RequestParam(value = "order",required = false) String order,
-            @RequestParam(value = "tags",required = false) List<String> tags
+            @RequestParam(value = "tags",required = false) List<String> tags,
+            @RequestParam(value = "s",required = false)String s
     ) {
         try {
-            List<PostResponseDto> studies = postService.findAllStudies(pageable).getContent();
+            List<PostResponseDto> studies = postService.findAllStudies(pageable,status,order,tags,s).getContent();
             return ResponseEntity.ok(studies);
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,12 +72,13 @@ public class PostController {
     @GetMapping("/questions")
     public ResponseEntity<?> getQuestions(
             @PageableDefault(size = 10)Pageable pageable,
-            @RequestParam(value = "status",required = false) String status,
+            @RequestParam(value = "status",required = false) QuestionStatus status,
             @RequestParam(value = "order",required = false) String order,
-            @RequestParam(value = "tags",required = false) List<String> tags
+            @RequestParam(value = "tags",required = false) List<String> tags,
+            @RequestParam(value = "s",required = false)String s
     ) {
         try {
-            List<PostResponseDto> questions = postService.findAllQuestions(pageable).getContent();
+            List<PostResponseDto> questions = postService.findAllQuestions(pageable,status,order,tags,s).getContent();
             return ResponseEntity.ok(questions);
         } catch (Exception e) {
             e.printStackTrace();

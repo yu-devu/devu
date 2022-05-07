@@ -14,6 +14,7 @@ import com.devu.backend.entity.Tag;
 import com.devu.backend.entity.post.*;
 import com.devu.backend.repository.ImageRepository;
 import com.devu.backend.repository.PostRepository;
+import com.devu.backend.repository.PostSearch;
 import com.devu.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -167,8 +168,13 @@ public class PostService {
     }
 
 
-    public Page<PostResponseDto> findAllChats(Pageable pageable) {
-        return postRepository.findAllChats(pageable).map(
+    public Page<PostResponseDto> findAllChats(Pageable pageable,String order,List<String> tags,String s) {
+        PostSearch postSearch = PostSearch.builder()
+                .sentence(s)
+                .order(order)
+                //.tagId(tags.stream().map(tagService::findTagIdByString).collect(Collectors.toList()))
+                .build();
+        return postRepository.findAllChats(pageable,postSearch).map(
                 chat -> PostResponseDto
                         .builder()
                         .id(chat.getId())
@@ -182,8 +188,15 @@ public class PostService {
         );
     }
 
-    public Page<PostResponseDto> findAllStudies(Pageable pageable) {
-        return postRepository.findAllStudies(pageable).map(
+    public Page<PostResponseDto> findAllStudies(Pageable pageable,StudyStatus status,String order,List<String> tags,String s) {
+        PostSearch postSearch = PostSearch.builder()
+                .order(order)
+                .sentence(s)
+                //.tagId(tags.stream().map(tagService::findTagIdByString).collect(Collectors.toList()))
+                .studyStatus(status)
+                .build();
+
+        return postRepository.findAllStudies(pageable,postSearch).map(
                 study -> PostResponseDto
                         .builder()
                         .id(study.getId())
@@ -198,8 +211,14 @@ public class PostService {
         );
     }
 
-    public Page<PostResponseDto> findAllQuestions(Pageable pageable) {
-        return postRepository.findAllQuestions(pageable).map(
+    public Page<PostResponseDto> findAllQuestions(Pageable pageable,QuestionStatus status,String order,List<String> tags,String s) {
+        PostSearch postSearch = PostSearch.builder()
+                .order(order)
+                .sentence(s)
+                //.tagId(tags.stream().map(tagService::findTagIdByString).collect(Collectors.toList()))
+                .questionStatus(status)
+                .build();
+        return postRepository.findAllQuestions(pageable,postSearch).map(
                 question -> PostResponseDto
                         .builder()
                         .id(question.getId())

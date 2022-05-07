@@ -14,8 +14,7 @@ import java.util.List;
 public class PostSearch {
     private String order;//정렬 방식
     private String sentence;//검색 단어
-    private List<String> tags;//태그 필터링
+    private List<Long> tagId;//태그 필터링
     private StudyStatus studyStatus;//상태
-
     private QuestionStatus questionStatus;//상태
 }

@@ -4,7 +4,6 @@ import com.devu.backend.config.TestConfig;
 import com.devu.backend.controller.post.PostResponseDto;
 import com.devu.backend.entity.Comment;
 import com.devu.backend.entity.Like;
-import com.devu.backend.entity.Tag;
 import com.devu.backend.entity.User;
 import com.devu.backend.entity.post.*;
 import org.junit.jupiter.api.DisplayName;
@@ -46,19 +45,16 @@ class PostRepositoryTest {
         User user1 = createUser("brido1");
         User user2 = createUser("brido2");
         Study study1 = createStudy(user1);
-        study1.getTags().add(createTag());
         Study study2 = createStudy(user1);
         createLike(user1, study1);
         createLike(user1, study2);
         createLike(user1, study2);
-        ArrayList<PostTags> tags = new ArrayList<>();
-        tags.add(PostTags.SPRING);
         PostSearch search = PostSearch.builder()
                 .studyStatus(StudyStatus.ACTIVE)
                 .order("likes")
                 .build();
         //when
-        List<PostResponseDto> responseDtos = postRepository.findAllStudy(Pageable.ofSize(10),search)
+        List<PostResponseDto> responseDtos = postRepository.findAllStudies(Pageable.ofSize(10),search)
                 .stream().map(p -> PostResponseDto.builder()
                         .id(p.getId())
                         .like(p.getLikes().size())
@@ -80,7 +76,6 @@ class PostRepositoryTest {
         User user1 = createUser("brido1");
         User user2 = createUser("brido2");
         Study study1 = createStudy(user1);
-        study1.getTags().add(createTag());
         Study study2 = createStudy(user1);
         createLike(user1, study1);
         createLike(user1, study2);
@@ -92,7 +87,7 @@ class PostRepositoryTest {
                 .order("likes")
                 .build();
         //when
-        List<PostResponseDto> responseDtos = postRepository.findAllStudy(Pageable.ofSize(10),search)
+        List<PostResponseDto> responseDtos = postRepository.findAllStudies(Pageable.ofSize(10),search)
                 .stream().map(p -> PostResponseDto.builder()
                         .id(p.getId())
                         .like(p.getLikes().size())
@@ -114,14 +109,13 @@ class PostRepositoryTest {
         User user1 = createUser("brido1");
         User user2 = createUser("brido2");
         Study study1 = createStudy(user1);
-        study1.getTags().add(createTag());
         Study study2 = createStudy(user1);
         PostSearch search = PostSearch.builder()
                 .studyStatus(StudyStatus.ACTIVE)
                 .sentence("test")
                 .build();
         //when
-        List<PostResponseDto> responseDtos = postRepository.findAllStudy(Pageable.ofSize(10),search)
+        List<PostResponseDto> responseDtos = postRepository.findAllStudies(Pageable.ofSize(10),search)
                 .stream().map(p -> PostResponseDto.builder()
                         .id(p.getId())
                         .like(p.getLikes().size())
@@ -150,7 +144,7 @@ class PostRepositoryTest {
                 .studyStatus(StudyStatus.CLOSED)
                 .build();
         //when
-        List<PostResponseDto> responseDtos = postRepository.findAllStudy(Pageable.ofSize(10),search)
+        List<PostResponseDto> responseDtos = postRepository.findAllStudies(Pageable.ofSize(10),search)
                 .stream().map(p -> PostResponseDto.builder()
                         .id(p.getId())
                         .like(p.getLikes().size())
@@ -172,7 +166,6 @@ class PostRepositoryTest {
         User user1 = createUser("brido1");
         User user2 = createUser("brido2");
         Study study1 = createStudy(user1);
-        study1.getTags().add(createTag());
         Study study2 = createStudy(user1);
         createComment(user1, study1);
         createComment(user1, study1);
@@ -182,7 +175,7 @@ class PostRepositoryTest {
                 .order("comments")
                 .build();
         //when
-        List<PostResponseDto> responseDtos = postRepository.findAllStudy(Pageable.ofSize(10),search)
+        List<PostResponseDto> responseDtos = postRepository.findAllStudies(Pageable.ofSize(10),search)
                 .stream().map(p -> PostResponseDto.builder()
                         .id(p.getId())
                         .like(p.getLikes().size())
@@ -198,13 +191,6 @@ class PostRepositoryTest {
         assertThat(responseDtos.get(1).getComments().size()).isEqualTo(study2.getComments().size());
     }
 
-    private Tag createTag() {
-        Tag tag = Tag.builder()
-                .postTags(PostTags.SPRING)
-                .build();
-        tagRepository.save(tag);
-        return tag;
-    }
 
     @Test
     void findTop3ByOrderByHit() {
