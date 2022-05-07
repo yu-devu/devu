@@ -172,7 +172,7 @@ public class PostService {
         PostSearch postSearch = PostSearch.builder()
                 .sentence(s)
                 .order(order)
-                //.tagId(tags.stream().map(tagService::findTagIdByString).collect(Collectors.toList()))
+                .tagId(Optional.ofNullable(tags).orElseGet(Collections::emptyList).stream().map(tagService::findTagIdByString).collect(Collectors.toList()))
                 .build();
         return postRepository.findAllChats(pageable,postSearch).map(
                 chat -> PostResponseDto
@@ -192,7 +192,7 @@ public class PostService {
         PostSearch postSearch = PostSearch.builder()
                 .order(order)
                 .sentence(s)
-                //.tagId(tags.stream().map(tagService::findTagIdByString).collect(Collectors.toList()))
+                .tagId(Optional.ofNullable(tags).orElseGet(Collections::emptyList).stream().map(tagService::findTagIdByString).collect(Collectors.toList()))
                 .studyStatus(status)
                 .build();
 
@@ -215,7 +215,7 @@ public class PostService {
         PostSearch postSearch = PostSearch.builder()
                 .order(order)
                 .sentence(s)
-                //.tagId(tags.stream().map(tagService::findTagIdByString).collect(Collectors.toList()))
+                .tagId(Optional.ofNullable(tags).orElseGet(Collections::emptyList).stream().map(tagService::findTagIdByString).collect(Collectors.toList()))
                 .questionStatus(status)
                 .build();
         return postRepository.findAllQuestions(pageable,postSearch).map(
