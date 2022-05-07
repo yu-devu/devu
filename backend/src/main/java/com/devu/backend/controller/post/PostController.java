@@ -30,8 +30,18 @@ public class PostController {
 
     //자유 게시판 리스트 get
     @GetMapping("/chats")
-    public ResponseEntity<?> getChats(@PageableDefault(size = 20)Pageable pageable) {
+    public ResponseEntity<?> getChats(
+            @PageableDefault(size = 10)Pageable pageable,
+            @RequestParam(value = "order",required = false) String order,
+            @RequestParam(value = "tags",required = false) List<String> tags
+            ) {
         try {
+            log.info("order : {}",order);
+            if (tags != null) {
+                for (String tag : tags) {
+                    log.info("tag : {}",tag);
+                }
+            }
             List<PostResponseDto> chats = postService.findAllChats(pageable).getContent();
             return ResponseEntity.ok(chats);
         } catch (Exception e) {
@@ -45,8 +55,16 @@ public class PostController {
 
     //스터디 게시판 리스트 get
     @GetMapping("/studies")
-    public ResponseEntity<?> getStudies(@PageableDefault(size = 20)Pageable pageable) {
+    public ResponseEntity<?> getStudies(
+            @PageableDefault(size = 10)Pageable pageable,
+            @RequestParam(value = "status",required = false) String status,
+            @RequestParam(value = "order",required = false) String order,
+            @RequestParam(value = "tags",required = false) List<String> tags
+    ) {
         try {
+            if (status.equals("SOLVED")) {
+
+            }
             List<PostResponseDto> studies = postService.findAllStudies(pageable).getContent();
             return ResponseEntity.ok(studies);
         } catch (Exception e) {
@@ -60,7 +78,12 @@ public class PostController {
 
     //질문 게시판 리스트 get
     @GetMapping("/questions")
-    public ResponseEntity<?> getQuestions(@PageableDefault(size = 20)Pageable pageable) {
+    public ResponseEntity<?> getQuestions(
+            @PageableDefault(size = 10)Pageable pageable,
+            @RequestParam(value = "status",required = false) String status,
+            @RequestParam(value = "order",required = false) String order,
+            @RequestParam(value = "tags",required = false) List<String> tags
+    ) {
         try {
             List<PostResponseDto> questions = postService.findAllQuestions(pageable).getContent();
             return ResponseEntity.ok(questions);

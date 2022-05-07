@@ -49,4 +49,12 @@ public class Comment extends BaseTime{
     public void updateDeleted() {
         this.deleted = true;
     }
+
+    /*
+     * 연관관계 편의 메서드
+     * */
+    public void changePost(Post post){
+        this.post = post;
+        this.post.getComments().add(this);
+    }
 }

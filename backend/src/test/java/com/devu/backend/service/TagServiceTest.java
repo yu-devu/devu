@@ -45,26 +45,6 @@ class TagServiceTest {
     }
 
     @Test
-    void saveTags() {
-        //given
-        User user = createUser();
-        Chat chat = createChat(user);
-        Tag springTag = createSpringTag(chat);
-        Tag reactTag = createReactTag(chat);
-        List<String> stringList = createStringList(springTag, reactTag);
-        List<Tag> tagList = createTagList(springTag, reactTag);
-        //Mocking
-        BDDMockito.given(postRepository.findById(chat.getId())).willReturn(Optional.of(chat));
-        BDDMockito.given(tagRepository.saveAll(any(ArrayList.class))).willReturn(tagList);
-        BDDMockito.given(tagRepository.findAllByPostId(chat.getId())).willReturn(Optional.of(tagList));
-        //when
-        tagService.saveTags(stringList, chat.getId());
-        //then
-        List<Tag> tags = tagRepository.findAllByPostId(chat.getId()).orElseThrow(PostNotFoundException::new);
-        assertThat(tags.size()).isEqualTo(tagList.size());
-    }
-
-    @Test
     void getTagsByPostId() {
         //given
     }
