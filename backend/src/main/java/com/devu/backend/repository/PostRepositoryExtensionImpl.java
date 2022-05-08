@@ -1,6 +1,6 @@
 package com.devu.backend.repository;
 
-import com.devu.backend.entity.QTag;
+import com.devu.backend.entity.QPostTag;
 import com.devu.backend.entity.post.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -14,7 +14,7 @@ import java.util.List;
 
 import static com.devu.backend.entity.QComment.comment;
 import static com.devu.backend.entity.QLike.like;
-import static com.devu.backend.entity.QTag.tag;
+import static com.devu.backend.entity.QPostTag.postTag;
 import static com.devu.backend.entity.post.QChat.chat;
 import static com.devu.backend.entity.post.QQuestion.question;
 import static com.devu.backend.entity.post.QStudy.study;
@@ -25,13 +25,20 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
 
     @Override
     public Page<Chat> findAllChats(Pageable pageable, PostSearch postSearch) {
+        QChat chat = QChat.chat;
+        QPostTag postTag = QPostTag.postTag;
         if (!StringUtils.hasText(postSearch.getOrder())) {
             List<Chat> fetch = queryFactory
                     .select(chat)
                     .from(chat)
+                    .innerJoin(postTag)
+                    .on(chat.id.eq(postTag.post.id))
                     .where(
+                            tagIn(postSearch.getTagId()),
                             chatTitleContains(postSearch.getSentence())
                     )
+                    .groupBy(chat.id)
+                    .having(sizeEq((long) postSearch.getTagId().size()))
                     .orderBy(chat.createAt.desc())
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
@@ -42,25 +49,33 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
             List<Chat> fetch = queryFactory
                     .select(chat)
                     .from(chat)
+                    .innerJoin(postTag)
+                    .on(chat.id.eq(postTag.post.id))
                     .leftJoin(chat.likes,like)
                     .where(
+                            tagIn(postSearch.getTagId()),
                             chatTitleContains(postSearch.getSentence())
                     )
                     .groupBy(chat.id)
+                    .having(sizeEq((long) postSearch.getTagId().size()))
                     .orderBy(like.post.id.count().desc())
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
                     .fetch();
-            return new PageImpl<Chat>(fetch, pageable, fetch.size());
+            return new PageImpl<>(fetch, pageable, fetch.size());
         }
         List<Chat> fetch = queryFactory
                 .select(chat)
                 .from(chat)
+                .innerJoin(postTag)
+                .on(chat.id.eq(postTag.post.id))
                 .leftJoin(chat.comments,comment)
                 .where(
+                        tagIn(postSearch.getTagId()),
                         chatTitleContains(postSearch.getSentence())
                 )
                 .groupBy(chat.id)
+                .having(sizeEq((long) postSearch.getTagId().size()))
                 .orderBy(comment.post.id.count().desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -70,14 +85,21 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
 
     @Override
     public Page<Study> findAllStudies(Pageable pageable, PostSearch postSearch) {
+        QStudy study = QStudy.study;
+        QPostTag postTag = QPostTag.postTag;
         if (!StringUtils.hasText(postSearch.getOrder())) {
             List<Study> fetch = queryFactory
                     .select(study)
                     .from(study)
+                    .innerJoin(postTag)
+                    .on(study.id.eq(postTag.post.id))
                     .where(
+                            tagIn(postSearch.getTagId()),
                             studyStatusEq(postSearch.getStudyStatus()),
                             studyTitleContains(postSearch.getSentence())
                     )
+                    .groupBy(study.id)
+                    .having(sizeEq((long) postSearch.getTagId().size()))
                     .orderBy(study.createAt.desc())
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
@@ -88,12 +110,16 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
             List<Study> fetch = queryFactory
                     .select(study)
                     .from(study)
+                    .innerJoin(postTag)
+                    .on(study.id.eq(postTag.post.id))
                     .leftJoin(study.likes,like)
                     .where(
+                            tagIn(postSearch.getTagId()),
                             studyStatusEq(postSearch.getStudyStatus()),
                             studyTitleContains(postSearch.getSentence())
                     )
                     .groupBy(study.id)
+                    .having(sizeEq((long) postSearch.getTagId().size()))
                     .orderBy(like.post.id.count().desc())
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
@@ -104,12 +130,16 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
         List<Study> fetch = queryFactory
                 .select(study)
                 .from(study)
+                .innerJoin(postTag)
+                .on(study.id.eq(postTag.post.id))
                 .leftJoin(study.comments,comment)
                 .where(
+                        tagIn(postSearch.getTagId()),
                         studyStatusEq(postSearch.getStudyStatus()),
                         studyTitleContains(postSearch.getSentence())
                 )
                 .groupBy(study.id)
+                .having(sizeEq((long) postSearch.getTagId().size()))
                 .orderBy(comment.post.id.count().desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -120,14 +150,21 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
 
     @Override
     public Page<Question> findAllQuestions(Pageable pageable, PostSearch postSearch) {
+        QQuestion question = QQuestion.question;
+        QPostTag postTag = QPostTag.postTag;
         if (!StringUtils.hasText(postSearch.getOrder())) {
             List<Question> fetch = queryFactory
                     .select(question)
                     .from(question)
+                    .innerJoin(postTag)
+                    .on(question.id.eq(postTag.post.id))
                     .where(
+                            tagIn(postSearch.getTagId()),
                             questionStatusEq(postSearch.getQuestionStatus()),
                             questionTitleContains(postSearch.getSentence())
                     )
+                    .groupBy(question.id)
+                    .having(sizeEq((long) postSearch.getTagId().size()))
                     .orderBy(question.createAt.desc())
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
@@ -138,12 +175,16 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
             List<Question> fetch = queryFactory
                     .select(question)
                     .from(question)
+                    .innerJoin(postTag)
+                    .on(question.id.eq(postTag.post.id))
                     .leftJoin(question.likes,like)
                     .where(
+                            tagIn(postSearch.getTagId()),
                             questionStatusEq(postSearch.getQuestionStatus()),
                             questionTitleContains(postSearch.getSentence())
                     )
                     .groupBy(question.id)
+                    .having(sizeEq((long) postSearch.getTagId().size()))
                     .orderBy(like.post.id.count().desc())
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
@@ -154,18 +195,22 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
         List<Question> fetch = queryFactory
                 .select(question)
                 .from(question)
+                .innerJoin(postTag)
+                .on(question.id.eq(postTag.post.id))
                 .leftJoin(question.comments,comment)
                 .where(
+                        tagIn(postSearch.getTagId()),
                         questionStatusEq(postSearch.getQuestionStatus()),
                         questionTitleContains(postSearch.getSentence())
                 )
                 .groupBy(question.id)
+                .having(sizeEq((long) postSearch.getTagId().size()))
                 .orderBy(comment.post.id.count().desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        return new PageImpl<Question>(fetch, pageable, fetch.size());
+        return new PageImpl<>(fetch, pageable, fetch.size());
     }
 
     private BooleanExpression studyStatusEq(StudyStatus studyStatus) {
@@ -199,6 +244,22 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
             return null;
         }
         return chat.title.contains(sentence);
+    }
+
+    private BooleanExpression tagIn(List<Long> ids) {
+        if (ids.isEmpty()) {
+            return null;
+        }
+        return postTag.tag.id.in(ids);
+    }
+
+    //postTag.tag.id.count().eq((long) postSearch.getTagId().size())
+    private BooleanExpression sizeEq(Long size) {
+        System.out.println("size = " + size);
+        if (size == 0) {
+            return null;
+        }
+        return postTag.tag.id.count().eq(size);
     }
 
 }
