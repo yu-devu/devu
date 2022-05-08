@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './board.css';
+import './chats.css';
 import { Link } from 'react-router-dom';
 import ReactHtmlParser from 'html-react-parser';
 import Posts from './Posts';
 import ReactPaginate from 'react-paginate'
 import './pagination.css'
 
-const Board = () => {
+const Chats = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [postsPerPage] = useState(10);
   const [postData, setPostData] = useState([]);
@@ -75,4 +75,4 @@ const Board = () => {
   );
 };
 
-export default Board;
+export default Chats;

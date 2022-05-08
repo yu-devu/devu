@@ -59,9 +59,9 @@
     z-index: 100;
     object-fit: cover;
     width: 140px;
-    height: 70px;
+    height: 32px;
     position: absolute;
-    filter: brightness(80%);
+    filter: brightness(100%);
 }
 
 .nav-right {

@@ -68,23 +68,6 @@ class TagRepositoryTest {
         assertThat(tagRepository.findAll().size()).isEqualTo(0);
     }
 
-    @Test
-    void findByPostId() {
-        //given
-        User user = createUser();
-        Chat chat = createChat(user);
-        Tag springTag = createSpringTag(chat);
-        Tag jsTag = createJSTag(chat);
-        tagRepository.save(springTag);
-        tagRepository.save(jsTag);
-        postRepository.save(chat);
-        userRepository.save(user);
-        //when
-        List<Tag> allByPostId = tagRepository.findAllByPostId(chat.getId()).orElseThrow(PostNotFoundException::new);
-        //then
-        assertThat(allByPostId.size()).isEqualTo(2);
-    }
-
     private User createUser() {
         return User.builder()
                 .username("test")
