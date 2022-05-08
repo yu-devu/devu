@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter @Builder
 @AllArgsConstructor @NoArgsConstructor
-public class Recruit {
+public class Position {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
