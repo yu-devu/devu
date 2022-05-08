@@ -18,8 +18,9 @@ const PostView = () => {
 
   useEffect(() => {
     fetchData();
-    console.log(location);
-  }, [location]);
+    // console.log(location);
+    // console.log(isLike);
+  }, [location, isLike]);
 
   const fetchData = async () => {
     const res = await axios.get(
@@ -42,16 +43,16 @@ const PostView = () => {
   const handleLike = async () => {
     const data = {
       username: username,
-      postId: postId,
+      postId: postData.id,
     };
-    await axios.post(process.env.REACT_APP_DB_HOST + `/like`, JSON.stringify(data), {
+    await axios.post(process.env.REACT_APP_DB_HOST + `/api/like`, JSON.stringify(data), {
       headers: {
         'Content-Type': 'application/json',
       }
     }).then((res) => {
-      console.log(res.data);
-      if (res.data === '좋아요') setLike(true);
-      else if (res.data === '좋아요해제') setLike(false);
+      console.log("res.data", res.data);
+      if (res.data.liked) setLike(true);
+      else setLike(false);
     })
       .catch((res) => { console.log(res); });
   }

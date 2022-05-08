@@ -20,7 +20,7 @@ function ChangePasswordModal() {
             };
             await axios
                 .post(
-                    process.env.REACT_APP_DB_HOST + `/password_url_email`,
+                    process.env.REACT_APP_DB_HOST + `/api/password_url_email`,
                     JSON.stringify(data),
                     {
                         headers: {
