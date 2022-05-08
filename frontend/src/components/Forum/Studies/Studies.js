@@ -17,6 +17,9 @@ import ruby from "../../../img/ruby.png"
 import js from "../../../img/js.png"
 import css from "../../../img/css.png"
 import html from "../../../img/html.png"
+import comment from "../../../img/comment.png"
+import hit from "../../../img/hit.png"
+import like from "../../../img/like.png"
 
 const Studies = () => {
     return (
@@ -126,9 +129,15 @@ const Studies = () => {
                             <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
                                 본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
                             </div>
-                            <div className='post-comment'>29</div>
-                            <div className='post-hit'>145</div>
-                            <div className='post-like'>123</div>
+                            <div className='post-comment'>
+                                <img className="img-comment" src={comment} alt='' />
+                                29</div>
+                            <div className='post-hit'>
+                                <img className="img-hit" src={hit} alt='' />
+                                145</div>
+                            <div className='post-like'>
+                                <img className="img-like" src={like} alt='' />
+                                123</div>
                         </div>
                         <div className='post-tag'>태그</div>
                         <div className='post-tail'>
@@ -146,9 +155,15 @@ const Studies = () => {
                             <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
                                 본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
                             </div>
-                            <div className='post-comment'>29</div>
-                            <div className='post-hit'>145</div>
-                            <div className='post-like'>123</div>
+                            <div className='post-comment'>
+                                <img className="img-comment" src={comment} alt='' />
+                                29</div>
+                            <div className='post-hit'>
+                                <img className="img-hit" src={hit} alt='' />
+                                145</div>
+                            <div className='post-like'>
+                                <img className="img-like" src={like} alt='' />
+                                123</div>
                         </div>
                         <div className='post-tag'>태그</div>
                         <div className='post-tail'>
@@ -166,9 +181,15 @@ const Studies = () => {
                             <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
                                 본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
                             </div>
-                            <div className='post-comment'>29</div>
-                            <div className='post-hit'>145</div>
-                            <div className='post-like'>123</div>
+                            <div className='post-comment'>
+                                <img className="img-comment" src={comment} alt='' />
+                                29</div>
+                            <div className='post-hit'>
+                                <img className="img-hit" src={hit} alt='' />
+                                145</div>
+                            <div className='post-like'>
+                                <img className="img-like" src={like} alt='' />
+                                123</div>
                         </div>
                         <div className='post-tag'>태그</div>
                         <div className='post-tail'>
@@ -186,9 +207,41 @@ const Studies = () => {
                             <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
                                 본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
                             </div>
-                            <div className='post-comment'>29</div>
-                            <div className='post-hit'>145</div>
-                            <div className='post-like'>123</div>
+                            <div className='post-comment'>
+                                <img className="img-comment" src={comment} alt='' />
+                                29</div>
+                            <div className='post-hit'>
+                                <img className="img-hit" src={hit} alt='' />
+                                145</div>
+                            <div className='post-like'>
+                                <img className="img-like" src={like} alt='' />
+                                123</div>
+                        </div>
+                        <div className='post-tag'>태그</div>
+                        <div className='post-tail'>
+                            <div className='post-owner'>홍길동</div>
+                            <div className='post-date'>1분 전</div>
+                        </div>
+                        <div className='studies-line'></div>
+                    </div>
+                    <div className='post-studies'>
+                        <div className='post-header'>
+                            <div className='post-status'>모집중</div>
+                            <div className='post-title'>WebGl 스터디 인원을 모집합니다.</div>
+                        </div>
+                        <div className='post-body'>
+                            <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                                본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                            </div>
+                            <div className='post-comment'>
+                                <img className="img-comment" src={comment} alt='' />
+                                29</div>
+                            <div className='post-hit'>
+                                <img className="img-hit" src={hit} alt='' />
+                                145</div>
+                            <div className='post-like'>
+                                <img className="img-like" src={like} alt='' />
+                                123</div>
                         </div>
                         <div className='post-tag'>태그</div>
                         <div className='post-tail'>
