@@ -23,7 +23,7 @@ function Navbar() {
   };
 
   return (
-    <>
+    <div className='nav'>
       <nav
         className="navbar"
         onMouseOver={onMouseOverOut}
@@ -69,7 +69,7 @@ function Navbar() {
           </div>
         )}
       </nav>
-    </>
+    </div>
   );
 }
 

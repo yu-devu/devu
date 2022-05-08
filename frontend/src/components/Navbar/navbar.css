@@ -1,70 +1,77 @@
-.navbar {
-  height: 10vh;
-  transition: 0.5s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--color-white);
-}
+@media (min-width: 1024px) {
+  .nav {
+    display: flex;
+    width: 100%;
+  }
 
-.navbar-logo {
-  color: black;
-  text-decoration: none;
-  font-size: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 7rem;
-  position: absolute;
-  left: 22%;
-}
-
-.nav-items {
-  display: flex;
-  list-style: none;
-  text-align: center;
-  width: 70vw;
-  justify-content: center;
-  margin-left: -300px;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  height: 10vh;
-}
-
-.nav-item a {
-  text-decoration: none;
-  color: black;
-  font-size: 15px;
-  margin-right: 2rem;
-  padding: 6px 16px;
-  border-radius: 5px;
-}
-
-.nav-item a:hover {
-  color: var(--color-primary);
-}
-
-.nav-item .submenu-item {
-  color: var(--color-gray);
-}
-
-.nav-item .submenu-item:hover{
-  color: black;
-}
-
-.nav-main {
-    z-index: 100;
-    object-fit: cover;
-    width: 140px;
-    height: 32px;
+  .navbar {
+    height: 10vh;
+    transition: 0.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-white);
+  }
+  
+  .navbar-logo {
+    color: black;
+    text-decoration: none;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 7rem;
+    position: relative;
+    left: 27%;
+  }
+  
+  .nav-items {
+    display: flex;
+    list-style: none;
+    text-align: center;
+    width: 70vw;
+    justify-content: center;
+  }
+  
+  .nav-item {
+    display: flex;
+    align-items: center;
+    height: 10vh;
+  }
+  
+  .nav-item a {
+    text-decoration: none;
+    color: black;
+    font-size: 15px;
+    margin-right: 2rem;
+    padding: 6px 16px;
+    border-radius: 5px;
+  }
+  
+  .nav-item a:hover {
+    color: var(--color-primary);
+  }
+  
+  .nav-item .submenu-item {
+    color: var(--color-gray);
+  }
+  
+  .nav-item .submenu-item:hover{
+    color: black;
+  }
+  
+  .nav-main {
+      z-index: 100;
+      object-fit: cover;
+      width: 140px;
+      height: 32px;
+      position: absolute;
+      filter: brightness(100%);
+  }
+  
+  .nav-right {
     position: absolute;
-    filter: brightness(100%);
+    right: 20.6%;
+  }  
 }
 
-.nav-right {
-  position: absolute;
-  right: 20.6%;
-}

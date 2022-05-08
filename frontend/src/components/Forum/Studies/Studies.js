@@ -33,14 +33,14 @@ const Studies = () => {
                         <div className='top-card'>
                             <div className='top-circle'>
                                 <div className='top-profile'>
-                                    <img className="top-photo" src={a} />
+                                    <img className="top-photo" src={a} alt="" />
                                 </div>
-                            </div>
-                            <div className='top-detail'>
-                                <div className='top-title'>스터디그룹 A</div>
-                                <div className='top-people'>멤버 3명</div>
-                                <div className='top-content'>프론트엔트 인터뷰 스터디 2분 모집합니다.</div>
-                                <div className='top-date'>방금 전</div>
+                                <div className='top-detail'>
+                                    <div className='top-title'>스터디그룹 A</div>
+                                    <div className='top-people'>멤버 3명</div>
+                                    <div className='top-content'>프론트엔트 인터뷰 스터디 2분 모집합니다.</div>
+                                    <div className='top-date'>방금 전</div>
+                                </div>
                             </div>
                         </div>
                         <div className='top-card'>
@@ -82,173 +82,177 @@ const Studies = () => {
                         </div>
                         <button className='btn-studies-write'>글 쓰기</button>
                     </div>
-                    <div className='choice-tag'>
-                        <button className='btn-choice'>
-                            <img className='img-choice' src={atom} alt="" />
-                        </button>
-                        <button className='btn-choice'>
-                            <img className='img-choice' src={python} alt="" />
-                        </button>
-                        <button className='btn-choice'>
-                            <img className='img-choice' src={ruby} alt="" />
-                        </button>
-                        <button className='btn-choice'>
-                            <img className='img-choice' src={js} alt="" />
-                        </button>
-                        <button className='btn-choice'>
-                            <img className='img-choice' src={mysql} alt="" />
-                        </button>
-                        <button className='btn-choice'>
-                            <img className='img-choice' src={cp} alt="" />
-                        </button>
-                        <button className='btn-choice'>
-                            <img className='img-choice' src={java} alt="" />
-                        </button>
-                        <button className='btn-choice'>
-                            <img className='img-choice' src={node_js} alt="" />
-                        </button>
-                        <button className='btn-choice'>
-                            <img className='img-choice' src={css} alt="" />
-                        </button>
-                        <button className='btn-choice'>
-                            <img className='img-choice' src={html} alt="" />
-                        </button>
-                    </div>
-                    <select className='select-studies'>
-                        <option>최신순</option>
-                        <option>인기순</option>
-                        <option>조회순</option>
-                    </select>
-                    <div className='studies-line'></div>
-                    <div className='post-studies'>
-                        <div className='post-header'>
-                            <div className='post-status'>모집중</div>
-                            <div className='post-title'>WebGl 스터디 인원을 모집합니다.</div>
+                    <div className='choicing'>
+                        <div className='choice-tag'>
+                            <button className='btn-choice'>
+                                <img className='img-choice' src={atom} alt="" />
+                            </button>
+                            <button className='btn-choice'>
+                                <img className='img-choice' src={python} alt="" />
+                            </button>
+                            <button className='btn-choice'>
+                                <img className='img-choice' src={ruby} alt="" />
+                            </button>
+                            <button className='btn-choice'>
+                                <img className='img-choice' src={js} alt="" />
+                            </button>
+                            <button className='btn-choice'>
+                                <img className='img-choice' src={mysql} alt="" />
+                            </button>
+                            <button className='btn-choice'>
+                                <img className='img-choice' src={cp} alt="" />
+                            </button>
+                            <button className='btn-choice'>
+                                <img className='img-choice' src={java} alt="" />
+                            </button>
+                            <button className='btn-choice'>
+                                <img className='img-choice' src={node_js} alt="" />
+                            </button>
+                            <button className='btn-choice'>
+                                <img className='img-choice' src={css} alt="" />
+                            </button>
+                            <button className='btn-choice'>
+                                <img className='img-choice' src={html} alt="" />
+                            </button>
                         </div>
-                        <div className='post-body'>
-                            <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
-                                본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                        <div className='body-content'>
+                            <select className='select-studies'>
+                                <option>최신순</option>
+                                <option>인기순</option>
+                                <option>조회순</option>
+                            </select>
+                            <div className='studies-line'></div>
+                            <div className='post-studies'>
+                                <div className='post-header'>
+                                    <div className='post-status'>모집중</div>
+                                    <div className='post-title'>WebGl 스터디 인원을 모집합니다.</div>
+                                </div>
+                                <div className='post-body'>
+                                    <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                                        본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                                    </div>
+                                    <div className='post-comment'>
+                                        <img className="img-comment" src={comment} alt='' />
+                                        29</div>
+                                    <div className='post-hit'>
+                                        <img className="img-hit" src={hit} alt='' />
+                                        145</div>
+                                    <div className='post-like'>
+                                        <img className="img-like" src={like} alt='' />
+                                        123</div>
+                                </div>
+                                <div className='post-tag'>태그</div>
+                                <div className='post-tail'>
+                                    <div className='post-owner'>홍길동</div>
+                                    <div className='post-date'>1분 전</div>
+                                </div>
+                                <div className='studies-line'></div>
                             </div>
-                            <div className='post-comment'>
-                                <img className="img-comment" src={comment} alt='' />
-                                29</div>
-                            <div className='post-hit'>
-                                <img className="img-hit" src={hit} alt='' />
-                                145</div>
-                            <div className='post-like'>
-                                <img className="img-like" src={like} alt='' />
-                                123</div>
-                        </div>
-                        <div className='post-tag'>태그</div>
-                        <div className='post-tail'>
-                            <div className='post-owner'>홍길동</div>
-                            <div className='post-date'>1분 전</div>
-                        </div>
-                        <div className='studies-line'></div>
-                    </div>
-                    <div className='post-studies'>
-                        <div className='post-header'>
-                            <div className='post-status'>모집중</div>
-                            <div className='post-title'>WebGl 스터디 인원을 모집합니다.</div>
-                        </div>
-                        <div className='post-body'>
-                            <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
-                                본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                            <div className='post-studies'>
+                                <div className='post-header'>
+                                    <div className='post-status'>모집중</div>
+                                    <div className='post-title'>WebGl 스터디 인원을 모집합니다.</div>
+                                </div>
+                                <div className='post-body'>
+                                    <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                                        본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                                    </div>
+                                    <div className='post-comment'>
+                                        <img className="img-comment" src={comment} alt='' />
+                                        29</div>
+                                    <div className='post-hit'>
+                                        <img className="img-hit" src={hit} alt='' />
+                                        145</div>
+                                    <div className='post-like'>
+                                        <img className="img-like" src={like} alt='' />
+                                        123</div>
+                                </div>
+                                <div className='post-tag'>태그</div>
+                                <div className='post-tail'>
+                                    <div className='post-owner'>홍길동</div>
+                                    <div className='post-date'>1분 전</div>
+                                </div>
+                                <div className='studies-line'></div>
                             </div>
-                            <div className='post-comment'>
-                                <img className="img-comment" src={comment} alt='' />
-                                29</div>
-                            <div className='post-hit'>
-                                <img className="img-hit" src={hit} alt='' />
-                                145</div>
-                            <div className='post-like'>
-                                <img className="img-like" src={like} alt='' />
-                                123</div>
-                        </div>
-                        <div className='post-tag'>태그</div>
-                        <div className='post-tail'>
-                            <div className='post-owner'>홍길동</div>
-                            <div className='post-date'>1분 전</div>
-                        </div>
-                        <div className='studies-line'></div>
-                    </div>
-                    <div className='post-studies'>
-                        <div className='post-header'>
-                            <div className='post-status'>모집중</div>
-                            <div className='post-title'>WebGl 스터디 인원을 모집합니다.</div>
-                        </div>
-                        <div className='post-body'>
-                            <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
-                                본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                            <div className='post-studies'>
+                                <div className='post-header'>
+                                    <div className='post-status'>모집중</div>
+                                    <div className='post-title'>WebGl 스터디 인원을 모집합니다.</div>
+                                </div>
+                                <div className='post-body'>
+                                    <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                                        본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                                    </div>
+                                    <div className='post-comment'>
+                                        <img className="img-comment" src={comment} alt='' />
+                                        29</div>
+                                    <div className='post-hit'>
+                                        <img className="img-hit" src={hit} alt='' />
+                                        145</div>
+                                    <div className='post-like'>
+                                        <img className="img-like" src={like} alt='' />
+                                        123</div>
+                                </div>
+                                <div className='post-tag'>태그</div>
+                                <div className='post-tail'>
+                                    <div className='post-owner'>홍길동</div>
+                                    <div className='post-date'>1분 전</div>
+                                </div>
+                                <div className='studies-line'></div>
                             </div>
-                            <div className='post-comment'>
-                                <img className="img-comment" src={comment} alt='' />
-                                29</div>
-                            <div className='post-hit'>
-                                <img className="img-hit" src={hit} alt='' />
-                                145</div>
-                            <div className='post-like'>
-                                <img className="img-like" src={like} alt='' />
-                                123</div>
-                        </div>
-                        <div className='post-tag'>태그</div>
-                        <div className='post-tail'>
-                            <div className='post-owner'>홍길동</div>
-                            <div className='post-date'>1분 전</div>
-                        </div>
-                        <div className='studies-line'></div>
-                    </div>
-                    <div className='post-studies'>
-                        <div className='post-header'>
-                            <div className='post-status'>모집중</div>
-                            <div className='post-title'>WebGl 스터디 인원을 모집합니다.</div>
-                        </div>
-                        <div className='post-body'>
-                            <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
-                                본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                            <div className='post-studies'>
+                                <div className='post-header'>
+                                    <div className='post-status'>모집중</div>
+                                    <div className='post-title'>WebGl 스터디 인원을 모집합니다.</div>
+                                </div>
+                                <div className='post-body'>
+                                    <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                                        본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                                    </div>
+                                    <div className='post-comment'>
+                                        <img className="img-comment" src={comment} alt='' />
+                                        29</div>
+                                    <div className='post-hit'>
+                                        <img className="img-hit" src={hit} alt='' />
+                                        145</div>
+                                    <div className='post-like'>
+                                        <img className="img-like" src={like} alt='' />
+                                        123</div>
+                                </div>
+                                <div className='post-tag'>태그</div>
+                                <div className='post-tail'>
+                                    <div className='post-owner'>홍길동</div>
+                                    <div className='post-date'>1분 전</div>
+                                </div>
+                                <div className='studies-line'></div>
                             </div>
-                            <div className='post-comment'>
-                                <img className="img-comment" src={comment} alt='' />
-                                29</div>
-                            <div className='post-hit'>
-                                <img className="img-hit" src={hit} alt='' />
-                                145</div>
-                            <div className='post-like'>
-                                <img className="img-like" src={like} alt='' />
-                                123</div>
-                        </div>
-                        <div className='post-tag'>태그</div>
-                        <div className='post-tail'>
-                            <div className='post-owner'>홍길동</div>
-                            <div className='post-date'>1분 전</div>
-                        </div>
-                        <div className='studies-line'></div>
-                    </div>
-                    <div className='post-studies'>
-                        <div className='post-header'>
-                            <div className='post-status'>모집중</div>
-                            <div className='post-title'>WebGl 스터디 인원을 모집합니다.</div>
-                        </div>
-                        <div className='post-body'>
-                            <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
-                                본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                            <div className='post-studies'>
+                                <div className='post-header'>
+                                    <div className='post-status'>모집중</div>
+                                    <div className='post-title'>WebGl 스터디 인원을 모집합니다.</div>
+                                </div>
+                                <div className='post-body'>
+                                    <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                                        본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                                    </div>
+                                    <div className='post-comment'>
+                                        <img className="img-comment" src={comment} alt='' />
+                                        29</div>
+                                    <div className='post-hit'>
+                                        <img className="img-hit" src={hit} alt='' />
+                                        145</div>
+                                    <div className='post-like'>
+                                        <img className="img-like" src={like} alt='' />
+                                        123</div>
+                                </div>
+                                <div className='post-tag'>태그</div>
+                                <div className='post-tail'>
+                                    <div className='post-owner'>홍길동</div>
+                                    <div className='post-date'>1분 전</div>
+                                </div>
+                                <div className='studies-line'></div>
                             </div>
-                            <div className='post-comment'>
-                                <img className="img-comment" src={comment} alt='' />
-                                29</div>
-                            <div className='post-hit'>
-                                <img className="img-hit" src={hit} alt='' />
-                                145</div>
-                            <div className='post-like'>
-                                <img className="img-like" src={like} alt='' />
-                                123</div>
                         </div>
-                        <div className='post-tag'>태그</div>
-                        <div className='post-tail'>
-                            <div className='post-owner'>홍길동</div>
-                            <div className='post-date'>1분 전</div>
-                        </div>
-                        <div className='studies-line'></div>
                     </div>
                 </div>
                 <Footer />
