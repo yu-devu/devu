@@ -1,18 +1,19 @@
-.cat-menu{
-    position: relative;
-    height: 40px;
-    top: 30px;
-}
-
-.cat-menu-items {
-    position: relative;
-    width: 1130px;
-    padding: 0 150px;
-    margin: 0 auto;
-}
-
-.cat-item {
-    margin-right: 20px;
-    color: var(--color-gray);
-    font-size: large;
+@media (min-width: 1024px) {
+    .cat-menu{
+        position: relative;
+        height: 40px;
+        top: 30px;
+    }
+    
+    .cat-menu-items {
+        position: relative;
+        width: 100%;
+        left: 24.5%;
+    }
+    
+    .cat-item {
+        margin-right: 20px;
+        color: var(--color-gray);
+        font-size: large;
+    }
 }
