@@ -104,10 +104,11 @@ a:hover {
 }
 
 /* ================= MEDIA QUERIES (MEDIUM DEVICES) ================= */
-@media screen and (max-width: 1024px){
-    .container {
-        width: var(--container-width-md);
+@media (max-width: 1024px){
+    .main-all {
+        width: auto;
     }
+    
 }
 
 /* ================= MEDIA QUERIES (SMALL DEVICES) =================*/
