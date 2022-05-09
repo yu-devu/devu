@@ -1,9 +1,9 @@
 package com.devu.backend.service;
 
-import com.devu.backend.api.recruit.RecruitResponseDto;
+import com.devu.backend.api.position.PositionResponseDto;
 import com.devu.backend.entity.CompanyType;
-import com.devu.backend.entity.Recruit;
-import com.devu.backend.repository.RecruitRepository;
+import com.devu.backend.entity.Position;
+import com.devu.backend.repository.PositionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -13,7 +13,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,9 +24,9 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class RecruitService {
+public class PositionService {
 
-    private final RecruitRepository recruitRepository;
+    private final PositionRepository positionRepository;
 
     @Transactional
     public void collectNaver() {
@@ -64,14 +63,14 @@ public class RecruitService {
                 String duration = start + " ~ " + end;
                 log.info("link: {}, date: {}, title: {}", link, duration, title);
 
-                Recruit recruit = Recruit.builder()
+                Position position = Position.builder()
                         .link(link)
                         .title(title)
                         .company(CompanyType.NAVER)
                         .duration(duration)
                         .build();
 
-                recruitRepository.save(recruit);
+                positionRepository.save(position);
             }
             startNum += 10;
             endNum += 10;
@@ -101,14 +100,14 @@ public class RecruitService {
                 String link = "https://career.woowahan.com/recruitment/"+ recruitNumber +
                         "/detail?category=jobGroupCodes%3ABA005001&keyword=&jobCodes=&employmentTypeCodes=";
                 String duration = openDate + " ~ 영입 종료시";
-                Recruit recruit = Recruit.builder()
+                Position position = Position.builder()
                         .link(link)
                         .title(title)
                         .company(CompanyType.BAEMIN)
                         .duration(duration)
                         .build();
 
-                recruitRepository.save(recruit);
+                positionRepository.save(position);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -152,14 +151,14 @@ public class RecruitService {
                 String duration = durations.get(i).text();
                 log.info("link: {}, title: {}, duration: {}", link, title, duration);
 
-                Recruit recruit = Recruit.builder()
+                Position position = Position.builder()
                         .link(link)
                         .title(title)
                         .company(CompanyType.KAKAO)
                         .duration(duration)
                         .build();
 
-                recruitRepository.save(recruit);
+                positionRepository.save(position);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -201,14 +200,14 @@ public class RecruitService {
                 String duration = durations.get(i).text();
                 log.info("link: {}, title: {}, duration: {}", link, title, duration);
 
-                Recruit recruit = Recruit.builder()
+                Position position = Position.builder()
                         .link(link)
                         .title(title)
                         .company(CompanyType.LINE)
                         .duration(duration)
                         .build();
 
-                recruitRepository.save(recruit);
+                positionRepository.save(position);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -234,14 +233,14 @@ public class RecruitService {
                 String duration = "공고 확인";
                 log.info("link: {}, title: {}, duration: {}", link, title, duration);
 
-                Recruit recruit = Recruit.builder()
+                Position position = Position.builder()
                         .link(link)
                         .title(title)
                         .company(CompanyType.COUPANG)
                         .duration(duration)
                         .build();
 
-                recruitRepository.save(recruit);
+                positionRepository.save(position);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -271,8 +270,8 @@ public class RecruitService {
 
     @Transactional
 //    @Scheduled(cron = "0 0 4 * * *")  매일 새벽4시마다 실행(혹시몰라 잠시중단)
-    public void collectAllRecruit() {
-        recruitRepository.deleteAll();
+    public void collectAllPosition() {
+        positionRepository.deleteAll();
         //Naver 크롤링
         collectNaver();
         //Baemin 크롤링
@@ -291,33 +290,33 @@ public class RecruitService {
             collectCoupang(i);
     }
 
-    public List<RecruitResponseDto> getAllRecruit(Pageable pageable) {
-        Page<RecruitResponseDto> allRecruit = recruitRepository.findAll(pageable).map(RecruitResponseDto::new);
-        return allRecruit.getContent();
+    public List<PositionResponseDto> getAllPosition(Pageable pageable) {
+        Page<PositionResponseDto> allPosition = positionRepository.findAll(pageable).map(PositionResponseDto::new);
+        return allPosition.getContent();
     }
 
-    public List<RecruitResponseDto> getNaver(Pageable pageable) {
-        return getRecruitByCompany(pageable, CompanyType.NAVER);
+    public List<PositionResponseDto> getNaver(Pageable pageable) {
+        return getPositionByCompany(pageable, CompanyType.NAVER);
     }
 
-    private List<RecruitResponseDto> getRecruitByCompany(Pageable pageable, CompanyType company) {
-        Page<RecruitResponseDto> companyRecruit = recruitRepository.findByCompany(company, pageable).map(RecruitResponseDto::new);
-        return companyRecruit.getContent();
+    private List<PositionResponseDto> getPositionByCompany(Pageable pageable, CompanyType company) {
+        Page<PositionResponseDto> positionsByCompany = positionRepository.findByCompany(company, pageable).map(PositionResponseDto::new);
+        return positionsByCompany.getContent();
     }
 
-    public List<RecruitResponseDto> getKakao(Pageable pageable) {
-        return getRecruitByCompany(pageable, CompanyType.KAKAO);
+    public List<PositionResponseDto> getKakao(Pageable pageable) {
+        return getPositionByCompany(pageable, CompanyType.KAKAO);
     }
 
-    public List<RecruitResponseDto> getLine(Pageable pageable) {
-        return getRecruitByCompany(pageable, CompanyType.LINE);
+    public List<PositionResponseDto> getLine(Pageable pageable) {
+        return getPositionByCompany(pageable, CompanyType.LINE);
     }
 
-    public List<RecruitResponseDto> getCoupang(Pageable pageable) {
-        return getRecruitByCompany(pageable, CompanyType.COUPANG);
+    public List<PositionResponseDto> getCoupang(Pageable pageable) {
+        return getPositionByCompany(pageable, CompanyType.COUPANG);
     }
 
-    public List<RecruitResponseDto> getBaemin(Pageable pageable) {
-        return getRecruitByCompany(pageable, CompanyType.BAEMIN);
+    public List<PositionResponseDto> getBaemin(Pageable pageable) {
+        return getPositionByCompany(pageable, CompanyType.BAEMIN);
     }
 }
