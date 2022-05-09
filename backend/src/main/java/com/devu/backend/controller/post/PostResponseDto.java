@@ -25,6 +25,7 @@ public class PostResponseDto {
     private Integer like;
     private StudyStatus studyStatus;
     private QuestionStatus questionStatus;
+    private int commentsSize;
     private List<Comment> comments;
     private List<String> tags;
 }

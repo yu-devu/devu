@@ -173,7 +173,7 @@ public class PostService {
                 .sentence(s)
                 .order(order)
                 .build();
-        return postRepository.findAllChats(pageable,postSearch).map(
+        return postRepository.findAllChats(pageable, postSearch).map(
                 chat -> PostResponseDto
                         .builder()
                         .id(chat.getId())
@@ -182,6 +182,7 @@ public class PostService {
                         .username(chat.getUser().getUsername())
                         .hit(chat.getHit())
                         .like(chat.getLikes().size())
+                        .commentsSize(chat.getComments().size())
                         .build()
         );
     }
@@ -205,6 +206,7 @@ public class PostService {
                         .studyStatus(study.getStudyStatus())
                         .like(study.getLikes().size())
                         .tags(study.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
+                        .commentsSize(study.getComments().size())
                         .build()
         );
     }
@@ -227,6 +229,7 @@ public class PostService {
                         .questionStatus(question.getQuestionStatus())
                         .like(question.getLikes().size())
                         .tags(question.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
+                        .commentsSize(question.getComments().size())
                         .build()
         );
     }
