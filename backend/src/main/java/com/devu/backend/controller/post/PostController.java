@@ -28,6 +28,48 @@ public class PostController {
         return ResponseEntity.ok().body("커뮤니티 홈 테스트");
     }
 
+    @GetMapping("/chats/size")
+    public ResponseEntity<?> getChatsSize() {
+        try {
+            int chatSize = postService.getAllChatSize();
+            return ResponseEntity.ok(chatSize);
+        }catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    @GetMapping("/studies/size")
+    public ResponseEntity<?> getStudiesSize() {
+        try {
+            int studiesSize = postService.getAllStudiesSize();
+            return ResponseEntity.ok(studiesSize);
+        }catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    @GetMapping("/questions/size")
+    public ResponseEntity<?> getQuestionsSize() {
+        try {
+            int questionsSize = postService.getAllQuestionsSize();
+            return ResponseEntity.ok(questionsSize);
+        }catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
     //자유 게시판 리스트 get
     @GetMapping("/chats")
     public ResponseEntity<?> getChats(

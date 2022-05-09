@@ -520,5 +520,17 @@ public class PostService {
                         .build()
                 ).collect(Collectors.toList());
     }
+
+    public int getAllChatSize() {
+        return postRepository.findAllChatsWithoutSorting().size();
+    }
+
+    public int getAllStudiesSize() {
+        return postRepository.findAllStudiesWithoutSorting().size();
+    }
+
+    public int getAllQuestionsSize() {
+        return postRepository.findAllQuestionsWithoutSorting().size();
+    }
 }
 
