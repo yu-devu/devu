@@ -3,22 +3,20 @@ import axios from 'axios';
 import './chats.css';
 import { Link } from 'react-router-dom';
 import ReactHtmlParser from 'html-react-parser';
-import Posts from './Posts';
+// import Posts from './Posts';
 import ReactPaginate from 'react-paginate'
 import './pagination.css'
 
 const Chats = () => {
   const [currentPage, setCurrentPage] = useState(0);
-  const [postsPerPage] = useState(10);
+  const [postsPerPage] = useState(20);
   const [postData, setPostData] = useState([]);
   const [lastIdx, setLastIdx] = useState(0);
-
-  const [pageNumber, setPageNumber] = useState(0)
-  const pagesVisited = pageNumber * postsPerPage
+  // const pagesVisited = currentPage * postsPerPage
 
   useEffect(() => {
     fetchData();
-  }, []); // 글 목록 page 버튼 누를 때 마다 버튼 값 가져와서 setCurrentPage 하면 될 듯함.
+  }, [currentPage]); // 글 목록 page 버튼 누를 때 마다 버튼 값 가져와서 setCurrentPage 하면 될 듯함.
 
   const fetchData = async () => {
     const res = await axios.get(process.env.REACT_APP_DB_HOST + `/community/chats`, {
@@ -33,20 +31,22 @@ const Chats = () => {
         {
           id: rowData.id,
           title: rowData.title,
-          content: ReactHtmlParser(rowData.content),
+          content: (rowData.content),
           hit: rowData.hit,
           like: rowData.like,
           username: rowData.username,
+          tags: rowData.tags,
         }
       )
     );
     setPostData(_postData);
   };
 
-  const pageCount = Math.ceil(postData.length / postsPerPage);
+  // const pageCount = Math.ceil(postData.length / postsPerPage);
 
   const changePage = ({ selected }) => {
-    setPageNumber(selected)
+    setCurrentPage(selected)
+    // console.log(selected);
   }
 
   return (
@@ -54,11 +54,24 @@ const Chats = () => {
       {/* 게시판 */}
       <div className="content">
         <div className="article-list">
-          <Posts postData={postData} pagesVisited={pagesVisited} postsPerPage={postsPerPage} />
+          <ul className='list-group'>
+            {postData.slice(0, 20).map(post => (
+              <li key={post.id} className="list-group-item">
+                <div className='title'>
+                  <Link to={`/postDetail/${post.id}`}>{post.title}</Link>
+                </div>
+                <div className='owner'>
+                  작성자 : {post.username} 조회수 : {post.hit} 좋아요 : {post.like}
+                </div>
+
+              </li>
+            ))}
+          </ul>
+
           <ReactPaginate
             previousLabel={"<"}
             nextLabel={">"}
-            pageCount={pageCount}
+            pageCount={10} // 페이지 버튼 개수 출력하는 부분 -> 글 전체 개수 넘겨받아서 사용해야함
             onPageChange={changePage}
             containerClassName={"btn-pagination"}
             previousLinkClassName={"btn-pagination-previous"}

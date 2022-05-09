@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation, Link } from "react-router-dom";
-import "./postView.css";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import "./postView.css";
 
+
 const PostView = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const [postData, setPostData] = useState([]);
   const [isLike, setLike] = useState(false);
@@ -55,7 +56,18 @@ const PostView = () => {
       else setLike(false);
     })
       .catch((res) => { console.log(res); });
-  }
+  };
+
+
+  const handleDelete = async () => {
+    await axios.delete(process.env.REACT_APP_DB_HOST + `/community/chat/${postId}`)
+      .then(() => {
+        console.log("삭제 성공!");
+        navigate(-1);
+      })
+      .catch((res) => console.log(res));
+  };
+
   // const handleComment = async () => {
   //   const commentData = {
   //     userId: userId,
@@ -91,7 +103,7 @@ const PostView = () => {
               <Link to="modify">
                 <a className="btn-modify">수정하기</a>
               </Link>
-              <a className="btn-delete">삭제하기</a>
+              <a className="btn-delete" onClick={() => handleDelete()}>삭제하기</a>
             </div>
           </div>
           {/* <h1>댓글</h1>
@@ -107,8 +119,9 @@ const PostView = () => {
         </div>
       ) : (
         "해당 게시글을 찾을 수 없습니다."
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 
