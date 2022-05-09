@@ -168,11 +168,10 @@ public class PostService {
     }
 
 
-    public Page<PostResponseDto> findAllChats(Pageable pageable,String order,List<String> tags,String s) {
+    public Page<PostResponseDto> findAllChats(Pageable pageable,String order,String s) {
         PostSearch postSearch = PostSearch.builder()
                 .sentence(s)
                 .order(order)
-                .tagId(Optional.ofNullable(tags).orElseGet(Collections::emptyList).stream().map(tagService::findTagIdByString).collect(Collectors.toList()))
                 .build();
         return postRepository.findAllChats(pageable,postSearch).map(
                 chat -> PostResponseDto
@@ -183,7 +182,6 @@ public class PostService {
                         .username(chat.getUser().getUsername())
                         .hit(chat.getHit())
                         .like(chat.getLikes().size())
-                        .tags(chat.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                         .build()
         );
     }

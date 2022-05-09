@@ -26,19 +26,14 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
     @Override
     public Page<Chat> findAllChats(Pageable pageable, PostSearch postSearch) {
         QChat chat = QChat.chat;
-        QPostTag postTag = QPostTag.postTag;
         if (!StringUtils.hasText(postSearch.getOrder())) {
             List<Chat> fetch = queryFactory
                     .select(chat)
                     .from(chat)
-                    .innerJoin(postTag)
-                    .on(chat.id.eq(postTag.post.id))
                     .where(
-                            tagIn(postSearch.getTagId()),
                             chatTitleContains(postSearch.getSentence())
                     )
                     .groupBy(chat.id)
-                    .having(sizeEq((long) postSearch.getTagId().size()))
                     .orderBy(chat.createAt.desc())
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
@@ -49,15 +44,11 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
             List<Chat> fetch = queryFactory
                     .select(chat)
                     .from(chat)
-                    .innerJoin(postTag)
-                    .on(chat.id.eq(postTag.post.id))
                     .leftJoin(chat.likes,like)
                     .where(
-                            tagIn(postSearch.getTagId()),
                             chatTitleContains(postSearch.getSentence())
                     )
                     .groupBy(chat.id)
-                    .having(sizeEq((long) postSearch.getTagId().size()))
                     .orderBy(like.post.id.count().desc())
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
@@ -67,15 +58,11 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
         List<Chat> fetch = queryFactory
                 .select(chat)
                 .from(chat)
-                .innerJoin(postTag)
-                .on(chat.id.eq(postTag.post.id))
                 .leftJoin(chat.comments,comment)
                 .where(
-                        tagIn(postSearch.getTagId()),
                         chatTitleContains(postSearch.getSentence())
                 )
                 .groupBy(chat.id)
-                .having(sizeEq((long) postSearch.getTagId().size()))
                 .orderBy(comment.post.id.count().desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

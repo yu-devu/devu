@@ -33,10 +33,9 @@ public class PostController {
     public ResponseEntity<?> getChats(
             @PageableDefault(size = 10)Pageable pageable,
             @RequestParam(value = "order",required = false) String order,
-            @RequestParam(value = "tags",required = false) List<String> tags,
             @RequestParam(value = "s",required = false)String s) {
         try {
-            List<PostResponseDto> chats = postService.findAllChats(pageable,order,tags,s).getContent();
+            List<PostResponseDto> chats = postService.findAllChats(pageable,order,s).getContent();
             return ResponseEntity.ok(chats);
         } catch (Exception e) {
             e.printStackTrace();
