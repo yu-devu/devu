@@ -15,15 +15,6 @@ import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> ,PostRepositoryExtension{
-    @Query("select p from Post p where TYPE(p) IN(Chat) order by p.createAt desc")
-    Page<Chat> findAllChats(Pageable pageable);
-
-    @Query("select p from Post p where TYPE(p) IN(Study) order by p.createAt desc")
-    Page<Study> findAllStudies(Pageable pageable);
-
-    @Query("select p from Post p where TYPE(p) IN(Question) order by p.createAt desc")
-    Page<Question> findAllQuestions(Pageable pageable);
-
     Optional<Chat> findChatById(Long id);
 
     Optional<Question> findQuestionById(Long id);

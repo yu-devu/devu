@@ -7,7 +7,7 @@ const Submenu = () => {
         <div className='sub-menu'>
             <div className='sub-menu-items'>
                 <Link className='sub-item' to="/studies">스터디구인란</Link>
-                <Link className='sub-item' to="/questions">QNA</Link>
+                <Link className='sub-item' to="/questions">Q&A</Link>
                 <Link className='sub-item' to="/chats">자유게시판</Link>
             </div>
         </div>

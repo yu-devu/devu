@@ -8,7 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface PostRepositoryExtension {
-    Page<Study> findAllStudy(Pageable pageable, PostSearch postSearch);
-    Page<Chat> findAllChat(Pageable pageable, PostSearch postSearch);
-    Page<Question> findAllQuestion(Pageable pageable, PostSearch postSearch);
+    Page<Study> findAllStudies(Pageable pageable, PostSearch postSearch);
+    Page<Chat> findAllChats(Pageable pageable, PostSearch postSearch);
+    Page<Question> findAllQuestions(Pageable pageable, PostSearch postSearch);
 }

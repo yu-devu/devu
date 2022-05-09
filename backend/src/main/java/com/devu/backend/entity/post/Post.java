@@ -44,7 +44,7 @@ public class Post extends BaseTime{
     private List<Image> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Tag> tags = new ArrayList<>();//tags는 index와 상관없이 자주 변경 될 수 있어서 LinkedList
+    private List<PostTag> postTags = new ArrayList<>();
 
 
     //==비지니스 로직==//
@@ -52,63 +52,9 @@ public class Post extends BaseTime{
         this.hit++;
     }
 
-    public boolean tagUpdateValidation(PostRequestUpdateDto updateDto) {
-        List<PostTags> savedTags = getSavedTags();
-        List<PostTags> updateTags = getUpdateTags(updateDto);
-        return (savedTags.size() != updateTags.size()) || !savedTags.containsAll(updateTags);
-    }
-
     public void updatePost(PostRequestUpdateDto updateDto) {
         this.title = updateDto.getTitle();
         this.content = updateDto.getContent();
-    }
-
-    public List<Tag> updateWithTags(PostRequestUpdateDto updateDto) {
-        this.title = updateDto.getTitle();
-        this.content = updateDto.getContent();
-        List<PostTags> savedTags = getSavedTags();
-        List<PostTags> updateTags = getUpdateTags(updateDto);
-        addTags(savedTags, updateTags);
-        return removeTags(savedTags, updateTags);
-    }
-
-    private void addTags(List<PostTags> savedTags, List<PostTags> updateTags) {
-        List<PostTags> add = updateTags.stream().filter(t -> !savedTags.contains(t)).collect(Collectors.toList());
-        List<Tag> addTags = add.stream().map(a -> Tag.builder()
-                .postTags(a)
-                .post(this)
-                .build()
-        ).collect(Collectors.toList());
-        for (Tag addTag : addTags) {
-            this.getTags().add(addTag);
-        }
-    }
-
-    //saveTag 중에 updateTag에 없으면 객체에서 빼자
-    private List<Tag> removeTags(List<PostTags> savedTags, List<PostTags> updateTags) {
-        List<PostTags> remove = savedTags.stream().filter(t -> !updateTags.contains(t)).collect(Collectors.toList());
-        List<Tag> removeTags = remove.stream().map(r -> Tag.builder()
-                .postTags(r)
-                .post(this)
-                .build()
-        ).collect(Collectors.toList());
-        for (Tag removeTag : removeTags) {
-            this.getTags().remove(removeTag);
-        }
-        return removeTags;
-    }
-
-
-    private List<PostTags> getUpdateTags(PostRequestUpdateDto updateDto) {
-        return updateDto.getTags()
-                .stream().map(s -> PostTags.valueOf(s.toUpperCase()))
-                .collect(Collectors.toList());
-    }
-
-    private List<PostTags> getSavedTags() {
-        return this.getTags()
-                .stream().map(Tag::getPostTags)
-                .collect(Collectors.toList());
     }
 
     public void addImage(Image image) {

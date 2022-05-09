@@ -9,17 +9,17 @@ import com.devu.backend.controller.post.PostRequestCreateDto;
 import com.devu.backend.controller.post.PostRequestUpdateDto;
 import com.devu.backend.controller.post.PostResponseDto;
 import com.devu.backend.entity.Image;
+import com.devu.backend.entity.PostTag;
 import com.devu.backend.entity.Tag;
-import com.devu.backend.entity.User;
 import com.devu.backend.entity.post.*;
 import com.devu.backend.repository.ImageRepository;
 import com.devu.backend.repository.PostRepository;
+import com.devu.backend.repository.PostSearch;
 import com.devu.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -55,6 +55,8 @@ public class PostService {
     * */
     @Transactional
     public PostResponseDto createChat(PostRequestCreateDto requestPostDto) throws IOException {
+        List<PostTag> postTags = new ArrayList<>();
+        List<Tag> tags = createTags(requestPostDto, postTags);
         Chat chat = Chat.builder()
                 .user(
                         userRepository.findByUsername(requestPostDto.getUsername())
@@ -64,22 +66,24 @@ public class PostService {
                 .content(requestPostDto.getContent())
                 .hit(0L)
                 .images(new ArrayList<>())
-                .tags(new LinkedList<>())
+                .tags(postTags)
                 .build();
         addImage(requestPostDto, chat);
+        setPostOnPostTag(postTags, chat);
         log.info("Create Chat {} By {}",chat.getTitle(),chat.getUser().getUsername());
         postRepository.save(chat);
-        tagService.saveTags(requestPostDto.getTags(), chat.getId());
         return PostResponseDto.builder()
                 .title(chat.getTitle())
                 .url(getImageUrl(chat))
                 .username(chat.getUser().getUsername())
-                .tags(chat.getTags())
+                .tags(tags.stream().map(Tag::getName).collect(Collectors.toList()))
                 .build();
     }
 
     @Transactional
     public PostResponseDto createStudy(PostRequestCreateDto requestPostDto) throws IOException {
+        List<PostTag> postTags = new ArrayList<>();
+        List<Tag> tags = createTags(requestPostDto, postTags);
         Study study = Study.builder()
                 .user(
                         userRepository.findByUsername(requestPostDto.getUsername())
@@ -90,22 +94,24 @@ public class PostService {
                 .studyStatus(StudyStatus.ACTIVE)
                 .hit(0L)
                 .images(new ArrayList<>())
-                .tags(new LinkedList<>())
+                .tags(postTags)
                 .build();
         addImage(requestPostDto, study);
+        setPostOnPostTag(postTags,study);
         log.info("Create Study {} By {}",study.getTitle(),study.getUser().getUsername());
         postRepository.save(study);
-        tagService.saveTags(requestPostDto.getTags(), study.getId());
         return PostResponseDto.builder()
                 .title(study.getTitle())
                 .url(getImageUrl(study))
                 .username(study.getUser().getUsername())
-                .tags(study.getTags())
+                .tags(tags.stream().map(Tag::getName).collect(Collectors.toList()))
                 .build();
     }
 
     @Transactional
     public PostResponseDto createQuestion(PostRequestCreateDto requestPostDto) throws IOException {
+        List<PostTag> postTags = new ArrayList<>();
+        List<Tag> tags = createTags(requestPostDto, postTags);
         Question question = Question.builder()
                 .user(
                         userRepository.findByUsername(requestPostDto.getUsername())
@@ -116,18 +122,35 @@ public class PostService {
                 .qnaStatus(QuestionStatus.UNSOLVED)
                 .hit(0L)
                 .images(new ArrayList<>())
-                .tags(new LinkedList<>())
+                .tags(postTags)
                 .build();
         addImage(requestPostDto, question);
+        setPostOnPostTag(postTags,question);
         log.info("Create Question {} By {}",question.getTitle(),question.getUser().getUsername());
         postRepository.save(question);
-        tagService.saveTags(requestPostDto.getTags(), question.getId());
         return PostResponseDto.builder()
                 .title(question.getTitle())
                 .url(getImageUrl(question))
                 .username(question.getUser().getUsername())
-                .tags(question.getTags())
+                .tags(tags.stream().map(Tag::getName).collect(Collectors.toList()))
                 .build();
+    }
+
+    private void setPostOnPostTag(List<PostTag> postTags, Post post) {
+        for (PostTag postTag : postTags) {
+            postTag.changePost(post);
+        }
+    }
+
+    private List<Tag> createTags(PostRequestCreateDto requestPostDto, List<PostTag> postTags) {
+        List<Tag> tags = tagService.findTags(
+                requestPostDto.getTags()
+                        .stream().map(String::toUpperCase)
+                        .collect(Collectors.toList()));
+        for (Tag tag : tags) {
+            postTags.add(PostTag.builder().tag(tag).build());
+        }
+        return tags;
     }
 
     @Transactional
@@ -140,9 +163,18 @@ public class PostService {
         }
     }
 
+    private String getTagNameFromPostTags(PostTag postTag) {
+        return tagService.findTagName(postTag);
+    }
 
-    public Page<PostResponseDto> findAllChats(Pageable pageable) {
-        return postRepository.findAllChats(pageable).map(
+
+    public Page<PostResponseDto> findAllChats(Pageable pageable,String order,List<String> tags,String s) {
+        PostSearch postSearch = PostSearch.builder()
+                .sentence(s)
+                .order(order)
+                .tagId(Optional.ofNullable(tags).orElseGet(Collections::emptyList).stream().map(tagService::findTagIdByString).collect(Collectors.toList()))
+                .build();
+        return postRepository.findAllChats(pageable,postSearch).map(
                 chat -> PostResponseDto
                         .builder()
                         .id(chat.getId())
@@ -151,13 +183,20 @@ public class PostService {
                         .username(chat.getUser().getUsername())
                         .hit(chat.getHit())
                         .like(chat.getLikes().size())
-                        .tags(chat.getTags())
+                        .tags(chat.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                         .build()
         );
     }
 
-    public Page<PostResponseDto> findAllStudies(Pageable pageable) {
-        return postRepository.findAllStudies(pageable).map(
+    public Page<PostResponseDto> findAllStudies(Pageable pageable,StudyStatus status,String order,List<String> tags,String s) {
+        PostSearch postSearch = PostSearch.builder()
+                .order(order)
+                .sentence(s)
+                .tagId(Optional.ofNullable(tags).orElseGet(Collections::emptyList).stream().map(tagService::findTagIdByString).collect(Collectors.toList()))
+                .studyStatus(status)
+                .build();
+
+        return postRepository.findAllStudies(pageable,postSearch).map(
                 study -> PostResponseDto
                         .builder()
                         .id(study.getId())
@@ -167,13 +206,19 @@ public class PostService {
                         .hit(study.getHit())
                         .studyStatus(study.getStudyStatus())
                         .like(study.getLikes().size())
-                        .tags(study.getTags())
+                        .tags(study.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                         .build()
         );
     }
 
-    public Page<PostResponseDto> findAllQuestions(Pageable pageable) {
-        return postRepository.findAllQuestions(pageable).map(
+    public Page<PostResponseDto> findAllQuestions(Pageable pageable,QuestionStatus status,String order,List<String> tags,String s) {
+        PostSearch postSearch = PostSearch.builder()
+                .order(order)
+                .sentence(s)
+                .tagId(Optional.ofNullable(tags).orElseGet(Collections::emptyList).stream().map(tagService::findTagIdByString).collect(Collectors.toList()))
+                .questionStatus(status)
+                .build();
+        return postRepository.findAllQuestions(pageable,postSearch).map(
                 question -> PostResponseDto
                         .builder()
                         .id(question.getId())
@@ -183,7 +228,7 @@ public class PostService {
                         .hit(question.getHit())
                         .questionStatus(question.getQuestionStatus())
                         .like(question.getLikes().size())
-                        .tags(question.getTags())
+                        .tags(question.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                         .build()
         );
     }
@@ -204,7 +249,7 @@ public class PostService {
                 .title(chat.getTitle())
                 .like(chat.getLikes().size())
                 .comments(chat.getComments())
-                .tags(chat.getTags())
+                .tags(chat.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                 .build();
     }
 
@@ -225,7 +270,7 @@ public class PostService {
                 .studyStatus(study.getStudyStatus())
                 .like(study.getLikes().size())
                 .comments(study.getComments())
-                .tags(study.getTags())
+                .tags(study.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                 .build();
     }
 
@@ -246,7 +291,7 @@ public class PostService {
                 .questionStatus(question.getQuestionStatus())
                 .like(question.getLikes().size())
                 .comments(question.getComments())
-                .tags(question.getTags())
+                .tags(question.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                 .build();
     }
 
@@ -265,28 +310,14 @@ public class PostService {
         }
     }
 
-    private void updatePostTags(PostRequestUpdateDto updateDto, Post post) {
-        //updateWithTags의 리턴값 -> 태그를 새로 설정하기 위해 지워야하는 tags -> 즉, 기존에 설정된 태그들 중, 지워야할 태그
-        //but tag id가 존재하지 않음 -> repository에서 find 필수
-        List<Tag> orphanTags = new LinkedList<>();
-        for (Tag tag : post.updateWithTags(updateDto)) {
-            Tag deleteTag = tagService.getTagByPostAndPostTag(tag.getPost().getId(), tag.getPostTags());
-            orphanTags.add(deleteTag);
-        }
-        for (Tag tag : orphanTags) {
-            post.getTags().remove(tag);//orphan = true로 인해서 삭제 가능
-        }
-    }
-
     @Transactional
     public void updateChat(Long chatId, PostRequestUpdateDto updateDto) throws IOException {
         Chat chat = postRepository.findChatById(chatId).orElseThrow(PostNotFoundException::new);
         if (!updateDto.getImages().isEmpty()) {
             updateImage(chat, updateDto);
         }
-        //valid가 true면 실행
-        if (chat.tagUpdateValidation(updateDto)) {
-            updatePostTags(updateDto, chat);
+        if (!isSameTags(chat.getPostTags(), updateDto.getTags().stream().map(String::toUpperCase).collect(Collectors.toList()))) {
+            updateTags(updateDto, chat);
         }
         chat.updatePost(updateDto);
     }
@@ -295,8 +326,8 @@ public class PostService {
     public void updateStudy(Long studyId, PostRequestUpdateDto updateDto) throws IOException {
         Study study = postRepository.findStudyById(studyId).orElseThrow(PostNotFoundException::new);
         updateImage(study, updateDto);
-        if (study.tagUpdateValidation(updateDto)) {
-            updatePostTags(updateDto, study);
+        if (!isSameTags(study.getPostTags(), updateDto.getTags().stream().map(String::toUpperCase).collect(Collectors.toList()))) {
+            updateTags(updateDto, study);
         }
         study.updatePost(updateDto);
     }
@@ -305,10 +336,33 @@ public class PostService {
     public void updateQuestion(Long questionId, PostRequestUpdateDto updateDto) throws IOException {
         Question question = postRepository.findQuestionById(questionId).orElseThrow(PostNotFoundException::new);
         updateImage(question, updateDto);
-        if (question.tagUpdateValidation(updateDto)) {
-            updatePostTags(updateDto,question);
+        if (!isSameTags(question.getPostTags(), updateDto.getTags().stream().map(String::toUpperCase).collect(Collectors.toList()))) {
+            updateTags(updateDto, question);
         }
         question.updatePost(updateDto);
+    }
+
+    private void updateTags(PostRequestUpdateDto updateDto, Post post) {
+        clearPostTagList(post);
+        List<Tag> tags = tagService.findTags(updateDto.getTags().stream().map(String::toUpperCase).collect(Collectors.toList()));
+        List<PostTag> collect = tags.stream().map(t -> PostTag.builder().tag(t).post(post).build()).collect(Collectors.toList());
+        for (PostTag postTag : collect) {
+            post.getPostTags().add(postTag);
+        }
+    }
+
+    private void clearPostTagList(Post post) {
+        post.getPostTags().clear();
+    }
+
+    private boolean isSameTags(List<PostTag> postTags,List<String> input) {
+        for (PostTag postTag : postTags) {
+            String tagName = tagService.findTagName(postTag);
+            if (!input.contains(tagName)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Transactional
@@ -390,7 +444,7 @@ public class PostService {
                         .hit(c.getHit())
                         .content(c.getContent())
                         .like(c.getLikes().size())
-                        .tags(c.getTags())
+                        .tags(c.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                         .username(c.getUser().getUsername())
                         .build()
                 ).collect(Collectors.toList());
@@ -404,7 +458,7 @@ public class PostService {
                         .hit(c.getHit())
                         .content(c.getContent())
                         .like(c.getLikes().size())
-                        .tags(c.getTags())
+                        .tags(c.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                         .username(c.getUser().getUsername())
                         .build()
                 ).collect(Collectors.toList());
@@ -418,7 +472,7 @@ public class PostService {
                         .hit(s.getHit())
                         .content(s.getContent())
                         .like(s.getLikes().size())
-                        .tags(s.getTags())
+                        .tags(s.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                         .username(s.getUser().getUsername())
                         .build()
                 ).collect(Collectors.toList());
@@ -432,7 +486,7 @@ public class PostService {
                         .hit(s.getHit())
                         .content(s.getContent())
                         .like(s.getLikes().size())
-                        .tags(s.getTags())
+                        .tags(s.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                         .username(s.getUser().getUsername())
                         .build()
                 ).collect(Collectors.toList());
@@ -446,7 +500,7 @@ public class PostService {
                         .hit(q.getHit())
                         .content(q.getContent())
                         .like(q.getLikes().size())
-                        .tags(q.getTags())
+                        .tags(q.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                         .username(q.getUser().getUsername())
                         .build()
                 ).collect(Collectors.toList());
@@ -460,22 +514,8 @@ public class PostService {
                         .hit(q.getHit())
                         .content(q.getContent())
                         .like(q.getLikes().size())
-                        .tags(q.getTags())
+                        .tags(q.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                         .username(q.getUser().getUsername())
-                        .build()
-                ).collect(Collectors.toList());
-    }
-
-    public List<PostResponseDto> getStudiesByStatus(Pageable pageable,StudyStatus studyStatus) {
-        return postRepository.findAllStudyByStatus(pageable,studyStatus)
-                .stream().map(s -> PostResponseDto.builder()
-                        .username(s.getUser().getUsername())
-                        .id(s.getId())
-                        .content(s.getContent())
-                        .title(s.getTitle())
-                        .like(s.getLikes().size())
-                        .tags(s.getTags())
-                        .hit(s.getHit())
                         .build()
                 ).collect(Collectors.toList());
     }
