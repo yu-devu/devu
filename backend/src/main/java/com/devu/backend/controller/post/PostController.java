@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -98,7 +99,8 @@ public class PostController {
             @RequestParam(value = "s",required = false)String s
     ) {
         try {
-            List<PostResponseDto> studies = postService.findAllStudies(pageable,status,order,tags,s).getContent();
+            List<String> upperTags = tags.stream().map(String::toUpperCase).collect(Collectors.toList());
+            List<PostResponseDto> studies = postService.findAllStudies(pageable,status,order,upperTags,s).getContent();
             return ResponseEntity.ok(studies);
         } catch (Exception e) {
             e.printStackTrace();
@@ -119,7 +121,8 @@ public class PostController {
             @RequestParam(value = "s",required = false)String s
     ) {
         try {
-            List<PostResponseDto> questions = postService.findAllQuestions(pageable,status,order,tags,s).getContent();
+            List<String> upperTags = tags.stream().map(String::toUpperCase).collect(Collectors.toList());
+            List<PostResponseDto> questions = postService.findAllQuestions(pageable,status,order,upperTags,s).getContent();
             return ResponseEntity.ok(questions);
         } catch (Exception e) {
             e.printStackTrace();
