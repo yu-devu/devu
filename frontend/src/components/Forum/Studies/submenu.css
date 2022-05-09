@@ -1,0 +1,21 @@
+@media (min-width: 1024px) {
+    .sub-menu{
+        position: relative;
+        box-shadow: 1px 6px 8px 1px rgb(0 0 0 / 12%) inset;
+        line-height: 3.2;
+        height: 40px;
+    }
+    
+    .sub-menu-items {
+        position: relative;
+        width: 100%;
+        left: 20.7%;
+    }
+    
+    .sub-item {
+        margin-right: 25px;
+        color: var(--color-gray);
+        font-size: 18px;
+        font-weight: 600;
+    }    
+}

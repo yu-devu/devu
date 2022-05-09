@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import * as Icons from 'react-icons/fa';
 import './navbar.css';
 import { navItems } from './NavItems';
 import Dropdown from './Dropdown';
@@ -24,7 +23,7 @@ function Navbar() {
   };
 
   return (
-    <>
+    <div className='nav'>
       <nav
         className="navbar"
         onMouseOver={onMouseOverOut}
@@ -70,7 +69,7 @@ function Navbar() {
           </div>
         )}
       </nav>
-    </>
+    </div>
   );
 }
 

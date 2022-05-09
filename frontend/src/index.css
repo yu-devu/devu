@@ -13,7 +13,7 @@
 :root {
     --color-footer: #505050;
     --color-bg-variant: #2c2c6c;
-    --color-primary: #4B47A8;
+    --color-primary: #307dff;
     --color-primary-variant: rgba(77, 181, 255, 0.4);
     --color-gray : #767676;
     --color-light: rgba(255, 255, 255, 0.6);
@@ -50,7 +50,7 @@ hr {
     background: black;
 }
 
-h1, h2, h3, h4, h5 {
+h1, h2, h5 {
     font-weight: 500;
 }
 
@@ -64,7 +64,24 @@ h2 {
     word-spacing: 0px;
 }
 
+h3, h4 {
+    font-style: normal;
+    font-weight: normal;
+    letter-spacing: -0.1px;
+    white-space: nowrap;
+}
+
 h3 {
+    font-size: 25px;
+    color: rgba(0, 0, 0, 1);
+}
+
+h4 {
+    font-size: 20px;
+    color: rgba(118, 118, 118, 1);
+}
+
+h5 {
     font-size: 12px;
 }
 
@@ -86,27 +103,12 @@ a:hover {
     color: var(--color-white);
 }
 
-/* .btn {
-    width: max-content;
-    display: inline-block;
-    color: var(--color-primary);
-    padding: 0.75rem 1.2rem;
-    border-radius: 0.4rem;
-    cursor: pointer;
-    border: 1px solid var(--color-primary);
-    transition: var(--transition);
-} */
-
-/* div {
-    display: block;
-    height: max-content;
-} */
-
 /* ================= MEDIA QUERIES (MEDIUM DEVICES) ================= */
-@media screen and (max-width: 1024px){
-    .container {
-        width: var(--container-width-md);
+@media (max-width: 1024px){
+    .main-all {
+        width: auto;
     }
+    
 }
 
 /* ================= MEDIA QUERIES (SMALL DEVICES) =================*/

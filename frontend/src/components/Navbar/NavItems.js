@@ -17,20 +17,20 @@ export const communityDropdown = [
     {
         id: 1,
         title: "스터디구인란",
-        path: "./findpeople",
+        path: "./studies",
         cName: "submenu-item",
 
     },
     {
         id: 2,
         title: "Q&A",
-        path: "./qna",
+        path: "./questions",
         cName: "submenu-item",
     },
     {
         id: 3,
         title: "자유게시판",
-        path: "./board",
+        path: "./chats",
         cName: "submenu-item",
     },
 ];

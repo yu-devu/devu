@@ -1,0 +1,307 @@
+@media (min-width: 1024px) {
+    .all-studies {
+        height: max-content;
+    }
+
+    .top-studies {
+        position: relative;
+        background-color: rgb(242, 242, 242);
+        width: 100%;
+        padding-bottom: 1px;
+        top: 10px;
+    }
+    
+    .top-msg {
+        font-weight: bold;
+        position: relative;
+        left: 26%;
+        top: 37px;
+        font-size: 25px;
+    }
+    
+    .top-msg-gray {
+        position: relative;
+        left: 26%;
+        top: 37px;
+        font-size: 20px;
+    }
+    
+    .top-cards {
+        position: relative;
+        left: 26%;
+        margin-top: 65px;
+        margin-bottom: 70px;
+        display: flex;
+        width: 50%;
+    }
+    
+    .top-card {
+        filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.102));
+        border-radius: 0.5rem;
+        background: #fff;
+        position: relative;
+        display: flex;
+        width: 31%;
+        height: max-content;
+        margin-right: 20px;
+    }
+
+    .top-photo {
+        width: 70px;
+        height: 70px;
+        filter: brightness(80%);
+        margin-top: 10px;
+        margin-right: 10px;
+        margin-left: 20px;
+    }
+    
+    .top-title {
+        font-style: normal;
+        font-weight: normal;
+        margin-top: 10px;
+        max-width: 100%;
+        font-size: 15px;
+        font-weight: bold;
+    }
+    
+    .top-people {
+        font-style: normal;
+        font-weight: normal;
+        color: rgba(128,128,128,1);
+        font-size: 13px;
+    }
+    
+    .top-content {
+        position: relative;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: normal;
+        color: rgba(80,80,80,1);
+        margin-bottom: 10px;
+        margin-right: 30px;
+    }
+    
+    .top-date {
+        font-size: 12px;
+        font-style: normal;
+        font-weight: normal;
+        color: rgba(80,80,80,1);
+        margin-bottom: 18px;
+    }
+    
+    .top-circle {
+        display: flex;
+        border-radius: 10rem;
+    }
+    
+    .top-detail {
+        display: block;
+        max-width: 100%;
+    }
+    
+    .body-studies {
+        display: block;
+    }
+    
+    .search-and-write {
+        display: flex;
+        position: relative;
+        top: 40px;
+        left: 24.5%;
+    }
+    
+    .studies-search {
+        display: flex;
+        width: 40%;
+        height: 100px;
+        stroke: rgba(219,219,219,1)
+    }
+    
+    .search-input {
+        width: 65%;
+        border-radius: 100px;
+        border: 1px solid rgba(219,219,219,1);
+        height: 2.75rem;
+        font-size: 16px;
+    }
+    
+    .btn-studies-write {
+        border-radius: 100px;
+        color: white;
+        background-color: #303030;
+        width: 6%;
+        position: relative;
+        left: 6%;
+        height: 40px;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight:500;
+    }
+    
+    .img-mag {
+        z-index: 100;
+        object-fit: cover;
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        left: 23%;
+        top: 11px;
+    }
+    
+    .btn-mag {
+        cursor: pointer;
+      }
+    
+    .select-studies {
+        position: relative;
+        left: 28%;
+    }
+    
+    .studies-line {
+        border: solid 1px lightgray;
+        margin-top: 10px;
+        width: 59%;
+        position: relative;
+        left: 28%;
+    }
+    
+    .post-header {
+        display: flex;
+        position: relative;
+        left: 28%;
+        margin-top: 30px;
+    }
+    
+    .post-status {
+        color: white;
+        background-color: var(--color-primary);
+        padding: 2px 5px 0;
+        font-size: 14px;
+    }
+    
+    .post-title {
+        margin-left: 10px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    
+    .post-body {
+        display: flex;
+        position: relative;
+        left: 28%;
+        margin-top: 10px;
+        width: 60%;
+    }
+    
+    .post-comment {
+        margin-right: 30px;
+        margin-left: 170px;
+        font-size: 16px;
+    }
+    
+    .post-hit {
+        margin-right: 30px;
+        margin-left: -11px
+    }
+    
+    .post-like {
+        margin-right: 30px;
+    }
+    
+    .post-tag {
+        margin-top: 10px;
+        text-align: center;
+        position: relative;
+        left: 28%;
+        border-radius: 100px;
+        border: 1px solid rgba(219,219,219,1);
+        width: 80px;
+        background-color: rgba(241,241,245,1);
+        font-size: 14px;
+    }
+    
+    .post-tail {
+        display: flex;
+        position: relative;
+        left: 28%;
+        margin-top: 20px;
+    }
+
+    .post-owner {
+        font-size: 14px;
+    }
+    
+    .post-date {
+        margin-left: 20px;
+        color: rgba(128,128,128,1);
+        font-size: 14px;
+    }
+    
+    .choice-tag {
+        position: relative;
+        filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.102));
+        border-radius: 0.5rem;
+        width: 14%;
+        height: max-content;
+        left: 10%;
+        margin-top: 30px;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        background: #fff;
+        padding: 1%;
+    }
+    
+    .btn-choice {
+        border-radius: 50%;
+        border: 1px solid rgba(0, 0, 0, 0.102);
+        background-color: transparent;
+        width: 50px;
+        height: 50px;
+        margin-top: 20px;
+        cursor: pointer;
+    }
+    
+    .img-choice {
+        z-index: 100;
+        object-fit: cover;
+        width: 30px;
+        height: 30px;
+    }
+    
+    .img-comment {
+        z-index: 100;
+        object-fit: cover;
+        width: 27px;
+        height: 24px;
+        position: relative;
+        right: 4px;
+    }
+    
+    .img-hit {
+        z-index: 100;
+        object-fit: cover;
+        width: 32px;
+        height: 24.5px;
+        position: relative;
+        left: 4.2px;
+    }
+    
+    .img-like {
+        z-index: 100;
+        object-fit: cover;
+        width: 27px;
+        height: 24px;
+        position: relative;
+        right: 2px;
+    }
+
+    .body-content {
+        position: relative;
+        right: 11.5%;
+        display: block;
+    }
+    .choicing {
+        display: flex;
+    }
+}
