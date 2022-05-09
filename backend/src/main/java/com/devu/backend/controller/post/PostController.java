@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,15 +29,56 @@ public class PostController {
         return ResponseEntity.ok().body("커뮤니티 홈 테스트");
     }
 
+    @GetMapping("/chats/size")
+    public ResponseEntity<?> getChatsSize() {
+        try {
+            int chatSize = postService.getAllChatSize();
+            return ResponseEntity.ok(chatSize);
+        }catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    @GetMapping("/studies/size")
+    public ResponseEntity<?> getStudiesSize() {
+        try {
+            int studiesSize = postService.getAllStudiesSize();
+            return ResponseEntity.ok(studiesSize);
+        }catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    @GetMapping("/questions/size")
+    public ResponseEntity<?> getQuestionsSize() {
+        try {
+            int questionsSize = postService.getAllQuestionsSize();
+            return ResponseEntity.ok(questionsSize);
+        }catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
     //자유 게시판 리스트 get
     @GetMapping("/chats")
     public ResponseEntity<?> getChats(
             @PageableDefault(size = 10)Pageable pageable,
             @RequestParam(value = "order",required = false) String order,
-            @RequestParam(value = "tags",required = false) List<String> tags,
             @RequestParam(value = "s",required = false)String s) {
         try {
-            List<PostResponseDto> chats = postService.findAllChats(pageable,order,tags,s).getContent();
+            List<PostResponseDto> chats = postService.findAllChats(pageable,order,s).getContent();
             return ResponseEntity.ok(chats);
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,7 +99,8 @@ public class PostController {
             @RequestParam(value = "s",required = false)String s
     ) {
         try {
-            List<PostResponseDto> studies = postService.findAllStudies(pageable,status,order,tags,s).getContent();
+            List<String> upperTags = tags.stream().map(String::toUpperCase).collect(Collectors.toList());
+            List<PostResponseDto> studies = postService.findAllStudies(pageable,status,order,upperTags,s).getContent();
             return ResponseEntity.ok(studies);
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,7 +121,8 @@ public class PostController {
             @RequestParam(value = "s",required = false)String s
     ) {
         try {
-            List<PostResponseDto> questions = postService.findAllQuestions(pageable,status,order,tags,s).getContent();
+            List<String> upperTags = tags.stream().map(String::toUpperCase).collect(Collectors.toList());
+            List<PostResponseDto> questions = postService.findAllQuestions(pageable,status,order,upperTags,s).getContent();
             return ResponseEntity.ok(questions);
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package com.devu.backend.repository;
 
+import com.devu.backend.common.exception.OrderNotFoundException;
 import com.devu.backend.entity.QPostTag;
 import com.devu.backend.entity.post.*;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -26,19 +27,14 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
     @Override
     public Page<Chat> findAllChats(Pageable pageable, PostSearch postSearch) {
         QChat chat = QChat.chat;
-        QPostTag postTag = QPostTag.postTag;
         if (!StringUtils.hasText(postSearch.getOrder())) {
             List<Chat> fetch = queryFactory
                     .select(chat)
                     .from(chat)
-                    .innerJoin(postTag)
-                    .on(chat.id.eq(postTag.post.id))
                     .where(
-                            tagIn(postSearch.getTagId()),
                             chatTitleContains(postSearch.getSentence())
                     )
                     .groupBy(chat.id)
-                    .having(sizeEq((long) postSearch.getTagId().size()))
                     .orderBy(chat.createAt.desc())
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
@@ -49,38 +45,32 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
             List<Chat> fetch = queryFactory
                     .select(chat)
                     .from(chat)
-                    .innerJoin(postTag)
-                    .on(chat.id.eq(postTag.post.id))
                     .leftJoin(chat.likes,like)
                     .where(
-                            tagIn(postSearch.getTagId()),
                             chatTitleContains(postSearch.getSentence())
                     )
                     .groupBy(chat.id)
-                    .having(sizeEq((long) postSearch.getTagId().size()))
                     .orderBy(like.post.id.count().desc())
                     .offset(pageable.getOffset())
                     .limit(pageable.getPageSize())
                     .fetch();
             return new PageImpl<>(fetch, pageable, fetch.size());
+        } else if (postSearch.getOrder().equals("comments")) {
+            List<Chat> fetch = queryFactory
+                    .select(chat)
+                    .from(chat)
+                    .leftJoin(chat.comments, comment)
+                    .where(
+                            chatTitleContains(postSearch.getSentence())
+                    )
+                    .groupBy(chat.id)
+                    .orderBy(comment.post.id.count().desc())
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .fetch();
+            return new PageImpl<>(fetch, pageable, fetch.size());
         }
-        List<Chat> fetch = queryFactory
-                .select(chat)
-                .from(chat)
-                .innerJoin(postTag)
-                .on(chat.id.eq(postTag.post.id))
-                .leftJoin(chat.comments,comment)
-                .where(
-                        tagIn(postSearch.getTagId()),
-                        chatTitleContains(postSearch.getSentence())
-                )
-                .groupBy(chat.id)
-                .having(sizeEq((long) postSearch.getTagId().size()))
-                .orderBy(comment.post.id.count().desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-        return new PageImpl<>(fetch, pageable, fetch.size());
+        throw new OrderNotFoundException();
     }
 
     @Override
@@ -126,26 +116,28 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
                     .fetch();
 
             return new PageImpl<>(fetch, pageable, fetch.size());
-        }
-        List<Study> fetch = queryFactory
-                .select(study)
-                .from(study)
-                .innerJoin(postTag)
-                .on(study.id.eq(postTag.post.id))
-                .leftJoin(study.comments,comment)
-                .where(
-                        tagIn(postSearch.getTagId()),
-                        studyStatusEq(postSearch.getStudyStatus()),
-                        studyTitleContains(postSearch.getSentence())
-                )
-                .groupBy(study.id)
-                .having(sizeEq((long) postSearch.getTagId().size()))
-                .orderBy(comment.post.id.count().desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
+        } else if (postSearch.getOrder().equals("comments")) {
+            List<Study> fetch = queryFactory
+                    .select(study)
+                    .from(study)
+                    .innerJoin(postTag)
+                    .on(study.id.eq(postTag.post.id))
+                    .leftJoin(study.comments,comment)
+                    .where(
+                            tagIn(postSearch.getTagId()),
+                            studyStatusEq(postSearch.getStudyStatus()),
+                            studyTitleContains(postSearch.getSentence())
+                    )
+                    .groupBy(study.id)
+                    .having(sizeEq((long) postSearch.getTagId().size()))
+                    .orderBy(comment.post.id.count().desc())
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .fetch();
 
-        return new PageImpl<>(fetch, pageable, fetch.size());
+            return new PageImpl<>(fetch, pageable, fetch.size());
+        }
+        throw new OrderNotFoundException();
     }
 
     @Override
@@ -191,26 +183,28 @@ public class PostRepositoryExtensionImpl implements PostRepositoryExtension{
                     .fetch();
 
             return new PageImpl<>(fetch, pageable, fetch.size());
-        }
-        List<Question> fetch = queryFactory
-                .select(question)
-                .from(question)
-                .innerJoin(postTag)
-                .on(question.id.eq(postTag.post.id))
-                .leftJoin(question.comments,comment)
-                .where(
-                        tagIn(postSearch.getTagId()),
-                        questionStatusEq(postSearch.getQuestionStatus()),
-                        questionTitleContains(postSearch.getSentence())
-                )
-                .groupBy(question.id)
-                .having(sizeEq((long) postSearch.getTagId().size()))
-                .orderBy(comment.post.id.count().desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
+        }else if (postSearch.getOrder().equals("comments")){
+            List<Question> fetch = queryFactory
+                    .select(question)
+                    .from(question)
+                    .innerJoin(postTag)
+                    .on(question.id.eq(postTag.post.id))
+                    .leftJoin(question.comments,comment)
+                    .where(
+                            tagIn(postSearch.getTagId()),
+                            questionStatusEq(postSearch.getQuestionStatus()),
+                            questionTitleContains(postSearch.getSentence())
+                    )
+                    .groupBy(question.id)
+                    .having(sizeEq((long) postSearch.getTagId().size()))
+                    .orderBy(comment.post.id.count().desc())
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize())
+                    .fetch();
 
-        return new PageImpl<>(fetch, pageable, fetch.size());
+            return new PageImpl<>(fetch, pageable, fetch.size());
+        }
+        throw new OrderNotFoundException();
     }
 
     private BooleanExpression studyStatusEq(StudyStatus studyStatus) {

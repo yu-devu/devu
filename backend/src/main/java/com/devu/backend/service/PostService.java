@@ -168,13 +168,12 @@ public class PostService {
     }
 
 
-    public Page<PostResponseDto> findAllChats(Pageable pageable,String order,List<String> tags,String s) {
+    public Page<PostResponseDto> findAllChats(Pageable pageable,String order,String s) {
         PostSearch postSearch = PostSearch.builder()
                 .sentence(s)
                 .order(order)
-                .tagId(Optional.ofNullable(tags).orElseGet(Collections::emptyList).stream().map(tagService::findTagIdByString).collect(Collectors.toList()))
                 .build();
-        return postRepository.findAllChats(pageable,postSearch).map(
+        return postRepository.findAllChats(pageable, postSearch).map(
                 chat -> PostResponseDto
                         .builder()
                         .id(chat.getId())
@@ -183,7 +182,7 @@ public class PostService {
                         .username(chat.getUser().getUsername())
                         .hit(chat.getHit())
                         .like(chat.getLikes().size())
-                        .tags(chat.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
+                        .commentsSize(chat.getComments().size())
                         .build()
         );
     }
@@ -207,6 +206,7 @@ public class PostService {
                         .studyStatus(study.getStudyStatus())
                         .like(study.getLikes().size())
                         .tags(study.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
+                        .commentsSize(study.getComments().size())
                         .build()
         );
     }
@@ -229,6 +229,7 @@ public class PostService {
                         .questionStatus(question.getQuestionStatus())
                         .like(question.getLikes().size())
                         .tags(question.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
+                        .commentsSize(question.getComments().size())
                         .build()
         );
     }
@@ -518,6 +519,18 @@ public class PostService {
                         .username(q.getUser().getUsername())
                         .build()
                 ).collect(Collectors.toList());
+    }
+
+    public int getAllChatSize() {
+        return postRepository.findAllChatsWithoutSorting().size();
+    }
+
+    public int getAllStudiesSize() {
+        return postRepository.findAllStudiesWithoutSorting().size();
+    }
+
+    public int getAllQuestionsSize() {
+        return postRepository.findAllQuestionsWithoutSorting().size();
     }
 }
 

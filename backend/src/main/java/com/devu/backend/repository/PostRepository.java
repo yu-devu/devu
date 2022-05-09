@@ -60,17 +60,13 @@ public interface PostRepository extends JpaRepository<Post, Long> ,PostRepositor
         return findTop3QuestionByOrderByLikes(PageRequest.of(0,3));
     }
 
-    @Query("select s from Study s " +
-            "where Type(s) In(Study) and " +
-            "s.studyStatus = :studyStatus " +
-            "order by s.createAt desc")
-    Page<Study> findAllStudyByStatus(Pageable pageable, @Param("studyStatus") StudyStatus studyStatus);
+    @Query("select c from Chat c")
+    List<Chat> findAllChatsWithoutSorting();
 
+    @Query("select s from Study s")
+    List<Study> findAllStudiesWithoutSorting();
 
-    @Query("select q from Question q " +
-            "where Type(q) In(Question) and " +
-            "q.questionStatus = :questionStatus " +
-            "order by q.createAt desc")
-    Page<Question> findAllQuestionByStatus(Pageable pageable,@Param("questionStatus") QuestionStatus questionStatus);
+    @Query("select q from Question q")
+    List<Question> findAllQuestionsWithoutSorting();
 
 }

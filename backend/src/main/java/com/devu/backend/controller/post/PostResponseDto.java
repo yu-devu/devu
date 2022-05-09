@@ -1,7 +1,6 @@
 package com.devu.backend.controller.post;
 
 import com.devu.backend.entity.Comment;
-import com.devu.backend.entity.Tag;
 import com.devu.backend.entity.post.QuestionStatus;
 import com.devu.backend.entity.post.StudyStatus;
 import lombok.AllArgsConstructor;
@@ -25,6 +24,7 @@ public class PostResponseDto {
     private Integer like;
     private StudyStatus studyStatus;
     private QuestionStatus questionStatus;
-    private List<Comment> comments;
+    private int commentsSize;//get All 게시글 시 사용
+    private List<Comment> comments;// 게시글 상세조회 시 사용
     private List<String> tags;
 }
