@@ -9,12 +9,13 @@
     .sub-menu-items {
         position: relative;
         width: 100%;
-        left: 24.5%;
+        left: 20.7%;
     }
     
     .sub-item {
-        margin-right: 12px;
+        margin-right: 25px;
         color: var(--color-gray);
-        font-size: large;
+        font-size: 18px;
+        font-weight: 600;
     }    
 }

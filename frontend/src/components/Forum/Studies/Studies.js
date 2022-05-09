@@ -25,7 +25,7 @@ const Studies = () => {
     return (
         <div>
             <Submenu />
-            <div>
+            <div className='all-studies'>
                 <div className='top-studies'>
                     <h3 className='top-msg'>따끈따끈한 구인란이에요!</h3>
                     <h4 className='top-msg-gray'>함께 성장할 스터디를 모집해보세요</h4>
@@ -59,7 +59,7 @@ const Studies = () => {
                         <div className='top-card'>
                             <div className='top-circle'>
                                 <div className='top-profile'>
-                                    <img className="top-photo" src={b} />
+                                    <img className="top-photo" src={b} alt="" />
                                 </div>
                             </div>
                             <div className='top-detail'>
@@ -75,12 +75,12 @@ const Studies = () => {
                     <Category />
                     <div className='search-and-write'>
                         <div className='studies-search'>
-                            <input type='text' placeholder='   맞춤 스터디그룹을 찾아보세요' className='search-input' />
+                            <input type='text' placeholder='     맞춤 스터디그룹을 찾아보세요' className='search-input' />
                             <button className='btn-mag'>
                                 <img className='img-mag' src={magnify} alt="" />
                             </button>
                         </div>
-                        <button className='btn-studies-write'>글 쓰기</button>
+                        <button className='btn-studies-write'>글쓰기</button>
                     </div>
                     <div className='choicing'>
                         <div className='choice-tag'>
