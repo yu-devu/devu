@@ -1,19 +1,21 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import Select from 'react-select'
 import { useNavigate } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './write.css';
+import { options } from '../data';
 import ReactHtmlParser from 'html-react-parser';
 
 const Write = () => {
   const navigate = useNavigate();
+  const [tags, setTags] = useState([]);
   const [postContent, setPostContent] = useState({
     title: '',
     content: '',
     tags: '',
   });
-
   const username = localStorage.getItem('username');
 
   const handleTitle = (e) => {
@@ -23,11 +25,18 @@ const Write = () => {
       [name]: value,
     });
   };
+
+  const onChangeTags = (e) => {
+    setTags(e.target.value);
+    console.log(tags);
+  };
+
   const handleWrite = async () => {
     if (postContent === '') {
       alert('글을 작성해주세요!');
       return;
     }
+
     const formData = new FormData();
     formData.append('title', postContent.title);
     formData.append('username', username);
@@ -66,6 +75,16 @@ const Write = () => {
             required
             onChange={(e) => handleTitle(e)}
           ></textarea>
+        </div>
+        <div>
+          <Select
+            isMulti
+            options={options}
+            // value={tags}
+            name="tags"
+            placeholder="태그를 선택해주세요!"
+            onChange={(e) => onChangeTags(e)}
+          />
         </div>
         <CKEditor
           editor={ClassicEditor}

@@ -15,6 +15,12 @@ function LoginButton() {
   const closeModal = () => setShowModal(false);
   const openModal = () => setShowModal(true);
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin();
+    }
+  }
+
   const handleLogin = async () => {
     if (email === '' || password === '') {
       alert('아이디와 비밀번호를 입력해주세요.');
@@ -72,6 +78,7 @@ function LoginButton() {
               onChange={(e) => handlePassword(e)}
               type="password"
               placeholder="비밀번호"
+              onKeyPress={handleKeyPress}
             />
             <button className="btn-validate" onClick={() => handleLogin()}>
               로그인
