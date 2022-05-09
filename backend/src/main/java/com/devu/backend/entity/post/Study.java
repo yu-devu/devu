@@ -22,7 +22,7 @@ public class Study extends Post{
     public Study(Long id, User user, String title,
                  String content, Long hit,
                  List<Like> likes, List<Image> images, List<Comment> comments,
-                 List<Tag> tags, StudyStatus studyStatus) {
+                 List<PostTag> tags, StudyStatus studyStatus) {
         super(id, user, title, content, hit, likes, comments,images,tags);
         this.studyStatus = studyStatus;
     }
