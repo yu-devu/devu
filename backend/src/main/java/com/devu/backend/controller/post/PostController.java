@@ -12,7 +12,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -99,7 +102,7 @@ public class PostController {
             @RequestParam(value = "s",required = false)String s
     ) {
         try {
-            List<String> upperTags = tags.stream().map(String::toUpperCase).collect(Collectors.toList());
+            List<String> upperTags = Optional.ofNullable(tags).orElseGet(Collections::emptyList).stream().map(String::toUpperCase).collect(Collectors.toList());
             List<PostResponseDto> studies = postService.findAllStudies(pageable,status,order,upperTags,s).getContent();
             return ResponseEntity.ok(studies);
         } catch (Exception e) {
@@ -121,7 +124,7 @@ public class PostController {
             @RequestParam(value = "s",required = false)String s
     ) {
         try {
-            List<String> upperTags = tags.stream().map(String::toUpperCase).collect(Collectors.toList());
+            List<String> upperTags = Optional.ofNullable(tags).orElseGet(Collections::emptyList).stream().map(String::toUpperCase).collect(Collectors.toList());
             List<PostResponseDto> questions = postService.findAllQuestions(pageable,status,order,upperTags,s).getContent();
             return ResponseEntity.ok(questions);
         } catch (Exception e) {
