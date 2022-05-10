@@ -25,13 +25,12 @@ import { Link } from 'react-router-dom';
 
 const Studies = () => {
     const [currentPage, setCurrentPage] = useState(0);
-    const [postsPerPage] = useState(20);
     const [postData, setPostData] = useState([]);
     const [lastIdx, setLastIdx] = useState(0);
 
     useEffect(() => {
         fetchData();
-    }, [currentPage]); // 글 목록 page 버튼 누를 때 마다 버튼 값 가져와서 setCurrentPage 하면 될 듯함.
+    }, [currentPage]);
 
     const fetchData = async () => {
         const res = await axios.get(process.env.REACT_APP_DB_HOST + `/community/studies`, {
@@ -59,11 +58,6 @@ const Studies = () => {
         setPostData(_postData);
     };
 
-    const changePage = ({ selected }) => {
-        setCurrentPage(selected)
-        // console.log(selected);
-    }
-
     return (
         <div>
             <Submenu />
@@ -82,7 +76,6 @@ const Studies = () => {
                                         </div>
                                         <div className='top-detail'>
                                             <div className='top-title'>{top.title}</div>
-                                            <div className='top-people'>멤버 3명</div>
                                             <div className='top-content'>{top.content}</div>
                                             <div className='top-date'>방금 전</div>
                                         </div>
