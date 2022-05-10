@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './chats.css';
 import { Link } from 'react-router-dom';
-import ReactHtmlParser from 'html-react-parser';
-// import Posts from './Posts';
 import ReactPaginate from 'react-paginate'
 import './pagination.css'
 
@@ -42,11 +40,8 @@ const Chats = () => {
     setPostData(_postData);
   };
 
-  // const pageCount = Math.ceil(postData.length / postsPerPage);
-
   const changePage = ({ selected }) => {
     setCurrentPage(selected)
-    // console.log(selected);
   }
 
   return (
@@ -67,8 +62,7 @@ const Chats = () => {
               </li>
             ))}
           </ul>
-
-          <ReactPaginate
+          {/* <ReactPaginate
             previousLabel={"<"}
             nextLabel={">"}
             pageCount={10} // 페이지 버튼 개수 출력하는 부분 -> 글 전체 개수 넘겨받아서 사용해야함
@@ -78,7 +72,7 @@ const Chats = () => {
             nextLinkClassName={"btn-pagination-next"}
             disabledClassName={"btn-pagination-disabled"}
             activeClassName={"btn-pagination-active"}
-          />
+          /> */}
         </div>
         <Link to="write">
           <button className="btn-write">글 쓰기</button>

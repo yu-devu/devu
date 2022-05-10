@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import './studies.css'
 import Submenu from './Submenu'
 import a from "../../../img/a.png"
@@ -20,8 +21,49 @@ import html from "../../../img/html.png"
 import comment from "../../../img/comment.png"
 import hit from "../../../img/hit.png"
 import like from "../../../img/like.png"
+import { Link } from 'react-router-dom';
 
 const Studies = () => {
+    const [currentPage, setCurrentPage] = useState(0);
+    const [postsPerPage] = useState(20);
+    const [postData, setPostData] = useState([]);
+    const [lastIdx, setLastIdx] = useState(0);
+
+    useEffect(() => {
+        fetchData();
+    }, [currentPage]); // 글 목록 page 버튼 누를 때 마다 버튼 값 가져와서 setCurrentPage 하면 될 듯함.
+
+    const fetchData = async () => {
+        const res = await axios.get(process.env.REACT_APP_DB_HOST + `/community/studies`, {
+            params: {
+                page: currentPage,
+            },
+        });
+
+        const _postData = await res.data.map(
+            (rowData) => (
+                setLastIdx(lastIdx + 1),
+                {
+                    id: rowData.id,
+                    title: rowData.title,
+                    content: (rowData.content),
+                    hit: rowData.hit,
+                    like: rowData.like,
+                    username: rowData.username,
+                    tags: rowData.tags,
+                    studyStatus: rowData.studyStatus,
+                    commentsSize: rowData.commentsSize,
+                }
+            )
+        );
+        setPostData(_postData);
+    };
+
+    const changePage = ({ selected }) => {
+        setCurrentPage(selected)
+        // console.log(selected);
+    }
+
     return (
         <div>
             <Submenu />
@@ -29,53 +71,32 @@ const Studies = () => {
                 <div className='top-studies'>
                     <h3 className='top-msg'>따끈따끈한 구인란이에요!</h3>
                     <h4 className='top-msg-gray'>함께 성장할 스터디를 모집해보세요</h4>
-                    <div className='top-cards'>
-                        <div className='top-card'>
-                            <div className='top-circle'>
-                                <div className='top-profile'>
-                                    <img className="top-photo" src={a} alt="" />
+                    {/* 상위 3개 게시물 */}
+                    <div className='list-topcards'>
+                        {postData.slice(0, 3).map(top => (
+                            <li key={top.id} className="top-cards">
+                                <div className='top-card'>
+                                    <div className='top-circle'>
+                                        <div className='top-profile'>
+                                            <img className="top-photo" src={a} alt="" />
+                                        </div>
+                                        <div className='top-detail'>
+                                            <div className='top-title'>{top.title}</div>
+                                            <div className='top-people'>멤버 3명</div>
+                                            <div className='top-content'>{top.content}</div>
+                                            <div className='top-date'>방금 전</div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className='top-detail'>
-                                    <div className='top-title'>스터디그룹 A</div>
-                                    <div className='top-people'>멤버 3명</div>
-                                    <div className='top-content'>프론트엔트 인터뷰 스터디 2분 모집합니다.</div>
-                                    <div className='top-date'>방금 전</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='top-card'>
-                            <div className='top-circle'>
-                                <div className='top-profile'>
-                                    <img className="top-photo" src={c} />
-                                </div>
-                            </div>
-                            <div className='top-detail'>
-                                <div className='top-title'>스터디그룹 A</div>
-                                <div className='top-people'>멤버 3명</div>
-                                <div className='top-content'>프론트엔트 인터뷰 스터디 2분 모집합니다.</div>
-                                <div className='top-date'>방금 전</div>
-                            </div>
-                        </div>
-                        <div className='top-card'>
-                            <div className='top-circle'>
-                                <div className='top-profile'>
-                                    <img className="top-photo" src={b} alt="" />
-                                </div>
-                            </div>
-                            <div className='top-detail'>
-                                <div className='top-title'>스터디그룹 A</div>
-                                <div className='top-people'>멤버 3명</div>
-                                <div className='top-content'>프론트엔트 인터뷰 스터디 2분 모집합니다.</div>
-                                <div className='top-date'>방금 전</div>
-                            </div>
-                        </div>
+                            </li>
+                        ))}
                     </div>
                 </div>
                 <div className='body-studies'>
                     <Category />
                     <div className='search-and-write'>
                         <div className='studies-search'>
-                            <input type='text' placeholder='     맞춤 스터디그룹을 찾아보세요' className='search-input' />
+                            <input type='text' placeholder='맞춤 스터디그룹을 찾아보세요' className='search-input' />
                             <button className='btn-mag'>
                                 <img className='img-mag' src={magnify} alt="" />
                             </button>
@@ -122,136 +143,49 @@ const Studies = () => {
                                 <option>조회순</option>
                             </select>
                             <div className='studies-line'></div>
-                            <div className='post-studies'>
-                                <div className='post-header'>
-                                    <div className='post-status'>모집중</div>
-                                    <div className='post-title'>WebGl 스터디 인원을 모집합니다.</div>
-                                </div>
-                                <div className='post-body'>
-                                    <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
-                                        본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
+                            {/* 게시물 미리보기 */}
+                            {postData.slice(0, 20).map(post => (
+                                <li key={post.id} className="list-studies">
+                                    <div className='post-studies'>
+                                        <div className='post-header'>
+                                            <div className='post-status'>{post.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}</div>
+                                            <div className='post-title'>
+                                                <Link to={`/postDetail/${post.id}`}>{post.title}</Link>
+                                            </div>
+                                        </div>
+                                        <div className='post-body'>
+                                            <div className='post-content'>{post.content}
+                                            </div>
+                                            <div className='post-options'>
+                                                <div className='post-comment'>
+                                                    <img className="img-comment" src={comment} alt='' />
+                                                    <div className='text-comment'>
+                                                        {post.commentsSize}
+                                                    </div>
+                                                </div>
+                                                <div className='post-hit'>
+                                                    <img className="img-hit" src={hit} alt='' />
+                                                    <div className='text-hit'>{post.hit}</div>
+                                                </div>
+                                                <div className='post-like'>
+                                                    <img className="img-like" src={like} alt='' />
+                                                    <div className='text-like'>{post.like}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='tags'>
+                                            {post.tags.map(tag => (
+                                                <div className='post-tag'>{tag}</div>
+                                            ))}
+                                        </div>
+                                        <div className='post-tail'>
+                                            <div className='post-owner'>{post.username}</div>
+                                            <div className='post-date'>1분 전</div>
+                                        </div>
+                                        <div className='studies-line'></div>
                                     </div>
-                                    <div className='post-comment'>
-                                        <img className="img-comment" src={comment} alt='' />
-                                        29</div>
-                                    <div className='post-hit'>
-                                        <img className="img-hit" src={hit} alt='' />
-                                        145</div>
-                                    <div className='post-like'>
-                                        <img className="img-like" src={like} alt='' />
-                                        123</div>
-                                </div>
-                                <div className='post-tag'>태그</div>
-                                <div className='post-tail'>
-                                    <div className='post-owner'>홍길동</div>
-                                    <div className='post-date'>1분 전</div>
-                                </div>
-                                <div className='studies-line'></div>
-                            </div>
-                            <div className='post-studies'>
-                                <div className='post-header'>
-                                    <div className='post-status'>모집중</div>
-                                    <div className='post-title'>WebGl 스터디 인원을 모집합니다.</div>
-                                </div>
-                                <div className='post-body'>
-                                    <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
-                                        본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
-                                    </div>
-                                    <div className='post-comment'>
-                                        <img className="img-comment" src={comment} alt='' />
-                                        29</div>
-                                    <div className='post-hit'>
-                                        <img className="img-hit" src={hit} alt='' />
-                                        145</div>
-                                    <div className='post-like'>
-                                        <img className="img-like" src={like} alt='' />
-                                        123</div>
-                                </div>
-                                <div className='post-tag'>태그</div>
-                                <div className='post-tail'>
-                                    <div className='post-owner'>홍길동</div>
-                                    <div className='post-date'>1분 전</div>
-                                </div>
-                                <div className='studies-line'></div>
-                            </div>
-                            <div className='post-studies'>
-                                <div className='post-header'>
-                                    <div className='post-status'>모집중</div>
-                                    <div className='post-title'>WebGl 스터디 인원을 모집합니다.</div>
-                                </div>
-                                <div className='post-body'>
-                                    <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
-                                        본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
-                                    </div>
-                                    <div className='post-comment'>
-                                        <img className="img-comment" src={comment} alt='' />
-                                        29</div>
-                                    <div className='post-hit'>
-                                        <img className="img-hit" src={hit} alt='' />
-                                        145</div>
-                                    <div className='post-like'>
-                                        <img className="img-like" src={like} alt='' />
-                                        123</div>
-                                </div>
-                                <div className='post-tag'>태그</div>
-                                <div className='post-tail'>
-                                    <div className='post-owner'>홍길동</div>
-                                    <div className='post-date'>1분 전</div>
-                                </div>
-                                <div className='studies-line'></div>
-                            </div>
-                            <div className='post-studies'>
-                                <div className='post-header'>
-                                    <div className='post-status'>모집중</div>
-                                    <div className='post-title'>WebGl 스터디 인원을 모집합니다.</div>
-                                </div>
-                                <div className='post-body'>
-                                    <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
-                                        본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
-                                    </div>
-                                    <div className='post-comment'>
-                                        <img className="img-comment" src={comment} alt='' />
-                                        29</div>
-                                    <div className='post-hit'>
-                                        <img className="img-hit" src={hit} alt='' />
-                                        145</div>
-                                    <div className='post-like'>
-                                        <img className="img-like" src={like} alt='' />
-                                        123</div>
-                                </div>
-                                <div className='post-tag'>태그</div>
-                                <div className='post-tail'>
-                                    <div className='post-owner'>홍길동</div>
-                                    <div className='post-date'>1분 전</div>
-                                </div>
-                                <div className='studies-line'></div>
-                            </div>
-                            <div className='post-studies'>
-                                <div className='post-header'>
-                                    <div className='post-status'>모집중</div>
-                                    <div className='post-title'>WebGl 스터디 인원을 모집합니다.</div>
-                                </div>
-                                <div className='post-body'>
-                                    <div className='post-content'>본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
-                                        본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용본문내용
-                                    </div>
-                                    <div className='post-comment'>
-                                        <img className="img-comment" src={comment} alt='' />
-                                        29</div>
-                                    <div className='post-hit'>
-                                        <img className="img-hit" src={hit} alt='' />
-                                        145</div>
-                                    <div className='post-like'>
-                                        <img className="img-like" src={like} alt='' />
-                                        123</div>
-                                </div>
-                                <div className='post-tag'>태그</div>
-                                <div className='post-tail'>
-                                    <div className='post-owner'>홍길동</div>
-                                    <div className='post-date'>1분 전</div>
-                                </div>
-                                <div className='studies-line'></div>
-                            </div>
+                                </li>
+                            ))}
                         </div>
                     </div>
                 </div>
