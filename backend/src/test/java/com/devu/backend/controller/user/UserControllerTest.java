@@ -217,7 +217,7 @@ class UserControllerTest {
                 .andExpect(result -> {
                     MockHttpServletResponse response = result.getResponse();
                     assertNotNull(response.getCookie("X-AUTH-REFRESH-TOKEN"));
-                    assertTrue(response.getContentAsString().contains("accessToken"));
+                    assertNotNull(response.getHeader("X-AUTH-ACCESS-TOKEN"));
                 });
     }
 

@@ -233,43 +233,43 @@ class PostRepositoryTest {
 
     }
 
-    @Test
-    void findAllStudyByStatus() {
-        //given
-        User user = createUser("brido");
-        Study study1 = createStudy(user);
-        Study study2 = createStudy(user);
-        Study study3 = createStudy(user);
-        study3.updateStatus(StudyStatus.CLOSED);
-        //when
-        Page<Study> activeStudy = postRepository.findAllStudyByStatus(Pageable.ofSize(10),StudyStatus.ACTIVE);
-        Page<Study> closedStudy = postRepository.findAllStudyByStatus(Pageable.ofSize(10),StudyStatus.CLOSED);
-        //then
-        assertThat(closedStudy.getTotalElements()).isEqualTo(1);
-        assertThat(closedStudy.get().collect(Collectors.toList()).get(0).getStudyStatus()).isEqualTo(StudyStatus.CLOSED);
-        assertThat(activeStudy.getTotalElements()).isEqualTo(2);
-        assertThat(activeStudy.get().collect(Collectors.toList()).get(0).getStudyStatus()).isEqualTo(StudyStatus.ACTIVE);
-        assertThat(activeStudy.get().collect(Collectors.toList()).get(1).getStudyStatus()).isEqualTo(StudyStatus.ACTIVE);
-    }
+//    @Test
+//    void findAllStudyByStatus() {
+//        //given
+//        User user = createUser("brido");
+//        Study study1 = createStudy(user);
+//        Study study2 = createStudy(user);
+//        Study study3 = createStudy(user);
+//        study3.updateStatus(StudyStatus.CLOSED);
+//        //when
+//        Page<Study> activeStudy = postRepository.findAllStudyByStatus(Pageable.ofSize(10),StudyStatus.ACTIVE);
+//        Page<Study> closedStudy = postRepository.findAllStudyByStatus(Pageable.ofSize(10),StudyStatus.CLOSED);
+//        //then
+//        assertThat(closedStudy.getTotalElements()).isEqualTo(1);
+//        assertThat(closedStudy.get().collect(Collectors.toList()).get(0).getStudyStatus()).isEqualTo(StudyStatus.CLOSED);
+//        assertThat(activeStudy.getTotalElements()).isEqualTo(2);
+//        assertThat(activeStudy.get().collect(Collectors.toList()).get(0).getStudyStatus()).isEqualTo(StudyStatus.ACTIVE);
+//        assertThat(activeStudy.get().collect(Collectors.toList()).get(1).getStudyStatus()).isEqualTo(StudyStatus.ACTIVE);
+//    }
 
-    @Test
-    void findAllQuestionByStatus() {
-        //given
-        User user = createUser("brido");
-        Question question1 = createQuestion(user);
-        Question question2 = createQuestion(user);
-        Question question3 = createQuestion(user);
-        question3.updateStatus(QuestionStatus.SOLVED);
-        //when
-        Page<Question> unsolvedQues = postRepository.findAllQuestionByStatus(Pageable.ofSize(10),QuestionStatus.UNSOLVED);
-        Page<Question> solvedQues = postRepository.findAllQuestionByStatus(Pageable.ofSize(10),QuestionStatus.SOLVED);
-        //then
-        assertThat(unsolvedQues.getTotalElements()).isEqualTo(2);
-        assertThat(solvedQues.getTotalElements()).isEqualTo(1);
-        assertThat(unsolvedQues.get().collect(Collectors.toList()).get(0).getQuestionStatus()).isEqualTo(QuestionStatus.UNSOLVED);
-        assertThat(unsolvedQues.get().collect(Collectors.toList()).get(1).getQuestionStatus()).isEqualTo(QuestionStatus.UNSOLVED);
-        assertThat(solvedQues.get().collect(Collectors.toList()).get(0).getQuestionStatus()).isEqualTo(QuestionStatus.SOLVED);
-    }
+//    @Test
+//    void findAllQuestionByStatus() {
+//        //given
+//        User user = createUser("brido");
+//        Question question1 = createQuestion(user);
+//        Question question2 = createQuestion(user);
+//        Question question3 = createQuestion(user);
+//        question3.updateStatus(QuestionStatus.SOLVED);
+//        //when
+//        Page<Question> unsolvedQues = postRepository.findAllQuestionByStatus(Pageable.ofSize(10),QuestionStatus.UNSOLVED);
+//        Page<Question> solvedQues = postRepository.findAllQuestionByStatus(Pageable.ofSize(10),QuestionStatus.SOLVED);
+//        //then
+//        assertThat(unsolvedQues.getTotalElements()).isEqualTo(2);
+//        assertThat(solvedQues.getTotalElements()).isEqualTo(1);
+//        assertThat(unsolvedQues.get().collect(Collectors.toList()).get(0).getQuestionStatus()).isEqualTo(QuestionStatus.UNSOLVED);
+//        assertThat(unsolvedQues.get().collect(Collectors.toList()).get(1).getQuestionStatus()).isEqualTo(QuestionStatus.UNSOLVED);
+//        assertThat(solvedQues.get().collect(Collectors.toList()).get(0).getQuestionStatus()).isEqualTo(QuestionStatus.SOLVED);
+//    }
 
 
     private Like createLike(User user, Post post) {
