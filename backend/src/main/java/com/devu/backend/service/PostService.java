@@ -183,6 +183,8 @@ public class PostService {
                         .hit(chat.getHit())
                         .like(chat.getLikes().size())
                         .commentsSize(chat.getComments().size())
+                        .createAt(chat.getCreateAt())
+                        .lastModifiedAt(chat.getLastModifiedAt())
                         .build()
         );
     }
@@ -207,6 +209,8 @@ public class PostService {
                         .like(study.getLikes().size())
                         .tags(study.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                         .commentsSize(study.getComments().size())
+                        .createAt(study.getCreateAt())
+                        .lastModifiedAt(study.getLastModifiedAt())
                         .build()
         );
     }
@@ -230,6 +234,8 @@ public class PostService {
                         .like(question.getLikes().size())
                         .tags(question.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                         .commentsSize(question.getComments().size())
+                        .createAt(question.getCreateAt())
+                        .lastModifiedAt(question.getLastModifiedAt())
                         .build()
         );
     }
@@ -251,6 +257,7 @@ public class PostService {
                 .like(chat.getLikes().size())
                 .comments(chat.getComments())
                 .tags(chat.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
+                .createAt(chat.getCreateAt())
                 .build();
     }
 
@@ -272,6 +279,7 @@ public class PostService {
                 .like(study.getLikes().size())
                 .comments(study.getComments())
                 .tags(study.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
+                .createAt(study.getCreateAt())
                 .build();
     }
 
@@ -293,6 +301,7 @@ public class PostService {
                 .like(question.getLikes().size())
                 .comments(question.getComments())
                 .tags(question.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
+                .createAt(question.getCreateAt())
                 .build();
     }
 

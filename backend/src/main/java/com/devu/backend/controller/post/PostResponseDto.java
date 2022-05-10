@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -25,6 +26,8 @@ public class PostResponseDto {
     private StudyStatus studyStatus;
     private QuestionStatus questionStatus;
     private int commentsSize;//get All 게시글 시 사용
-    private List<Comment> comments;// 게시글 상세조회 시 사용
+    private List<Comment> comments;// 추후 CommentResponseDto로 변경 필요
     private List<String> tags;
+    private LocalDateTime createAt;
+    private LocalDateTime lastModifiedAt;
 }
