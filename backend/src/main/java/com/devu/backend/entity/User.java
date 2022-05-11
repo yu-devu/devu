@@ -2,6 +2,7 @@ package com.devu.backend.entity;
 
 import com.devu.backend.entity.post.Post;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;

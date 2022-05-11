@@ -11,6 +11,7 @@ import com.devu.backend.controller.post.PostResponseDto;
 import com.devu.backend.entity.Image;
 import com.devu.backend.entity.PostTag;
 import com.devu.backend.entity.Tag;
+import com.devu.backend.entity.User;
 import com.devu.backend.entity.post.*;
 import com.devu.backend.repository.ImageRepository;
 import com.devu.backend.repository.PostRepository;
@@ -540,6 +541,69 @@ public class PostService {
 
     public int getAllQuestionsSize() {
         return postRepository.findAllQuestionsWithoutSorting().size();
+    }
+
+    public List<PostResponseDto> findAllChatsByUser(User user) {
+        return postRepository.findAllChatsByUser(user).orElseThrow(PostNotFoundException::new)
+                .stream().map(c -> PostResponseDto.builder()
+                        .id(c.getId())
+                        .hit(c.getHit())
+                        .like(c.getLikes().size())
+                        .commentsSize(c.getComments().size())
+                        .title(c.getTitle())
+                        .content(c.getContent())
+                        .createAt(c.getCreateAt())
+                        .lastModifiedAt(c.getLastModifiedAt())
+                        .build()
+                ).collect(Collectors.toList());
+    }
+
+    public List<PostResponseDto> findAllStudiesByUser(User user) {
+        return postRepository.findAllStudiesByUser(user).orElseThrow(PostNotFoundException::new)
+                .stream().map(s -> PostResponseDto.builder()
+                        .id(s.getId())
+                        .hit(s.getHit())
+                        .like(s.getLikes().size())
+                        .commentsSize(s.getComments().size())
+                        .title(s.getTitle())
+                        .content(s.getContent())
+                        .createAt(s.getCreateAt())
+                        .lastModifiedAt(s.getLastModifiedAt())
+                        .tags(s.getPostTags().stream().map(pt -> pt.getTag().getName()).collect(Collectors.toList()))
+                        .studyStatus(s.getStudyStatus())
+                        .build()
+                ).collect(Collectors.toList());
+    }
+
+    public List<PostResponseDto> findAllQuestionsByUser(User user) {
+        return postRepository.findAllQuestionsByUser(user).orElseThrow(PostNotFoundException::new)
+                .stream().map(q -> PostResponseDto.builder()
+                        .id(q.getId())
+                        .hit(q.getHit())
+                        .like(q.getLikes().size())
+                        .commentsSize(q.getComments().size())
+                        .title(q.getTitle())
+                        .content(q.getContent())
+                        .createAt(q.getCreateAt())
+                        .lastModifiedAt(q.getLastModifiedAt())
+                        .tags(q.getPostTags().stream().map(pt -> pt.getTag().getName()).collect(Collectors.toList()))
+                        .questionStatus(q.getQuestionStatus())
+                        .build()
+                ).collect(Collectors.toList());
+    }
+
+    public List<PostResponseDto> findAllLikeChatsByUser(User user) {
+        return postRepository.findAllLikeChatsByUserId(user.getId()).orElseThrow(PostNotFoundException::new)
+                .stream().map(c -> PostResponseDto.builder()
+                        .id(c.getId())
+                        .hit(c.getHit())
+                        .like(c.getLikes().size())
+                        .commentsSize(c.getComments().size())
+                        .title(c.getTitle())
+                        .content(c.getContent())
+                        .createAt(c.getCreateAt())
+                        .lastModifiedAt(c.getLastModifiedAt())
+                        .build()).collect(Collectors.toList());
     }
 }
 
