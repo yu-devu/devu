@@ -68,17 +68,6 @@ const PostView = () => {
       .catch((res) => console.log(res));
   };
 
-  // const handleComment = async () => {
-  //   const commentData = {
-  //     userId: userId,
-  //     postId: postId,
-  //     contents: comment,
-  //     parent: parent,
-  //     group: group,
-  //   };
-
-  // }
-
   return (
     <div className="post-view">
       {postData ? (

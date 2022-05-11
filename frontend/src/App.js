@@ -10,6 +10,7 @@ import Modify from './components/Forum/Chats/Modify';
 import ChangePassword from './components/Navbar/ChangePassword';
 import Chats from './components/Forum/Chats/Chats';
 import Studies from './components/Forum/Studies/Studies';
+import StudiesView from './components/Forum/Studies/StudiesView';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/chats" exact element={<Chats />}></Route>
           <Route path="/chats/write" exact element={<Write />}></Route>
           <Route path="/postDetail/:no" exact element={<PostView />}></Route>
+          <Route path="/studiesDetail/:no" exact element={<StudiesView />}></Route>
           <Route path="/postDetail/:no/modify" exact element={<Modify />}></Route>
           <Route path="/change_password/*" element={<ChangePassword />}></Route>
           <Route path="/studies" exact element={<Studies />}></Route>
