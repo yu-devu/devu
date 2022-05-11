@@ -3,8 +3,6 @@ import axios from 'axios';
 import './studies.css'
 import Submenu from './Submenu'
 import a from "../../../img/a.png"
-import b from "../../../img/b.png"
-import c from "../../../img/c.png"
 import Category from './Category'
 import magnify from "../../../img/magnify.png"
 import Footer from '../../Home/Footer'
@@ -143,7 +141,7 @@ const Studies = () => {
                                         <div className='post-header'>
                                             <div className='post-status'>{post.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}</div>
                                             <div className='post-title'>
-                                                <Link to={`/postDetail/${post.id}`}>{post.title}</Link>
+                                                <Link to={`/studiesDetail/${post.id}`}>{post.title}</Link>
                                             </div>
                                         </div>
                                         <div className='post-body'>
