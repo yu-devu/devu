@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import ReactPaginate from 'react-paginate'
 import './studies.css'
 import Submenu from './Submenu'
 import a from "../../../img/a.png"
@@ -23,11 +24,14 @@ import { Link } from 'react-router-dom';
 
 const Studies = () => {
     const [currentPage, setCurrentPage] = useState(0);
+    const [postSize, setPostSize] = useState(0);
+    const [postsPerPage] = useState(20);
     const [postData, setPostData] = useState([]);
     const [lastIdx, setLastIdx] = useState(0);
 
     useEffect(() => {
         fetchData();
+        fetchPageSize();
     }, [currentPage]);
 
     const fetchData = async () => {
@@ -55,6 +59,16 @@ const Studies = () => {
         );
         setPostData(_postData);
     };
+
+    const fetchPageSize = async () => {
+        const res = await axios.get(process.env.REACT_APP_DB_HOST + `/community/studies/size`);
+        setPostSize(res.data);
+    }
+
+    const changePage = ({ selected }) => {
+        setCurrentPage(selected)
+    }
+
 
     return (
         <div>
@@ -92,7 +106,9 @@ const Studies = () => {
                                 <img className='img-mag' src={magnify} alt="" />
                             </button>
                         </div>
-                        <button className='btn-studies-write'>글쓰기</button>
+                        <Link to="write">
+                            <button className='btn-studies-write'>글쓰기</button>
+                        </Link>
                     </div>
                     <div className='choicing'>
                         <div className='choice-tag'>
@@ -177,6 +193,17 @@ const Studies = () => {
                                     </div>
                                 </li>
                             ))}
+                            <ReactPaginate
+                                previousLabel={"<"}
+                                nextLabel={">"}
+                                pageCount={Math.ceil(postSize / postsPerPage)} // 페이지 버튼 개수 출력하는 부분 -> 글 전체 개수 넘겨받아서 사용해야함
+                                onPageChange={changePage}
+                                containerClassName={"btn-pagination"}
+                                previousLinkClassName={"btn-pagination-previous"}
+                                nextLinkClassName={"btn-pagination-next"}
+                                disabledClassName={"btn-pagination-disabled"}
+                                activeClassName={"btn-pagination-active"}
+                            />
                         </div>
                     </div>
                 </div>
