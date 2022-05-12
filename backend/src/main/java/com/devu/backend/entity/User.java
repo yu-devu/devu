@@ -36,7 +36,7 @@ public class User {
     private String emailAuthKey;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
     //<--연관관계 편의 메서드-->//

@@ -58,11 +58,10 @@ public class PostService {
     public PostResponseDto createChat(PostRequestCreateDto requestPostDto) throws IOException {
         List<PostTag> postTags = new ArrayList<>();
         List<Tag> tags = createTags(requestPostDto, postTags);
+        User user = userRepository.findByUsername(requestPostDto.getUsername())
+                .orElseThrow(UserNotFoundException::new);
         Chat chat = Chat.builder()
-                .user(
-                        userRepository.findByUsername(requestPostDto.getUsername())
-                                .orElseThrow(UserNotFoundException::new)
-                )
+                .user(user)
                 .title(requestPostDto.getTitle())
                 .content(requestPostDto.getContent())
                 .hit(0L)
@@ -73,6 +72,7 @@ public class PostService {
         setPostOnPostTag(postTags, chat);
         log.info("Create Chat {} By {}",chat.getTitle(),chat.getUser().getUsername());
         postRepository.save(chat);
+        user.addPost(chat);
         return PostResponseDto.builder()
                 .title(chat.getTitle())
                 .url(getImageUrl(chat))
@@ -85,11 +85,10 @@ public class PostService {
     public PostResponseDto createStudy(PostRequestCreateDto requestPostDto) throws IOException {
         List<PostTag> postTags = new ArrayList<>();
         List<Tag> tags = createTags(requestPostDto, postTags);
+        User user = userRepository.findByUsername(requestPostDto.getUsername())
+                .orElseThrow(UserNotFoundException::new);
         Study study = Study.builder()
-                .user(
-                        userRepository.findByUsername(requestPostDto.getUsername())
-                                .orElseThrow(UserNotFoundException::new)
-                )
+                .user(user)
                 .title(requestPostDto.getTitle())
                 .content(requestPostDto.getContent())
                 .studyStatus(StudyStatus.ACTIVE)
@@ -101,6 +100,7 @@ public class PostService {
         setPostOnPostTag(postTags,study);
         log.info("Create Study {} By {}",study.getTitle(),study.getUser().getUsername());
         postRepository.save(study);
+        user.addPost(study);
         return PostResponseDto.builder()
                 .title(study.getTitle())
                 .url(getImageUrl(study))
@@ -113,11 +113,10 @@ public class PostService {
     public PostResponseDto createQuestion(PostRequestCreateDto requestPostDto) throws IOException {
         List<PostTag> postTags = new ArrayList<>();
         List<Tag> tags = createTags(requestPostDto, postTags);
+        User user = userRepository.findByUsername(requestPostDto.getUsername())
+                .orElseThrow(UserNotFoundException::new);
         Question question = Question.builder()
-                .user(
-                        userRepository.findByUsername(requestPostDto.getUsername())
-                                .orElseThrow(UserNotFoundException::new)
-                )
+                .user(user)
                 .title(requestPostDto.getTitle())
                 .content(requestPostDto.getContent())
                 .qnaStatus(QuestionStatus.UNSOLVED)
@@ -129,6 +128,7 @@ public class PostService {
         setPostOnPostTag(postTags,question);
         log.info("Create Question {} By {}",question.getTitle(),question.getUser().getUsername());
         postRepository.save(question);
+        user.addPost(question);
         return PostResponseDto.builder()
                 .title(question.getTitle())
                 .url(getImageUrl(question))

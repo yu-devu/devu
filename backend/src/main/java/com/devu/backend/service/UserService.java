@@ -169,4 +169,11 @@ public class UserService {
         return userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
     }
 
+    @Transactional
+    public void deleteUser(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        userRepository.delete(user);
+        user.getPosts().clear();
+    }
+
 }

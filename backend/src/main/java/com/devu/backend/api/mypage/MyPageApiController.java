@@ -9,10 +9,7 @@ import com.devu.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,6 +59,20 @@ public class MyPageApiController {
             List<PostResponseDto> likes
                     = Stream.concat(collect.stream(), questions.stream()).collect(Collectors.toList());
             return ResponseEntity.ok(likes);
+        }catch (Exception e){
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    @DeleteMapping("/{username}")
+    public ResponseEntity<?> deleteUser(@PathVariable("username") String username) {
+        try {
+            userService.deleteUser(username);
+            return ResponseEntity.ok().body(username+ " 님이 탈퇴했습니다.");
         }catch (Exception e){
             e.printStackTrace();
             ResponseErrorDto errorDto = ResponseErrorDto.builder()
