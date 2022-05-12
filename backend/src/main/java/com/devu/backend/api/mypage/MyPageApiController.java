@@ -26,6 +26,9 @@ public class MyPageApiController {
     private final UserService userService;
     private final PostService postService;
 
+    /*
+    * 추후 AuthenticationPrincipal로 변경 필요
+    * */
     @GetMapping("/myPosts/{username}")
     public ResponseEntity<?> getAllMyPosts(@PathVariable("username") String username) {
         try{
@@ -52,7 +55,13 @@ public class MyPageApiController {
         try {
             User user = userService.getUserByUsername(username);
             List<PostResponseDto> chats = postService.findAllLikeChatsByUser(user);
-            return ResponseEntity.ok(chats);
+            List<PostResponseDto> studies = postService.findAllLikeStudiesByUser(user);
+            List<PostResponseDto> questions = postService.findAllLikeQuestionsByUser(user);
+            List<PostResponseDto> collect
+                    = Stream.concat(chats.stream(), studies.stream()).collect(Collectors.toList());
+            List<PostResponseDto> likes
+                    = Stream.concat(collect.stream(), questions.stream()).collect(Collectors.toList());
+            return ResponseEntity.ok(likes);
         }catch (Exception e){
             e.printStackTrace();
             ResponseErrorDto errorDto = ResponseErrorDto.builder()
