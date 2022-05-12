@@ -176,4 +176,14 @@ public class UserService {
         user.getPosts().clear();
     }
 
+    @Transactional
+    public UserDTO updateUsername(User user,String username) {
+        user.changeUsername(username);
+        log.info("username was changed {} to {}",user.getUsername(),username);
+        return UserDTO.builder()
+                .username(username)
+                .email(user.getEmail())
+                .build();
+    }
+
 }

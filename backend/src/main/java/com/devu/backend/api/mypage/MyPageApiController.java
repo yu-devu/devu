@@ -2,6 +2,8 @@ package com.devu.backend.api.mypage;
 
 import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.controller.post.PostResponseDto;
+import com.devu.backend.controller.user.UserDTO;
+import com.devu.backend.controller.user.UserRequestUpdateDto;
 import com.devu.backend.entity.User;
 import com.devu.backend.entity.post.Post;
 import com.devu.backend.service.PostService;
@@ -73,6 +75,21 @@ public class MyPageApiController {
         try {
             userService.deleteUser(username);
             return ResponseEntity.ok().body(username+ " 님이 탈퇴했습니다.");
+        }catch (Exception e){
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
+
+    @PatchMapping("/username/{username}")
+    public ResponseEntity<?> updateUsername(@PathVariable("username") String username,@RequestBody UserRequestUpdateDto userUpdateDto) {
+        try {
+            User user = userService.getUserByUsername(username);
+            UserDTO dto = userService.updateUsername(user, userUpdateDto.getUsername());
+            return ResponseEntity.ok(dto);
         }catch (Exception e){
             e.printStackTrace();
             ResponseErrorDto errorDto = ResponseErrorDto.builder()

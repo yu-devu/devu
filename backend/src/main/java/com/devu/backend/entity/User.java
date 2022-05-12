@@ -13,7 +13,11 @@ import java.util.List;
 //TODO : XtoOne 연관관계는 모두 LAZY로
 @Getter
 @Builder
-@Table(name = "users")
+@Table(name = "users",uniqueConstraints =
+        {@UniqueConstraint(
+                name = "USERNAME_UNIQUE",
+                columnNames = {"username"})
+        })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
@@ -27,6 +31,7 @@ public class User {
     @Column(nullable = false)
     private String email;
 
+    @Column
     private String username;
 
     private String password;
@@ -49,6 +54,10 @@ public class User {
 
     public void changePassword(String password) {
         this.password = password;
+    }
+
+    public void changeUsername(String username) {
+        this.username = username;
     }
 
     public void updateUserInfo(String username, String password) {
