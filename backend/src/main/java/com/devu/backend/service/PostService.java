@@ -56,8 +56,6 @@ public class PostService {
     * */
     @Transactional
     public PostResponseDto createChat(PostRequestCreateDto requestPostDto) throws IOException {
-        List<PostTag> postTags = new ArrayList<>();
-        List<Tag> tags = createTags(requestPostDto, postTags);
         User user = userRepository.findByUsername(requestPostDto.getUsername())
                 .orElseThrow(UserNotFoundException::new);
         Chat chat = Chat.builder()
@@ -66,10 +64,8 @@ public class PostService {
                 .content(requestPostDto.getContent())
                 .hit(0L)
                 .images(new ArrayList<>())
-                .tags(postTags)
                 .build();
         addImage(requestPostDto, chat);
-        setPostOnPostTag(postTags, chat);
         log.info("Create Chat {} By {}",chat.getTitle(),chat.getUser().getUsername());
         postRepository.save(chat);
         user.addPost(chat);
@@ -77,7 +73,6 @@ public class PostService {
                 .title(chat.getTitle())
                 .url(getImageUrl(chat))
                 .username(chat.getUser().getUsername())
-                .tags(tags.stream().map(Tag::getName).collect(Collectors.toList()))
                 .build();
     }
 

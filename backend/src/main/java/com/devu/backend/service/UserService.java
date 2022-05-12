@@ -177,9 +177,10 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO updateUsername(User user,String username) {
+    public UserDTO updateUsername(String before,String username) {
+        User user = userRepository.findByUsername(before).orElseThrow(UserNotFoundException::new);
         user.changeUsername(username);
-        log.info("username was changed {} to {}",user.getUsername(),username);
+        log.info("username was changed {} to {}",before,username);
         return UserDTO.builder()
                 .username(username)
                 .email(user.getEmail())
