@@ -88,12 +88,17 @@ const PostView = () => {
               {/* 좋아요 개수는 추후에 삭제해도 됨 */}
             </div>
             <label className="chat-detail-content">{postData.content}</label>
-            <div class="read-btns">
-              <Link to="modify">
-                <a className="btn-modify">수정하기</a>
-              </Link>
-              <a className="btn-delete" onClick={() => handleDelete()}>삭제하기</a>
-            </div>
+            {
+              postData.username === username
+                ?
+                <div class="read-btns">
+                  <Link to="modify">
+                    <a className="btn-modify">수정하기</a>
+                  </Link>
+                  <a className="btn-delete" onClick={() => handleDelete()}>삭제하기</a>
+                </div>
+                : null
+            }
           </div>
           {/* <h1>댓글</h1>
           <p>{postData.comment}</p>
