@@ -11,6 +11,7 @@ import com.devu.backend.controller.post.PostResponseDto;
 import com.devu.backend.entity.Image;
 import com.devu.backend.entity.PostTag;
 import com.devu.backend.entity.Tag;
+import com.devu.backend.entity.User;
 import com.devu.backend.entity.post.*;
 import com.devu.backend.repository.ImageRepository;
 import com.devu.backend.repository.PostRepository;
@@ -57,11 +58,10 @@ public class PostService {
     public PostResponseDto createChat(PostRequestCreateDto requestPostDto) throws IOException {
         List<PostTag> postTags = new ArrayList<>();
         List<Tag> tags = createTags(requestPostDto, postTags);
+        User user = userRepository.findByUsername(requestPostDto.getUsername())
+                .orElseThrow(UserNotFoundException::new);
         Chat chat = Chat.builder()
-                .user(
-                        userRepository.findByUsername(requestPostDto.getUsername())
-                                .orElseThrow(UserNotFoundException::new)
-                )
+                .user(user)
                 .title(requestPostDto.getTitle())
                 .content(requestPostDto.getContent())
                 .hit(0L)
@@ -72,6 +72,7 @@ public class PostService {
         setPostOnPostTag(postTags, chat);
         log.info("Create Chat {} By {}",chat.getTitle(),chat.getUser().getUsername());
         postRepository.save(chat);
+        user.addPost(chat);
         return PostResponseDto.builder()
                 .title(chat.getTitle())
                 .url(getImageUrl(chat))
@@ -84,11 +85,10 @@ public class PostService {
     public PostResponseDto createStudy(PostRequestCreateDto requestPostDto) throws IOException {
         List<PostTag> postTags = new ArrayList<>();
         List<Tag> tags = createTags(requestPostDto, postTags);
+        User user = userRepository.findByUsername(requestPostDto.getUsername())
+                .orElseThrow(UserNotFoundException::new);
         Study study = Study.builder()
-                .user(
-                        userRepository.findByUsername(requestPostDto.getUsername())
-                                .orElseThrow(UserNotFoundException::new)
-                )
+                .user(user)
                 .title(requestPostDto.getTitle())
                 .content(requestPostDto.getContent())
                 .studyStatus(StudyStatus.ACTIVE)
@@ -100,6 +100,7 @@ public class PostService {
         setPostOnPostTag(postTags,study);
         log.info("Create Study {} By {}",study.getTitle(),study.getUser().getUsername());
         postRepository.save(study);
+        user.addPost(study);
         return PostResponseDto.builder()
                 .title(study.getTitle())
                 .url(getImageUrl(study))
@@ -112,11 +113,10 @@ public class PostService {
     public PostResponseDto createQuestion(PostRequestCreateDto requestPostDto) throws IOException {
         List<PostTag> postTags = new ArrayList<>();
         List<Tag> tags = createTags(requestPostDto, postTags);
+        User user = userRepository.findByUsername(requestPostDto.getUsername())
+                .orElseThrow(UserNotFoundException::new);
         Question question = Question.builder()
-                .user(
-                        userRepository.findByUsername(requestPostDto.getUsername())
-                                .orElseThrow(UserNotFoundException::new)
-                )
+                .user(user)
                 .title(requestPostDto.getTitle())
                 .content(requestPostDto.getContent())
                 .qnaStatus(QuestionStatus.UNSOLVED)
@@ -128,6 +128,7 @@ public class PostService {
         setPostOnPostTag(postTags,question);
         log.info("Create Question {} By {}",question.getTitle(),question.getUser().getUsername());
         postRepository.save(question);
+        user.addPost(question);
         return PostResponseDto.builder()
                 .title(question.getTitle())
                 .url(getImageUrl(question))
@@ -258,6 +259,7 @@ public class PostService {
                 .comments(chat.getComments())
                 .tags(chat.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                 .createAt(chat.getCreateAt())
+                .url(chat.getImages().stream().map(Image::getPath).collect(Collectors.toList()))
                 .build();
     }
 
@@ -280,6 +282,7 @@ public class PostService {
                 .comments(study.getComments())
                 .tags(study.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                 .createAt(study.getCreateAt())
+                .url(study.getImages().stream().map(Image::getPath).collect(Collectors.toList()))
                 .build();
     }
 
@@ -302,6 +305,7 @@ public class PostService {
                 .comments(question.getComments())
                 .tags(question.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                 .createAt(question.getCreateAt())
+                .url(question.getImages().stream().map(Image::getPath).collect(Collectors.toList()))
                 .build();
     }
 
@@ -540,6 +544,101 @@ public class PostService {
 
     public int getAllQuestionsSize() {
         return postRepository.findAllQuestionsWithoutSorting().size();
+    }
+
+    public List<PostResponseDto> findAllChatsByUser(User user) {
+        return postRepository.findAllChatsByUser(user).orElseThrow(PostNotFoundException::new)
+                .stream().map(c -> PostResponseDto.builder()
+                        .id(c.getId())
+                        .hit(c.getHit())
+                        .like(c.getLikes().size())
+                        .commentsSize(c.getComments().size())
+                        .title(c.getTitle())
+                        .content(c.getContent())
+                        .createAt(c.getCreateAt())
+                        .lastModifiedAt(c.getLastModifiedAt())
+                        .build()
+                ).collect(Collectors.toList());
+    }
+
+    public List<PostResponseDto> findAllStudiesByUser(User user) {
+        return postRepository.findAllStudiesByUser(user).orElseThrow(PostNotFoundException::new)
+                .stream().map(s -> PostResponseDto.builder()
+                        .id(s.getId())
+                        .hit(s.getHit())
+                        .like(s.getLikes().size())
+                        .commentsSize(s.getComments().size())
+                        .title(s.getTitle())
+                        .content(s.getContent())
+                        .createAt(s.getCreateAt())
+                        .lastModifiedAt(s.getLastModifiedAt())
+                        .tags(s.getPostTags().stream().map(pt -> pt.getTag().getName()).collect(Collectors.toList()))
+                        .studyStatus(s.getStudyStatus())
+                        .build()
+                ).collect(Collectors.toList());
+    }
+
+    public List<PostResponseDto> findAllQuestionsByUser(User user) {
+        return postRepository.findAllQuestionsByUser(user).orElseThrow(PostNotFoundException::new)
+                .stream().map(q -> PostResponseDto.builder()
+                        .id(q.getId())
+                        .hit(q.getHit())
+                        .like(q.getLikes().size())
+                        .commentsSize(q.getComments().size())
+                        .title(q.getTitle())
+                        .content(q.getContent())
+                        .createAt(q.getCreateAt())
+                        .lastModifiedAt(q.getLastModifiedAt())
+                        .tags(q.getPostTags().stream().map(pt -> pt.getTag().getName()).collect(Collectors.toList()))
+                        .questionStatus(q.getQuestionStatus())
+                        .build()
+                ).collect(Collectors.toList());
+    }
+
+    public List<PostResponseDto> findAllLikeChatsByUser(User user) {
+        return postRepository.findAllLikeChatsByUserId(user.getId()).orElseThrow(PostNotFoundException::new)
+                .stream().map(c -> PostResponseDto.builder()
+                        .id(c.getId())
+                        .hit(c.getHit())
+                        .like(c.getLikes().size())
+                        .commentsSize(c.getComments().size())
+                        .title(c.getTitle())
+                        .content(c.getContent())
+                        .createAt(c.getCreateAt())
+                        .lastModifiedAt(c.getLastModifiedAt())
+                        .build()).collect(Collectors.toList());
+    }
+
+    public List<PostResponseDto> findAllLikeStudiesByUser(User user) {
+        return postRepository.findAllLikeStudiesByUserId(user.getId()).orElseThrow(PostNotFoundException::new)
+                .stream().map(s -> PostResponseDto.builder()
+                        .id(s.getId())
+                        .hit(s.getHit())
+                        .like(s.getLikes().size())
+                        .commentsSize(s.getComments().size())
+                        .title(s.getTitle())
+                        .content(s.getContent())
+                        .createAt(s.getCreateAt())
+                        .lastModifiedAt(s.getLastModifiedAt())
+                        .studyStatus(s.getStudyStatus())
+                        .tags(s.getPostTags().stream().map(pt -> pt.getTag().getName()).collect(Collectors.toList()))
+                        .build()).collect(Collectors.toList());
+    }
+
+    public List<PostResponseDto> findAllLikeQuestionsByUser(User user) {
+        return postRepository.findAllLikeQuestionsByUserId(user.getId()).orElseThrow(PostNotFoundException::new)
+                .stream().map(q -> PostResponseDto.builder()
+                        .id(q.getId())
+                        .hit(q.getHit())
+                        .like(q.getLikes().size())
+                        .commentsSize(q.getComments().size())
+                        .title(q.getTitle())
+                        .content(q.getContent())
+                        .createAt(q.getCreateAt())
+                        .lastModifiedAt(q.getLastModifiedAt())
+                        .questionStatus(q.getQuestionStatus())
+                        .tags(q.getPostTags().stream().map(pt -> pt.getTag().getName()).collect(Collectors.toList()))
+                        .build()).collect(Collectors.toList());
     }
 }
 

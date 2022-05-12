@@ -165,5 +165,25 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+    }
+
+    @Transactional
+    public void deleteUser(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        userRepository.delete(user);
+        user.getPosts().clear();
+    }
+
+    @Transactional
+    public UserDTO updateUsername(User user,String username) {
+        user.changeUsername(username);
+        log.info("username was changed {} to {}",user.getUsername(),username);
+        return UserDTO.builder()
+                .username(username)
+                .email(user.getEmail())
+                .build();
+    }
 
 }

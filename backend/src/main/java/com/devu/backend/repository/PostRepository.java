@@ -1,5 +1,6 @@
 package com.devu.backend.repository;
 
+import com.devu.backend.entity.User;
 import com.devu.backend.entity.post.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -69,4 +70,18 @@ public interface PostRepository extends JpaRepository<Post, Long> ,PostRepositor
     @Query("select q from Question q")
     List<Question> findAllQuestionsWithoutSorting();
 
+    Optional<List<Chat>> findAllChatsByUser(User user);
+    Optional<List<Study>> findAllStudiesByUser(User user);
+    Optional<List<Question>> findAllQuestionsByUser(User user);
+
+
+    //select * from post join likes on post.post_id = likes.post_id where likes.user_id = 1;
+    @Query("select c from Chat c join Like l on c.id = l.post.id where l.user.id = :id")
+    Optional<List<Chat>> findAllLikeChatsByUserId(@Param("id")Long id);
+
+    @Query("select s from Study s join Like l on s.id = l.post.id where l.user.id = :id")
+    Optional<List<Study>> findAllLikeStudiesByUserId(@Param("id")Long id);
+
+    @Query("select q from Question q join Like l on q.id = l.post.id where l.user.id = :id")
+    Optional<List<Question>> findAllLikeQuestionsByUserId(@Param("id")Long id);
 }
