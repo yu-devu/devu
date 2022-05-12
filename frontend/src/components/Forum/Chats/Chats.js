@@ -7,6 +7,7 @@ import './pagination.css'
 
 const Chats = () => {
   const [currentPage, setCurrentPage] = useState(0);
+  const [postSize, setPostSize] = useState(0);
   const [postsPerPage] = useState(20);
   const [postData, setPostData] = useState([]);
   const [lastIdx, setLastIdx] = useState(0);
@@ -14,6 +15,7 @@ const Chats = () => {
 
   useEffect(() => {
     fetchData();
+    fetchPageSize();
   }, [currentPage]); // 글 목록 page 버튼 누를 때 마다 버튼 값 가져와서 setCurrentPage 하면 될 듯함.
 
   const fetchData = async () => {
@@ -40,6 +42,11 @@ const Chats = () => {
     setPostData(_postData);
   };
 
+  const fetchPageSize = async () => {
+    const res = await axios.get(process.env.REACT_APP_DB_HOST + `/community/chats/size`);
+    setPostSize(res.data);
+  }
+
   const changePage = ({ selected }) => {
     setCurrentPage(selected)
   }
@@ -62,17 +69,17 @@ const Chats = () => {
               </li>
             ))}
           </ul>
-          {/* <ReactPaginate
+          <ReactPaginate
             previousLabel={"<"}
             nextLabel={">"}
-            pageCount={10} // 페이지 버튼 개수 출력하는 부분 -> 글 전체 개수 넘겨받아서 사용해야함
+            pageCount={Math.ceil(postSize / postsPerPage)} // 페이지 버튼 개수 출력하는 부분 -> 글 전체 개수 넘겨받아서 사용해야함
             onPageChange={changePage}
             containerClassName={"btn-pagination"}
             previousLinkClassName={"btn-pagination-previous"}
             nextLinkClassName={"btn-pagination-next"}
             disabledClassName={"btn-pagination-disabled"}
             activeClassName={"btn-pagination-active"}
-          /> */}
+          />
         </div>
         <Link to="write">
           <button className="btn-write">글 쓰기</button>
