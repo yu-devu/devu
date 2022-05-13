@@ -1,7 +1,6 @@
 package com.devu.backend.api.mypage;
 
 import com.devu.backend.config.auth.UserDetailsImpl;
-import com.devu.backend.config.auth.UserDetailsServiceImpl;
 import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.controller.post.PostResponseDto;
 import com.devu.backend.controller.user.UserDTO;
