@@ -12,6 +12,7 @@ import Chats from './components/Forum/Chats/Chats';
 import Studies from './components/Forum/Studies/Studies';
 import StudiesView from './components/Forum/Studies/StudiesView';
 import StudyWrite from './components/Forum/Studies/Write';
+import ChatBot from './components/ChatBot/ChatBot';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/change_password/*" element={<ChangePassword />}></Route>
           <Route path="/studies" exact element={<Studies />}></Route>
           <Route path="/studies/write" exact element={<StudyWrite />}></Route >
+          <Route path="/chatbot" exact element={<ChatBot />}></Route >
         </Routes>
       </Router>
     </>
