@@ -1,7 +1,11 @@
 package com.devu.backend.api.weather;
 
 import com.devu.backend.controller.ResponseErrorDto;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
+@Slf4j
 @RestController
 @RequestMapping("/api")
 public class WeatherApiController {
@@ -33,11 +38,10 @@ public class WeatherApiController {
                     dto.getBaseTime()+
                     "&nx=92" +
                     "&ny=90";
-            String res = getResultString(apiUrl);
-            HashMap<String, Object> resultMap = new HashMap<>();
-            ObjectMapper objectMapper = new ObjectMapper();
-            resultMap = objectMapper.readValue(res, HashMap.class);
-            return ResponseEntity.ok(resultMap);
+            JSONObject jsonObject = getJsonObjectByObjectMapperFromString(apiUrl);
+            JSONArray jsonArray = getJsonArray(jsonObject);
+            JSONObject reformedData = getReformedData(jsonArray);
+            return ResponseEntity.ok(reformedData.toString());
         }catch (Exception e){
             e.printStackTrace();
             ResponseErrorDto errorDto = ResponseErrorDto.builder()
@@ -45,6 +49,39 @@ public class WeatherApiController {
                     .build();
             return ResponseEntity.badRequest().body(errorDto);
         }
+    }
+
+    private JSONObject getReformedData(JSONArray jsonArray) {
+        HashMap<Object, Object> reformedMap = new HashMap<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject object = jsonArray.getJSONObject(i);
+            Object category = object.get("category");
+            Object fcstValue = object.get("fcstValue");
+            reformedMap.put(category, fcstValue);
+        }
+        JSONObject reformedData = new JSONObject();
+        reformedData.put("reformed", reformedMap);
+        return reformedData;
+    }
+
+    private JSONArray getJsonArray(JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject
+                .getJSONObject("rawData")
+                .getJSONObject("response")
+                .getJSONObject("body")
+                .getJSONObject("items")
+                .getJSONArray("item");
+        return jsonArray;
+    }
+
+    private JSONObject getJsonObjectByObjectMapperFromString(String apiUrl) throws IOException {
+        String resStr = getResultString(apiUrl);
+        HashMap<String, Object> resultMap = new HashMap<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        resultMap = objectMapper.readValue(resStr, HashMap.class);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("rawData", resultMap);
+        return jsonObject;
     }
 
     private String getResultString(String apiUrl) throws IOException {
