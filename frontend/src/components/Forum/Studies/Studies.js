@@ -4,7 +4,6 @@ import ReactPaginate from 'react-paginate'
 import './studies.css'
 import Submenu from './Submenu'
 import a from "../../../img/a.png"
-import Category from './Category'
 import magnify from "../../../img/magnify.png"
 import Footer from '../../Home/Footer'
 import atom from "../../../img/atom.png"
@@ -28,16 +27,25 @@ const Studies = () => {
     const [postsPerPage] = useState(20);
     const [postData, setPostData] = useState([]);
     const [lastIdx, setLastIdx] = useState(0);
+    const [selectedTag, setSelectedTag] = useState([]);
+    const [sentence, setSentence] = useState('');
+    const [status, setStatus] = useState('');
+    const [order, setOrder] = useState('');
+    const onChangeSentence = (e) => { setSentence(e.target.value); }
 
     useEffect(() => {
         fetchData();
         fetchPageSize();
-    }, [currentPage]);
+    }, [currentPage, selectedTag, status, order]);
 
     const fetchData = async () => {
         const res = await axios.get(process.env.REACT_APP_DB_HOST + `/community/studies`, {
             params: {
                 page: currentPage,
+                tags: selectedTag.join(","), // join(",")으로 해야 ?tags=REACT,SPRING으로 parameter 전송할 수 있음.
+                s: sentence,
+                status: status,
+                order: order,
             },
         });
 
@@ -59,6 +67,15 @@ const Studies = () => {
         );
         setPostData(_postData);
     };
+
+
+    const handleTags = (tag) => {
+        const _selectedTag = [...selectedTag];
+        if (!_selectedTag.includes(tag)) {
+            _selectedTag.push(tag);
+        }
+        setSelectedTag(_selectedTag);
+    }
 
     const fetchPageSize = async () => {
         const res = await axios.get(process.env.REACT_APP_DB_HOST + `/community/studies/size`);
@@ -98,11 +115,17 @@ const Studies = () => {
                     </div>
                 </div>
                 <div className='body-studies'>
-                    <Category />
+                    <div className='cat-menu'>
+                        <div className='cat-menu-items'>
+                            <p className='cat-item' onClick={() => { setStatus(''); }}>전체</p>
+                            <p className='cat-item' onClick={() => { setStatus('ACTIVE') }}>모집중</p>
+                            <p className='cat-item' onClick={() => { setStatus('CLOSED') }}>모집완료</p>
+                        </div>
+                    </div>
                     <div className='search-and-write'>
                         <div className='studies-search'>
-                            <input type='text' placeholder='맞춤 스터디그룹을 찾아보세요' className='search-input' />
-                            <button className='btn-mag'>
+                            <input type='text' placeholder='맞춤 스터디그룹을 찾아보세요' className='search-input' onChange={(e) => { onChangeSentence(e); }} />
+                            <button className='btn-mag' onClick={() => { fetchData(); }}>
                                 <img className='img-mag' src={magnify} alt="" />
                             </button>
                         </div>
@@ -112,42 +135,42 @@ const Studies = () => {
                     </div>
                     <div className='choicing'>
                         <div className='choice-tag'>
-                            <button className='btn-choice'>
+                            <button className='btn-choice' onClick={() => { handleTags("REACT") }}>
                                 <img className='img-choice' src={atom} alt="" />
                             </button>
-                            <button className='btn-choice'>
+                            <button className='btn-choice' onClick={() => { handleTags("PYTHON") }}>
                                 <img className='img-choice' src={python} alt="" />
                             </button>
-                            <button className='btn-choice'>
+                            <button className='btn-choice' onClick={() => { handleTags("RUBY") }}>
                                 <img className='img-choice' src={ruby} alt="" />
                             </button>
-                            <button className='btn-choice'>
+                            <button className='btn-choice' onClick={() => { handleTags("JS") }}>
                                 <img className='img-choice' src={js} alt="" />
                             </button>
-                            <button className='btn-choice'>
+                            <button className='btn-choice' onClick={() => { handleTags("MYSQL") }}>
                                 <img className='img-choice' src={mysql} alt="" />
                             </button>
-                            <button className='btn-choice'>
+                            <button className='btn-choice' onClick={() => { handleTags("CPP") }}>
                                 <img className='img-choice' src={cp} alt="" />
                             </button>
-                            <button className='btn-choice'>
+                            <button className='btn-choice' onClick={() => { handleTags("JAVA") }}>
                                 <img className='img-choice' src={java} alt="" />
                             </button>
-                            <button className='btn-choice'>
+                            <button className='btn-choice' onClick={() => { handleTags("NODEJS") }}>
                                 <img className='img-choice' src={node_js} alt="" />
                             </button>
-                            <button className='btn-choice'>
+                            <button className='btn-choice' onClick={() => { handleTags("CSS") }}>
                                 <img className='img-choice' src={css} alt="" />
                             </button>
-                            <button className='btn-choice'>
+                            <button className='btn-choice' onClick={() => { handleTags("HTML") }}>
                                 <img className='img-choice' src={html} alt="" />
                             </button>
                         </div>
                         <div className='body-content'>
-                            <select className='select-studies'>
-                                <option>최신순</option>
-                                <option>인기순</option>
-                                <option>조회순</option>
+                            <select className='select-studies' onChange={(e) => { setOrder(e.target.value); }}>
+                                <option value="">최신순</option>
+                                <option value="likes">인기순</option>
+                                <option value="comments">댓글순</option>
                             </select>
                             <div className='studies-line'></div>
                             {/* 게시물 미리보기 */}
