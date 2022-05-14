@@ -2,7 +2,7 @@ export const navItems = [
     {
         id: 1,
         title: "커뮤니티",
-        path: "./community",
+        path: "./studies",
         cName: "nav-item",
     },
     {
