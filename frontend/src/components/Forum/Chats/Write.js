@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import Select from 'react-select'
+// import Select from 'react-select'
 import { useNavigate } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './write.css';
-import { options } from '../data';
+// import { options } from '../data';
 import ReactHtmlParser from 'html-react-parser';
 
 const Write = () => {
@@ -26,10 +26,10 @@ const Write = () => {
     });
   };
 
-  const onChangeTags = (e) => {
-    setTags(e.target.value);
-    console.log(tags);
-  };
+  // const onChangeTags = (e) => {
+  //   setTags(e.target.value);
+  //   console.log(tags);
+  // };
 
   const handleWrite = async () => {
     if (postContent === '') {
@@ -76,7 +76,7 @@ const Write = () => {
             onChange={(e) => handleTitle(e)}
           ></textarea>
         </div>
-        <div>
+        {/* <div>
           <Select
             isMulti
             options={options}
@@ -85,7 +85,7 @@ const Write = () => {
             placeholder="태그를 선택해주세요!"
             onChange={(e) => onChangeTags(e)}
           />
-        </div>
+        </div> */}
         <CKEditor
           editor={ClassicEditor}
           data=""
