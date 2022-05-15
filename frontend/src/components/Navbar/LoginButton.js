@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './loginButton.css';
 import './loginModal.css';
-import ChangePasswordModal from './ChangePasswordModal.js'
+import ChangePasswordModal from './ChangePasswordModal.js';
 
 function LoginButton() {
   const [showModal, setShowModal] = useState(false);
@@ -15,15 +15,9 @@ function LoginButton() {
   const closeModal = () => setShowModal(false);
   const openModal = () => setShowModal(true);
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleLogin();
-    }
-  }
-
   const handleLogin = async () => {
     if (email === '' || password === '') {
-      alert('아이디와 비밀번호를 입력해주세요.');
+      alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
     const data = {
@@ -35,19 +29,16 @@ function LoginButton() {
       .post(process.env.REACT_APP_DB_HOST + '/signin', JSON.stringify(data), {
         headers: {
           'Content-Type': 'application/json',
-          'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
         },
       })
       .then((res) => {
         alert('로그인에 성공했습니다!');
         localStorage.setItem('username', res.data.username);
+        // console.log(res);
         localStorage.setItem('accessToken', res.data.accessToken);
         window.location.reload(false);
       })
-      .catch((res) => {
-        console.log(res);
-        alert(JSON.parse(res.request.response).error); // 이메일, 비밀번호 오류 출력
-      });
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -78,7 +69,6 @@ function LoginButton() {
               onChange={(e) => handlePassword(e)}
               type="password"
               placeholder="비밀번호"
-              onKeyPress={handleKeyPress}
             />
             <button className="btn-validate" onClick={() => handleLogin()}>
               로그인
