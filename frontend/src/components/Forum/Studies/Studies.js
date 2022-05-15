@@ -68,6 +68,11 @@ const Studies = () => {
         setPostData(_postData);
     };
 
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            fetchData();
+        }
+    }
 
     const handleTags = (tag) => {
         const _selectedTag = [...selectedTag];
@@ -124,7 +129,13 @@ const Studies = () => {
                     </div>
                     <div className='search-and-write'>
                         <div className='studies-search'>
-                            <input type='text' placeholder='맞춤 스터디그룹을 찾아보세요' className='search-input' onChange={(e) => { onChangeSentence(e); }} />
+                            <input
+                                type='text'
+                                placeholder='맞춤 스터디그룹을 찾아보세요'
+                                className='search-input'
+                                onChange={(e) => { onChangeSentence(e); }}
+                                onKeyPress={handleKeyPress}
+                            />
                             <button className='btn-mag' onClick={() => { fetchData(); }}>
                                 <img className='img-mag' src={magnify} alt="" />
                             </button>
