@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './register.css';
+import Footer from '../Home/Footer';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -108,32 +109,32 @@ const Register = () => {
   };
 
   return (
-    <div className="container-register">
-      <h1 className="register">회원가입</h1>
-      <div className="input-container">
-        <div className="register-email">
-          <input
-            className="register-input"
-            id="email"
-            name="email"
-            value={email}
-            onChange={(e) => handleEmail(e)}
-            placeholder="이메일"
-          />
-          {!clickAuthkey ? (
-            <button className="btn-validate" onClick={() => handleAuthorize()}>
-              인증하기
-            </button>
-          ) : (
-            <button className="btn-validate" onClick={() => handleAuthorize()}>
-              재전송
-            </button>
-          )}
-        </div>
-        {showValidate ? (
+    <div className='register-all'>
+      <div className="container-register">
+        <h1 className="register">회원가입</h1>
+        <div className="input-container">
           <div className="register-email">
             <input
-              className="register-input"
+              className="register-input-email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => handleEmail(e)}
+              placeholder="이메일"
+            />
+            {!clickAuthkey ? (
+              <button className="btn-validate" onClick={() => handleAuthorize()}>
+                인증하기
+              </button>
+            ) : (
+              <button className="btn-validate" onClick={() => handleAuthorize()}>
+                재전송
+              </button>
+            )}
+          </div>
+          <div className='register-validate'>
+            <input
+              className="register-input-email"
               id="authkey"
               name="authkey"
               value={authkey}
@@ -144,8 +145,9 @@ const Register = () => {
               인증확인
             </button>
           </div>
-        ) : null}
-        {showInformation ? (
+
+
+
           <div>
             <input
               className="register-input"
@@ -183,9 +185,11 @@ const Register = () => {
               회원가입
             </button>
           </div>
-        ) : null}
+        </div>
       </div>
+      <Footer />
     </div>
+
   );
 };
 
