@@ -5,8 +5,8 @@
     font-size: 15px;
     color: var(--color-gray);
     cursor: pointer;
-  }
+}
   
-  .btn-login-nav:hover {
-    color: var(--color-primary);
-  }
+.btn-login-nav:hover {
+  color: var(--color-primary);
+}
