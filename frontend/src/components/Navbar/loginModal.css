@@ -16,7 +16,8 @@
   transform: translate(-50%, -50%);
   /* max-height: 80%; */
   width: 24%;
-  height: 52%;
+  /* height: 52%; */
+  height: max-content;
   padding: 16px;
   background: #ffffff;
   border-radius: 5%;
@@ -94,6 +95,8 @@
   font-weight: 500;
   cursor: pointer;
   font-size: 16px;
+  padding-top: 3%;
+  padding-bottom: 3%;
 }
 
 .btn-login-register {
@@ -106,8 +109,10 @@
   border: 1px solid #CCC;
   font-weight: 500;
   font-size: 16px;
-  top: -3%;
+  top: -4%;
   cursor: pointer;
+  padding-top: 3%;
+  padding-bottom: 3%;
 }
 
 .btn-login:hover {
@@ -120,6 +125,7 @@
 
 .login-modal-middle {
   display: flex;
+  position: relative;
 }
 
 .keep-login{
@@ -187,4 +193,8 @@
   left: 17px;
   background: #fff;
   box-shadow: 1px 2px 3px #00000020;
+}
+
+.btns-login {
+  position: relative;
 }

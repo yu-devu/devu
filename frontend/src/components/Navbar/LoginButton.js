@@ -93,12 +93,13 @@ function LoginButton() {
               </div>
               <ChangePasswordModal />
             </div>
-            <button className="btn-login" onClick={() => handleLogin()}>
-              로그인
-            </button>
-            <button className="btn-login-register" onClick={() => handleLogin()}>
-              회원가입
-            </button>
+            <div className='btns-login'>
+              <button className="btn-login" onClick={() => handleLogin()}>
+                로그인
+              </button>
+              <button className="btn-login-register" onClick={() => handleLogin()}>
+                회원가입
+              </button></div>
           </div>
         </div>
       ) : null}
