@@ -77,7 +77,7 @@ const ChatBot = () => {
     const handleStaff = () => {
         const botMessage = document.querySelector('#message1');
         const userMessage = document.querySelector('#message2');
-        botMessage.innerHTML = '입력 중...'
+        botMessage.innerHTML = '입력 중......'
         setTimeout(() => {
             restaurantChange(false)
             botMessage.innerHTML = "교직원 학식은 된장찌개입니다!"
