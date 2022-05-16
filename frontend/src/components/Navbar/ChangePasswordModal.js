@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import './changePasswordModal.css'
 
 function ChangePasswordModal() {
     const [showModal, setShowModal] = useState(false);
@@ -42,6 +43,7 @@ function ChangePasswordModal() {
     return (
         <>
             <button
+                className='btn-findpw'
                 onClick={() => {
                     openPasswordModal();
                     // console.log(showModal)
