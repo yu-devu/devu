@@ -14,9 +14,9 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  max-height: 80%;
-  width: 22%;
-  height: 47%;
+  /* max-height: 80%; */
+  width: 24%;
+  height: 52%;
   padding: 16px;
   background: #ffffff;
   border-radius: 5%;
@@ -35,7 +35,7 @@
 .logo-login {
   width: 27%;
   height: 5%;
-  top: 7%;
+  top: 5%;
   position: relative;
 }
 
@@ -61,7 +61,7 @@
   position: relative;
   left: 7%;
   font-size: 16px;
-  margin-top: 20%;
+  margin-top: 15%;
   background: transparent;
   font-weight: 400;
 }
@@ -103,20 +103,19 @@
   background-color: white;
   color: black;
   border-radius: 10px;
-  margin-top: 2%;
   border: 1px solid #CCC;
   font-weight: 500;
   font-size: 16px;
-  margin-bottom: 40%;
+  top: -3%;
   cursor: pointer;
 }
 
 .btn-login:hover {
-  background-color: var(--color-hover);
+  filter: brightness(60%);
 }
 
 .btn-login-register:hover {
-  background-color: var(--color-hover);
+  color: #207dff;
 }
 
 .login-modal-middle {
@@ -132,7 +131,7 @@
 
 .login-text {
   position: relative;
-  top: 50%;
+  top: 25%;
   left: 7%;
   font-size: 14px;
   color: var(--color-gray);
