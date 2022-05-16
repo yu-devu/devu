@@ -5,7 +5,7 @@ import com.devu.backend.common.exception.EmailConfirmNotCompleteException;
 import com.devu.backend.common.exception.PasswordNotSameException;
 import com.devu.backend.common.exception.UserNotFoundException;
 import com.devu.backend.config.auth.token.RefreshToken;
-import com.devu.backend.config.auth.token.RefreshTokenRepository;
+import com.devu.backend.repository.RefreshTokenRepository;
 import com.devu.backend.config.auth.token.TokenService;
 import com.devu.backend.controller.user.UserDTO;
 import com.devu.backend.common.exception.*;
