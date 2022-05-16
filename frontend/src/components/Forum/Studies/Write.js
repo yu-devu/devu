@@ -27,8 +27,8 @@ const Write = () => {
   };
 
   const onChangeTags = (e) => {
-    setTags(e.target.value);
-    console.log(tags);
+    console.log('You\'ve selected:', e);
+    setTags(e);
   };
 
   const handleWrite = async () => {
@@ -80,7 +80,7 @@ const Write = () => {
           <Select
             isMulti
             options={options}
-            // value={tags}
+            value={tags}
             name="tags"
             placeholder="태그를 선택해주세요!"
             onChange={(e) => onChangeTags(e)}

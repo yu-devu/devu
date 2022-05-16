@@ -14,4 +14,8 @@ export const options = [
     { value: 'JAVA', label: 'Java' },
     { value: 'FLUTTER', label: 'Flutter' },
     { value: 'DOCKER', label: 'Docker' },
+    { value: 'RUBY', label: 'Ruby' },
+    { value: 'HTML', label: 'HTML' },
+    { value: 'CSS', label: 'CSS' },
+    { value: 'MYSQL', label: 'MySQL' },
 ]
