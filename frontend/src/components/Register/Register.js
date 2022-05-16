@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './register.css';
-import Footer from '../Home/Footer';
+import FooterGray from '../Home/FooterGray'
 
 const Register = () => {
   const navigate = useNavigate();
@@ -113,6 +113,7 @@ const Register = () => {
       <div className="container-register">
         <h1 className="register">회원가입</h1>
         <div className="input-container">
+          <h7 className="text-email">아이디(이메일)</h7>
           <div className="register-email">
             <input
               className="register-input-email"
@@ -120,7 +121,7 @@ const Register = () => {
               name="email"
               value={email}
               onChange={(e) => handleEmail(e)}
-              placeholder="이메일"
+              placeholder="example@yu.ac.kr"
             />
             {!clickAuthkey ? (
               <button className="btn-validate" onClick={() => handleAuthorize()}>
@@ -145,49 +146,54 @@ const Register = () => {
               인증확인
             </button>
           </div>
-
-
-
-          <div>
+          <h7 className="text-password">비밀번호</h7>
+          <div className='register-info'>
             <input
-              className="register-input"
-              id="username"
-              name="username"
-              value={username}
-              onChange={(e) => handleUsername(e)}
-              placeholder="사용자 이름"
-            />
-            <input
-              className="register-input"
+              className="register-input-password"
               id="password"
               name="password"
               value={password}
               onChange={(e) => handlePassword(e)}
               type="password"
-              placeholder="비밀번호"
+              placeholder="비밀번호 (영문, 숫자 포함 10자이내)"
             />
             {password && !passwordAvailability ? (
               <p>특수문자, 문자, 숫자를 포함해 8자 이상 입력해주세요.</p>
             ) : null}
+          </div>
+          <h7 className="text-password-recheck">비밀번호확인</h7>
+          <div className='register-info'>
             <input
-              className="register-input"
+              className="register-input-password-recheck"
               id="checkPassword"
               name="checkPassword"
               value={checkPassword}
               onChange={(e) => handleCheckPassword(e)}
               type="password"
-              placeholder="비밀번호 확인"
+              placeholder="비밀번호와 동일"
             />
             {checkPassword && password !== checkPassword ? (
               <p>비밀번호가 일치하지 않습니다.</p>
             ) : null}
-            <button onClick={() => handleSignUp()} className="btn-register">
-              회원가입
-            </button>
           </div>
+          <h7 className="text-name">이름</h7>
+          <div className='register-info'>
+            <input
+              className="register-input-name"
+              id="username"
+              name="username"
+              value={username}
+              onChange={(e) => handleUsername(e)}
+              placeholder="이름"
+            />
+
+          </div>
+          <button onClick={() => handleSignUp()} className="btn-register">
+            가입하기
+          </button>
         </div>
       </div>
-      <Footer />
+      <FooterGray />
     </div>
 
   );
