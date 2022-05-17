@@ -82,6 +82,11 @@ h6 {
     font-weight: 400;
 }
 
+h7 {
+    font-size: 20px;
+    color: black;
+}
+
 section {
     margin-top: 8rem;
 }
