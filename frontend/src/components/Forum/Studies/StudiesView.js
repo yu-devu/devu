@@ -121,6 +121,10 @@ const StudiesView = () => {
                             </div>
                         </div>
                         <div className="studies-detail-bottom">
+                            <div className="studies-write-comments">
+                                <input placeholder="댓글을 달아주세요."></input>
+                                <button className="btn-comment">댓글달기</button>
+                            </div>
                             {postData.comments ? <div className="studies-comments-all">
                                 <div className="number-comments">
                                     <h6 className="number-comments-text">2 개의 답글</h6>
