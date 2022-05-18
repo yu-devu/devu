@@ -15,6 +15,7 @@ const Register = () => {
   const [showValidate, setShowValidate] = useState(false);
   const [showInformation, setShowInformation] = useState(false);
   const [clickAuthkey, setClickAuthkey] = useState(false);
+  const [checkAuth, setCheckAuth] = useState(false);
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/
 
   const handleEmail = (e) => setEmail(e.target.value);
@@ -128,7 +129,7 @@ const Register = () => {
                 인증하기
               </button>
             ) : (
-              <button className="btn-validate" onClick={() => handleAuthorize()}>
+              <button className="btn-validate-clicked" onClick={() => handleAuthorize()}>
                 재전송
               </button>
             )}
@@ -142,9 +143,15 @@ const Register = () => {
               onChange={(e) => handleAuthkey(e)}
               placeholder="인증번호"
             />
-            <button className="btn-validate" onClick={() => checkAuthkey()}>
-              인증확인
-            </button>
+            {!clickAuthkey ? (
+              <button className="btn-validate" onClick={() => checkAuthkey()}>
+                인증확인
+              </button>
+            ) : (
+              <button className="btn-validate-clicked" >
+                인증완료
+              </button>
+            )}
           </div>
           <h7 className="text-password">비밀번호</h7>
           <div className='register-info'>
