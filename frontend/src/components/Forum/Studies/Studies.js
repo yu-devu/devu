@@ -6,16 +6,23 @@ import Submenu from './Submenu'
 import a from "../../../img/a.png"
 import magnify from "../../../img/magnify.png"
 import Footer from '../../Home/Footer'
-import atom from "../../../img/atom.png"
-import python from "../../../img/python.png"
-import cp from "../../../img/cp.png"
-import java from "../../../img/java.png"
-import mysql from "../../../img/mysql.png"
-import node_js from "../../../img/node_js.png"
-import ruby from "../../../img/ruby.png"
+import spring from "../../../img/spring.png"
+import c from "../../../img/c.png"
+import cpp from "../../../img/cpp.png"
 import js from "../../../img/js.png"
-import css from "../../../img/css.png"
+import react from "../../../img/react.png"
+import node_js from "../../../img/node_js.png"
+import python from "../../../img/python.png"
+import go from "../../../img/go.png"
+import swift from "../../../img/swift.png"
+import angular from "../../../img/angular.png"
+import java from "../../../img/java.png"
+import flutter from "../../../img/flutter.png"
+import docker from "../../../img/docker.png"
+import ruby from "../../../img/ruby.png"
 import html from "../../../img/html.png"
+import css from "../../../img/css.png"
+import mysql from "../../../img/mysql.png"
 import comment from "../../../img/comment.png"
 import hit from "../../../img/hit.png"
 import like from "../../../img/like.png"
@@ -135,35 +142,56 @@ const Studies = () => {
                     </div>
                     <div className='choicing'>
                         <div className='choice-tag'>
-                            <button className='btn-choice' onClick={() => { handleTags("REACT") }}>
-                                <img className='img-choice' src={atom} alt="" />
+                            <button className='btn-choice' onClick={() => { handleTags("Spring") }}>
+                                <img className='img-choice' src={spring} alt="" />
                             </button>
-                            <button className='btn-choice' onClick={() => { handleTags("PYTHON") }}>
-                                <img className='img-choice' src={python} alt="" />
-                            </button>
-                            <button className='btn-choice' onClick={() => { handleTags("RUBY") }}>
-                                <img className='img-choice' src={ruby} alt="" />
-                            </button>
-                            <button className='btn-choice' onClick={() => { handleTags("JS") }}>
-                                <img className='img-choice' src={js} alt="" />
-                            </button>
-                            <button className='btn-choice' onClick={() => { handleTags("MYSQL") }}>
-                                <img className='img-choice' src={mysql} alt="" />
+                            <button className='btn-choice' onClick={() => { handleTags("C") }}>
+                                <img className='img-choice' src={c} alt="" />
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("CPP") }}>
-                                <img className='img-choice' src={cp} alt="" />
+                                <img className='img-choice' src={cpp} alt="" />
                             </button>
-                            <button className='btn-choice' onClick={() => { handleTags("JAVA") }}>
+                            <button className='btn-choice' onClick={() => { handleTags("JavaScript") }}>
+                                <img className='img-choice' src={js} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("React") }}>
+                                <img className='img-choice' src={react} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("NodeJS") }}>
+                                <img className='img-choice' src={node_js} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("Python") }}>
+                                <img className='img-choice' src={python} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("Go") }}>
+                                <img className='img-choice' src={go} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("Swift") }}>
+                                <img className='img-choice' src={swift} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("Angular") }}>
+                                <img className='img-choice' src={angular} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("Java") }}>
                                 <img className='img-choice' src={java} alt="" />
                             </button>
-                            <button className='btn-choice' onClick={() => { handleTags("NODEJS") }}>
-                                <img className='img-choice' src={node_js} alt="" />
+                            <button className='btn-choice' onClick={() => { handleTags("Flutter") }}>
+                                <img className='img-choice' src={flutter} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("Docker") }}>
+                                <img className='img-choice' src={docker} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("Ruby") }}>
+                                <img className='img-choice' src={ruby} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("HTML") }}>
+                                <img className='img-choice' src={html} alt="" />
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("CSS") }}>
                                 <img className='img-choice' src={css} alt="" />
                             </button>
-                            <button className='btn-choice' onClick={() => { handleTags("HTML") }}>
-                                <img className='img-choice' src={html} alt="" />
+                            <button className='btn-choice' onClick={() => { handleTags("MySQL") }}>
+                                <img className='img-choice' src={mysql} alt="" />
                             </button>
                         </div>
                         <div className='body-content'>
