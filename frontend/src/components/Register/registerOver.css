@@ -1,0 +1,48 @@
+@media (min-width: 1024px) {
+    .registerover-all {
+        position: relative;
+        left: 38%;
+        margin-top: 15%;
+    }
+    
+    .registerover-btns {
+        display: flex;
+        height: max-content;
+    }
+    
+    .btn-to-main {
+        text-align: center;
+        width: 10%;
+        height: 1%;
+        background-color: rgb(242, 242, 242);
+        color: black;
+        border-radius: 5px;
+        margin-top: 10%;
+        /* border: 1px solid var(--color-gray); */
+        font-weight: 500;
+        cursor: pointer;
+        font-size: 16px;
+        padding-top: 0.7%;
+        padding-bottom: 0.7%;
+        cursor: pointer;
+        line-height: 126%;
+        margin-left: 1%;
+    }
+    
+    .btn-to-login {
+        text-align: center;
+        width: 10%;
+        height: 1%;
+        background-color: var(--color-primary);
+        color: white;
+        border-radius: 5px;
+        margin-top: 10%;
+        font-weight: 500;
+        cursor: pointer;
+        font-size: 16px;
+        padding-top: 0.7%;
+        padding-bottom: 0.7%;
+        cursor: pointer;
+        margin-left: 1%;
+    }
+}
