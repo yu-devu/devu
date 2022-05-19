@@ -1,152 +1,154 @@
-.container-register {
-  z-index: 12;
-  padding: 20px 0 20px;
-  text-align: center;
-  position: relative;
-}
-
-.input-container {
-  text-align: center;
-}
-
-.register-input-email {
-  position: relative;
-  padding: 14px 16px;
-  border: 1px solid #dddfe2;
-  border-radius: 6px;
-  width: 20%;
-  font-size: 17px;
-}
-
-.register-input-password {
-  position: relative;
-  display: block;
-  padding: 14px 16px;
-  border: 1px solid #dddfe2;
-  border-radius: 6px;
-  width: 20%;
-  font-size: 17px;
-  left: 1.4%;
-  margin-bottom: 1%;
-}
-
-.register-input-password-recheck {
-  position: relative;
-  display: block;
-  padding: 14px 16px;
-  border: 1px solid #dddfe2;
-  border-radius: 6px;
-  width: 20%;
-  font-size: 17px;
-  left: 1.4%;
-  margin-bottom: 1%;
-}
-
-.register-input-name {
-  position: relative;
-  display: block;
-  padding: 14px 16px;
-  border: 1px solid #dddfe2;
-  border-radius: 6px;
-  width: 20%;
-  font-size: 17px;
-  left: 1.4%;
-  margin-bottom: 1%;
-}
-
-.register-email {
-  position: relative;
-  left: 5%;
-}
-
-.register-validate {
-  position: relative;
-  left: 5%;
-  margin-top: 1%;
-  margin-bottom: 1%;
-}
-
-.text-email {
-  position: relative;
-  right: 5%;
-}
-
-.text-password {
-  position: relative;
-  right: 6.5%;
-}
-
-.text-password-recheck {
-  position: relative;
-  right: 5.5%;
-}
-
-.text-name {
-  position: relative;
-  right: 7.5%;
-}
-
-.btn-validate {
-  cursor: pointer;
-  background-color: white;
-  color: var(--color-primary);
-  border: 1px solid var(--color-primary);
-  border-radius: 6px;
-  padding: 0.5%;
-  width: 6%;
-  height: 2%;
-  text-align: center;
-  margin: 14px 10px 0;
-}
-
-.btn-validate:hover {
-  background-color: var(--color-hover);
-}
-
-.btn-validate-clicked {
-  cursor: pointer;
-  background-color: var(--color-primary);
-  color: white;
-  border: 1px solid var(--color-primary);
-  border-radius: 6px;
-  padding: 0.5%;
-  width: 6%;
-  height: 2%;
-  text-align: center;
-  margin: 14px 10px 0;
-}
-
-.btn-register {
-  word-wrap: break-word;
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-  text-decoration: none;
-  white-space: nowrap;
-  background-color: var(--color-primary);
-  color: rgb(255, 255, 255);
-  border: none;
-  border-radius: 6px;
-  font-size: 20px;
-  line-height: 48px;
-  padding: 0 16px;
-  width: 20%;
-  left: 1.5%;
-  margin-top: 1%;
-  margin-bottom: 7%;
-}
-
-.btn-register:hover {
-  background-color: var(--color-hover);
-}
-
-.register {
-  position: relative;
-  right: 5.6%;
-  margin-bottom: 2%;
-}
-
-.register-info {
-  position: relative;
-  left: 40%;
+@media (min-width: 1024px) {
+  .container-register {
+    z-index: 12;
+    padding: 20px 0 20px;
+    text-align: center;
+    position: relative;
+  }
+  
+  .input-container {
+    text-align: center;
+  }
+  
+  .register-input-email {
+    position: relative;
+    padding: 14px 16px;
+    border: 1px solid #dddfe2;
+    border-radius: 6px;
+    width: 20%;
+    font-size: 17px;
+  }
+  
+  .register-input-password {
+    position: relative;
+    display: block;
+    padding: 14px 16px;
+    border: 1px solid #dddfe2;
+    border-radius: 6px;
+    width: 20%;
+    font-size: 17px;
+    left: 1.4%;
+    margin-bottom: 1%;
+  }
+  
+  .register-input-password-recheck {
+    position: relative;
+    display: block;
+    padding: 14px 16px;
+    border: 1px solid #dddfe2;
+    border-radius: 6px;
+    width: 20%;
+    font-size: 17px;
+    left: 1.4%;
+    margin-bottom: 1%;
+  }
+  
+  .register-input-name {
+    position: relative;
+    display: block;
+    padding: 14px 16px;
+    border: 1px solid #dddfe2;
+    border-radius: 6px;
+    width: 20%;
+    font-size: 17px;
+    left: 1.4%;
+    margin-bottom: 1%;
+  }
+  
+  .register-email {
+    position: relative;
+    left: 5%;
+  }
+  
+  .register-validate {
+    position: relative;
+    left: 5%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+  }
+  
+  .text-email {
+    position: relative;
+    right: 5%;
+  }
+  
+  .text-password {
+    position: relative;
+    right: 6.5%;
+  }
+  
+  .text-password-recheck {
+    position: relative;
+    right: 5.5%;
+  }
+  
+  .text-name {
+    position: relative;
+    right: 7.5%;
+  }
+  
+  .btn-validate {
+    cursor: pointer;
+    background-color: white;
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    border-radius: 6px;
+    padding: 0.5%;
+    width: 6%;
+    height: 2%;
+    text-align: center;
+    margin: 14px 10px 0;
+  }
+  
+  .btn-validate:hover {
+    background-color: var(--color-hover);
+  }
+  
+  .btn-validate-clicked {
+    cursor: pointer;
+    background-color: var(--color-primary);
+    color: white;
+    border: 1px solid var(--color-primary);
+    border-radius: 6px;
+    padding: 0.5%;
+    width: 6%;
+    height: 2%;
+    text-align: center;
+    margin: 14px 10px 0;
+  }
+  
+  .btn-register {
+    word-wrap: break-word;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: var(--color-primary);
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 6px;
+    font-size: 20px;
+    line-height: 48px;
+    padding: 0 16px;
+    width: 20%;
+    left: 1.5%;
+    margin-top: 1%;
+    margin-bottom: 7%;
+  }
+  
+  .btn-register:hover {
+    background-color: var(--color-hover);
+  }
+  
+  .register {
+    position: relative;
+    right: 5.6%;
+    margin-bottom: 2%;
+  }
+  
+  .register-info {
+    position: relative;
+    left: 40%;
+  }
 }

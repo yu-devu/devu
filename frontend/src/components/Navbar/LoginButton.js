@@ -5,8 +5,10 @@ import './loginButton.css';
 import './loginModal.css';
 import ChangePasswordModal from './ChangePasswordModal.js'
 import logo from '../../img/logo_main.png'
+import { useNavigate } from 'react-router-dom';
 
 function LoginButton() {
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -97,7 +99,10 @@ function LoginButton() {
               <button className="btn-login" onClick={() => handleLogin()}>
                 로그인
               </button>
-              <button className="btn-login-register" onClick={() => handleLogin()}>
+              <button className="btn-login-register" onClick={() => {
+                navigate("/register");
+                closeModal()
+              }}>
                 회원가입
               </button></div>
           </div>

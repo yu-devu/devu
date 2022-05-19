@@ -77,7 +77,7 @@ const Register = () => {
           })
           .then(() => {
             alert('회원가입에 성공했습니다!');
-            navigate("/");
+            navigate("/registered");
             handleLogin();
           })
           .catch(() => console.log('회원가입 실패..'));
