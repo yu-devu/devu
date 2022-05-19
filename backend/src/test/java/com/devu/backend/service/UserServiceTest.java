@@ -1,6 +1,6 @@
 package com.devu.backend.service;
 
-import com.devu.backend.config.auth.token.RefreshTokenRepository;
+import com.devu.backend.repository.RefreshTokenRepository;
 import com.devu.backend.config.auth.token.TokenService;
 import com.devu.backend.controller.user.UserDTO;
 import com.devu.backend.entity.User;
