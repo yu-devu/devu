@@ -300,7 +300,7 @@
     /* filter: opacity(0.5) drop-shadow(0 0 0 ); */
   }
 
-  .btn-choice:hover .img-choice{
+  .btn-choice:hover .img-choice {
     filter: brightness(100%);
   }
 

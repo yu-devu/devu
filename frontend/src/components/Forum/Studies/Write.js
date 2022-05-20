@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select'
 import { useNavigate } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -10,13 +10,17 @@ import ReactHtmlParser from 'html-react-parser';
 
 const Write = () => {
   const navigate = useNavigate();
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState([]); // Select에서 담은 tags
+  const [postTags, setPostTags] = useState([]); // tags를 가공한 것 => axios.post할 때 쓸 수 있도록 한 것임.
   const [postContent, setPostContent] = useState({
     title: '',
     content: '',
-    tags: '',
   });
   const username = localStorage.getItem('username');
+
+  useEffect(() => {
+    console.log(postTags);
+  }, [postTags]); // postTags의 동기처리를 위해 useEffect 사용함
 
   const handleTitle = (e) => {
     const { name, value } = e.target;
@@ -31,33 +35,39 @@ const Write = () => {
     setTags(e);
   };
 
-  const handleWrite = async () => {
-    if (postContent === '') {
-      alert('글을 작성해주세요!');
-      return;
+  const organizeTags = () => {
+    let array = [];
+    for (let i = 0; i < tags.length; i++) {
+      array.push(tags[i].value);
     }
+    setPostTags(array);
+  }
 
-    const formData = new FormData();
-    formData.append('title', postContent.title);
-    formData.append('username', username);
-    // formData.append('content', postContent.content);
-    formData.append('content', ReactHtmlParser(postContent.content));
-    formData.append('tags', postContent.tags);
-    await axios
-      .post(process.env.REACT_APP_DB_HOST + `/community/study`, formData, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `${localStorage.getItem('accessToken')}`,
-          'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
-        },
-      })
-      .then(() => {
-        alert('글이 성공적으로 등록되었습니다!');
-        navigate(-1);
-      })
-      .catch(() => {
-        alert('글 등록 실패..');
-      });
+  const handleWrite = async () => {
+    if (postContent.title !== '' && postContent.content !== '' && tags !== '') {
+      const formData = new FormData();
+      formData.append('title', postContent.title);
+      formData.append('username', username);
+      // formData.append('content', postContent.content);
+      formData.append('content', ReactHtmlParser(postContent.content));
+      formData.append('tags', postTags);
+
+      await axios
+        .post(process.env.REACT_APP_DB_HOST + `/community/study`, formData, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `${localStorage.getItem('accessToken')}`,
+            'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
+          },
+        })
+        .then(() => {
+          alert('글이 성공적으로 등록되었습니다!');
+          navigate(-1);
+        })
+        .catch(() => {
+          alert('글 등록 실패..');
+        });
+    } else alert('글을 작성해주세요!');
   };
 
   return (
@@ -95,12 +105,13 @@ const Write = () => {
               ...postContent,
               content: data,
             });
+            // console.log(postContent);
           }}
           onBlur={(event, editor) => { }}
           onFocus={(event, editor) => { }}
         />
         <div className="bt_se">
-          <button className="btn-post" onClick={() => handleWrite()}>
+          <button className="btn-post" onClick={() => { organizeTags(); handleWrite(); }}>
             글 작성
           </button>
         </div>
