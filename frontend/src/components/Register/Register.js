@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './register.css';
+import FooterGray from '../Home/FooterGray'
 
 const Register = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const Register = () => {
   const [showValidate, setShowValidate] = useState(false);
   const [showInformation, setShowInformation] = useState(false);
   const [clickAuthkey, setClickAuthkey] = useState(false);
+  const [checkAuth, setCheckAuth] = useState(false);
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/
 
   const handleEmail = (e) => setEmail(e.target.value);
@@ -110,84 +112,99 @@ const Register = () => {
   };
 
   return (
-    <div className="container-register">
-      <h1 className="register">회원가입</h1>
-      <div className="input-container">
-        <div className="register-email">
-          <input
-            className="register-input"
-            id="email"
-            name="email"
-            value={email}
-            onChange={(e) => handleEmail(e)}
-            placeholder="이메일"
-          />
-          {!clickAuthkey ? (
-            <button className="btn-validate" onClick={() => handleAuthorize()}>
-              인증하기
-            </button>
-          ) : (
-            <button className="btn-validate" onClick={() => handleAuthorize()}>
-              재전송
-            </button>
-          )}
-        </div>
-        {showValidate ? (
+    <div className='register-all'>
+      <div className="container-register">
+        <h1 className="register">회원가입</h1>
+        <div className="input-container">
+          <h7 className="text-email">아이디(이메일)</h7>
           <div className="register-email">
             <input
-              className="register-input"
+              className="register-input-email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => handleEmail(e)}
+              placeholder="example@yu.ac.kr"
+            />
+            {!clickAuthkey ? (
+              <button className="btn-validate" onClick={() => handleAuthorize()}>
+                인증하기
+              </button>
+            ) : (
+              <button className="btn-validate-clicked" onClick={() => handleAuthorize()}>
+                재전송
+              </button>
+            )}
+          </div>
+          <div className='register-validate'>
+            <input
+              className="register-input-email"
               id="authkey"
               name="authkey"
               value={authkey}
               onChange={(e) => handleAuthkey(e)}
               placeholder="인증번호"
             />
-            <button className="btn-validate" onClick={() => checkAuthkey()}>
-              인증확인
-            </button>
+            {!clickAuthkey ? (
+              <button className="btn-validate" onClick={() => checkAuthkey()}>
+                인증확인
+              </button>
+            ) : (
+              <button className="btn-validate-clicked" >
+                인증완료
+              </button>
+            )}
           </div>
-        ) : null}
-        {showInformation ? (
-          <div>
+          <h7 className="text-password">비밀번호</h7>
+          <div className='register-info'>
             <input
-              className="register-input"
-              id="username"
-              name="username"
-              value={username}
-              onChange={(e) => handleUsername(e)}
-              placeholder="사용자 이름"
-            />
-            <input
-              className="register-input"
+              className="register-input-password"
               id="password"
               name="password"
               value={password}
               onChange={(e) => handlePassword(e)}
               type="password"
-              placeholder="비밀번호"
+              placeholder="비밀번호 (영문, 숫자 포함 10자이내)"
             />
             {password && !passwordAvailability ? (
               <p>특수문자, 문자, 숫자를 포함해 8자 이상 입력해주세요.</p>
             ) : null}
+          </div>
+          <h7 className="text-password-recheck">비밀번호확인</h7>
+          <div className='register-info'>
             <input
-              className="register-input"
+              className="register-input-password-recheck"
               id="checkPassword"
               name="checkPassword"
               value={checkPassword}
               onChange={(e) => handleCheckPassword(e)}
               type="password"
-              placeholder="비밀번호 확인"
+              placeholder="비밀번호와 동일"
             />
             {checkPassword && password !== checkPassword ? (
               <p>비밀번호가 일치하지 않습니다.</p>
             ) : null}
-            <button onClick={() => handleSignUp()} className="btn-register">
-              회원가입
-            </button>
           </div>
-        ) : null}
+          <h7 className="text-name">이름</h7>
+          <div className='register-info'>
+            <input
+              className="register-input-name"
+              id="username"
+              name="username"
+              value={username}
+              onChange={(e) => handleUsername(e)}
+              placeholder="이름"
+            />
+
+          </div>
+          <button onClick={() => handleSignUp()} className="btn-register">
+            가입하기
+          </button>
+        </div>
       </div>
+      <FooterGray />
     </div>
+
   );
 };
 

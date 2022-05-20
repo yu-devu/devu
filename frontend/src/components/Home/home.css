@@ -3,7 +3,7 @@
         display: relative;
         flex-direction: column;
         justify-content: space-between;
-        height: 900px;
+        /* height: 900px; */
         max-height: 100%;
     }
     

@@ -21,14 +21,10 @@
   
     --transition: all 400ms ease;
   
-    /* --container-width-lg: 75%;
-    --container-width-md: 86%;
-    --container-width-sm: 90%; */
 }
 
 html {
     scroll-behavior: smooth;
-    /* height: max-content; */
 }
 
 ::-webkit-scrollbar {
@@ -37,14 +33,10 @@ html {
 
 body {
     line-height: 1.7;
-/* 
-    width: 1920px;
-    height: 1320px; */
 }
 
 hr {
     border: 0;
-    /* width: 50%; */
     align: left;
     height: 1px;
     background: black;
@@ -90,6 +82,11 @@ h6 {
     font-weight: 400;
 }
 
+h7 {
+    font-size: 20px;
+    color: black;
+}
+
 section {
     margin-top: 8rem;
 }
@@ -99,14 +96,14 @@ section {
     color: var(--color-light)
 }
 
-a {
+/* a {
     color: var(--color-primary);
     transition: var(--transition);
 }
 
 a:hover {
     color: var(--color-white);
-}
+} */
 
 /* ================= MEDIA QUERIES (MEDIUM DEVICES) ================= */
 @media (max-width: 1024px){
