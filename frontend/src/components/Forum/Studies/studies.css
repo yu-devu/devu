@@ -132,9 +132,9 @@
     border-radius: 100px;
     color: white;
     background-color: #303030;
-    width: 6%;
+    width: 100%;
     position: relative;
-    left: 6%;
+    left: 100%;
     height: 40px;
     cursor: pointer;
     font-size: 18px;

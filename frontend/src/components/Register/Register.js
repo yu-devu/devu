@@ -60,27 +60,29 @@ const Register = () => {
   };
 
   const handleSignUp = async () => {
-    if (password === checkPassword) {
-      if (passwordAvailability === true) {
-        const data = {
-          email: email,
-          username: username,
-          password: password,
-        };
-        await axios
-          .post(process.env.REACT_APP_DB_HOST + '/signup', data, {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
-          .then(() => {
-            alert('회원가입에 성공했습니다!');
-            navigate("/");
-            handleLogin();
-          })
-          .catch(() => console.log('회원가입 실패..'));
-      } else alert('비밀번호를 양식에 맞게 입력해주세요');
-    } else alert('비밀번호를 확인해주세요.');
+    if (username !== '') {
+      if (password === checkPassword) {
+        if (passwordAvailability === true) {
+          const data = {
+            email: email,
+            username: username,
+            password: password,
+          };
+          await axios
+            .post(process.env.REACT_APP_DB_HOST + '/signup', data, {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            })
+            .then(() => {
+              alert('회원가입에 성공했습니다!');
+              navigate("/");
+              handleLogin();
+            })
+            .catch(() => console.log('회원가입 실패..'));
+        } else alert('비밀번호를 양식에 맞게 입력해주세요');
+      } else alert('비밀번호를 확인해주세요.');
+    } else alert('사용자 이름을 입력해주세요.');
   };
 
   const handleLogin = async () => {

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate'
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './studies.css'
 import Submenu from './Submenu'
 import a from "../../../img/a.png"
@@ -32,6 +34,7 @@ const Studies = () => {
     const [status, setStatus] = useState('');
     const [order, setOrder] = useState('');
     const onChangeSentence = (e) => { setSentence(e.target.value); }
+    const username = localStorage.getItem('username');
 
     useEffect(() => {
         fetchData();
@@ -66,6 +69,9 @@ const Studies = () => {
             )
         );
         setPostData(_postData);
+        CKEditor.instances.textarea_id.setData(postData.content);
+        console.log(postData.content);
+        CKEditor.instances.textarea_id.getData();
     };
 
     const handleKeyPress = (e) => {
@@ -140,9 +146,14 @@ const Studies = () => {
                                 <img className='img-mag' src={magnify} alt="" />
                             </button>
                         </div>
-                        <Link to="write">
-                            <button className='btn-studies-write'>글쓰기</button>
-                        </Link>
+                        {
+                            username // 로그인 했을 때 글쓰기 버튼 활성화
+                                ?
+                                <Link to="write">
+                                    <button className='btn-studies-write'>글쓰기</button>
+                                </Link>
+                                : null
+                        }
                     </div>
                     <div className='choicing'>
                         <div className='choice-tag'>
@@ -195,7 +206,8 @@ const Studies = () => {
                                             </div>
                                         </div>
                                         <div className='post-body'>
-                                            <div className='post-content'>{post.content}
+                                            <div className='post-content'>
+                                                {post.content}
                                             </div>
                                             <div className='post-options'>
                                                 <div className='post-comment'>
