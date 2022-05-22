@@ -2,6 +2,7 @@ package com.devu.backend.config.auth.token;
 
 import com.devu.backend.config.auth.UserDetailsImpl;
 import com.devu.backend.config.auth.UserDetailsServiceImpl;
+import com.devu.backend.repository.RefreshTokenRepository;
 import com.devu.backend.service.CookieService;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;

@@ -24,6 +24,9 @@ import java.util.HashMap;
 @RequestMapping("/api")
 public class WeatherApiController {
 
+    /*
+    * 고정된 시간대는 동일한 객체 반환하도록 설계 변경
+    * */
     @GetMapping("/weather")
     public ResponseEntity<?> getWeather(@RequestBody WeatherRequestDto dto) {
         try {

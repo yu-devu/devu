@@ -7,6 +7,7 @@ const LogoutButton = () => {
     await axios.post(process.env.REACT_APP_DB_HOST + `/logout`)
       .then(() => {
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('username');
         window.location.reload(false);
       });
   };

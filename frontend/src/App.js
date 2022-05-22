@@ -13,6 +13,7 @@ import Studies from './components/Forum/Studies/Studies';
 import StudiesView from './components/Forum/Studies/StudiesView';
 import StudyWrite from './components/Forum/Studies/Write';
 import ChatBot from './components/ChatBot/ChatBot';
+import RegisterOver from './components/Register/RegisterOver';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Routes>
           <Route path="/" exact element={<Home />}></Route>
           <Route path="/register" exact element={<Register />}></Route>
+          <Route path="/registered" exact element={<RegisterOver />}></Route >
           <Route path="/chats" exact element={<Chats />}></Route>
           <Route path="/chats/write" exact element={<ChatWrite />}></Route>
           <Route path="/postDetail/:no" exact element={<PostView />}></Route>

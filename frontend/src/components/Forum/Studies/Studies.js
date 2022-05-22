@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate'
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './studies.css'
 import Submenu from './Submenu'
 import a from "../../../img/a.png"
 import magnify from "../../../img/magnify.png"
 import Footer from '../../Home/Footer'
-import atom from "../../../img/atom.png"
-import python from "../../../img/python.png"
-import cp from "../../../img/cp.png"
-import java from "../../../img/java.png"
-import mysql from "../../../img/mysql.png"
-import node_js from "../../../img/node_js.png"
-import ruby from "../../../img/ruby.png"
+import spring from "../../../img/spring.png"
+import c from "../../../img/c.png"
+import cpp from "../../../img/cpp.png"
 import js from "../../../img/js.png"
-import css from "../../../img/css.png"
+import react from "../../../img/react.png"
+import node_js from "../../../img/node_js.png"
+import python from "../../../img/python.png"
+import go from "../../../img/go.png"
+import swift from "../../../img/swift.png"
+import angular from "../../../img/angular.png"
+import java from "../../../img/java.png"
+import flutter from "../../../img/flutter.png"
+import docker from "../../../img/docker.png"
+import ruby from "../../../img/ruby.png"
 import html from "../../../img/html.png"
+import css from "../../../img/css.png"
+import mysql from "../../../img/mysql.png"
 import comment from "../../../img/comment.png"
 import hit from "../../../img/hit.png"
 import like from "../../../img/like.png"
@@ -32,6 +41,7 @@ const Studies = () => {
     const [status, setStatus] = useState('');
     const [order, setOrder] = useState('');
     const onChangeSentence = (e) => { setSentence(e.target.value); }
+    const username = localStorage.getItem('username');
 
     useEffect(() => {
         fetchData();
@@ -66,8 +76,16 @@ const Studies = () => {
             )
         );
         setPostData(_postData);
+        CKEditor.instances.textarea_id.setData(postData.content);
+        console.log(postData.content);
+        CKEditor.instances.textarea_id.getData();
     };
 
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            fetchData();
+        }
+    }
 
     const handleTags = (tag) => {
         const _selectedTag = [...selectedTag];
@@ -124,46 +142,78 @@ const Studies = () => {
                     </div>
                     <div className='search-and-write'>
                         <div className='studies-search'>
-                            <input type='text' placeholder='맞춤 스터디그룹을 찾아보세요' className='search-input' onChange={(e) => { onChangeSentence(e); }} />
+                            <input
+                                type='text'
+                                placeholder='맞춤 스터디그룹을 찾아보세요'
+                                className='search-input'
+                                onChange={(e) => { onChangeSentence(e); }}
+                                onKeyPress={handleKeyPress}
+                            />
                             <button className='btn-mag' onClick={() => { fetchData(); }}>
                                 <img className='img-mag' src={magnify} alt="" />
                             </button>
                         </div>
-                        <Link to="write">
-                            <button className='btn-studies-write'>글쓰기</button>
-                        </Link>
+                        {
+                            username // 로그인 했을 때 글쓰기 버튼 활성화
+                                ?
+                                <Link to="write">
+                                    <button className='btn-studies-write'>글쓰기</button>
+                                </Link>
+                                : null
+                        }
                     </div>
                     <div className='choicing'>
                         <div className='choice-tag'>
-                            <button className='btn-choice' onClick={() => { handleTags("REACT") }}>
-                                <img className='img-choice' src={atom} alt="" />
+                            <button className='btn-choice' onClick={() => { handleTags("Spring") }}>
+                                <img className='img-choice' src={spring} alt="" />
                             </button>
-                            <button className='btn-choice' onClick={() => { handleTags("PYTHON") }}>
-                                <img className='img-choice' src={python} alt="" />
-                            </button>
-                            <button className='btn-choice' onClick={() => { handleTags("RUBY") }}>
-                                <img className='img-choice' src={ruby} alt="" />
-                            </button>
-                            <button className='btn-choice' onClick={() => { handleTags("JS") }}>
-                                <img className='img-choice' src={js} alt="" />
-                            </button>
-                            <button className='btn-choice' onClick={() => { handleTags("MYSQL") }}>
-                                <img className='img-choice' src={mysql} alt="" />
+                            <button className='btn-choice' onClick={() => { handleTags("C") }}>
+                                <img className='img-choice' src={c} alt="" />
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("CPP") }}>
-                                <img className='img-choice' src={cp} alt="" />
+                                <img className='img-choice' src={cpp} alt="" />
                             </button>
-                            <button className='btn-choice' onClick={() => { handleTags("JAVA") }}>
+                            <button className='btn-choice' onClick={() => { handleTags("JavaScript") }}>
+                                <img className='img-choice' src={js} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("React") }}>
+                                <img className='img-choice' src={react} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("NodeJS") }}>
+                                <img className='img-choice' src={node_js} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("Python") }}>
+                                <img className='img-choice' src={python} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("Go") }}>
+                                <img className='img-choice' src={go} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("Swift") }}>
+                                <img className='img-choice' src={swift} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("Angular") }}>
+                                <img className='img-choice' src={angular} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("Java") }}>
                                 <img className='img-choice' src={java} alt="" />
                             </button>
-                            <button className='btn-choice' onClick={() => { handleTags("NODEJS") }}>
-                                <img className='img-choice' src={node_js} alt="" />
+                            <button className='btn-choice' onClick={() => { handleTags("Flutter") }}>
+                                <img className='img-choice' src={flutter} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("Docker") }}>
+                                <img className='img-choice' src={docker} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("Ruby") }}>
+                                <img className='img-choice' src={ruby} alt="" />
+                            </button>
+                            <button className='btn-choice' onClick={() => { handleTags("HTML") }}>
+                                <img className='img-choice' src={html} alt="" />
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("CSS") }}>
                                 <img className='img-choice' src={css} alt="" />
                             </button>
-                            <button className='btn-choice' onClick={() => { handleTags("HTML") }}>
-                                <img className='img-choice' src={html} alt="" />
+                            <button className='btn-choice' onClick={() => { handleTags("MySQL") }}>
+                                <img className='img-choice' src={mysql} alt="" />
                             </button>
                         </div>
                         <div className='body-content'>
@@ -184,7 +234,8 @@ const Studies = () => {
                                             </div>
                                         </div>
                                         <div className='post-body'>
-                                            <div className='post-content'>{post.content}
+                                            <div className='post-content'>
+                                                {post.content}
                                             </div>
                                             <div className='post-options'>
                                                 <div className='post-comment'>
