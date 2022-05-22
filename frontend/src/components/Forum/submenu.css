@@ -3,7 +3,7 @@
         position: relative;
         box-shadow: 1px 6px 8px 1px rgb(0 0 0 / 12%) inset;
         line-height: 3.2;
-        height: 40px;
+        height: 38px;
     }
     
     .sub-menu-items {
@@ -17,6 +17,15 @@
         color: var(--color-gray);
         font-size: 18px;
         font-weight: 600;
+    }
+
+    .sub-item-selected {
+        margin-right: 25px;
+        color: var(--color-primary);
+        font-size: 18px;
+        font-weight: 600;
+        border-bottom: 2px solid var(--color-primary);
+        padding-bottom: 0.43%;
     }
 
     .sub-item:hover {

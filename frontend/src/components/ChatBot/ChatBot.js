@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import man from '../../img/man.png'
+import chatbot from '../../img/chatbot.png'
 import './chatbot.css'
 import remove from '../../img/remove.png'
 
@@ -115,14 +115,15 @@ const ChatBot = () => {
                     <div className='chatbot-wrapper'>
                         <div className='chatbot-content'>
                             <div className='top-chatbot'>
-                                <div className='img-chatbot'>
-                                    <img className='img-chatbot' src={man} alt="" />
+                                <div className='profile-chatbot'>
+                                    <img className='img-chatbot' src={chatbot} alt="" />
                                 </div>
                                 <div className='right-chatbot'>
                                     <div className='name-chatbot'>DEVU 도우미</div>
                                 </div>
                                 <button className='btn-close' onClick={closeModal}><img className='img-remove' src={remove} alt="" /></button>
                             </div>
+                            <hr className="line-chatbot" />
                             <div className='main-chatbot'>
                                 <div className='main-chatbot-content'>
                                     <div className='chatbot-messages'>
@@ -140,7 +141,7 @@ const ChatBot = () => {
                                     </div>
                                 </div>
                                 <div className='bottom-chatbot'>
-                                    <button className='food' id='food' onClick={handleFood} value="오늘 학식은 뭐야?">오늘 학식</button>
+                                    <button className='food' id='food' onClick={handleFood} value="오늘 학식은 뭐야?">오늘의 학식</button>
                                     <button className='weather' id='weather' onClick={handleWeather} value="현재 날씨 어때?">현재 날씨</button>
                                     <button className='subway' id='subway' onClick={handleSubway} value="지하철 현황 알려줘">지하철 현황</button>
                                 </div>
@@ -149,7 +150,9 @@ const ChatBot = () => {
                     </div>
                 </div>
             </div>
-            <button className='btn-mini-chatbot' onClick={showChatbot}></button>
+            <button className='btn-mini-chatbot' onClick={showChatbot}>
+                <img className='img-mini-chatbot' src={chatbot} alt="" />
+            </button>
         </div>
     )
 }
