@@ -4,7 +4,7 @@ import ReactPaginate from 'react-paginate'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './studies.css'
-import Submenu from './Submenu'
+import Submenu from '../Submenu'
 import a from "../../../img/a.png"
 import magnify from "../../../img/magnify.png"
 import Footer from '../../Home/Footer'
@@ -37,6 +37,7 @@ const Studies = () => {
     const [postData, setPostData] = useState([]);
     const [lastIdx, setLastIdx] = useState(0);
     const [selectedTag, setSelectedTag] = useState([]);
+    const [choiced, setChoiced] = useState(false);
     const [sentence, setSentence] = useState('');
     const [status, setStatus] = useState('');
     const [order, setOrder] = useState('');
@@ -104,7 +105,6 @@ const Studies = () => {
         setCurrentPage(selected)
     }
 
-
     return (
         <div>
             <Submenu />
@@ -165,55 +165,55 @@ const Studies = () => {
                     <div className='choicing'>
                         <div className='choice-tag'>
                             <button className='btn-choice' onClick={() => { handleTags("Spring") }}>
-                                <img className='img-choice' src={spring} alt="" />
+                                {selectedTag.includes("Spring") ? <img className='img-choiced' src={spring} alt="" /> : <img className='img-choice' src={spring} alt="" />}
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("C") }}>
-                                <img className='img-choice' src={c} alt="" />
+                                {selectedTag.includes("C") ? <img className='img-choiced' src={c} alt="" /> : <img className='img-choice' src={c} alt="" />}
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("CPP") }}>
-                                <img className='img-choice' src={cpp} alt="" />
+                                {selectedTag.includes("CPP") ? <img className='img-choiced' src={cpp} alt="" /> : <img className='img-choice' src={cpp} alt="" />}
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("JavaScript") }}>
-                                <img className='img-choice' src={js} alt="" />
+                                {selectedTag.includes("JavaScript") ? <img className='img-choiced' src={js} alt="" /> : <img className='img-choice' src={js} alt="" />}
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("React") }}>
-                                <img className='img-choice' src={react} alt="" />
+                                {selectedTag.includes("React") ? <img className='img-choiced' src={react} alt="" /> : <img className='img-choice' src={react} alt="" />}
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("NodeJS") }}>
-                                <img className='img-choice' src={node_js} alt="" />
+                                {selectedTag.includes("NodeJS") ? <img className='img-choiced' src={node_js} alt="" /> : <img className='img-choice' src={node_js} alt="" />}
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("Python") }}>
-                                <img className='img-choice' src={python} alt="" />
+                                {selectedTag.includes("Python") ? <img className='img-choiced' src={python} alt="" /> : <img className='img-choice' src={python} alt="" />}
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("Go") }}>
-                                <img className='img-choice' src={go} alt="" />
+                                {selectedTag.includes("Go") ? <img className='img-choiced' src={go} alt="" /> : <img className='img-choice' src={go} alt="" />}
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("Swift") }}>
-                                <img className='img-choice' src={swift} alt="" />
+                                {selectedTag.includes("Swift") ? <img className='img-choiced' src={swift} alt="" /> : <img className='img-choice' src={swift} alt="" />}
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("Angular") }}>
-                                <img className='img-choice' src={angular} alt="" />
+                                {selectedTag.includes("Angular") ? <img className='img-choiced' src={angular} alt="" /> : <img className='img-choice' src={angular} alt="" />}
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("Java") }}>
-                                <img className='img-choice' src={java} alt="" />
+                                {selectedTag.includes("Java") ? <img className='img-choiced' src={java} alt="" /> : <img className='img-choice' src={java} alt="" />}
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("Flutter") }}>
-                                <img className='img-choice' src={flutter} alt="" />
+                                {selectedTag.includes("Flutter") ? <img className='img-choiced' src={flutter} alt="" /> : <img className='img-choice' src={flutter} alt="" />}
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("Docker") }}>
-                                <img className='img-choice' src={docker} alt="" />
+                                {selectedTag.includes("Docker") ? <img className='img-choiced' src={docker} alt="" /> : <img className='img-choice' src={docker} alt="" />}
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("Ruby") }}>
-                                <img className='img-choice' src={ruby} alt="" />
+                                {selectedTag.includes("Ruby") ? <img className='img-choiced' src={ruby} alt="" /> : <img className='img-choice' src={ruby} alt="" />}
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("HTML") }}>
-                                <img className='img-choice' src={html} alt="" />
+                                {selectedTag.includes("HTML") ? <img className='img-choiced' src={html} alt="" /> : <img className='img-choice' src={html} alt="" />}
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("CSS") }}>
-                                <img className='img-choice' src={css} alt="" />
+                                {selectedTag.includes("CSS") ? <img className='img-choiced' src={css} alt="" /> : <img className='img-choice' src={css} alt="" />}
                             </button>
                             <button className='btn-choice' onClick={() => { handleTags("MySQL") }}>
-                                <img className='img-choice' src={mysql} alt="" />
+                                {selectedTag.includes("MySQL") ? <img className='img-choiced' src={mysql} alt="" /> : <img className='img-choice' src={mysql} alt="" />}
                             </button>
                         </div>
                         <div className='body-content'>
@@ -239,18 +239,18 @@ const Studies = () => {
                                             </div>
                                             <div className='post-options'>
                                                 <div className='post-comment'>
-                                                    <img className="img-comment" src={comment} alt='' />
                                                     <div className='text-comment'>
                                                         {post.commentsSize}
                                                     </div>
+                                                    <img className="img-comment" src={comment} alt='' />
                                                 </div>
                                                 <div className='post-hit'>
-                                                    <img className="img-hit" src={hit} alt='' />
                                                     <div className='text-hit'>{post.hit}</div>
+                                                    <img className="img-hit" src={hit} alt='' />
                                                 </div>
                                                 <div className='post-like'>
-                                                    <img className="img-like" src={like} alt='' />
                                                     <div className='text-like'>{post.like}</div>
+                                                    <img className="img-like" src={like} alt='' />
                                                 </div>
                                             </div>
                                         </div>
