@@ -142,6 +142,10 @@
     font-weight: 500;
   }
 
+  .btn-studies-write:hover {
+    filter: brightness(60%);
+  }
+
   .img-mag {
     z-index: 100;
     object-fit: cover;
@@ -198,7 +202,7 @@
   }
 
   .post-comment {
-    margin-right: 30px;
+    margin-right: 18px;
     margin-left: 170px;
     font-size: 16px;
   }
@@ -222,12 +226,11 @@
   }
 
   .post-hit {
-    margin-right: 30px;
-    margin-left: -11px;
+    margin-right: 18px;
   }
 
   .post-like {
-    margin-right: 30px;
+    margin-right: 18px;
   }
 
   .post-tag {
@@ -300,6 +303,15 @@
     /* filter: opacity(0.5) drop-shadow(0 0 0 ); */
   }
 
+  .img-choiced {
+    z-index: 100;
+    object-fit: cover;
+    width: 30px;
+    height: 30px;
+    filter: brightness(100%);
+    /* filter: opacity(0.5) drop-shadow(0 0 0 ); */
+  }
+
   .btn-choice:hover .img-choice {
     filter: brightness(100%);
   }
@@ -307,28 +319,25 @@
   .img-comment {
     z-index: 100;
     object-fit: cover;
-    width: 27px;
-    height: 24px;
+    width: 35px;
+    height: 25px;
     position: relative;
-    right: 4px;
   }
 
   .img-hit {
     z-index: 100;
     object-fit: cover;
-    width: 32px;
-    height: 24.5px;
+    width: 35px;
+    height: 25px;
     position: relative;
-    left: 4.2px;
   }
 
   .img-like {
     z-index: 100;
     object-fit: cover;
-    width: 27px;
-    height: 24px;
+    width: 35px;
+    height: 25px;
     position: relative;
-    right: 2px;
   }
 
   .body-content {

@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import "./studyView.css";
-import Submenu from "./Submenu";
+import Submenu from "../Submenu";
 import ab from "../../../img/a.png"
 import hit from "../../../img/hit.png"
 import like from "../../../img/like.png"
-import Footer from '../../Home/Footer'
 import imgComment from "../../../img/comment.png"
 import FooterGray from "../../Home/FooterGray";
 

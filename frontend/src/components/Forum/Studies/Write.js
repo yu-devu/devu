@@ -7,6 +7,8 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './write.css';
 import { options } from '../data';
 import ReactHtmlParser from 'html-react-parser';
+import Submenu from '../Submenu'
+import FooterGray from "../../Home/FooterGray";
 
 const Write = () => {
   const navigate = useNavigate();
@@ -71,51 +73,57 @@ const Write = () => {
   };
 
   return (
-    <div className="container-write">
-      <div className="write-area">
-        <h1>글을 작성하세요</h1>
-        <div className="in_title">
-          <textarea
-            name="title"
-            id="title"
-            rows="1"
-            cols="55"
-            placeholder="제목"
-            maxlength="100"
-            required
-            onChange={(e) => handleTitle(e)}
-          ></textarea>
-        </div>
-        <div>
-          <Select
-            isMulti
-            options={options}
-            value={tags}
-            name="tags"
-            placeholder="태그를 선택해주세요!"
-            onChange={(e) => onChangeTags(e)}
+    <div>
+      <Submenu />
+      <div className="container-studies-write">
+        <div className="write-area">
+          <div className="in-title">
+            <h8 className="in-title-text">제목</h8>
+            <textarea
+              name="title"
+              id="title"
+              rows="1"
+              cols="55"
+              placeholder="제목을 입력해주세요"
+              maxlength="100"
+              required
+              onChange={(e) => handleTitle(e)}
+            ></textarea>
+          </div>
+          <div className='in-tag'>
+            <h8 className="in-tag-text">태그</h8>
+            <Select
+              className='tag-selecter'
+              isMulti
+              options={options}
+              value={tags}
+              name="tags"
+              placeholder="#태그를 선택해주세요"
+              onChange={(e) => onChangeTags(e)}
+            />
+          </div>
+          <CKEditor
+            editor={ClassicEditor}
+            data=""
+            onChange={(event, editor) => {
+              const data = editor.getData();
+              setPostContent({
+                ...postContent,
+                content: data,
+              });
+            }}
+            onBlur={(event, editor) => { }}
+            onFocus={(event, editor) => { }}
           />
-        </div>
-        <CKEditor
-          editor={ClassicEditor}
-          data=""
-          onChange={(event, editor) => {
-            const data = editor.getData();
-            setPostContent({
-              ...postContent,
-              content: data,
-            });
-            // console.log(postContent);
-          }}
-          onBlur={(event, editor) => { }}
-          onFocus={(event, editor) => { }}
-        />
-        <div className="bt_se">
-          <button className="btn-post" onClick={() => { organizeTags(); handleWrite(); }}>
-            글 작성
-          </button>
+          <div className="bt-se">
+            <button className='btn-cancel' >취소</button>
+            <button className="btn-post" onClick={() => { organizeTags(); handleWrite(); }}>
+              저장
+            </button>
+          </div>
         </div>
       </div>
+      <FooterGray />
     </div>
   );
 };
