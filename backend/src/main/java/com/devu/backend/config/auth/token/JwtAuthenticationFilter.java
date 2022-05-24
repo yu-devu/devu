@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class JwtAuthenticationFilter extends GenericFilter {
         String refreshToken = null;
 
         try {
-            if (accessToken != null) {
+            if (accessToken != null && !accessToken.equals("undefined") && !accessToken.equals("null")) {
                 UserDetailsImpl userDetailsimpl = (UserDetailsImpl) userDetailsServiceimpl.loadUserByUsername(tokenService.getUserEmail(accessToken));
                 if (tokenService.validateTokenExceptExpiration(accessToken, userDetailsimpl)) {
                     log.info("유효");
@@ -40,16 +41,14 @@ public class JwtAuthenticationFilter extends GenericFilter {
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 } else {
                     log.info("유효x");
-                    refreshToken = cookieService.getCookie((HttpServletRequest) request, "X-AUTH-REFRESH-TOKEN").getValue();
+                    refreshToken = existRefreshToken((HttpServletRequest) request, refreshToken);
                 }
             }else{
                 log.info("accessToken x");
-                refreshToken = cookieService.getCookie((HttpServletRequest) request, "X-AUTH-REFRESH-TOKEN").getValue();
+                refreshToken = existRefreshToken((HttpServletRequest) request, refreshToken);
             }
         } catch (ExpiredJwtException e) {
-
-        } catch (Exception e) {
-
+            log.info(e.getMessage());
         }
 
         try {
@@ -64,8 +63,16 @@ public class JwtAuthenticationFilter extends GenericFilter {
                 }
             }
         } catch (ExpiredJwtException e) {
-
+            log.info(e.getMessage());
         }
         chain.doFilter(request, response);
+    }
+
+    private String existRefreshToken(HttpServletRequest request, String refreshToken) {
+        Cookie cookie = cookieService.getCookie(request, "X-AUTH-REFRESH-TOKEN");
+        if (cookie != null) {
+            refreshToken = cookie.getValue();
+        }
+        return refreshToken;
     }
 }

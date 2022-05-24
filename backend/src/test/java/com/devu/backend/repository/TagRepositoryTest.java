@@ -1,5 +1,6 @@
 package com.devu.backend.repository;
 
+import com.devu.backend.repository.post.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 

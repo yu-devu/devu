@@ -1,4 +1,4 @@
-package com.devu.backend.repository;
+package com.devu.backend.repository.post;
 
 import com.devu.backend.common.exception.OrderNotFoundException;
 import com.devu.backend.entity.QPostTag;

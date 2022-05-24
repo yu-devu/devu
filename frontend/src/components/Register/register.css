@@ -150,4 +150,10 @@
     position: relative;
     left: 40%;
   }
+
+  .register-text {
+    position: relative;
+    right: 38.4%;
+    bottom: 10px;
+  }
 }

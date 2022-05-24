@@ -78,7 +78,7 @@ const Register = () => {
             })
             .then(() => {
               alert('회원가입에 성공했습니다!');
-              navigate('/');
+              navigate('/registered');
               handleLogin();
             })
             .catch(() => console.log('회원가입 실패..'));
@@ -172,9 +172,9 @@ const Register = () => {
               type="password"
               placeholder="특수문자, 영문, 숫자 포함 8자 이상"
             />
-            {/* {password && !passwordAvailability ? (
-              <p>특수문자, 문자, 숫자를 포함해 8자 이상 입력해주세요.</p>
-            ) : null} */}
+            {password && !passwordAvailability ? (
+              <p className='register-text'>특수문자, 문자, 숫자를 포함해 8자 이상 입력해주세요.</p>
+            ) : null}
           </div>
           <h7 className="text-password-recheck">비밀번호확인</h7>
           <div className="register-info">
@@ -187,9 +187,9 @@ const Register = () => {
               type="password"
               placeholder="비밀번호와 동일"
             />
-            {/* {checkPassword && password !== checkPassword ? (
-              <p>비밀번호가 일치하지 않습니다.</p>
-            ) : null} */}
+            {checkPassword && password !== checkPassword ? (
+              <p className='register-text'>비밀번호가 일치하지 않습니다.</p>
+            ) : null}
           </div>
           <h7 className="text-name">이름</h7>
           <div className="register-info">
