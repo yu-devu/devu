@@ -15,6 +15,7 @@ import StudyWrite from './components/Forum/Studies/Write';
 import ChatBot from './components/ChatBot/ChatBot';
 import RegisterOver from './components/Register/RegisterOver';
 import Question from './components/Forum/Questions/Questions';
+import MyPage from './components/MyPage/MyPage';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/studies" exact element={<Studies />}></Route>
           <Route path="/studies/write" exact element={<StudyWrite />}></Route >
           <Route path="/chatbot" exact element={<ChatBot />}></Route >
+          <Route path="/mypage" exact element={<MyPage />}></Route >
         </Routes>
       </Router>
     </>
