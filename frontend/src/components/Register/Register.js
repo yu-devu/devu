@@ -150,7 +150,7 @@ const Register = () => {
                 인증확인
               </button>
             ) : (
-              <button className="btn-validate-clicked" >
+              <button className="btn-validate-clicked" onClick={() => checkAuthkey()}>
                 인증완료
               </button>
             )}
@@ -164,13 +164,13 @@ const Register = () => {
               value={password}
               onChange={(e) => handlePassword(e)}
               type="password"
-              placeholder="비밀번호 (영문, 숫자 포함 10자이내)"
+              placeholder="특수문자, 영문, 숫자 포함 8자 이상"
             />
-            {password && !passwordAvailability ? (
+            {/* {password && !passwordAvailability ? (
               <p>특수문자, 문자, 숫자를 포함해 8자 이상 입력해주세요.</p>
-            ) : null}
+            ) : null} */}
           </div>
-          <h7 className="text-password-recheck">비밀번호확인</h7>
+          <h7 className="text-password-recheck">비밀번호 확인</h7>
           <div className='register-info'>
             <input
               className="register-input-password-recheck"
@@ -181,9 +181,9 @@ const Register = () => {
               type="password"
               placeholder="비밀번호와 동일"
             />
-            {checkPassword && password !== checkPassword ? (
+            {/* {checkPassword && password !== checkPassword ? (
               <p>비밀번호가 일치하지 않습니다.</p>
-            ) : null}
+            ) : null} */}
           </div>
           <h7 className="text-name">이름</h7>
           <div className='register-info'>
