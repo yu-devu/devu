@@ -1,14 +1,14 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import Select from 'react-select'
+import Select from 'react-select';
 import { useNavigate } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './write.css';
 import { options } from '../data';
 import ReactHtmlParser from 'html-react-parser';
-import Submenu from '../Submenu'
-import FooterGray from "../../Home/FooterGray";
+import Submenu from '../Submenu';
+import FooterGray from '../../Home/FooterGray';
 
 const Write = () => {
   const navigate = useNavigate();
@@ -21,8 +21,8 @@ const Write = () => {
   const username = localStorage.getItem('username');
 
   useEffect(() => {
-    console.log(postTags);
-  }, [postTags]); // postTags의 동기처리를 위해 useEffect 사용함
+    organizeTags();
+  }, [tags]); // postTags의 동기처리를 위해 useEffect 사용함
 
   const handleTitle = (e) => {
     const { name, value } = e.target;
@@ -33,7 +33,7 @@ const Write = () => {
   };
 
   const onChangeTags = (e) => {
-    console.log('You\'ve selected:', e);
+    console.log("You've selected:", e);
     setTags(e);
   };
 
@@ -43,10 +43,14 @@ const Write = () => {
       array.push(tags[i].value);
     }
     setPostTags(array);
-  }
+  };
 
   const handleWrite = async () => {
-    if (postContent.title !== '' && postContent.content !== '' && tags !== '') {
+    if (
+      postContent.title !== '' &&
+      postContent.content !== '' &&
+      postTags[0] !== ''
+    ) {
       const formData = new FormData();
       formData.append('title', postContent.title);
       formData.append('username', username);
@@ -69,7 +73,11 @@ const Write = () => {
         .catch(() => {
           alert('글 등록 실패..');
         });
-    } else alert('글을 작성해주세요!');
+    } else {
+      alert('글을 작성해주세요!');
+      console.log(postTags);
+      console.log(tags);
+    }
   };
 
   return (
@@ -90,16 +98,18 @@ const Write = () => {
               onChange={(e) => handleTitle(e)}
             ></textarea>
           </div>
-          <div className='in-tag'>
+          <div className="in-tag">
             <h8 className="in-tag-text">태그</h8>
             <Select
-              className='tag-selecter'
+              className="tag-selecter"
               isMulti
               options={options}
               value={tags}
               name="tags"
               placeholder="#태그를 선택해주세요"
-              onChange={(e) => onChangeTags(e)}
+              onChange={(e) => {
+                onChangeTags(e);
+              }}
             />
           </div>
           <CKEditor
@@ -112,12 +122,17 @@ const Write = () => {
                 content: data,
               });
             }}
-            onBlur={(event, editor) => { }}
-            onFocus={(event, editor) => { }}
+            onBlur={(event, editor) => {}}
+            onFocus={(event, editor) => {}}
           />
           <div className="bt-se">
-            <button className='btn-cancel' >취소</button>
-            <button className="btn-post" onClick={() => { organizeTags(); handleWrite(); }}>
+            <button className="btn-cancel">취소</button>
+            <button
+              className="btn-post"
+              onClick={() => {
+                handleWrite();
+              }}
+            >
               저장
             </button>
           </div>
