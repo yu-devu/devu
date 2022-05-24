@@ -53,8 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js").permitAll()
                     .antMatchers(
                             "/", "/key",
-                            "/email", "/signup", "/signin", "/silent-refresh",
-                            "/community/**","/users","/like",
+                            "/email", "/signup", "/signin", "logout",
+                            "/community/**", "/users","/like",
                             "/password_url_email","/change_password/**",
                             "/comments/**", "/reComments/**","/api/**")
                     .permitAll()
@@ -70,7 +70,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.setAllowedOriginPatterns(Arrays.asList("http://54.180.29.69"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setExposedHeaders(Arrays.asList("X-AUTH-ACCESS-TOKEN"));
         configuration.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
