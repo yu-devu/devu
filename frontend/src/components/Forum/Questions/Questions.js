@@ -4,7 +4,6 @@ import ReactPaginate from 'react-paginate'
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import './questions.css'
 import Submenu from '../Submenu'
-import a from "../../../img/a.png"
 import magnify from "../../../img/magnify.png"
 import Footer from '../../Home/Footer'
 import comment from "../../../img/comment.png"
@@ -51,7 +50,7 @@ const Questions = () => {
                     hit: rowData.hit,
                     like: rowData.like,
                     username: rowData.username,
-                    questionsStatus: rowData.studyStatus,
+                    questionsStatus: rowData.questionStatus,
                     commentsSize: rowData.commentsSize,
                 }
             )
@@ -143,7 +142,7 @@ const Questions = () => {
                             <li key={post.id} className="list-question">
                                 <div className='post-question'>
                                     <div className='post-header'>
-                                        <div className='post-status'>{post.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}</div>
+                                        <div className='post-status'>{post.questionsStatus === 'UNSOLVED' ? '미해결' : '해결'}</div>
                                         <div className='post-title'>
                                             <Link to={`/questionsDetail/${post.id}`}>{post.title}</Link>
                                         </div>
@@ -168,11 +167,6 @@ const Questions = () => {
                                                 <img className="img-like" src={like} alt='' />
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className='tags'>
-                                        {post.tags.map(tag => (
-                                            <div className='post-tag'>{tag}</div>
-                                        ))}
                                     </div>
                                     <div className='post-tail'>
                                         <div className='post-owner'>{post.username}</div>
