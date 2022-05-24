@@ -73,7 +73,7 @@
         width: 100%;
         height: max-content;
         padding: 2%;
-        text-align: center;
+        text-align: left;
         background: #EDECED;
         font-style: 1.9em;
         border-radius: 10px;
@@ -143,12 +143,17 @@
         margin-left: 130px;
         width: 30px;
         height: 30px;
+        background-color: transparent;
     }
     
-    .img-remove {
-        width: 30px;
-        height: 30px;
-        background-color: white;
+    .img-close {
+        /* width: 50px;
+        height: 50px; */
+        font-size: 25px;
+        font-weight: 100;
+        position: relative;
+        bottom: 30%;
+        left: 70%;
     }
     
     .remove-class {

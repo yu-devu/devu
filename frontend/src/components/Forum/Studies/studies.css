@@ -342,7 +342,7 @@
 
   .body-content {
     position: relative;
-    right: 12.7%;
+    right: 13.3%;
     display: block;
     width: 90%;
   }
@@ -388,5 +388,10 @@
 
   a:hover {
     color: var(--color-white);
+  }
+
+  .btn-pagination {
+    margin-left: 17%;
+    margin-top: 3%;
   }
 }
