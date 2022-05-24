@@ -133,6 +133,7 @@ public class UserService {
     @Transactional
     public void logoutProcess(HttpServletRequest request, HttpServletResponse response) {
         String refreshToken = cookieService.getCookie(request, "X-AUTH-REFRESH-TOKEN").getValue();
+        log.info("refreshToken: {}", refreshToken);
         if (refreshToken != null) {
             RefreshToken dbRefreshToken = refreshTokenRepository.findByRefreshToken(refreshToken);
             if (dbRefreshToken != null) {

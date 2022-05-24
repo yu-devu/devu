@@ -128,7 +128,7 @@ public class UserController {
     }
 
     //jwtAuthenticationFilter 한번 탔다가 나감
-    @PostMapping("/silent-refresh")
+    @GetMapping("/silent-refresh")
     public ResponseEntity<?> silentRefresh() {
         try {
             log.info("silent - refresh");
