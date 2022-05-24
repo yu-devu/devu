@@ -31,7 +31,7 @@ const Questions = () => {
     }, [currentPage, selectedTag, status, order]);
 
     const fetchData = async () => {
-        const res = await axios.get(process.env.REACT_APP_DB_HOST + `/community/studies`, {
+        const res = await axios.get(process.env.REACT_APP_DB_HOST + `/community/questions`, {
             params: {
                 page: currentPage,
                 tags: selectedTag.join(","), // join(",")으로 해야 ?tags=REACT,SPRING으로 parameter 전송할 수 있음.
@@ -51,8 +51,7 @@ const Questions = () => {
                     hit: rowData.hit,
                     like: rowData.like,
                     username: rowData.username,
-                    tags: rowData.tags,
-                    studyStatus: rowData.studyStatus,
+                    questionsStatus: rowData.studyStatus,
                     commentsSize: rowData.commentsSize,
                 }
             )
@@ -70,7 +69,7 @@ const Questions = () => {
     }
 
     const fetchPageSize = async () => {
-        const res = await axios.get(process.env.REACT_APP_DB_HOST + `/community/studies/size`);
+        const res = await axios.get(process.env.REACT_APP_DB_HOST + `/community/questions/size`);
         setPostSize(res.data);
     }
 
@@ -106,8 +105,8 @@ const Questions = () => {
                     <div className='cat-menu'>
                         <div className='cat-menu-items'>
                             <p className='cat-item' onClick={() => { setStatus(''); }}>전체</p>
-                            <p className='cat-item' onClick={() => { setStatus('SOLEVED') }}>해결</p>
-                            <p className='cat-item' onClick={() => { setStatus('NOTSOLEVED') }}>미해결</p>
+                            <p className='cat-item' onClick={() => { setStatus('SOLVED') }}>해결</p>
+                            <p className='cat-item' onClick={() => { setStatus('UNSOLVED') }}>미해결</p>
                         </div>
                     </div>
                     <div className='search-and-write'>
@@ -146,7 +145,7 @@ const Questions = () => {
                                     <div className='post-header'>
                                         <div className='post-status'>{post.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}</div>
                                         <div className='post-title'>
-                                            <Link to={`/studiesDetail/${post.id}`}>{post.title}</Link>
+                                            <Link to={`/questionsDetail/${post.id}`}>{post.title}</Link>
                                         </div>
                                     </div>
                                     <div className='post-body'>
