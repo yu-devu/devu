@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import axios from 'axios';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
@@ -18,6 +19,29 @@ import Question from './components/Forum/Questions/Questions';
 import MyPage from './components/MyPage/MyPage';
 
 function App() {
+  useEffect(() => {
+    onSilentRefresh(); // 렌더링 될 때마다 onSilentRefresh 실행
+  }, []);
+
+  const JWT_EXPIRY_TIME = 30 * 60 * 1000; // 만료 시간 (30분)
+  const onSilentRefresh = async () => {
+    await axios
+      .post(process.env.REACT_APP_DB_HOST + '/silent-refresh')
+      .then((response) => {
+        localStorage.setItem('accessToken', response.headers['x-auth-access-token']);
+        setInterval(onSilentRefresh, JWT_EXPIRY_TIME - 60000); // accessToken 만료하기 1분 전에 로그인 연장
+        console.log("Timeout");
+      })
+      .catch((res) => {
+        console.log(res);
+        alert(JSON.parse(res.request.response).error); // 이메일, 비밀번호 오류 출력
+      });
+  };
+
+  if (performance.navigation.type === 1) { //새로고침하면 바로 로그인 연장(토큰 갱신)
+    onSilentRefresh();
+  }
+
   return (
     <>
       <Router>

@@ -156,10 +156,7 @@ const Register = () => {
                 인증확인
               </button>
             ) : (
-              <button
-                className="btn-validate-clicked"
-                onClick={() => checkAuthkey()}
-              >
+              <button className="btn-validate-clicked" onClick={() => checkAuthkey()}>
                 인증완료
               </button>
             )}
@@ -173,7 +170,7 @@ const Register = () => {
               value={password}
               onChange={(e) => handlePassword(e)}
               type="password"
-              placeholder="영문, 숫자, 특수문자 포함 10자이내"
+              placeholder="특수문자, 영문, 숫자 포함 8자 이상"
             />
             {password && !passwordAvailability ? (
               <p className='register-text'>특수문자, 문자, 숫자를 포함해 8자 이상 입력해주세요.</p>
@@ -209,9 +206,9 @@ const Register = () => {
             가입하기
           </button>
         </div>
-      </div>
+      </div >
       <FooterGray />
-    </div>
+    </div >
   );
 };
 
