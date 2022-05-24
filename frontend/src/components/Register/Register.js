@@ -176,43 +176,38 @@ const Register = () => {
               <p>특수문자, 문자, 숫자를 포함해 8자 이상 입력해주세요.</p>
             ) : null} */}
           </div>
-<<<<<<< HEAD
-          <h7 className="text-password-recheck">비밀번호 확인</h7>
-          <div className='register-info'>
-=======
           <h7 className="text-password-recheck">비밀번호확인</h7>
-      <div className="register-info">
->>>>>>> main
-        <input
-          className="register-input-password-recheck"
-          id="checkPassword"
-          name="checkPassword"
-          value={checkPassword}
-          onChange={(e) => handleCheckPassword(e)}
-          type="password"
-          placeholder="비밀번호와 동일"
-        />
-        {/* {checkPassword && password !== checkPassword ? (
+          <div className="register-info">
+            <input
+              className="register-input-password-recheck"
+              id="checkPassword"
+              name="checkPassword"
+              value={checkPassword}
+              onChange={(e) => handleCheckPassword(e)}
+              type="password"
+              placeholder="비밀번호와 동일"
+            />
+            {/* {checkPassword && password !== checkPassword ? (
               <p>비밀번호가 일치하지 않습니다.</p>
             ) : null} */}
-      </div>
-      <h7 className="text-name">이름</h7>
-      <div className="register-info">
-        <input
-          className="register-input-name"
-          id="username"
-          name="username"
-          value={username}
-          onChange={(e) => handleUsername(e)}
-          placeholder="이름"
-        />
-      </div>
-      <button onClick={() => handleSignUp()} className="btn-register">
-        가입하기
-      </button>
-    </div>
+          </div>
+          <h7 className="text-name">이름</h7>
+          <div className="register-info">
+            <input
+              className="register-input-name"
+              id="username"
+              name="username"
+              value={username}
+              onChange={(e) => handleUsername(e)}
+              placeholder="이름"
+            />
+          </div>
+          <button onClick={() => handleSignUp()} className="btn-register">
+            가입하기
+          </button>
+        </div>
       </div >
-  <FooterGray />
+      <FooterGray />
     </div >
   );
 };
