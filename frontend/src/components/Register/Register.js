@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './register.css';
-import FooterGray from '../Home/FooterGray'
+import FooterGray from '../Home/FooterGray';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const Register = () => {
   const [showInformation, setShowInformation] = useState(false);
   const [clickAuthkey, setClickAuthkey] = useState(false);
   const [checkAuth, setCheckAuth] = useState(false);
-  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/
+  const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
 
   const handleEmail = (e) => setEmail(e.target.value);
   const handleAuthkey = (e) => setAuthkey(e.target.value);
@@ -78,7 +78,7 @@ const Register = () => {
             })
             .then(() => {
               alert('회원가입에 성공했습니다!');
-              navigate("/");
+              navigate('/');
               handleLogin();
             })
             .catch(() => console.log('회원가입 실패..'));
@@ -112,7 +112,7 @@ const Register = () => {
   };
 
   return (
-    <div className='register-all'>
+    <div className="register-all">
       <div className="container-register">
         <h1 className="register">회원가입</h1>
         <div className="input-container">
@@ -127,16 +127,22 @@ const Register = () => {
               placeholder="example@yu.ac.kr"
             />
             {!clickAuthkey ? (
-              <button className="btn-validate" onClick={() => handleAuthorize()}>
+              <button
+                className="btn-validate"
+                onClick={() => handleAuthorize()}
+              >
                 인증하기
               </button>
             ) : (
-              <button className="btn-validate-clicked" onClick={() => handleAuthorize()}>
+              <button
+                className="btn-validate-clicked"
+                onClick={() => handleAuthorize()}
+              >
                 재전송
               </button>
             )}
           </div>
-          <div className='register-validate'>
+          <div className="register-validate">
             <input
               className="register-input-email"
               id="authkey"
@@ -150,13 +156,16 @@ const Register = () => {
                 인증확인
               </button>
             ) : (
-              <button className="btn-validate-clicked" >
+              <button
+                className="btn-validate-clicked"
+                onClick={() => checkAuthkey()}
+              >
                 인증완료
               </button>
             )}
           </div>
           <h7 className="text-password">비밀번호</h7>
-          <div className='register-info'>
+          <div className="register-info">
             <input
               className="register-input-password"
               id="password"
@@ -171,7 +180,7 @@ const Register = () => {
             ) : null}
           </div>
           <h7 className="text-password-recheck">비밀번호확인</h7>
-          <div className='register-info'>
+          <div className="register-info">
             <input
               className="register-input-password-recheck"
               id="checkPassword"
@@ -186,7 +195,7 @@ const Register = () => {
             ) : null}
           </div>
           <h7 className="text-name">이름</h7>
-          <div className='register-info'>
+          <div className="register-info">
             <input
               className="register-input-name"
               id="username"
@@ -195,7 +204,6 @@ const Register = () => {
               onChange={(e) => handleUsername(e)}
               placeholder="이름"
             />
-
           </div>
           <button onClick={() => handleSignUp()} className="btn-register">
             가입하기
@@ -204,7 +212,6 @@ const Register = () => {
       </div>
       <FooterGray />
     </div>
-
   );
 };
 
