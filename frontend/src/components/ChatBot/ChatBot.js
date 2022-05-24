@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import chatbot from '../../img/chatbot.png'
 import './chatbot.css'
-import remove from '../../img/remove.png'
 
 const ChatBot = () => {
     let [modal, modalChange] = useState(true)
