@@ -3,7 +3,7 @@ package com.devu.backend.api.comment;
 import com.devu.backend.common.exception.CommentNotFoundException;
 import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.entity.Comment;
-import com.devu.backend.repository.CommentRepository;
+import com.devu.backend.repository.comment.CommentRepository;
 import com.devu.backend.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -3,7 +3,7 @@ package com.devu.backend.controller.post;
 import com.devu.backend.common.exception.PostNotFoundException;
 import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.entity.post.*;
-import com.devu.backend.repository.PostRepository;
+import com.devu.backend.repository.post.PostRepository;
 import com.devu.backend.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;

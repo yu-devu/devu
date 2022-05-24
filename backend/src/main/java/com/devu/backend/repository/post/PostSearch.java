@@ -1,4 +1,4 @@
-package com.devu.backend.repository;
+package com.devu.backend.repository.post;
 
 import com.devu.backend.entity.post.QuestionStatus;
 import com.devu.backend.entity.post.StudyStatus;

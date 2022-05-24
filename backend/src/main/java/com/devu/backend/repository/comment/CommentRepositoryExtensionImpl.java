@@ -1,4 +1,4 @@
-package com.devu.backend.repository;
+package com.devu.backend.repository.comment;
 
 import com.devu.backend.entity.Comment;
 import com.devu.backend.entity.QComment;
