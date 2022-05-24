@@ -171,6 +171,7 @@
     width: 59%;
     position: relative;
     left: 28%;
+    justify-content: center;
   }
 
   .post-header {
@@ -209,8 +210,7 @@
 
   .post-options {
     display: flex;
-    position: absolute;
-    left: 63%;
+    position: fixed;
   }
 
   .text-hit {

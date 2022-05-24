@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 import React, { useState } from 'react';
 import chatbot from '../../img/chatbot.png';
@@ -238,6 +239,7 @@ const ChatBot = () => {
         document.querySelector('#input').value = '';
       }, 2000);
     }
+
 
     userMessage.innerHTML = document.querySelector('#subway').value;
   };
