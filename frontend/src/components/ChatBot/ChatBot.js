@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import chatbot from '../../img/chatbot.png'
 import './chatbot.css'
+import axios from 'axios';
 
 const ChatBot = () => {
     let [modal, modalChange] = useState(true)
@@ -96,16 +97,59 @@ const ChatBot = () => {
         userMessage.innerHTML = document.querySelector('#weather').value;
     }
 
-    const handleSubway = () => {
+    const handleSubway = async () => {
         const botMessage = document.querySelector('#message1');
         const userMessage = document.querySelector('#message2');
-        botMessage.innerHTML = '입력 중...'
+        botMessage.innerHTML = '입력 중...';
+        // const DateH = new Date().getHours();
+        // const DateM = new Date().getMinutes();
+        // const DateS = new Date().getSeconds();
+        const DateH = 6;
+        const DateM = 55;
+        const DateS = 52;
+        let leftTime = 0;
+        let i = 0;
+
+        // console.log(DateH);
+        // console.log(DateM);
+        // console.log(DateS);
+
+        await axios
+            .get(process.env.REACT_APP_DB_HOST + '/api/weekendSubway')
+
+            .then((e) => {
+                console.log(e)
+                for (i = 0; i < e.data.length; i++) {
+                    const candiDate = e.data[i].split(':');
+                    if (candiDate[0] === DateH) {
+                        if (candiDate[1] >= DateM) {
+                            leftTime = Number(candiDate[1]) - DateM;
+                            break;
+                        }
+                        else {
+                            console.log("haha")
+                        }
+                    }
+                }
+                if (leftTime === 0) {
+                    const candiDate = e.data[i].split(':');
+                    leftTime = Number(candiDate[1]) - DateM;
+                }
+
+                // setSubway();
+                console.log('success');
+                console.log('leftTime = ' + leftTime);
+            })
+
+            .catch((res) => {
+                console.log('false');
+            });
         setTimeout(() => {
-            botMessage.innerHTML = "3분 뒤에 지하철이 들어옵니다!"
-            document.querySelector('#input').value = "";
+            botMessage.innerHTML = '3분 뒤에 지하철이 들어옵니다!';
+            document.querySelector('#input').value = '';
         }, 2000);
         userMessage.innerHTML = document.querySelector('#subway').value;
-    }
+    };
 
     return (
         <div>
