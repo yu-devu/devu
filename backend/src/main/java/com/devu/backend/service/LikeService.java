@@ -2,20 +2,16 @@ package com.devu.backend.service;
 
 import com.devu.backend.common.exception.LikeNotFoundException;
 import com.devu.backend.common.exception.PostNotFoundException;
-import com.devu.backend.common.exception.UnlikedPostException;
 import com.devu.backend.common.exception.UserNotFoundException;
 import com.devu.backend.entity.Like;
 import com.devu.backend.entity.User;
 import com.devu.backend.entity.post.Post;
 import com.devu.backend.repository.LikeRepository;
-import com.devu.backend.repository.PostRepository;
+import com.devu.backend.repository.post.PostRepository;
 import com.devu.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Enumeration;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
