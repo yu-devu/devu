@@ -70,8 +70,6 @@ function LoginButton() {
       response.headers['x-auth-access-token']
     );
     window.location.reload(false);
-    // axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-    // // accessToken 만료하기 1분 전에 로그인 연장
     setTimeout(onSilentRefresh, JWT_EXPIRY_TIME - 60000);
   };
 
