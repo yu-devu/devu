@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import chatbot from '../../img/chatbot.png'
 import './chatbot.css'
-import remove from '../../img/remove.png'
 
 const ChatBot = () => {
     let [modal, modalChange] = useState(true)
@@ -121,7 +120,7 @@ const ChatBot = () => {
                                 <div className='right-chatbot'>
                                     <div className='name-chatbot'>DEVU 도우미</div>
                                 </div>
-                                <button className='btn-close' onClick={closeModal}><img className='img-remove' src={remove} alt="" /></button>
+                                <button className='btn-close' onClick={closeModal}><div className='img-close'>X</div></button>
                             </div>
                             <hr className="line-chatbot" />
                             <div className='main-chatbot'>
