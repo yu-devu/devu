@@ -38,8 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UserDetailsImpl userDetailsimpl = (UserDetailsImpl) userDetailsServiceimpl.loadUserByUsername(tokenService.getUserEmail(accessToken));
                 if (tokenService.validateTokenExceptExpiration(accessToken, userDetailsimpl)) {
                     log.info("유효");
-                    Authentication auth = getAuthentication(accessToken);
-                    createAccessToken(response, auth);
+                    getAuthentication(accessToken);
                 } else {
                     log.info("유효x");
                     refreshToken = existRefreshToken(request, refreshToken);
