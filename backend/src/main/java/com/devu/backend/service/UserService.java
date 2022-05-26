@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -132,17 +133,17 @@ public class UserService {
 
     @Transactional
     public void logoutProcess(HttpServletRequest request, HttpServletResponse response) {
-        String refreshToken = cookieService.getCookie(request, "X-AUTH-REFRESH-TOKEN").getValue();
-        log.info("refreshToken: {}", refreshToken);
-        if (refreshToken != null) {
+        Cookie refreshCookie = cookieService.getCookie(request, "X-AUTH-REFRESH-TOKEN");
+        if (refreshCookie != null) {
+            String refreshToken = refreshCookie.getValue();
+            log.info("refreshToken: {}", refreshToken);
             RefreshToken dbRefreshToken = refreshTokenRepository.findByRefreshToken(refreshToken);
             if (dbRefreshToken != null) {
                 refreshTokenRepository.delete(dbRefreshToken);
             }
         }
-
-        ResponseCookie cookie = cookieService.deleteCookie("X-AUTH-REFRESH-TOKEN");
-        response.setHeader("Set-Cookie", cookie.toString());
+        ResponseCookie deletedCookie = cookieService.deleteCookie("X-AUTH-REFRESH-TOKEN");
+        response.setHeader("Set-Cookie", deletedCookie.toString());
     }
 
     /*
