@@ -97,7 +97,7 @@ const Register = () => {
       .post(process.env.REACT_APP_DB_HOST + '/signin', JSON.stringify(data), {
         headers: {
           'Content-Type': 'application/json',
-          'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
+          // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
         },
       })
       .then((res) => {

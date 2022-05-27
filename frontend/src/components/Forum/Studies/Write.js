@@ -63,7 +63,7 @@ const Write = () => {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `${localStorage.getItem('accessToken')}`,
-            'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
+            // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
           },
         })
         .then(() => {
@@ -122,8 +122,8 @@ const Write = () => {
                 content: data,
               });
             }}
-            onBlur={(event, editor) => {}}
-            onFocus={(event, editor) => {}}
+            onBlur={(event, editor) => { }}
+            onFocus={(event, editor) => { }}
           />
           <div className="bt-se">
             <button className="btn-cancel">취소</button>

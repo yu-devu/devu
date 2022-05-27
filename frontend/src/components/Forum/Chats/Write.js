@@ -48,7 +48,7 @@ const Write = () => {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `${localStorage.getItem('accessToken')}`,
-          'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
+          // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
         },
       })
       .then(() => {
