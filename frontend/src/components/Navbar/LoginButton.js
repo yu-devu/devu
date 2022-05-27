@@ -46,8 +46,8 @@ function LoginButton() {
         localStorage.setItem('username', response.data.username);
         localStorage.setItem('accessToken', response.headers['x-auth-access-token']);
         window.location.reload(false);
-        setInterval(onSilentRefresh, JWT_EXPIRY_TIME - 60000);
-      }) // accessToken 만료하기 1분 전에 로그인 연장 })
+        // setInterval(onSilentRefresh, JWT_EXPIRY_TIME - 60000);
+      })
       .catch((res) => {
         console.log(res);
         alert(JSON.parse(res.request.response).error); // 이메일, 비밀번호 오류 출력
@@ -58,9 +58,12 @@ function LoginButton() {
     await axios
       .post(process.env.REACT_APP_DB_HOST + '/silent-refresh')
       .then((response) => {
-        localStorage.setItem('accessToken', response.headers['x-auth-access-token']);
+        console.log(response);
+        if (response.headers['x-auth-access-token']) {
+          localStorage.setItem('accessToken', response.headers['x-auth-access-token']);
+        }
         setInterval(onSilentRefresh, JWT_EXPIRY_TIME - 60000); // accessToken 만료하기 1분 전에 로그인 연장
-        console.log("Timeout");
+        console.log("Timeout-loginButton.js");
       })
       .catch((res) => {
         console.log(res);
