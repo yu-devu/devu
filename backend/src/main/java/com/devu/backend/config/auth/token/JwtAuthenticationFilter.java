@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
@@ -20,7 +21,7 @@ import java.io.IOException;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends GenericFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenService tokenService;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -28,8 +29,8 @@ public class JwtAuthenticationFilter extends GenericFilter {
     private final UserDetailsServiceImpl userDetailsServiceimpl;
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String accessToken = tokenService.resolveToken((HttpServletRequest) request, "ACCESS");
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String accessToken = tokenService.resolveToken(request, "ACCESS");
         String refreshToken = null;
 
         try {
@@ -37,15 +38,14 @@ public class JwtAuthenticationFilter extends GenericFilter {
                 UserDetailsImpl userDetailsimpl = (UserDetailsImpl) userDetailsServiceimpl.loadUserByUsername(tokenService.getUserEmail(accessToken));
                 if (tokenService.validateTokenExceptExpiration(accessToken, userDetailsimpl)) {
                     log.info("유효");
-                    Authentication auth = tokenService.getAuthentication(accessToken);
-                    SecurityContextHolder.getContext().setAuthentication(auth);
+                    getAuthentication(accessToken);
                 } else {
                     log.info("유효x");
-                    refreshToken = existRefreshToken((HttpServletRequest) request, refreshToken);
+                    refreshToken = existRefreshToken(request, refreshToken);
                 }
             }else{
                 log.info("accessToken x");
-                refreshToken = existRefreshToken((HttpServletRequest) request, refreshToken);
+                refreshToken = existRefreshToken(request, refreshToken);
             }
         } catch (ExpiredJwtException e) {
             log.info(e.getMessage());
@@ -56,16 +56,25 @@ public class JwtAuthenticationFilter extends GenericFilter {
                 log.info("refresh");
                 RefreshToken dbRefreshToken = refreshTokenRepository.findByRefreshToken(refreshToken);
                 if (dbRefreshToken != null && tokenService.isTokenExpired(dbRefreshToken.getRefreshToken())) {
-                    Authentication auth = tokenService.getAuthentication(dbRefreshToken.getRefreshToken());
-                    SecurityContextHolder.getContext().setAuthentication(auth);
-                    UserDetailsImpl principal = (UserDetailsImpl) auth.getPrincipal();
-                    ((HttpServletResponse) response).setHeader("X-AUTH-ACCESS-TOKEN", tokenService.createAccessToken(principal.getUsername()));
+                    Authentication auth = getAuthentication(dbRefreshToken.getRefreshToken());
+                    createAccessToken(response, auth);
                 }
             }
         } catch (ExpiredJwtException e) {
             log.info(e.getMessage());
         }
-        chain.doFilter(request, response);
+        filterChain.doFilter(request, response);
+    }
+
+    private Authentication getAuthentication(String accessToken) {
+        Authentication auth = tokenService.getAuthentication(accessToken);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        return auth;
+    }
+
+    private void createAccessToken(HttpServletResponse response, Authentication auth) {
+        UserDetailsImpl principal = (UserDetailsImpl) auth.getPrincipal();
+        (response).setHeader("X-AUTH-ACCESS-TOKEN", tokenService.createAccessToken(principal.getUsername()));
     }
 
     private String existRefreshToken(HttpServletRequest request, String refreshToken) {
