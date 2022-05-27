@@ -5,6 +5,7 @@ import App from './App';
 import axios from 'axios';
 
 axios.defaults.withCredentials = true;
+axios.defaults.headers.common['X-AUTH-ACCESS-TOKEN'] = localStorage.getItem('accessToken');
 
 ReactDOM.render(
   <React.StrictMode>
