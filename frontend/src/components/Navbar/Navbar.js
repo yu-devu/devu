@@ -10,12 +10,12 @@ import MyPageButton from './MyPageButton';
 import Service from './Service';
 import MainLogo from "../../img/logo_main.png"
 
-const isToken = localStorage.getItem('accessToken');
-
 function Navbar() {
   const [dropdown, setDropdown] = useState(false);
   const [changing, setChanging] = useState(false);
   const [scrolling, setScrolling] = useState(false);
+  const isToken = localStorage.getItem('accessToken');
+  const username = localStorage.getItem('username');
 
   const onMouseOverOut = () => {
     if (scrolling) return;
@@ -59,7 +59,7 @@ function Navbar() {
             );
           })}
         </ul>
-        {isToken ? (
+        {isToken && username ? (
           <div className='nav-right'>
             <MyPageButton /> <LogoutButton /> <Service />
           </div>

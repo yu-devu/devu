@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -19,18 +19,17 @@ import Question from './components/Forum/Questions/Questions';
 import MyPage from './components/MyPage/MyPage';
 
 function App() {
-  useEffect(() => {
-    onSilentRefresh(); // 렌더링 될 때마다 onSilentRefresh 실행
-  }, []);
-
   const JWT_EXPIRY_TIME = 30 * 60 * 1000; // 만료 시간 (30분)
   const onSilentRefresh = async () => {
     await axios
       .post(process.env.REACT_APP_DB_HOST + '/silent-refresh')
       .then((response) => {
-        localStorage.setItem('accessToken', response.headers['x-auth-access-token']);
+        console.log(response);
+        if (response.headers['x-auth-access-token']) {
+          localStorage.setItem('accessToken', response.headers['x-auth-access-token']);
+        }
         setInterval(onSilentRefresh, JWT_EXPIRY_TIME - 60000); // accessToken 만료하기 1분 전에 로그인 연장
-        console.log("Timeout");
+        console.log("Timeout-App.js");
       })
       .catch((res) => {
         console.log(res);
