@@ -22,7 +22,7 @@ function App() {
   const JWT_EXPIRY_TIME = 30 * 60 * 1000; // 만료 시간 (30분)
   const onSilentRefresh = async () => {
     await axios
-      .get(process.env.REACT_APP_DB_HOST + '/silent-refresh')
+      .post(process.env.REACT_APP_DB_HOST + '/silent-refresh')
       .then((response) => {
         console.log(response);
         if (response.headers['x-auth-access-token']) {
