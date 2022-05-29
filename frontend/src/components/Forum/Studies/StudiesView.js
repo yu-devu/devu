@@ -49,7 +49,6 @@ const StudiesView = () => {
         };
         setPostData(_postData);
         comment_num = res.data.comments.length
-        console.log(res.data.comments.length)
     };
 
     const handleLike = async () => {

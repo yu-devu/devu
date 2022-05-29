@@ -4,6 +4,7 @@ import a from '../../img/a.png'
 import FooterGray from '../Home/FooterGray'
 
 const MyPage = () => {
+    const username = localStorage.getItem('username');
     return (
         <div>
             <div className='mypage-top'>
@@ -11,8 +12,8 @@ const MyPage = () => {
                     <img className='img-mypage' src={a} alt="" />
                 </div>
                 <div className='text-mypage'>
-                    <h1>정요순님 안녕하세요</h1>
-                    <h2>시각디자인학과 18학번</h2>
+                    <h1>{username}님 안녕하세요</h1>
+                    <h2>중국언어문화학과 19학번</h2>
                 </div>
                 <button className='btn-change-info' >정보변경</button>
             </div>

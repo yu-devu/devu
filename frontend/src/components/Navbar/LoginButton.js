@@ -43,10 +43,10 @@ function LoginButton() {
       })
       .then((response) => {
         alert('로그인에 성공했습니다!');
+        navigate('/main')
         localStorage.setItem('username', response.data.username);
         localStorage.setItem('accessToken', response.headers['x-auth-access-token']);
         window.location.reload(false);
-        // setInterval(onSilentRefresh, JWT_EXPIRY_TIME - 60000);
       })
       .catch((res) => {
         console.log(res);
