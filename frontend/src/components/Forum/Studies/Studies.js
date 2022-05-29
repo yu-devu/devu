@@ -82,8 +82,8 @@ const Studies = () => {
       )
     );
     setPostData(_postData);
-    CKEditor.instances.textarea_id.setData(postData.content);
-    console.log(postData.content);
+    // CKEditor.instances.textarea_id.setData(postData.content);
+    // console.log(postData.content);
     CKEditor.instances.textarea_id.getData();
   };
 
@@ -141,9 +141,9 @@ const Studies = () => {
         </div>
         <div className="body-studies">
           <div className="cat-menu">
-            <div className="cat-menu-items">
+            {status === "" ? <div className="cat-menu-items">
               <p
-                className="cat-item"
+                className="cat-item-selected"
                 onClick={() => {
                   setStatus('');
                 }}
@@ -166,7 +166,58 @@ const Studies = () => {
               >
                 모집완료
               </p>
-            </div>
+            </div> : status === "ACTIVE" ? <div className="cat-menu-items">
+              <p
+                className="cat-item"
+                onClick={() => {
+                  setStatus('');
+                }}
+              >
+                전체
+              </p>
+              <p
+                className="cat-item-selected"
+                onClick={() => {
+                  setStatus('ACTIVE');
+                }}
+              >
+                모집중
+              </p>
+              <p
+                className="cat-item"
+                onClick={() => {
+                  setStatus('CLOSED');
+                }}
+              >
+                모집완료
+              </p>
+            </div> : <div className="cat-menu-items">
+              <p
+                className="cat-item"
+                onClick={() => {
+                  setStatus('');
+                }}
+              >
+                전체
+              </p>
+              <p
+                className="cat-item"
+                onClick={() => {
+                  setStatus('ACTIVE');
+                }}
+              >
+                모집중
+              </p>
+              <p
+                className="cat-item-selected"
+                onClick={() => {
+                  setStatus('CLOSED');
+                }}
+              >
+                모집완료
+              </p>
+            </div>}
+
           </div>
           <div className="search-and-write">
             <div className="studies-search">
@@ -472,8 +523,8 @@ const Studies = () => {
               />
             </div>
           </div>
+          <Footer />
         </div>
-        <Footer />
       </div>
     </div>
   );

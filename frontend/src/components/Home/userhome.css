@@ -1,26 +1,23 @@
 @media (min-width: 1024px) {
-    .main-all {
+    .main-all-user {
         display: relative;
         flex-direction: column;
         justify-content: space-between;
         max-height: 100%;
         height: 100%;
+        margin-bottom: -7%;
     }
     
     .intro {
         display: flex;
         max-width: 100%;
-        height: 550px;
-        max-height: 100%;
-        width: auto;
         background: var(--color-primary);
-        justify-content: center;
     }
     
-    .intro-content {
+    .intro-content-user {
         display: block;
         position: absolute;
-        left: 23%;
+        left: 20%;
         top: 28%;
         color: white;
         max-width: 100%;
@@ -30,14 +27,27 @@
     .img-main {
         z-index: 100;
         object-fit: cover;
-        width: 330px;
+        width: 420px;
         height: 300px;
         position: absolute;
-        left: 55%;
+        left: 52%;
         top: 22%;
     }
-    
-    .top-word {
-        margin-bottom: -10px;
+
+    .btn-urp {
+        background-color: transparent;
+        border: 1px solid white;
+        color: white;
+        border-radius: 10px;
+        padding: 2% 7%;
+    }
+
+    .btn-urp:hover {
+        background-color: var(--color-hover);
+    }
+
+    .text-userhome {
+        margin-top: -7%;
+        margin-bottom: 8%;
     }
 }

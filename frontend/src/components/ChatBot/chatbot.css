@@ -18,6 +18,7 @@
         background: #fdfdfe;
         border-radius: 20px;
         box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
+        margin-top: -20%;
     }
     
     .chatbot-content {
@@ -52,7 +53,7 @@
     
     .name-chatbot {
         position: relative;
-        font-weight: 500;
+        width: 150%;
         font-size: 16px;
         margin-top: 20px;
         font-weight: 800;
@@ -65,7 +66,7 @@
     .chatbot-messages {
         display: flex;
         align-items: center;
-        /* justify-content: space-between; */
+        height: 50px;
     }
     
     .bot-message {
@@ -163,7 +164,6 @@
     .bottom-chatbot {
         margin-top: 240px;
         width: 145%;
-        /* width: max-content; */
     }
 
     .food {
@@ -232,7 +232,6 @@
     .bottom-chatbot-food {
         margin-top: 240px;
         width: 145%;
-        /* width: 100%; */
     }
 
     .humanities {
@@ -299,8 +298,9 @@
     }
 
     .chatbot-options {
-        position: fixed;
-        top: 65%;
+        position: block;
+        margin-left: -3%;
+        margin-top: -2%;
         width: max-content;
     }
 

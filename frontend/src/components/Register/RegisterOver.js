@@ -12,7 +12,7 @@ const RegisterOver = () => {
                 <h1 className='text-main'>데뷰 회원가입이 완료되었습니다.</h1>
                 <h2 className='text-sub'>지금 바로 다양한 서비스를 확인해보세요</h2>
                 <div className='registerover-btns'>
-                    <Link className='btn-to-main' to="/">메인으로</Link>
+                    <Link className='btn-to-main' to="/main">메인으로</Link>
                 </div>
             </div>
             <FooterGray />
