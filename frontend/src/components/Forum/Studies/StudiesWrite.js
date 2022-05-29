@@ -4,13 +4,12 @@ import Select from 'react-select';
 import { useNavigate } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import './write.css';
+import './studieswrite.css';
 import { options } from '../data';
-import ReactHtmlParser from 'html-react-parser';
 import Submenu from '../Submenu';
 import FooterGray from '../../Home/FooterGray';
 
-const Write = () => {
+const StudiesWrite = () => {
   const navigate = useNavigate();
   const [tags, setTags] = useState([]); // Select에서 담은 tags
   const [postTags, setPostTags] = useState([]); // tags를 가공한 것 => axios.post할 때 쓸 수 있도록 한 것임.
@@ -54,8 +53,7 @@ const Write = () => {
       const formData = new FormData();
       formData.append('title', postContent.title);
       formData.append('username', username);
-      // formData.append('content', postContent.content);
-      formData.append('content', ReactHtmlParser(postContent.content));
+      formData.append('content', postContent.content);
       formData.append('tags', postTags);
 
       await axios
@@ -114,16 +112,20 @@ const Write = () => {
           </div>
           <CKEditor
             editor={ClassicEditor}
+            config={{
+              placeholder: "- 궁금한 내용을 질문해주세요."
+
+            }}
             data=""
             onChange={(event, editor) => {
               const data = editor.getData();
               setPostContent({
                 ...postContent,
-                content: data,
+                content: data.replace('<p>', '').replace('</p>', ''),
               });
             }}
-            onBlur={(event, editor) => {}}
-            onFocus={(event, editor) => {}}
+            onBlur={(event, editor) => { }}
+            onFocus={(event, editor) => { }}
           />
           <div className="bt-se">
             <button className="btn-cancel">취소</button>
@@ -143,4 +145,4 @@ const Write = () => {
   );
 };
 
-export default Write;
+export default StudiesWrite;

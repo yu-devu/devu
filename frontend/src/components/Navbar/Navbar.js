@@ -34,9 +34,16 @@ function Navbar() {
             : { backgroundColor: '#white' }
         }
       >
-        <Link to="/" className="navbar-logo">
-          <img className="nav-main" alt="" src={MainLogo} />
-        </Link>
+        {isToken && username ? (
+          <Link to="/main" className="navbar-logo">
+            <img className="nav-main" alt="" src={MainLogo} />
+          </Link>
+        ) : (
+          <Link to="/" className="navbar-logo">
+            <img className="nav-main" alt="" src={MainLogo} />
+          </Link>
+        )}
+
         <ul className="nav-items">
           {navItems.map((item) => {
             if (item.title === '커뮤니티') {
