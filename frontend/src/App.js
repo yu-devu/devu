@@ -19,6 +19,7 @@ import MyPage from './components/MyPage/MyPage';
 import GuestHome from './components/Home/GuestHome';
 import UserHome from './components/Home/UserHome';
 import QuestionsWrite from './components/Forum/Questions/QuestionsWrite';
+import Jobs from './components/Jobs/Jobs';
 
 function App() {
   const JWT_EXPIRY_TIME = 30 * 60 * 1000; // 만료 시간 (30분)
@@ -64,6 +65,7 @@ function App() {
           <Route path="/studies/write" exact element={<StudyWrite />}></Route >
           <Route path="/chatbot" exact element={<ChatBot />}></Route >
           <Route path="/mypage" exact element={<MyPage />}></Route >
+          <Route path="/jobs" exact element={<Jobs />}></Route >
         </Routes>
       </Router>
     </>
