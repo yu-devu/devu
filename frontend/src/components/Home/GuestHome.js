@@ -1,10 +1,10 @@
 import React from "react";
 import ChatBot from "../ChatBot/ChatBot";
-import "./home.css";
-import Main from "../../img/main.png"
+import "./guesthome.css";
+import Main from "../../img/main_guest.png"
 import Footer from "./Footer";
 
-const Home = () => {
+const GuestHome = () => {
   return (
     <div>
       <ChatBot />
@@ -23,11 +23,11 @@ const Home = () => {
           </div>
           <img className="img-main" alt="" src={Main} />
         </div>
-        <Footer />
       </div>
+      <Footer />
     </div>
 
   );
 };
 
-export default Home;
+export default GuestHome;
