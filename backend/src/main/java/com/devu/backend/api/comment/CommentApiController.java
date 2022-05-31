@@ -29,7 +29,7 @@ public class CommentApiController {
     ResponseEntity<?> createComment(@RequestBody CommentCreateRequestDto requestDto) {
         try {
             log.info("Post Id : {}",requestDto.getPostId());
-            log.info("User Id : {}",requestDto.getUserId());
+            log.info("Username : {}",requestDto.getUsername());
             Comment comment = commentService.saveComment(requestDto);
 
             log.info("Comment ID : {} is created by username : {} where postTitle : {}, group {}",
@@ -58,7 +58,7 @@ public class CommentApiController {
     ResponseEntity<?> createReComment(@RequestBody CommentCreateRequestDto requestDto) {
         try {
             log.info("Post Id : {}",requestDto.getPostId());
-            log.info("User Id : {}",requestDto.getUserId());
+            log.info("Username : {}",requestDto.getUsername());
             Comment comment = commentService.saveReComment(requestDto);
 
             log.info("Comment ID : {} is created by username : {} where postTitle : {}, group {}, from who {}",

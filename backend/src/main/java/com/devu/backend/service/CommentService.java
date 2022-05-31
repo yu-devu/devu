@@ -27,7 +27,7 @@ public class CommentService {
 
     @Transactional
     public Comment saveComment(CommentCreateRequestDto requestDto) {
-        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findByUsername(requestDto.getUsername()).orElseThrow(UserNotFoundException::new);
         Post post = postRepository.findById(requestDto.getPostId()).orElseThrow(PostNotFoundException::new);
         if (requestDto.getContents() == null) {
             throw new CommentContentNullException();
@@ -44,7 +44,7 @@ public class CommentService {
 
     @Transactional
     public Comment saveReComment(CommentCreateRequestDto requestDto) {
-        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findByUsername(requestDto.getUsername()).orElseThrow(UserNotFoundException::new);
         Post post = postRepository.findById(requestDto.getPostId()).orElseThrow(PostNotFoundException::new);
         commentRepository
                 .findByUserId(userRepository.findByUsername(requestDto.getParent())
