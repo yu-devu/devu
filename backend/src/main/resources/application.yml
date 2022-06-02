@@ -9,3 +9,8 @@ spring:
     include:
       - aws
       - email
+
+logging:
+  level:
+    com.zaxxer.hikari.HikariConfig: DEBUG
+    com.zaxxer.hikari: TRACE
