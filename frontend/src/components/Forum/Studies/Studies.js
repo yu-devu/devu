@@ -286,10 +286,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('JavaScript');
+                  handleTags('JS');
                 }}
               >
-                {selectedTag.includes('JavaScript') ? (
+                {selectedTag.includes('JS') ? (
                   <img className="img-choiced" src={js} alt="" />
                 ) : (
                   <img className="img-choice" src={js} alt="" />

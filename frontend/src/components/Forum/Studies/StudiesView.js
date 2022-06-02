@@ -9,15 +9,14 @@ import like from "../../../img/like.png"
 import imgComment from "../../../img/comment.png"
 import FooterGray from "../../Home/FooterGray";
 
-
 const StudiesView = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [postData, setPostData] = useState([]);
     const [isLike, setLike] = useState(false);
     const username = localStorage.getItem("username");
-    // const [comment, setComment] = useState('');
-    // const onChangeComment = (e) => { setComment(e.target.value) }
+    const [comment, setComment] = useState('');
+    const onChangeComment = (e) => { setComment(e.target.value) }
 
     let pathname = location.pathname;
     let [a, b, postId] = pathname.split("/");
@@ -65,18 +64,35 @@ const StudiesView = () => {
             if (res.data.liked) setLike(true);
             else setLike(false);
         })
-            .catch((res) => { });
+            .catch((res) => { console.log(res) });
     };
 
-
     const handleDelete = async () => {
-        await axios.delete(process.env.REACT_APP_DB_HOST + `/community/chat/${postId}`)
+        await axios.delete(process.env.REACT_APP_DB_HOST + `/community/study/${postId}`)
             .then(() => {
                 console.log("삭제 성공!");
                 navigate(-1);
             })
             .catch((res) => console.log(res));
     };
+
+    const handleComment = async () => {
+        const data = {
+            username: username,
+            postID: postId,
+            contents: comment,
+            // parent: parent,
+            // group: group,
+        }
+
+        await axios.post(process.env.REACT_APP_DB_HOST + `/api/comments`, JSON.stringify(data), {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then((res) => {
+            console.log(res);
+        }).catch((res) => { console.log(res) });
+    }
 
     return (
         <div>
@@ -116,44 +132,62 @@ const StudiesView = () => {
                                 <div className="studies-like">
                                     <img className="img-detail-like" src={like} alt="" />
                                     {postData.like}</div>
+                                {
+                                    postData.username === username
+                                        ?
+                                        <div className="studies-like">
+                                            <p>수정하기</p>
+                                            <p onClick={() => { handleDelete(); }}>삭제하기</p>
+                                        </div>
+                                        : null
+                                }
                             </div>
                         </div>
                         <div className="studies-detail-bottom">
                             <div className="studies-write-comments">
-                                <input placeholder="댓글을 달아주세요."></input>
-                                <button className="btn-comment">댓글달기</button>
+                                <input
+                                    id="comment"
+                                    name="comment"
+                                    value={comment}
+                                    onChange={(e) => onChangeComment(e)}
+                                    placeholder="댓글을 달아주세요." />
+                                <button
+                                    className="btn-comment"
+                                    onClick={() => { handleComment(); }}
+                                >댓글달기</button>
                             </div>
-                            {postData.comments ? <div className="studies-comments-all">
-                                <div className="number-comments">
-                                    <h6 className="number-comments-text">2 개의 답글</h6>
-                                </div>
-                                <div className="studies-comments">
-                                    {postData.comments && postData.comments.map(comment => (
-                                        <div className="container-comments">
-                                            <div className="comment-detail">
-                                                <div className="comments-top">
-                                                    <div>
-                                                        <img className="comment-photo" src={ab} alt="" />
+                            {postData.comments ?
+                                (<div className="studies-comments-all">
+                                    <div className="number-comments">
+                                        <h6 className="number-comments-text">개의 답글</h6>
+                                    </div>
+                                    <div className="studies-comments">
+                                        {postData.comments && postData.comments.map(comment => (
+                                            <div className="container-comments">
+                                                <div className="comment-detail">
+                                                    <div className="comments-top">
+                                                        <div>
+                                                            <img className="comment-photo" src={ab} alt="" />
+                                                        </div>
+                                                        <div className="comment-owner">학생1</div>
                                                     </div>
-                                                    <div className="comment-owner">학생1</div>
-                                                </div>
-                                                <hr className="comment-line" />
-                                                <div className="comment-content">{comment.contents}</div>
-                                                <div className="comment-date">5분 전</div>
-                                                <div className="comments-options">
-                                                    <div className="comment-comment">
-                                                        <img className="img-comment-comment" src={imgComment} alt="" />0
-                                                    </div>
-                                                    <div className="comment-like">
-                                                        <img className="img-comment-like" src={like} alt="" />0
+                                                    <hr className="comment-line" />
+                                                    <div className="comment-content">{comment.contents}</div>
+                                                    <div className="comment-date">5분 전</div>
+                                                    <div className="comments-options">
+                                                        <div className="comment-comment">
+                                                            <img className="img-comment-comment" src={imgComment} alt="" />0
+                                                        </div>
+                                                        <div className="comment-like">
+                                                            <img className="img-comment-like" src={like} alt="" onClick={() => { handleLike(); }} />0
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}
 
-                                </div>
-                            </div> : <div></div>}
+                                    </div>
+                                </div>) : null}
                             <FooterGray />
                         </div>
                     </div>
@@ -163,7 +197,7 @@ const StudiesView = () => {
                 }
             </div>
 
-        </div>
+        </div >
     );
 };
 

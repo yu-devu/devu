@@ -67,7 +67,7 @@ function LoginButton() {
       })
       .catch((res) => {
         console.log(res);
-        alert(JSON.parse(res.request.response).error); // 이메일, 비밀번호 오류 출력
+        // alert(JSON.parse(res.request.response).error); // 이메일, 비밀번호 오류 출력
       });
   };
 
