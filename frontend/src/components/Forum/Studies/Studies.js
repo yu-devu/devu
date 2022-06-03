@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './studies.css';
 import Submenu from '../Submenu';
 import a from '../../../img/a.png';
@@ -82,8 +81,6 @@ const Studies = () => {
       )
     );
     setPostData(_postData);
-    // CKEditor.instances.textarea_id.setData(postData.content);
-    // console.log(postData.content);
     CKEditor.instances.textarea_id.getData();
   };
 
