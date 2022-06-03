@@ -89,7 +89,7 @@ const StudiesWrite = () => {
               rows="1"
               cols="55"
               placeholder="제목을 입력해주세요"
-              maxlength="100"
+              maxLength="100"
               required
               onChange={(e) => handleTitle(e)}
             ></textarea>
@@ -126,7 +126,9 @@ const StudiesWrite = () => {
             onFocus={(event, editor) => { }}
           />
           <div className="bt-se">
-            <button className="btn-cancel">취소</button>
+            <button className="btn-cancel" onClick={() => {
+              navigate(-1);
+            }}>취소</button>
             <button
               className="btn-post"
               onClick={() => {

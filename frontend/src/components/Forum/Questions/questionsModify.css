@@ -1,0 +1,107 @@
+@media (min-width: 1024px) {
+    .container-questions-write {
+      height: max-content;
+      display: flex;
+      text-align: center;
+      position: relative;
+      justify-content: center;
+      margin-top: 2%;
+    }
+    
+    .in-title-text {
+      margin-right: 1%;
+      width: 5%;
+      margin-top: 1%;
+    }
+    
+    .in-title {
+      display: flex;
+      margin-top: 1%;
+    }
+    
+    .in-title textarea {
+      display: block;
+      padding: 10px 16px;
+      border: 1px solid #dddfe2;
+      border-radius: 6px;
+      width: 900px;
+      font-size: 17px;
+      resize: none;
+      color: #333;
+      margin-bottom: 1%;
+    }
+    
+    .tag-selecter {
+      margin-bottom: 1%;
+      margin-top: 1%;
+      width: 900px;
+      font-size: 17px;
+      text-align: justify;
+    }
+    
+    .in-content textarea {
+      display: block;
+      margin: 5px 10px 10px 30px;
+      padding: 14px 16px;
+      border: 1px solid #dddfe2;
+      border-radius: 6px;
+      width: 900px;
+      height: 400px;
+      font-size: 17px;
+      resize: none;
+      color: #333;
+    }
+    
+    .wi-line {
+      border: solid 1px lightgray;
+      margin-top: 10px;
+    }
+    
+    .bt-se {
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .btn-cancel {
+      position: relative;
+      right: 28%;
+      cursor: pointer;
+      display: inline-block;
+      text-decoration: none;
+      background-color: rgba(241, 241, 241, 1);
+      color: black;
+      border-radius: 6px;
+      font-size: 20px;
+      line-height: 48px;
+      width: 22%;
+      margin-top: 2%;
+    }
+    
+    .btn-cancel:hover {
+      background-color: var(--color-hover);
+    }
+    
+    .btn-post {
+      position: relative;
+      left: 28%;
+      cursor: pointer;
+      display: inline-block;
+      text-decoration: none;
+      background-color: var(--color-primary);
+      color: rgb(255, 255, 255);
+      border-radius: 6px;
+      font-size: 20px;
+      line-height: 48px;
+      width: 22%;
+      margin-top: 2%;
+    }
+    
+    .btn-post:hover {
+      background-color: var(--color-hover);
+    }
+    
+    .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
+      min-height: 500px;
+    }
+    
+  }

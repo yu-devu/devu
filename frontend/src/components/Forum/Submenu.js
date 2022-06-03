@@ -11,11 +11,11 @@ const Submenu = () => {
     return (
         <div className='sub-menu'>
             <div className='sub-menu-items'>
-                {forumname === ('studies' || 'studiesDetail') ? <div>
+                {forumname === 'studies' || forumname === 'studiesDetail' ? <div>
                     <Link className='sub-item-selected' to="/studies">스터디구인란</Link>
                     <Link className='sub-item' to="/questions">Q&A</Link>
                     <Link className='sub-item' to="/chats">자유게시판</Link>
-                </div> : forumname === ('questions' || 'questionsDetail') ? <div>
+                </div> : forumname === 'questions' || forumname === 'questionsDetail' ? <div>
                     <Link className='sub-item' to="/studies">스터디구인란</Link>
                     <Link className='sub-item-selected' to="/questions">Q&A</Link>
                     <Link className='sub-item' to="/chats">자유게시판</Link>

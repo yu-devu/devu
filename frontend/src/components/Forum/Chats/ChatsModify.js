@@ -1,17 +1,21 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import './questionsWrite.css';
+import './chatsModify.css';
 import { options } from '../data';
 import Submenu from '../Submenu';
 import FooterGray from '../../Home/FooterGray';
 
-const QuestionsWrite = () => {
+const ChatsModify = () => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const [postData, setPostData] = useState([]);
     const [tags, setTags] = useState([]); // Select에서 담은 tags
+    let pathname = location.pathname;
+    let [a, b, postId] = pathname.split("/");
     const [postTags, setPostTags] = useState([]); // tags를 가공한 것 => axios.post할 때 쓸 수 있도록 한 것임.
     const [postContent, setPostContent] = useState({
         title: '',
@@ -21,6 +25,7 @@ const QuestionsWrite = () => {
 
     useEffect(() => {
         organizeTags();
+        fetchData();
     }, [tags]); // postTags의 동기처리를 위해 useEffect 사용함
 
     const handleTitle = (e) => {
@@ -32,7 +37,6 @@ const QuestionsWrite = () => {
     };
 
     const onChangeTags = (e) => {
-        console.log("You've selected:", e);
         setTags(e);
     };
 
@@ -44,20 +48,29 @@ const QuestionsWrite = () => {
         setPostTags(array);
     };
 
-    const handleWrite = async () => {
+    const fetchData = async () => {
+        const res = await axios.get(
+            process.env.REACT_APP_DB_HOST + `/community/chats/${postId}`
+        );
+        const _postData = {
+            title: res.data.title,
+            content: res.data.content,
+        };
+        setPostData(_postData);
+    };
+
+    const handleModify = async () => {
         if (
             postContent.title !== '' &&
-            postContent.content !== '' &&
-            postTags[0] !== ''
+            postContent.content !== ''
         ) {
             const formData = new FormData();
             formData.append('title', postContent.title);
             formData.append('username', username);
             formData.append('content', postContent.content);
-            formData.append('tags', postTags);
 
             await axios
-                .post(process.env.REACT_APP_DB_HOST + `/community/question`, formData, {
+                .patch(process.env.REACT_APP_DB_HOST + `/community/chat/${postId}`, formData, {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `${localStorage.getItem('accessToken')}`,
@@ -65,21 +78,21 @@ const QuestionsWrite = () => {
                     },
                 })
                 .then(() => {
-                    alert('글이 성공적으로 등록되었습니다!');
+                    alert('글이 성공적으로 수정되었습니다!');
                     navigate(-1);
                 })
                 .catch(() => {
-                    alert('글 등록 실패..');
+                    alert('글 수정 실패..');
                 });
         } else {
-            alert('글을 작성해주세요!');
+            alert('수정할 글을 작성해주세요!');
         }
     };
 
     return (
         <div>
             <Submenu />
-            <div className="container-questions-write">
+            <div className="container-studies-write">
                 <div className="write-area">
                     <div className="in-title">
                         <h8 className="in-title-text">제목</h8>
@@ -88,25 +101,11 @@ const QuestionsWrite = () => {
                             id="title"
                             rows="1"
                             cols="55"
-                            placeholder="제목을 입력해주세요"
+                            defaultValue={postData.title}
                             maxLength="100"
                             required
                             onChange={(e) => handleTitle(e)}
                         ></textarea>
-                    </div>
-                    <div className="in-tag">
-                        <h8 className="in-tag-text">태그</h8>
-                        <Select
-                            className="tag-selecter"
-                            isMulti
-                            options={options}
-                            value={tags}
-                            name="tags"
-                            placeholder="#태그를 선택해주세요"
-                            onChange={(e) => {
-                                onChangeTags(e);
-                            }}
-                        />
                     </div>
                     <CKEditor
                         editor={ClassicEditor}
@@ -114,7 +113,7 @@ const QuestionsWrite = () => {
                             placeholder: "- 궁금한 내용을 질문해주세요."
 
                         }}
-                        data=""
+                        data={postData.content}
                         onChange={(event, editor) => {
                             const data = editor.getData();
                             setPostContent({
@@ -132,7 +131,7 @@ const QuestionsWrite = () => {
                         <button
                             className="btn-post"
                             onClick={() => {
-                                handleWrite();
+                                handleModify();
                             }}
                         >
                             저장
@@ -141,8 +140,8 @@ const QuestionsWrite = () => {
                 </div>
             </div>
             <FooterGray />
-        </div>
+        </div >
     );
 };
 
-export default QuestionsWrite;
+export default ChatsModify;

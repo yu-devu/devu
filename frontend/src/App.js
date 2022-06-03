@@ -21,6 +21,9 @@ import Jobs from './components/Jobs/Jobs';
 import QuestionsView from './components/Forum/Questions/QuestionsView';
 import ChatsWrite from './components/Forum/Chats/ChatsWrite';
 import ChatsView from './components/Forum/Chats/ChatsView';
+import StudiesModify from './components/Forum/Studies/StudiesModify';
+import QuestionsModify from './components/Forum/Questions/QuestionsModify';
+import ChatsModify from './components/Forum/Chats/ChatsModify';
 
 function App() {
   const JWT_EXPIRY_TIME = 30 * 60 * 1000; // 만료 시간 (30분)
@@ -54,17 +57,20 @@ function App() {
           <Route path="/main" exact element={<UserHome />}></Route>
           <Route path="/register" exact element={<Register />}></Route>
           <Route path="/registered" exact element={<RegisterOver />}></Route >
+          <Route path="/change_password/*" element={<ChangePassword />}></Route>
           <Route path="/chats" exact element={<Chats />}></Route>
           <Route path="/chats/write" exact element={<ChatsWrite />}></Route>
           <Route path="/chatsDetail/:no" exact element={<ChatsView />}></Route>
+          <Route path="/chatsDetail/:no/modify" exact element={<ChatsModify />}></Route>
           <Route path="/questions" exact element={<Question />}></Route >
-          <Route path="/questionsDetail/:no" exact element={<QuestionsView />}></Route>
           <Route path="/questions/write" exact element={<QuestionsWrite />}></Route>
+          <Route path="/questionsDetail/:no" exact element={<QuestionsView />}></Route>
+          <Route path="/questionsDetail/:no/modify" exact element={<QuestionsModify />}></Route>
           <Route path="/postDetail/:no/modify" exact element={<Modify />}></Route>
-          <Route path="/change_password/*" element={<ChangePassword />}></Route>
           <Route path="/studies" exact element={<Studies />}></Route>
           <Route path="/studies/write" exact element={<StudyWrite />}></Route >
           <Route path="/studiesDetail/:no" exact element={<StudiesView />}></Route>
+          <Route path="/studiesDetail/:no/modify" exact element={<StudiesModify />}></Route>
           <Route path="/chatbot" exact element={<ChatBot />}></Route >
           <Route path="/mypage" exact element={<MyPage />}></Route >
           <Route path="/jobs" exact element={<Jobs />}></Route >
