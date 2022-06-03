@@ -4,8 +4,6 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import Register from './components/Register/Register';
-import ChatWrite from './components/Forum/Chats/Write';
-import PostView from './components/Forum/Chats/PostView';
 import Modify from './components/Forum/Chats/Modify';
 import ChangePassword from './components/Navbar/ChangePassword';
 import Chats from './components/Forum/Chats/Chats';
@@ -20,6 +18,9 @@ import GuestHome from './components/Home/GuestHome';
 import UserHome from './components/Home/UserHome';
 import QuestionsWrite from './components/Forum/Questions/QuestionsWrite';
 import Jobs from './components/Jobs/Jobs';
+import QuestionsView from './components/Forum/Questions/QuestionsView';
+import ChatsWrite from './components/Forum/Chats/ChatsWrite';
+import ChatsView from './components/Forum/Chats/ChatsView';
 
 function App() {
   const JWT_EXPIRY_TIME = 30 * 60 * 1000; // 만료 시간 (30분)
@@ -54,15 +55,16 @@ function App() {
           <Route path="/register" exact element={<Register />}></Route>
           <Route path="/registered" exact element={<RegisterOver />}></Route >
           <Route path="/chats" exact element={<Chats />}></Route>
-          <Route path="/chats/write" exact element={<ChatWrite />}></Route>
+          <Route path="/chats/write" exact element={<ChatsWrite />}></Route>
+          <Route path="/chatsDetail/:no" exact element={<ChatsView />}></Route>
           <Route path="/questions" exact element={<Question />}></Route >
+          <Route path="/questionsDetail/:no" exact element={<QuestionsView />}></Route>
           <Route path="/questions/write" exact element={<QuestionsWrite />}></Route>
-          <Route path="/postDetail/:no" exact element={<PostView />}></Route>
-          <Route path="/studiesDetail/:no" exact element={<StudiesView />}></Route>
           <Route path="/postDetail/:no/modify" exact element={<Modify />}></Route>
           <Route path="/change_password/*" element={<ChangePassword />}></Route>
           <Route path="/studies" exact element={<Studies />}></Route>
           <Route path="/studies/write" exact element={<StudyWrite />}></Route >
+          <Route path="/studiesDetail/:no" exact element={<StudiesView />}></Route>
           <Route path="/chatbot" exact element={<ChatBot />}></Route >
           <Route path="/mypage" exact element={<MyPage />}></Route >
           <Route path="/jobs" exact element={<Jobs />}></Route >

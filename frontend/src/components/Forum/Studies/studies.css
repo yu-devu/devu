@@ -44,6 +44,7 @@
     display: flex;
     width: 100%;
     margin-right: 20px;
+    height: 130%;
   }
 
   .top-photo {
@@ -213,8 +214,8 @@
 
   .post-options {
     display: flex;
-    position: fixed;
-    margin-left: -1.5%;
+    position: absolute;
+    left: 62%;
   }
 
   .text-hit {

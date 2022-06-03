@@ -1,18 +1,18 @@
 @media (min-width: 1024px) {
-    .studies-view {
+    .questions-view {
         position: relative;
         width: 100%;
         padding-bottom: 1px;
         top: 22px;
     }
 
-    .studies-contents-all {
+    .questions-contents-all {
         position: relative;
         left: 30%;
         top: 22px;
     }
 
-    .studies-profile {
+    .questions-profile {
         border-radius: 50%;
         width: 30px;
         height: 30px;
@@ -20,23 +20,23 @@
         background-color: transparent;
     }
 
-    .studies-photo {
+    .questions-photo {
         width: 30px;
         height: 30px;
         /* filter: brightness(80%); */
     }
 
-    .studies-detail-top {
+    .questions-detail-top {
         display: flex;
     }
     
-    .studies-owner {
+    .questions-owner {
         margin-left: 10px;
         position: relative;
         margin-top: 3px;
     }
 
-    .studies-date {
+    .questions-date {
         position: relative;
         margin-top: 4px;
         margin-left: 10px;
@@ -44,12 +44,12 @@
         color: rgba(128,128,128,1);
     }
 
-    .studies-top {
+    .questions-top {
         display: flex;
         margin-top: 10px;
     }
 
-    .studies-status {
+    .questions-status {
         color: white;
         background-color: var(--color-primary);
         padding: 2px 5px 0;
@@ -58,21 +58,21 @@
         height: 1%;
     }
 
-    .studies-title {
+    .questions-title {
         font-weight: 600;
         font-size: 20px;
     }
 
-    .studies-content {
+    .questions-content {
         font-size: 18px;
         margin-top: 20px;
     }
 
-    .studies-tags {
+    .questions-tags {
         display: flex;
     }
 
-    .studies-tag {
+    .questions-tag {
         margin-top: 10px;
         text-align: center;
         position: relative;
@@ -84,17 +84,13 @@
         margin-right: 10px;
     }
 
-    .studies-options {
+    .questions-options {
         display: flex;
         margin-top: 15px;
     }
 
-    .studies-hit {
+    .questions-hit {
         margin-right: 15px;
-    }
-
-    .studies-like {
-
     }
 
     .img-detail-hit {
@@ -113,7 +109,7 @@
         margin-right: 5px;
     }
 
-    .studies-detail-bottom {
+    .questions-detail-bottom {
         position: relative;
         background-color: rgb(242, 242, 242);
         width: 100%;
@@ -122,7 +118,7 @@
         height: 100%;
     }
 
-    .studies-write-comments {
+    .questions-write-comments {
         filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.102));
         border-radius: 0.5rem;
         background: #fff;
@@ -148,7 +144,7 @@
         font-size: 12px;
     }
     
-    .studies-comments-all {
+    .questions-comments-all {
         position: relative;
         left: 30%;
     }
@@ -228,4 +224,34 @@
         height: 20px;
         margin-right: 5px;
     }
+    .btn-modify {
+        background-color: transparent;
+        border: 1px solid rgba(241, 241, 241, 1);
+        border-radius: 10%;
+        padding: 15% 10%;
+        cursor: pointer;
+      }
+    
+      .btn-modify:hover {
+        background-color: var(--color-hover);
+      }
+    
+      .btn-delete-post {
+        background-color: transparent;
+        border: 1px solid rgba(241, 241, 241, 1);
+        border-radius: 10%;
+        padding: 15% 10%;
+        cursor: pointer;
+      }
+    
+      .btn-delete-post:hover {
+        background-color: var(--color-hover);
+      }
+    
+      .questions-btns {
+        left: 29.5%;
+        position: relative;
+        display: flex;
+        width: 90px;
+      }
 }

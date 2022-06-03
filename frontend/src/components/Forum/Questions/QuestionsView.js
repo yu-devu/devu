@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import "./studiesView.css";
+import "./questionsView.css";
 import Submenu from "../Submenu";
 import ab from "../../../img/a.png"
 import hit from "../../../img/hit.png"
@@ -9,7 +9,7 @@ import like from "../../../img/like.png"
 import imgComment from "../../../img/comment.png"
 import FooterGray from "../../Home/FooterGray";
 
-const StudiesView = () => {
+const QuestionsView = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [postData, setPostData] = useState([]);
@@ -31,7 +31,7 @@ const StudiesView = () => {
 
     const fetchData = async () => {
         const res = await axios.get(
-            process.env.REACT_APP_DB_HOST + `/community/studies/${postId}`
+            process.env.REACT_APP_DB_HOST + `/community/questions/${postId}`
         );
         // console.log(res.data);
         const _postData = {
@@ -43,7 +43,7 @@ const StudiesView = () => {
             username: res.data.username,
             createAt: res.data.createAt,
             tags: res.data.tags,
-            studyStatus: res.data.studyStatus,
+            questionsStatus: res.data.questionsStatus,
             comments: res.data.comments,
         };
         setPostData(_postData);
@@ -68,7 +68,7 @@ const StudiesView = () => {
     };
 
     const handleDelete = async () => {
-        await axios.delete(process.env.REACT_APP_DB_HOST + `/community/study/${postId}`)
+        await axios.delete(process.env.REACT_APP_DB_HOST + `/community/question/${postId}`)
             .then(() => {
                 console.log("삭제 성공!");
                 navigate(-1);
@@ -99,43 +99,43 @@ const StudiesView = () => {
             <Submenu />
             <div>
                 {postData ? (
-                    <div className="studies-view">
-                        <div className="studies-contents-all">
-                            <div className="studies-detail-top">
-                                <div className="studies-profile">
-                                    <img className="studies-photo" src={ab} alt="" />
+                    <div className="questions-view">
+                        <div className="questions-contents-all">
+                            <div className="questions-detail-top">
+                                <div className="questions-profile">
+                                    <img className="questions-photo" src={ab} alt="" />
                                 </div>
-                                <div className="studies-owner">
+                                <div className="questions-owner">
                                     {postData.username}
                                 </div>
-                                <div className="studies-date">{postData.createAt}</div>
+                                <div className="questions-date">{postData.createAt}</div>
                             </div>
-                            <div className="studies-top">
-                                <div className='studies-status'>{postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}</div>
-                                <div className="studies-title">
+                            <div className="questions-top">
+                                <div className='questions-status'>{postData.studyStatus === 'SOLVED' ? '해결' : '미해결'}</div>
+                                <div className="questions-title">
                                     {postData.title}
                                 </div>
                             </div>
-                            <div className="studies-content">
+                            <div className="questions-content">
                                 {postData.content}
                             </div>
-                            <div className="studies-tags">
+                            <div className="questions-tags">
                                 {/* {postData.tags} */}
                                 {postData.tags && postData.tags.map(tag => (
-                                    <div className='studies-tag'>{tag}</div>
+                                    <div className='questions-tag'>{tag}</div>
                                 ))}
                             </div>
-                            <div className="studies-options">
-                                <div className="studies-hit">
+                            <div className="questions-options">
+                                <div className="questions-hit">
                                     <img className="img-detail-hit" src={hit} alt="" />
                                     {postData.hit}</div>
-                                <div className="studies-like">
+                                <div className="questions-like">
                                     <img className="img-detail-like" src={like} alt="" />
                                     {postData.like}</div>
                                 {
                                     postData.username === username
                                         ?
-                                        <div className="studies-btns">
+                                        <div className="questions-btns">
                                             <button className="btn-modify">수정</button>
                                             <button className="btn-delete-post" onClick={() => { handleDelete(); }}>삭제</button>
                                         </div>
@@ -143,8 +143,8 @@ const StudiesView = () => {
                                 }
                             </div>
                         </div>
-                        <div className="studies-detail-bottom">
-                            <div className="studies-write-comments">
+                        <div className="questions-detail-bottom">
+                            <div className="questions-write-comments">
                                 <input
                                     id="comment"
                                     name="comment"
@@ -157,11 +157,11 @@ const StudiesView = () => {
                                 >댓글달기</button>
                             </div>
                             {postData.comments ?
-                                (<div className="studies-comments-all">
+                                (<div className="questions-comments-all">
                                     <div className="number-comments">
                                         <h6 className="number-comments-text">개의 답글</h6>
                                     </div>
-                                    <div className="studies-comments">
+                                    <div className="questions-comments">
                                         {postData.comments && postData.comments.map(comment => (
                                             <div className="container-comments">
                                                 <div className="comment-detail">
@@ -201,4 +201,4 @@ const StudiesView = () => {
     );
 };
 
-export default StudiesView;
+export default QuestionsView;

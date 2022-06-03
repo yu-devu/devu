@@ -4,24 +4,18 @@ import Select from 'react-select';
 import { useNavigate } from 'react-router-dom';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import './studiesWrite.css';
+import './chatsWrite.css';
 import { options } from '../data';
 import Submenu from '../Submenu';
 import FooterGray from '../../Home/FooterGray';
 
-const StudiesWrite = () => {
+const ChatsWrite = () => {
   const navigate = useNavigate();
-  const [tags, setTags] = useState([]); // Select에서 담은 tags
-  const [postTags, setPostTags] = useState([]); // tags를 가공한 것 => axios.post할 때 쓸 수 있도록 한 것임.
   const [postContent, setPostContent] = useState({
     title: '',
     content: '',
   });
   const username = localStorage.getItem('username');
-
-  useEffect(() => {
-    organizeTags();
-  }, [tags]); // postTags의 동기처리를 위해 useEffect 사용함
 
   const handleTitle = (e) => {
     const { name, value } = e.target;
@@ -31,33 +25,18 @@ const StudiesWrite = () => {
     });
   };
 
-  const onChangeTags = (e) => {
-    console.log("You've selected:", e);
-    setTags(e);
-  };
-
-  const organizeTags = () => {
-    let array = [];
-    for (let i = 0; i < tags.length; i++) {
-      array.push(tags[i].value);
-    }
-    setPostTags(array);
-  };
-
   const handleWrite = async () => {
     if (
       postContent.title !== '' &&
-      postContent.content !== '' &&
-      postTags[0] !== ''
+      postContent.content !== ''
     ) {
       const formData = new FormData();
       formData.append('title', postContent.title);
       formData.append('username', username);
       formData.append('content', postContent.content);
-      formData.append('tags', postTags);
 
       await axios
-        .post(process.env.REACT_APP_DB_HOST + `/community/study`, formData, {
+        .post(process.env.REACT_APP_DB_HOST + `/community/chat`, formData, {
           headers: {
             'Content-Type': 'application/json',
             Authorization: `${localStorage.getItem('accessToken')}`,
@@ -79,7 +58,7 @@ const StudiesWrite = () => {
   return (
     <div>
       <Submenu />
-      <div className="container-studies-write">
+      <div className="container-chats-write">
         <div className="write-area">
           <div className="in-title">
             <h8 className="in-title-text">제목</h8>
@@ -94,24 +73,10 @@ const StudiesWrite = () => {
               onChange={(e) => handleTitle(e)}
             ></textarea>
           </div>
-          <div className="in-tag">
-            <h8 className="in-tag-text">태그</h8>
-            <Select
-              className="tag-selecter"
-              isMulti
-              options={options}
-              value={tags}
-              name="tags"
-              placeholder="#태그를 선택해주세요"
-              onChange={(e) => {
-                onChangeTags(e);
-              }}
-            />
-          </div>
           <CKEditor
             editor={ClassicEditor}
             config={{
-              placeholder: "- 궁금한 내용을 질문해주세요."
+              placeholder: "- 자유롭게 수다를 떨어보세요!"
 
             }}
             data=""
@@ -143,4 +108,4 @@ const StudiesWrite = () => {
   );
 };
 
-export default StudiesWrite;
+export default ChatsWrite;
