@@ -129,7 +129,7 @@ const ChatsView = () => {
                   postData.username === username
                     ?
                     <div className="chats-btns">
-                      <button className="btn-modify">수정</button>
+                      <Link className="btn-modify" to={`/chatsDetail/${postId}/modify`}>수정</Link>
                       <button className="btn-delete-post" onClick={() => { handleDelete(); }}>삭제</button>
                     </div>
                     : null

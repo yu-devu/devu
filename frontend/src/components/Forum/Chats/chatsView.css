@@ -233,8 +233,11 @@
     background-color: transparent;
     border: 1px solid rgba(241, 241, 241, 1);
     border-radius: 10%;
-    padding: 15% 10%;
+    padding: 5% 5%;
     cursor: pointer;
+    color: black;
+    font-size: 13px;
+    margin-right: 10px;
   }
 
   .btn-modify:hover {
@@ -245,7 +248,7 @@
     background-color: transparent;
     border: 1px solid rgba(241, 241, 241, 1);
     border-radius: 10%;
-    padding: 15% 10%;
+    padding: 5% 5%;
     cursor: pointer;
   }
 

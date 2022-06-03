@@ -100,48 +100,60 @@ const StudiesView = () => {
             <div>
                 {postData ? (
                     <div className="studies-view">
-                        <div className="studies-contents-all">
-                            <div className="studies-detail-top">
-                                <div className="studies-profile">
-                                    <img className="studies-photo" src={ab} alt="" />
+                        <div className="studies-detail-top">
+                            <div className="studies-contents-all">
+                                <div className="studies-detail-top">
+                                    <div className="studies-profile">
+                                        <img className="studies-photo" src={ab} alt="" />
+                                    </div>
+                                    <div className="studies-owner">
+                                        {postData.username}
+                                    </div>
+                                    <div className="studies-date">{postData.createAt}</div>
                                 </div>
-                                <div className="studies-owner">
-                                    {postData.username}
+                                <div className="studies-top">
+                                    <div className='studies-status'>{postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}</div>
+                                    <div className="studies-title">
+                                        {postData.title}
+                                    </div>
                                 </div>
-                                <div className="studies-date">{postData.createAt}</div>
-                            </div>
-                            <div className="studies-top">
-                                <div className='studies-status'>{postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}</div>
-                                <div className="studies-title">
-                                    {postData.title}
+                                <div className="studies-content">
+                                    {postData.content}
                                 </div>
                             </div>
-                            <div className="studies-content">
-                                {postData.content}
+                            <div className="studies-sidebar">
+                                <div className="studies-sidebar-status">{postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}</div>
+                                <div className="studies-sidebar-item">
+                                    <img className="img-detail-hit" src={hit} alt="" />
+                                    <h8 className="detail-sidebar-text">{postData.hit}</h8>
+                                </div>
+                                <div className="studies-sidebar-btn">
+                                    <img className="img-detail-like" src={like} alt="" />
+                                    <button className="detail-sidebar-btn">{postData.like}</button>
+                                </div>
+                                <div className="studies-sidebar-btn">
+                                    <button className="detail-sidebar-btn">공유</button></div>
+                                <div className="studies-sidebar-btn">
+                                    <button className="detail-sidebar-btn">신고</button></div>
                             </div>
+
+                        </div>
+                        <div className="studies-content-bottom">
                             <div className="studies-tags">
                                 {/* {postData.tags} */}
                                 {postData.tags && postData.tags.map(tag => (
                                     <div className='studies-tag'>{tag}</div>
                                 ))}
                             </div>
-                            <div className="studies-options">
-                                <div className="studies-hit">
-                                    <img className="img-detail-hit" src={hit} alt="" />
-                                    {postData.hit}</div>
-                                <div className="studies-like">
-                                    <img className="img-detail-like" src={like} alt="" />
-                                    {postData.like}</div>
-                                {
-                                    postData.username === username
-                                        ?
-                                        <div className="studies-btns">
-                                            <button className="btn-modify">수정</button>
-                                            <button className="btn-delete-post" onClick={() => { handleDelete(); }}>삭제</button>
-                                        </div>
-                                        : null
-                                }
-                            </div>
+                            {
+                                postData.username === username
+                                    ?
+                                    <div className="studies-btns">
+                                        <Link className="btn-modify" to={`/studiesDetail/${postId}/modify`}>수정</Link>
+                                        <button className="btn-delete-post" onClick={() => { handleDelete(); }}>삭제</button>
+                                    </div>
+                                    : null
+                            }
                         </div>
                         <div className="studies-detail-bottom">
                             <div className="studies-write-comments">
