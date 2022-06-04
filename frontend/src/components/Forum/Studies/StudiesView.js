@@ -4,6 +4,8 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 import "./studiesView.css";
 import Submenu from "../Submenu";
 import ab from "../../../img/a.png"
+import share from "../../../img/share.png"
+import warning from "../../../img/warning.png"
 import hit from "../../../img/hit.png"
 import like from "../../../img/like.png"
 import imgComment from "../../../img/comment.png"
@@ -41,7 +43,8 @@ const StudiesView = () => {
             hit: res.data.hit,
             like: res.data.like,
             username: res.data.username,
-            createAt: res.data.createAt,
+            date: res.data.createAt.substr(0, 10),
+            time: res.data.createAt.substr(11, 8),
             tags: res.data.tags,
             studyStatus: res.data.studyStatus,
             comments: res.data.comments,
@@ -76,6 +79,8 @@ const StudiesView = () => {
             .catch((res) => console.log(res));
     };
 
+    console.log(postData.time)
+
     const handleComment = async () => {
         const data = {
             username: username,
@@ -109,7 +114,7 @@ const StudiesView = () => {
                                     <div className="studies-owner">
                                         {postData.username}
                                     </div>
-                                    <div className="studies-date">{postData.createAt}</div>
+                                    <div className="studies-date">{postData.date} {postData.time}</div>
                                 </div>
                                 <div className="studies-top">
                                     <div className='studies-status'>{postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}</div>
@@ -132,8 +137,11 @@ const StudiesView = () => {
                                     <button className="detail-sidebar-btn">{postData.like}</button>
                                 </div>
                                 <div className="studies-sidebar-btn">
-                                    <button className="detail-sidebar-btn">공유</button></div>
+                                    <img className="img-detail-like" src={share} alt="" />
+                                    <button className="detail-sidebar-btn">공유</button>
+                                </div>
                                 <div className="studies-sidebar-btn">
+                                    <img className="img-detail-like" src={warning} alt="" />
                                     <button className="detail-sidebar-btn">신고</button></div>
                             </div>
 
@@ -171,7 +179,7 @@ const StudiesView = () => {
                             {postData.comments ?
                                 (<div className="studies-comments-all">
                                     <div className="number-comments">
-                                        <h6 className="number-comments-text">개의 답글</h6>
+                                        {/* <h6 className="number-comments-text">개의 답글</h6> */}
                                     </div>
                                     <div className="studies-comments">
                                         {postData.comments && postData.comments.map(comment => (

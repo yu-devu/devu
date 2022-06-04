@@ -12,6 +12,14 @@ import like from "../../../img/like.png"
 import { Link } from 'react-router-dom';
 
 const Chats = () => {
+  let now = new Date();
+  let hours = now.getHours();
+  let minutes = now.getMinutes();
+  let year = now.getFullYear();
+  let month = now.getMonth() + 1;
+  let date = now.getDate();
+  let fullDate = year + "-" + month + "-" + date;
+
   const [currentPage, setCurrentPage] = useState(0);
   const [postSize, setPostSize] = useState(0);
   const [postsPerPage] = useState(20);
@@ -50,6 +58,11 @@ const Chats = () => {
           hit: rowData.hit,
           like: rowData.like,
           username: rowData.username,
+          postYear: rowData.createAt.substr(0, 4),
+          postMonth: rowData.createAt.substr(5, 2),
+          postDay: rowData.createAt.substr(8, 2),
+          postHour: rowData.createAt.substr(11, 2),
+          postMinute: rowData.createAt.substr(14, 2),
           commentsSize: rowData.commentsSize,
         }
       )
@@ -141,7 +154,7 @@ const Chats = () => {
                   </div>
                   <div className='post-tail-chats'>
                     <div className='post-owner'>{post.username}</div>
-                    <div className='post-date'>1분 전</div>
+                    <div className='post-date'>{post.date === fullDate ? post.postHour != hours ? hours - post.postHour + " 시간 전" : post.postMinute != minutes ? minutes - post.postMinute + " 분 전" : "1분 전" : post.postYear != year ? year - post.postYear + " 년전" : post.postMonth != month ? month - post.postMonth + " 달전" : date - post.postDay + " 일전"}</div>
                   </div>
                   <div className='chats-line'></div>
                 </div>

@@ -4,6 +4,8 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 import "./questionsView.css";
 import Submenu from "../Submenu";
 import ab from "../../../img/a.png"
+import share from "../../../img/share.png"
+import warning from "../../../img/warning.png"
 import hit from "../../../img/hit.png"
 import like from "../../../img/like.png"
 import imgComment from "../../../img/comment.png"
@@ -41,7 +43,8 @@ const QuestionsView = () => {
             hit: res.data.hit,
             like: res.data.like,
             username: res.data.username,
-            createAt: res.data.createAt,
+            date: res.data.createAt.substr(0, 10),
+            time: res.data.createAt.substr(11, 8),
             tags: res.data.tags,
             questionsStatus: res.data.questionsStatus,
             comments: res.data.comments,
@@ -100,48 +103,63 @@ const QuestionsView = () => {
             <div>
                 {postData ? (
                     <div className="questions-view">
-                        <div className="questions-contents-all">
-                            <div className="questions-detail-top">
-                                <div className="questions-profile">
-                                    <img className="questions-photo" src={ab} alt="" />
+                        <div className="questions-detail-top">
+                            <div className="questions-contents-all">
+                                <div className="questions-detail-top">
+                                    <div className="questions-profile">
+                                        <img className="questions-photo" src={ab} alt="" />
+                                    </div>
+                                    <div className="questions-owner">
+                                        {postData.username}
+                                    </div>
+                                    <div className="questions-date">{postData.date} {postData.time}</div>
                                 </div>
-                                <div className="questions-owner">
-                                    {postData.username}
+                                <div className="questions-top">
+                                    <div className='questions-status'>{postData.questionsStatus === 'SOLVED' ? '해결' : '미해결'}</div>
+                                    <div className="questions-title">
+                                        {postData.title}
+                                    </div>
                                 </div>
-                                <div className="questions-date">{postData.createAt}</div>
-                            </div>
-                            <div className="questions-top">
-                                <div className='questions-status'>{postData.studyStatus === 'SOLVED' ? '해결' : '미해결'}</div>
-                                <div className="questions-title">
-                                    {postData.title}
+                                <div className="questions-content">
+                                    {postData.content}
                                 </div>
                             </div>
-                            <div className="questions-content">
-                                {postData.content}
+                            <div className="questions-sidebar">
+                                <div className="questions-sidebar-status">{postData.questionsStatus === 'SOLVED' ? '해결' : '미해결'}</div>
+                                <div className="questions-sidebar-item">
+                                    <img className="img-detail-hit" src={hit} alt="" />
+                                    <h8 className="detail-sidebar-text">{postData.hit}</h8>
+                                </div>
+                                <div className="questions-sidebar-btn">
+                                    <img className="img-detail-like" src={like} alt="" />
+                                    <button className="detail-sidebar-btn">{postData.like}</button>
+                                </div>
+                                <div className="questions-sidebar-btn">
+                                    <img className="img-detail-like" src={share} alt="" />
+                                    <button className="detail-sidebar-btn">공유</button>
+                                </div>
+                                <div className="questions-sidebar-btn">
+                                    <img className="img-detail-like" src={warning} alt="" />
+                                    <button className="detail-sidebar-btn">신고</button></div>
                             </div>
+
+                        </div>
+                        <div className="questions-content-bottom">
                             <div className="questions-tags">
                                 {/* {postData.tags} */}
                                 {postData.tags && postData.tags.map(tag => (
                                     <div className='questions-tag'>{tag}</div>
                                 ))}
                             </div>
-                            <div className="questions-options">
-                                <div className="questions-hit">
-                                    <img className="img-detail-hit" src={hit} alt="" />
-                                    {postData.hit}</div>
-                                <div className="questions-like">
-                                    <img className="img-detail-like" src={like} alt="" />
-                                    {postData.like}</div>
-                                {
-                                    postData.username === username
-                                        ?
-                                        <div className="questions-btns">
-                                            <Link className="btn-modify" to={`/questionsDetail/${postId}/modify`}>수정</Link>
-                                            <button className="btn-delete-post" onClick={() => { handleDelete(); }}>삭제</button>
-                                        </div>
-                                        : null
-                                }
-                            </div>
+                            {
+                                postData.username === username
+                                    ?
+                                    <div className="questions-btns">
+                                        <Link className="btn-modify" to={`/questionsDetail/${postId}/modify`}>수정</Link>
+                                        <button className="btn-delete-post" onClick={() => { handleDelete(); }}>삭제</button>
+                                    </div>
+                                    : null
+                            }
                         </div>
                         <div className="questions-detail-bottom">
                             <div className="questions-write-comments">
@@ -159,7 +177,7 @@ const QuestionsView = () => {
                             {postData.comments ?
                                 (<div className="questions-comments-all">
                                     <div className="number-comments">
-                                        <h6 className="number-comments-text">개의 답글</h6>
+                                        {/* <h6 className="number-comments-text">개의 답글</h6> */}
                                     </div>
                                     <div className="questions-comments">
                                         {postData.comments && postData.comments.map(comment => (

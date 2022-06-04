@@ -30,6 +30,14 @@ import like from '../../../img/like.png';
 import { Link } from 'react-router-dom';
 
 const Questions = () => {
+    let now = new Date();
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    let year = now.getFullYear();
+    let month = now.getMonth() + 1;
+    let date = now.getDate();
+    let fullDate = year + "-" + month + "-" + date;
+
     const [currentPage, setCurrentPage] = useState(0);
     const [postSize, setPostSize] = useState(0);
     const [postsPerPage] = useState(20);
@@ -74,6 +82,12 @@ const Questions = () => {
                     hit: rowData.hit,
                     like: rowData.like,
                     username: rowData.username,
+                    postYear: rowData.createAt.substr(0, 4),
+                    postMonth: rowData.createAt.substr(5, 2),
+                    postDay: rowData.createAt.substr(8, 2),
+                    postHour: rowData.createAt.substr(11, 2),
+                    postMinute: rowData.createAt.substr(14, 2),
+                    postSecond: rowData.createAt.substr(17, 2),
                     tags: rowData.tags,
                     questionsStatus: rowData.questionsStatus,
                     commentsSize: rowData.commentsSize,
@@ -128,7 +142,7 @@ const Questions = () => {
                                         <div className="top-detail">
                                             <div className="top-title">{top.title}</div>
                                             <div className="top-content">{top.content}</div>
-                                            <div className="top-date">방금 전</div>
+                                            <div className="top-date">{top.date === fullDate ? top.postHour != hours ? hours - top.postHour + " 시간 전" : top.postMinute != minutes ? minutes - top.postMinute + " 분 전" : "1분 전" : top.postYear != year ? year - top.postYear + " 년 전" : top.postMonth != month ? month - top.postMonth + " 달전" : date - top.postDay + " 일전"}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -501,7 +515,7 @@ const Questions = () => {
                                         </div>
                                         <div className="post-tail">
                                             <div className="post-owner">{post.username}</div>
-                                            <div className="post-date">1분 전</div>
+                                            <div className="post-date">{post.date === fullDate ? post.postHour != hours ? hours - post.postHour + " 시간 전" : post.postMinute != minutes ? minutes - post.postMinute + " 분 전" : "1분 전" : post.postYear != year ? year - post.postYear + " 년전" : post.postMonth != month ? month - post.postMonth + " 달전" : date - post.postDay + " 일전"}</div>
                                         </div>
                                         <div className="questions-line"></div>
                                     </div>

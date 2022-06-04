@@ -146,7 +146,12 @@
       background-color: black;
       color: white;
       font-size: 12px;
+      cursor: pointer;
   }
+
+  .btn-comment:hover {
+    filter: brightness(70%);
+}
   
   .chats-comments-all {
       position: relative;
@@ -234,6 +239,7 @@
     border: 1px solid rgba(241, 241, 241, 1);
     border-radius: 10%;
     padding: 5% 5%;
+    padding-top: 7%;
     cursor: pointer;
     color: black;
     font-size: 13px;
