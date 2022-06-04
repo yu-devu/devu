@@ -79,6 +79,8 @@ const StudiesView = () => {
             .catch((res) => console.log(res));
     };
 
+    console.log(postData.time)
+
     const handleComment = async () => {
         const data = {
             username: username,

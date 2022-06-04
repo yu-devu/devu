@@ -201,6 +201,11 @@
         background-color: black;
         color: white;
         font-size: 12px;
+        cursor: pointer;
+    }
+
+    .btn-comment:hover {
+        filter: brightness(70%);
     }
     
     .questions-comments-all {
