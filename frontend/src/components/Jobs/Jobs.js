@@ -16,10 +16,17 @@ const Jobs = () => {
                         <option>직무 전체</option>
                     </select>
                     <div className='search-jobs'>
+                        <input
+                            type="text"
+                            placeholder="채용 관련 정보를 찾아보세요."
+                            className='search-jobs-input'
+                            onChange={(e) => {
+                            }}
+                        />
                         <button className='btn-search-jobs'>
-                            채용 관련 정보를 찾아보세요.
+                            <img className='img-mag-jobs' src={magnify} alt="" />
                         </button>
-                        <img className='img-mag-jobs' src={magnify} alt="" />
+
                     </div>
                 </div>
                 <div className='middle-jobs'>

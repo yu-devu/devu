@@ -38,16 +38,20 @@
         margin-left: 27%;
     }
 
+    .search-jobs-input {
+        width: 80%;
+    }
+
     .btn-search-jobs {
+        left: 12%;
+        top: 4px;
         background-color: transparent;
-        color: var(--color-gray);
+        position: relative;
+        cursor: pointer;
     }
 
     .img-mag-jobs {
-        width: 18px;
         height: 18px;
-        left: 23%;
-        top: 17%;
         position: relative;
     }
 
