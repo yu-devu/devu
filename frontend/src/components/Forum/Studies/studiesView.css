@@ -10,6 +10,7 @@
         position: relative;
         left: 30%;
         top: 22px;
+        width: 270px;
     }
 
     .studies-profile {
@@ -71,6 +72,7 @@
 
     .studies-tags {
         display: flex;
+        width: 177px;
     }
 
     .studies-tag {
@@ -287,6 +289,7 @@
         border: 1px solid rgba(241, 241, 241, 1);
         border-radius: 10%;
         padding: 5% 5%;
+        padding-top: 7%;
         cursor: pointer;
         color: black;
         font-size: 13px;

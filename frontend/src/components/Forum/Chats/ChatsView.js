@@ -41,7 +41,8 @@ const ChatsView = () => {
       hit: res.data.hit,
       like: res.data.like,
       username: res.data.username,
-      createAt: res.data.createAt,
+      date: res.data.createAt.substr(0, 10),
+      time: res.data.createAt.substr(11, 8),
       tags: res.data.tags,
       studyStatus: res.data.studyStatus,
       comments: res.data.comments,
@@ -108,7 +109,7 @@ const ChatsView = () => {
                 <div className="chats-owner">
                   {postData.username}
                 </div>
-                <div className="chats-date">{postData.createAt}</div>
+                <div className="chats-date">{postData.date} {postData.time}</div>
               </div>
               <div className="chats-top">
                 <div className="chats-title">
