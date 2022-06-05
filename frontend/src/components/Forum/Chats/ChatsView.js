@@ -267,7 +267,7 @@ const ChatsView = () => {
                                   : comment.createAt.slice(5, 7) +
                                   '.' +
                                   comment.createAt.slice(8, 10)
-                                : comment.createAt.slice(2, 4) +
+                                : comment.createAt.slice(0, 4) +
                                 '.' +
                                 comment.createAt.slice(5, 7) +
                                 '.' +
@@ -293,7 +293,7 @@ const ChatsView = () => {
                                 />
                                 0
                               </div>
-                              {postData.username === username ? (
+                              {comment.username === username ? (
                                 <div className="studies-btns">
                                   <button className="btn-modify-content">
                                     수정

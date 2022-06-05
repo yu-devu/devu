@@ -243,7 +243,6 @@ const StudiesView = () => {
             </div>
             <div className="studies-content-bottom">
               <div className="studies-tags">
-                {/* {postData.tags} */}
                 {postData.tags &&
                   postData.tags.map((tag) => (
                     <div className="studies-tag">{tag}</div>
@@ -321,30 +320,30 @@ const StudiesView = () => {
                                   ? comment.createAt.slice(11, 13) == hours
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
-                                        comment.createAt.slice(17, 19) +
-                                        '초 전'
+                                      comment.createAt.slice(17, 19) +
+                                      '초 전'
                                       : minutes -
-                                          comment.createAt.slice(14, 16) ==
-                                          1 &&
+                                        comment.createAt.slice(14, 16) ==
+                                        1 &&
                                         seconds < comment.createAt.slice(17, 19)
-                                      ? 60 -
+                                        ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
                                         '초 전'
-                                      : minutes -
+                                        : minutes -
                                         comment.createAt.slice(14, 16) +
                                         '분 전'
                                     : hours -
-                                      comment.createAt.slice(11, 13) +
-                                      '시간 전'
+                                    comment.createAt.slice(11, 13) +
+                                    '시간 전'
                                   : comment.createAt.slice(5, 7) +
-                                    '.' +
-                                    comment.createAt.slice(8, 10)
-                                : comment.createAt.slice(2, 4) +
                                   '.' +
-                                  comment.createAt.slice(5, 7) +
-                                  '.' +
-                                  comment.createAt.slice(8, 10)} */}
+                                  comment.createAt.slice(8, 10)
+                                : comment.createAt.slice(0, 4) +
+                                '.' +
+                                comment.createAt.slice(5, 7) +
+                                '.' +
+                                comment.createAt.slice(8, 10)} */}
                             </div>
                             <div className="comments-options">
                               <div className="comment-comment">
@@ -366,7 +365,7 @@ const StudiesView = () => {
                                 />
                                 0
                               </div>
-                              {postData.username === username ? (
+                              {comment.username === username ? (
                                 <div className="studies-btns">
                                   <button
                                     className="btn-modify-content"
