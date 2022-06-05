@@ -24,13 +24,17 @@ const StudiesView = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [postData, setPostData] = useState([]);
-  const [comments, setComments] = useState([]);
   const [isLike, setLike] = useState(false);
   const username = localStorage.getItem('username');
   const [comment, setComment] = useState('');
+  const [modifycomment, setModifyComment] = useState('');
   const [dropdown, setDropdown] = useState(false);
+  const [commentModifyMode, handleCommentModifyMode] = useState(0);
   const onChangeComment = (e) => {
     setComment(e.target.value);
+  };
+  const onChangeModifyComment = (e) => {
+    setModifyComment(e.target.value);
   };
 
   // const moreButton = document.getElementById('btn-more');
@@ -70,10 +74,7 @@ const StudiesView = () => {
       studyStatus: res.data.studyStatus,
       comments: res.data.comments,
     };
-    console.log(_postData);
     setPostData(_postData);
-    console.log(_postData.comments);
-    setComments(_postData.comments);
     comment_num = res.data.comments.length;
   };
 
@@ -150,13 +151,28 @@ const StudiesView = () => {
   };
 
   const handleCommentModify = async (id) => {
-    // await axios
-    //   .delete(process.env.REACT_APP_DB_HOST + `/api/comments/${id}`)
-    //   .then(() => {
-    //     console.log('삭제 성공!');
-    //     navigate(0);
-    //   })
-    //   .catch((res) => console.log(res));
+    const data = {
+      contents: modifycomment,
+    };
+
+    await axios
+      .patch(
+        process.env.REACT_APP_DB_HOST + `/api/comments/${id}`,
+        JSON.stringify(data),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `${localStorage.getItem('accessToken')}`,
+            // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
+          },
+        }
+      )
+      .then(() => {
+        navigate(0);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
   };
 
   console.log(postData.hours + ':' + postData.minutes + ':' + postData.seconds);
@@ -342,8 +358,9 @@ const StudiesView = () => {
                                       <ul className='more-submenu'>
                                         <button
                                           onClick={() => {
-                                            console.log(comment);
-                                            //   handleCommentModify(comment.id);
+                                            handleCommentModifyMode(
+                                              comment.commentId
+                                            );
                                           }}
                                         >
                                           수정
@@ -363,9 +380,32 @@ const StudiesView = () => {
                                 ) : null}
                               </div>
                             </div>
-                            <div className="comment-content">
-                              {comment.contents}
-                            </div>
+
+                            {comment.commentId === commentModifyMode ? (
+                              <div className="questions-write-comments">
+                                <input
+                                  id="comment"
+                                  name="comment"
+                                  defaultValue={comment.contents}
+                                  //   value={modifycomment}
+                                  onChange={(e) => onChangeModifyComment(e)}
+                                />
+
+                                <button
+                                  className="btn-comment"
+                                  onClick={() => {
+                                    handleCommentModify(comment.commentId);
+                                  }}
+                                >
+                                  수정하기
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="comment-content">
+                                {comment.contents}
+                              </div>
+                            )}
+
                             <div className="comment-date">
                               {comment.createAt.slice(0, 4) == year
                                 ? comment.createAt.slice(5, 7) == month &&
