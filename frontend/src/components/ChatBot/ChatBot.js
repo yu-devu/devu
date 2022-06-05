@@ -4,6 +4,7 @@ import chatbot from '../../img/chatbot.png';
 import './chatbot.css';
 
 const ChatBot = () => {
+  const [weatherData, setWeatherData] = useState([]);
   let [modal, modalChange] = useState(true);
   let [restaurant, restaurantChange] = useState(false);
 
@@ -20,22 +21,6 @@ const ChatBot = () => {
     const botMessage = document.querySelector('#message1');
     botMessage.innerHTML = '무엇을 도와드릴까요?';
   };
-
-  // const handleInput = () => {
-  //     const botMessage = document.querySelector('#message1');
-  //     const userMessage = document.querySelector('#message2');
-
-  //     let food = ['학식|밥'];
-  //     let words = new RegExp(food);
-  //     if (words.test(document.querySelector('#input').value)) {
-  //         botMessage.innerHTML = '입력 중...'
-  //         setTimeout(() => {
-  //             botMessage.innerHTML = "오늘 학식은 돈까스입니다!"
-  //             document.querySelector('#input').value = "";
-  //         }, 2000);
-  //     }
-  //     userMessage.innerHTML = document.querySelector('#input').value;
-  // }
 
   const handleFood = () => {
     const botMessage = document.querySelector('#message1');
@@ -90,50 +75,45 @@ const ChatBot = () => {
     const botMessage = document.querySelector('#message1');
     const userMessage = document.querySelector('#message2');
     botMessage.innerHTML = '입력 중...';
-    const baseDate = '20220605';
-    const baseTime = '1400';
 
-    const formData = new FormData();
-    formData.append('baseDate', baseDate);
-    formData.append('baseTime', baseTime);
+    let now = new Date();
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    let seconds = now.getSeconds();
+    let year = now.getFullYear();
+    let month = now.getMonth() + 1;
+    let date = now.getDate();
 
-    // console.log(formData);
+    const baseDate = year * 10000 + month * 100 + date;
+    const bt = hours * 100 + minutes;
 
-    const res = await axios
-      .get(process.env.REACT_APP_DB_HOST + '/api/weather', {
+    const baseTime = 200 < bt < 500 ? 200 : 500 < bt < 800 ? 500 : 800 < bt < 1100 ? 800 : 1100 < bt < 1400 ? 1100 : 1400 < bt < 1700 ? 1400 : 1700 < bt < 2000 ? 1700 : 2000 < bt < 2300 ? 2000 : 2300
+
+    console.log(baseTime)
+    const res = await axios.get(
+      process.env.REACT_APP_DB_HOST + '/api/weather',
+      {
         params: {
           baseDate: baseDate,
           baseTime: baseTime,
         },
-      })
-      //   .get(
-      //     'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=PyNY0qeRt39Rj07xn2QCs%2BokqrxCfg%2FJkw0RaONPBX3GybvBQjznoLKfITYrjhDTz7bKwND%2BozBbbqHwS89T7Q%3D%3D&numOfRows=10&pageNo=1&base_date=20220523&base_time=2300&nx=92&ny=90&dataType=JSON',
-      //     {
-      //       headers: {
-      //         // 'Content-Type': 'application/json',
-      //         // 'Access-Control-Allow-Credentials': true,
-      //         // Authorization: `${localStorage.getItem('accessToken')}`,
-      //         // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
-      //       },
-      //     }
-      //     // 'https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=PyNY0qeRt39Rj07xn2QCs%2BokqrxCfg%2FJkw0RaONPBX3GybvBQjznoLKfITYrjhDTz7bKwND%2BozBbbqHwS89T7Q%3D%3D&numOfRows=10&pageNo=1&base_date=20220523&base_time=2300&nx=92&ny=90&dataType=JSON'
-      //   )
-      //   .get(process.env.REACT_APP_DB_HOST + '/api/weather', formData, {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       Authorization: `${localStorage.getItem('accessToken')}`,
-      //       'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
-      //     },
-      //   })
-      .then(() => {
-        console.log('success');
-      })
-      .catch((res) => {
-        console.log('false');
       });
-    console.log(res);
+    const _weatherData = {
+      sky: res.data.reformed.SKY, // 하늘 상태
+      pop: res.data.reformed.POP, // 강수 확률
+      uuu: res.data.reformed.UUU, // 풍속(동서)
+      pty: res.data.reformed.PTY, // 강수 형태
+      reh: res.data.reformed.REH, // 습도
+      vec: res.data.reformed.VEC, // 풍향
+      tmp: res.data.reformed.TMP, // 기온
+      vvv: res.data.reformed.VVV, // 풍속(남북)
+      wsd: res.data.reformed.WSD, // 풍속
+      pcp: res.data.reformed.PCP, // 강수량
+      wav: res.data.reformed.WAV, // 파고
+    };
+    setWeatherData(_weatherData)
     setTimeout(() => {
-      botMessage.innerHTML = '현재 날씨는 맑음입니다!';
+      botMessage.innerHTML = "현재 날씨는 " + (weatherData.sky == 4 ? "흐림" : weatherData.sky == 3 ? "구름 많음" : "맑음") + "입니다! \n기온은 " + weatherData.tmp + "°C이며 습도는 " + weatherData.reh + "%입니다!";
       // document.querySelector('#input').value = '';
     }, 2000);
     userMessage.innerHTML = document.querySelector('#weather').value;
