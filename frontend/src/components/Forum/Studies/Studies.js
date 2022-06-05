@@ -141,8 +141,8 @@ const Studies = () => {
                       <img className="top-photo" src={a} alt="" />
                     </div>
                     <div className="top-detail">
-                      <div className="top-title">{top.title}</div>
-                      <div className="top-content">{top.content}</div>
+                      <div className="top-title">{top.title.length > 10 ? top.title.substr(0, 10) + '...' : top.title}</div>
+                      <div className="top-content">{top.content.length > 20 ? top.title.substr(0, 20) + '...' : top.content}</div>
                       <div className="top-date">
                         {top.postYear == year
                           ? top.postMonth == month && top.postDay == date
@@ -151,15 +151,15 @@ const Studies = () => {
                                 ? seconds - top.postSecond + '초 전'
                                 : minutes - top.postMinute == 1 &&
                                   seconds < top.postSecond
-                                ? 60 - top.postSecond + seconds + '초 전'
-                                : minutes - top.postMinute + '분 전'
+                                  ? 60 - top.postSecond + seconds + '초 전'
+                                  : minutes - top.postMinute + '분 전'
                               : hours - top.postHour + '시간 전'
                             : top.postMonth + '.' + top.postDay
                           : top.postYear.slice(2, 4) +
-                            '.' +
-                            top.postMonth +
-                            '.' +
-                            top.postDay}
+                          '.' +
+                          top.postMonth +
+                          '.' +
+                          top.postDay}
                       </div>
                     </div>
                   </div>
@@ -546,15 +546,15 @@ const Studies = () => {
                                 ? seconds - post.postSecond + '초 전'
                                 : minutes - post.postMinute == 1 &&
                                   seconds < post.postSecond
-                                ? 60 - post.postSecond + seconds + '초 전'
-                                : minutes - post.postMinute + '분 전'
+                                  ? 60 - post.postSecond + seconds + '초 전'
+                                  : minutes - post.postMinute + '분 전'
                               : hours - post.postHour + '시간 전'
                             : post.postMonth + '.' + post.postDay
                           : post.postYear.slice(2, 4) +
-                            '.' +
-                            post.postMonth +
-                            '.' +
-                            post.postDay}
+                          '.' +
+                          post.postMonth +
+                          '.' +
+                          post.postDay}
                       </div>
                     </div>
                     <div className="studies-line"></div>
