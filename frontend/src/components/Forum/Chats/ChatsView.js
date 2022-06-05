@@ -7,7 +7,6 @@ import ab from '../../../img/a.png';
 import hit from '../../../img/hit.png';
 import like from '../../../img/like.png';
 import more from '../../../img/more.png';
-import imgComment from '../../../img/comment.png';
 import FooterGray from '../../Home/FooterGray';
 
 const ChatsView = () => {
@@ -43,8 +42,7 @@ const ChatsView = () => {
 
   useEffect(() => {
     fetchData();
-    // console.log(location);
-    // console.log(isLike);
+    window.scrollTo(0, 0);
   }, [location, isLike]);
 
   const fetchData = async () => {
@@ -230,6 +228,7 @@ const ChatsView = () => {
             <div className="chats-detail-bottom">
               <div className="chats-write-comments">
                 <input
+                  className='comment'
                   id="comment"
                   name="comment"
                   value={comment}
@@ -248,7 +247,6 @@ const ChatsView = () => {
               {postData.comments ? (
                 <div className="chats-comments-all">
                   <div className="number-comments">
-                    <h6 className="number-comments-text">개의 답글</h6>
                   </div>
                   <div className="chats-comments">
                     {postData.comments &&
@@ -267,7 +265,6 @@ const ChatsView = () => {
                                 <div className="comment-owner">
                                   {comment.username}
                                 </div>
-
                                 {comment.username === username &&
                                 comment.commentId !== showModifyContent ? (
                                   <button className="btn-more">
@@ -291,6 +288,7 @@ const ChatsView = () => {
                                     {comment.commentId ===
                                     showDropdownContent ? (
                                       <div>
+
                                         <button
                                           onClick={() => {
                                             setShowModifyContent(
@@ -312,6 +310,7 @@ const ChatsView = () => {
                                         </button>
                                       </div>
                                     ) : null}
+
                                   </button>
                                 ) : null}
                               </div>
@@ -354,30 +353,30 @@ const ChatsView = () => {
                                   ? comment.createAt.slice(11, 13) == hours
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
-                                        comment.createAt.slice(17, 19) +
-                                        '초 전'
+                                      comment.createAt.slice(17, 19) +
+                                      '초 전'
                                       : minutes -
-                                          comment.createAt.slice(14, 16) ==
-                                          1 &&
+                                        comment.createAt.slice(14, 16) ==
+                                        1 &&
                                         seconds < comment.createAt.slice(17, 19)
-                                      ? 60 -
+                                        ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
                                         '초 전'
-                                      : minutes -
+                                        : minutes -
                                         comment.createAt.slice(14, 16) +
                                         '분 전'
                                     : hours -
-                                      comment.createAt.slice(11, 13) +
-                                      '시간 전'
+                                    comment.createAt.slice(11, 13) +
+                                    '시간 전'
                                   : comment.createAt.slice(5, 7) +
-                                    '.' +
-                                    comment.createAt.slice(8, 10)
+                                  '.' +
+                                  comment.createAt.slice(8, 10)
                                 : comment.createAt.slice(2, 4) +
-                                  '.' +
-                                  comment.createAt.slice(5, 7) +
-                                  '.' +
-                                  comment.createAt.slice(8, 10)}
+                                '.' +
+                                comment.createAt.slice(5, 7) +
+                                '.' +
+                                comment.createAt.slice(8, 10)}
                             </div>
                           </div>
                         </div>
