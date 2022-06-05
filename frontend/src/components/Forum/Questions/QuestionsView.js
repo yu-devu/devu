@@ -44,8 +44,7 @@ const QuestionsView = () => {
 
   useEffect(() => {
     fetchData();
-    // console.log(location);
-    // console.log(isLike);
+    window.scrollTo(0, 0);
   }, [location, isLike]);
 
   const fetchData = async () => {
@@ -290,6 +289,7 @@ const QuestionsView = () => {
             <div className="questions-detail-bottom">
               <div className="questions-write-comments">
                 <input
+                  className='comment'
                   id="comment"
                   name="comment"
                   value={comment}
@@ -328,18 +328,20 @@ const QuestionsView = () => {
                                   {comment.username}
                                 </div>
                                 {comment.username === username ? (
-                                  <button className="btn-more">
+                                  <button className="btn-more" onClick={() => {
+                                    if (dropdown) setDropdown(false);
+                                    else setDropdown(true);
+                                  }}
+                                    onBlur={() => {
+                                      setDropdown(false)
+                                    }}>
                                     <img
                                       className="img-more"
                                       alt=""
                                       src={more}
-                                      onClick={() => {
-                                        if (dropdown) setDropdown(false);
-                                        else setDropdown(true);
-                                      }}
                                     />
                                     {dropdown && (
-                                      <div>
+                                      <ul className='more-submenu'>
                                         <button
                                           onClick={() => {
                                             handleCommentModifyMode(
@@ -358,7 +360,7 @@ const QuestionsView = () => {
                                         >
                                           삭제
                                         </button>
-                                      </div>
+                                      </ul>
                                     )}
                                   </button>
                                 ) : null}
@@ -395,30 +397,30 @@ const QuestionsView = () => {
                                   ? comment.createAt.slice(11, 13) == hours
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
-                                        comment.createAt.slice(17, 19) +
-                                        '초 전'
+                                      comment.createAt.slice(17, 19) +
+                                      '초 전'
                                       : minutes -
-                                          comment.createAt.slice(14, 16) ==
-                                          1 &&
+                                        comment.createAt.slice(14, 16) ==
+                                        1 &&
                                         seconds < comment.createAt.slice(17, 19)
-                                      ? 60 -
+                                        ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
                                         '초 전'
-                                      : minutes -
+                                        : minutes -
                                         comment.createAt.slice(14, 16) +
                                         '분 전'
                                     : hours -
-                                      comment.createAt.slice(11, 13) +
-                                      '시간 전'
+                                    comment.createAt.slice(11, 13) +
+                                    '시간 전'
                                   : comment.createAt.slice(5, 7) +
-                                    '.' +
-                                    comment.createAt.slice(8, 10)
+                                  '.' +
+                                  comment.createAt.slice(8, 10)
                                 : comment.createAt.slice(0, 4) +
-                                  '.' +
-                                  comment.createAt.slice(5, 7) +
-                                  '.' +
-                                  comment.createAt.slice(8, 10)}
+                                '.' +
+                                comment.createAt.slice(5, 7) +
+                                '.' +
+                                comment.createAt.slice(8, 10)}
                             </div>
                           </div>
                         </div>
