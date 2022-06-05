@@ -1,8 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 import './logoutButton.css';
+import { useNavigate } from 'react-router-dom';
 
 const LogoutButton = () => {
+  const navigate = useNavigate();
   const logout = async () => {
     await axios.post(process.env.REACT_APP_DB_HOST + `/logout`)
       .then(() => {
@@ -14,7 +16,10 @@ const LogoutButton = () => {
 
   return (
     <>
-      <button className="btn-logout-nav" onClick={logout}>
+      <button className="btn-logout-nav" onClick={() => {
+        logout();
+        navigate('/')
+      }}>
         로그아웃
       </button>
     </>
