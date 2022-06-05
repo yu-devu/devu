@@ -9,6 +9,7 @@ import warning from '../../../img/warning.png';
 import hit from '../../../img/hit.png';
 import like from '../../../img/like.png';
 import imgComment from '../../../img/comment.png';
+import more from '../../../img/more.png';
 import FooterGray from '../../Home/FooterGray';
 
 const StudiesView = () => {
@@ -298,7 +299,7 @@ const StudiesView = () => {
                   <div className="number-comments">
                     {/* <h6 className="number-comments-text">개의 답글</h6> */}
                   </div>
-                  <div className="studies-comments">
+                  <div div className="studies-comments">
                     {postData.comments &&
                       postData.comments.map((comment) => (
                         <div className="container-comments">
@@ -311,9 +312,15 @@ const StudiesView = () => {
                                   alt=""
                                 />
                               </div>
-                              <div className="comment-owner">학생1</div>
+                              <div className="comment-top">
+                                <div className="comment-owner">
+                                  {comment.username}
+                                </div>
+                                <button className="btn-more">
+                                  <img className="img-more" alt="" src={more} />
+                                </button>
+                              </div>
                             </div>
-                            <hr className="comment-line" />
                             <div className="comment-content">
                               {comment.contents}
                             </div>

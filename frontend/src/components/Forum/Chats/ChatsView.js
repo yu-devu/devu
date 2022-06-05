@@ -6,6 +6,7 @@ import Submenu from '../Submenu';
 import ab from '../../../img/a.png';
 import hit from '../../../img/hit.png';
 import like from '../../../img/like.png';
+import more from '../../../img/more.png';
 import imgComment from '../../../img/comment.png';
 import FooterGray from '../../Home/FooterGray';
 
@@ -230,9 +231,15 @@ const ChatsView = () => {
                                   alt=""
                                 />
                               </div>
-                              <div className="comment-owner">학생1</div>
+                              <div className="comment-top">
+                                <div className="comment-owner">
+                                  {comment.username}
+                                </div>
+                                <button className="btn-more">
+                                  <img className="img-more" alt="" src={more} />
+                                </button>
+                              </div>
                             </div>
-                            <hr className="comment-line" />
                             <div className="comment-content">
                               {comment.contents}
                             </div>

@@ -210,7 +210,6 @@
     
     .questions-comments-all {
         position: relative;
-        left: 30%;
     }
 
     .number-comments {
@@ -226,9 +225,9 @@
         border-radius: 0.5rem;
         background: #fff;
         position: relative;
-        width: 50%;
+        max-width: 40%;
+        left: 30%;
         height: 100%;
-        left: -4%;
         margin-top: 10px;
     }
 
