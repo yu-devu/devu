@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,7 +25,7 @@ public class WeatherApiController {
     * 고정된 시간대는 동일한 객체 반환하도록 설계 변경
     * */
     @GetMapping("/weather")
-    public ResponseEntity<?> getWeather(@RequestBody WeatherRequestDto dto) {
+    public ResponseEntity<?> getWeather(@RequestParam("baseDate")String baseDate,@RequestParam("baseTime")String baseTime) {
         try {
             String apiUrl = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst" +
                     "?serviceKey=PyNY0qeRt39Rj07xn2QCs%2BokqrxCfg%2FJkw0RaONPBX3GybvBQjznoLKfITYrjhDTz7bKwND%2BozBbbqHwS89T7Q%3D%3D" +
@@ -36,9 +33,9 @@ public class WeatherApiController {
                     "&numOfRows=11" +
                     "&pageNo=1" +
                     "&base_date=" +
-                    dto.getBaseDate()+
+                    baseDate+
                     "&base_time=" +
-                    dto.getBaseTime()+
+                    baseTime+
                     "&nx=92" +
                     "&ny=90";
             JSONObject jsonObject = getJsonObjectByObjectMapperFromString(apiUrl);
