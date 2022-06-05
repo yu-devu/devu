@@ -25,9 +25,14 @@ const ChatsView = () => {
   const [isLike, setLike] = useState(false);
   const username = localStorage.getItem('username');
   const [comment, setComment] = useState('');
+  const [modifycomment, setModifyComment] = useState('');
   const [dropdown, setDropdown] = useState(false);
+  const [commentModifyMode, handleCommentModifyMode] = useState(0);
   const onChangeComment = (e) => {
     setComment(e.target.value);
+  };
+  const onChangeModifyComment = (e) => {
+    setModifyComment(e.target.value);
   };
 
   let pathname = location.pathname;
@@ -113,6 +118,31 @@ const ChatsView = () => {
     } else {
       alert('취소하였습니다!');
     }
+  };
+
+  const handleCommentModify = async (id) => {
+    const data = {
+      contents: modifycomment,
+    };
+
+    await axios
+      .patch(
+        process.env.REACT_APP_DB_HOST + `/api/comments/${id}`,
+        JSON.stringify(data),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `${localStorage.getItem('accessToken')}`,
+            // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
+          },
+        }
+      )
+      .then(() => {
+        navigate(0);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
   };
 
   const handleComment = async () => {
@@ -253,8 +283,9 @@ const ChatsView = () => {
                                       <div>
                                         <button
                                           onClick={() => {
-                                            console.log(comment);
-                                            //   handleCommentModify(comment.id);
+                                            handleCommentModifyMode(
+                                              comment.commentId
+                                            );
                                           }}
                                         >
                                           수정
@@ -274,9 +305,30 @@ const ChatsView = () => {
                                 ) : null}
                               </div>
                             </div>
-                            <div className="comment-content">
-                              {comment.contents}
-                            </div>
+                            {comment.commentId === commentModifyMode ? (
+                              <div className="questions-write-comments">
+                                <input
+                                  id="comment"
+                                  name="comment"
+                                  defaultValue={comment.contents}
+                                  //   value={modifycomment}
+                                  onChange={(e) => onChangeModifyComment(e)}
+                                />
+
+                                <button
+                                  className="btn-comment"
+                                  onClick={() => {
+                                    handleCommentModify(comment.commentId);
+                                  }}
+                                >
+                                  수정하기
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="comment-content">
+                                {comment.contents}
+                              </div>
+                            )}
                             <div className="comment-date">
                               {comment.createAt.slice(0, 4) == year
                                 ? comment.createAt.slice(5, 7) == month &&
