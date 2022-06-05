@@ -409,10 +409,30 @@
   }
 
   .btn-pagination {
-    margin-left: 17%;
-    margin-top: 3%;
-    margin-bottom: -7%;
+    left: 38%;
     position: relative;
     height: 100px;
+    display: flex;
+    cursor: pointer;
+  }
+
+  .btn-pagination-previous {
+    margin-right: 5px;
+  }
+
+  .btn-pagination-next {
+    margin-left: 5px;
+  }
+
+  .btn-pagination-disabled LI {
+    margin-right: 5px;
+  }
+
+  .btn-pagination-active a {
+    color: black;
+  }
+
+  LI {
+    margin-right: 5px;
   }
 }
