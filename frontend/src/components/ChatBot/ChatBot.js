@@ -157,86 +157,46 @@ const ChatBot = () => {
         console.log(DateH);
         botMessage.innerHTML = '첫차는 5:30에 들어옵니다!';
         document.querySelector('#input').value = '';
-      }, 2000);
+      }, 1000);
     } else {
       const DateD = today.getDay();
       let leftTime = 0;
+      let arrInfo = [];
 
-      if (DateD === 0) {
-        // 일요일
+      if (DateD === 0)
         await axios
-          .get(process.env.REACT_APP_DB_HOST + '/api/holidaySubway')
-          .then((e) => {
-            for (i = 0; i < e.data.length; i++) {
-              const candiDate = e.data[i].split(':');
-              if (candiDate[0] == DateH) {
-                if (candiDate[1] > DateM) {
-                  leftTime = Number(candiDate[1]) - DateM;
-                  break;
-                }
-              } else if (candiDate[0] > DateH) break;
-            }
-            if (leftTime === 0) {
-              const candiDate = e.data[i].split(':');
-              leftTime = Number(candiDate[1]) - DateM + 60;
-            }
-            console.log('일요일 leftTime = ' + leftTime);
-          })
-          .catch((res) => {
-            console.log('false');
-          });
-      } else if (DateD > 0 && DateD < 6) {
-        // 평일
+          .get(process.env.REACT_APP_DB_HOST + '/api/holidaySubway') // 일요일
+          .then((e) => (arrInfo = e.data))
+          .catch((res) => console.log('false'));
+      else if (DateD > 0 && DateD < 6)
         await axios
-          .get(process.env.REACT_APP_DB_HOST + '/api/weekdaySubway ')
-          .then((e) => {
-            for (i = 0; i < e.data.length; i++) {
-              const candiDate = e.data[i].split(':');
-              if (candiDate[0] == DateH) {
-                if (candiDate[1] > DateM) {
-                  leftTime = Number(candiDate[1]) - DateM;
-                  break;
-                }
-              } else if (candiDate[0] > DateH) break;
-            }
-            if (leftTime === 0) {
-              const candiDate = e.data[i].split(':');
-              leftTime = Number(candiDate[1]) - DateM + 60;
-            }
-            console.log('평일 leftTime = ' + leftTime);
-          })
-          .catch((res) => {
-            console.log('false');
-          });
-      } else {
-        // 토요일
+          .get(process.env.REACT_APP_DB_HOST + '/api/weekdaySubway ') // 평일
+          .then((e) => (arrInfo = e.data))
+          .catch((res) => console.log('false'));
+      else
         await axios
-          .get(process.env.REACT_APP_DB_HOST + '/api/weekendSubway')
-          .then((e) => {
-            for (i = 0; i < e.data.length; i++) {
-              const candiDate = e.data[i].split(':');
-              if (candiDate[0] == DateH) {
-                if (candiDate[1] > DateM) {
-                  leftTime = Number(candiDate[1]) - DateM;
-                  break;
-                }
-              } else if (candiDate[0] > DateH) break;
-            }
-            if (leftTime === 0) {
-              const candiDate = e.data[i].split(':');
-              leftTime = Number(candiDate[1]) - DateM + 60;
-            }
-            console.log('토요일 leftTime = ' + leftTime);
-          })
-          .catch((res) => {
-            console.log('false');
-          });
+          .get(process.env.REACT_APP_DB_HOST + '/api/weekendSubway') // 토요일
+          .then((e) => (arrInfo = e.data))
+          .catch((res) => console.log('false'));
+
+      for (i = 0; i < arrInfo.length; i++) {
+        const candiDate = arrInfo[i].split(':');
+        if (candiDate[0] == DateH) {
+          if (candiDate[1] > DateM) {
+            leftTime = Number(candiDate[1]) - DateM;
+            break;
+          }
+        } else if (candiDate[0] > DateH) break;
+      }
+      if (leftTime === 0) {
+        const candiDate = arrInfo[i].split(':');
+        leftTime = Number(candiDate[1]) - DateM + 60;
       }
 
       setTimeout(() => {
         botMessage.innerHTML = leftTime + '분 뒤에 지하철이 들어옵니다!';
         document.querySelector('#input').value = '';
-      }, 2000);
+      }, 1000);
     }
 
     userMessage.innerHTML = document.querySelector('#subway').value;
