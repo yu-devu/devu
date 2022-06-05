@@ -242,7 +242,6 @@ const StudiesView = () => {
             </div>
             <div className="studies-content-bottom">
               <div className="studies-tags">
-                {/* {postData.tags} */}
                 {postData.tags &&
                   postData.tags.map((tag) => (
                     <div className="studies-tag">{tag}</div>
@@ -309,7 +308,7 @@ const StudiesView = () => {
                             <div className="comment-content">
                               {comment.contents}
                             </div>
-                            <div className="comment-date">
+                            {/* <div className="comment-date">
                               {comment.createAt.slice(0, 4) == year
                                 ? comment.createAt.slice(5, 7) == month &&
                                   comment.createAt.slice(8, 10) == date
@@ -340,7 +339,7 @@ const StudiesView = () => {
                                   comment.createAt.slice(5, 7) +
                                   '.' +
                                   comment.createAt.slice(8, 10)}
-                            </div>
+                            </div> */}
                             <div className="comments-options">
                               <div className="comment-comment">
                                 <img
@@ -361,7 +360,7 @@ const StudiesView = () => {
                                 />
                                 0
                               </div>
-                              {postData.username === username ? (
+                              {comment.username === username ? (
                                 <div className="studies-btns">
                                   <button
                                     className="btn-modify-content"

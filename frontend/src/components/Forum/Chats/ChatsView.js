@@ -236,7 +236,7 @@ const ChatsView = () => {
                             <div className="comment-content">
                               {comment.contents}
                             </div>
-                            <div className="comment-date">
+                            {/* <div className="comment-date">
                               {comment.createAt.slice(0, 4) == year
                                 ? comment.createAt.slice(5, 7) == month &&
                                   comment.createAt.slice(8, 10) == date
@@ -267,7 +267,7 @@ const ChatsView = () => {
                                   comment.createAt.slice(5, 7) +
                                   '.' +
                                   comment.createAt.slice(8, 10)}
-                            </div>
+                            </div> */}
                             <div className="comments-options">
                               <div className="comment-comment">
                                 <img
@@ -288,7 +288,7 @@ const ChatsView = () => {
                                 />
                                 0
                               </div>
-                              {postData.username === username ? (
+                              {comment.username === username ? (
                                 <div className="studies-btns">
                                   <button className="btn-modify-content">
                                     수정
