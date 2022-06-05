@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import './myPage.css'
+import { useNavigate, useLocation } from 'react-router-dom';
 import a from '../../img/a.png'
 import FooterGray from '../Home/FooterGray'
 
@@ -18,6 +19,7 @@ const MyPage = () => {
     let month = now.getMonth() + 1;
     let date = now.getDate();
 
+    const navigate = useNavigate();
     const [postData, setPostData] = useState([]);
     const [myPostStudy, setMyPostStudy] = useState([]);
     const [myPostQuestion, setMyPostQuestion] = useState([]);
@@ -174,7 +176,7 @@ const MyPage = () => {
                     {
                         isStudy: (myPostStudy.slice(0, myPostStudy.length).map((post) => (
                             <tr className='cate-mypage-detail'>
-                                <td width="300">{post.title}</td>
+                                <td width="300" onClick={() => { navigate('/studiesDetail/' + post.id) }}>{post.title}</td>
                                 <td width="150">{post.postYear == year
                                     ? post.postMonth == month && post.postDay == date
                                         ? post.postHour == hours
@@ -197,7 +199,7 @@ const MyPage = () => {
                         ))),
                         isQuestion: (myPostQuestion.slice(0, myPostQuestion.length).map((post) => (
                             <tr className='cate-mypage-detail'>
-                                <td width="300">{post.title}</td>
+                                <td width="300" onClick={() => { navigate('/questionsDetail/' + post.id) }}>{post.title}</td>
                                 <td width="150">{post.postYear == year
                                     ? post.postMonth == month && post.postDay == date
                                         ? post.postHour == hours
@@ -220,7 +222,7 @@ const MyPage = () => {
                         ))),
                         isChat: (myPostChat.slice(0, myPostChat.length).map((post) => (
                             <tr className='cate-mypage-detail'>
-                                <td width="300">{post.title}</td>
+                                <td width="300" onClick={() => { navigate('/chatsDetail/' + post.id) }}>{post.title}</td>
                                 <td width="150">{post.postYear == year
                                     ? post.postMonth == month && post.postDay == date
                                         ? post.postHour == hours
@@ -245,7 +247,7 @@ const MyPage = () => {
                     : ({
                         isStudy: (myLikeStudy.slice(0, myLikeStudy.length).map((post) => (
                             <tr className='cate-mypage-detail'>
-                                <td width="300">{post.title}</td>
+                                <td width="300" onClick={() => { navigate('/studiesDetail/' + post.id) }}>{post.title}</td>
                                 <td width="150">{post.postYear == year
                                     ? post.postMonth == month && post.postDay == date
                                         ? post.postHour == hours
@@ -268,7 +270,7 @@ const MyPage = () => {
                         ))),
                         isQuestion: (myLikeQuestion.slice(0, myLikeQuestion.length).map((post) => (
                             <tr className='cate-mypage-detail'>
-                                <td width="300">{post.title}</td>
+                                <td width="300" onClick={() => { navigate('/questionsDetail/' + post.id) }}>{post.title}</td>
                                 <td width="150">{post.postYear == year
                                     ? post.postMonth == month && post.postDay == date
                                         ? post.postHour == hours
@@ -291,7 +293,7 @@ const MyPage = () => {
                         ))),
                         isChat: (myLikeChat.slice(0, myLikeChat.length).map((post) => (
                             <tr className='cate-mypage-detail'>
-                                <td width="300">{post.title}</td>
+                                <td width="300" onClick={() => { navigate('/chatsDetail/' + post.id) }}>{post.title}</td>
                                 <td width="150">{post.postYear == year
                                     ? post.postMonth == month && post.postDay == date
                                         ? post.postHour == hours
