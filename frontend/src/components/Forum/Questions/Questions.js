@@ -38,8 +38,6 @@ const Questions = () => {
   let month = now.getMonth() + 1;
   let date = now.getDate();
 
-  const reactStringReplace = require('react-string-replace');
-
   const [currentPage, setCurrentPage] = useState(0);
   const [postSize, setPostSize] = useState(0);
   const [postsPerPage] = useState(20);
@@ -91,7 +89,7 @@ const Questions = () => {
           postMinute: rowData.createAt.substr(14, 2),
           postSecond: rowData.createAt.substr(17, 2),
           tags: rowData.tags,
-          questionsStatus: rowData.questionsStatus,
+          questionsStatus: rowData.questionStatus,
           commentsSize: rowData.commentsSize,
         }
       )
