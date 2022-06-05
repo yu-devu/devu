@@ -297,7 +297,7 @@ const QuestionsView = () => {
                             <div className="comment-content">
                               {comment.contents}
                             </div>
-                            {/* <div className="comment-date">
+                            <div className="comment-date">
                               {comment.createAt.slice(0, 4) == year
                                 ? comment.createAt.slice(5, 7) == month &&
                                   comment.createAt.slice(8, 10) == date
@@ -328,42 +328,6 @@ const QuestionsView = () => {
                                   comment.createAt.slice(5, 7) +
                                   '.' +
                                   comment.createAt.slice(8, 10)}
-                            </div> */}
-                            <div className="comments-options">
-                              <div className="comment-comment">
-                                <img
-                                  className="img-comment-comment"
-                                  src={imgComment}
-                                  alt=""
-                                />
-                                0
-                              </div>
-                              <div className="comment-like">
-                                <img
-                                  className="img-comment-like"
-                                  src={like}
-                                  alt=""
-                                  onClick={() => {
-                                    handleLike();
-                                  }}
-                                />
-                                0
-                              </div>
-                              {comment.username === username ? (
-                                <div className="studies-btns">
-                                  <button className="btn-modify-content">
-                                    수정
-                                  </button>
-                                  <button
-                                    className="btn-delete-content"
-                                    onClick={() => {
-                                      handleCommentDelete(comment.id);
-                                    }}
-                                  >
-                                    삭제
-                                  </button>
-                                </div>
-                              ) : null}
                             </div>
                           </div>
                         </div>

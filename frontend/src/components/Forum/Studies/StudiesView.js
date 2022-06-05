@@ -23,6 +23,7 @@ const StudiesView = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [postData, setPostData] = useState([]);
+  const [comments, setComments] = useState([]);
   const [isLike, setLike] = useState(false);
   const username = localStorage.getItem('username');
   const [comment, setComment] = useState('');
@@ -61,7 +62,10 @@ const StudiesView = () => {
       studyStatus: res.data.studyStatus,
       comments: res.data.comments,
     };
+    console.log(_postData);
     setPostData(_postData);
+    console.log(_postData.comments);
+    setComments(_postData.comments);
     comment_num = res.data.comments.length;
   };
 
@@ -226,7 +230,12 @@ const StudiesView = () => {
                 </div>
                 <div className="studies-sidebar-btn">
                   <img className="img-detail-like" src={like} alt="" />
-                  <button className="detail-sidebar-btn">
+                  <button
+                    className="detail-sidebar-btn"
+                    onClick={() => {
+                      handleLike();
+                    }}
+                  >
                     {postData.like}
                   </button>
                 </div>
@@ -308,7 +317,7 @@ const StudiesView = () => {
                             <div className="comment-content">
                               {comment.contents}
                             </div>
-                            {/* <div className="comment-date">
+                            <div className="comment-date">
                               {comment.createAt.slice(0, 4) == year
                                 ? comment.createAt.slice(5, 7) == month &&
                                   comment.createAt.slice(8, 10) == date
@@ -339,48 +348,6 @@ const StudiesView = () => {
                                   comment.createAt.slice(5, 7) +
                                   '.' +
                                   comment.createAt.slice(8, 10)}
-                            </div> */}
-                            <div className="comments-options">
-                              <div className="comment-comment">
-                                <img
-                                  className="img-comment-comment"
-                                  src={imgComment}
-                                  alt=""
-                                />
-                                0
-                              </div>
-                              <div className="comment-like">
-                                <img
-                                  className="img-comment-like"
-                                  src={like}
-                                  alt=""
-                                  onClick={() => {
-                                    handleLike();
-                                  }}
-                                />
-                                0
-                              </div>
-                              {comment.username === username ? (
-                                <div className="studies-btns">
-                                  <button
-                                    className="btn-modify-content"
-                                    onClick={() => {
-                                      console.log(comment);
-                                      //   handleCommentModify(comment.id);
-                                    }}
-                                  >
-                                    수정
-                                  </button>
-                                  <button
-                                    className="btn-delete-content"
-                                    onClick={() => {
-                                      handleCommentDelete(comment.id);
-                                    }}
-                                  >
-                                    삭제
-                                  </button>
-                                </div>
-                              ) : null}
                             </div>
                           </div>
                         </div>
