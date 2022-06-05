@@ -34,7 +34,7 @@ public class PositionService {
         int startNum = 1;
         int endNum = 10;
         while (true) {
-            String url = "https://recruit.navercorp.com/naver/job/listJson";
+            String url = "https://career.navercorp.com/naver/job/listJson";
             Document doc = null;
             try {
                 doc = Jsoup.connect(url)
@@ -46,6 +46,7 @@ public class PositionService {
                         .data("endNum", Integer.toString(endNum))
                         .ignoreContentType(true)
                         .post();
+                log.info(doc.toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }
