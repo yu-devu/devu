@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import ReactPaginate from 'react-paginate';
 import './jobs.css'
 import magnify from '../../img/magnify.png';
 import FooterGray from "../Home/FooterGray";
@@ -7,13 +8,23 @@ import logo from '../../img/logo_gray.png'
 
 const Jobs = () => {
     const [postData, setPostData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [postSize, setPostSize] = useState(0);
+    const [postsPerPage] = useState(20);
+
     useEffect(() => {
         fetchData();
-    });
+        fetchPageSize();
+    }, [currentPage]);
 
     const fetchData = async () => {
         const res = await axios.get(
-            process.env.REACT_APP_DB_HOST + `/api/position/all`
+            process.env.REACT_APP_DB_HOST + `/api/position/all`,
+            {
+                params: {
+                    page: currentPage,
+                },
+            }
         );
 
         const _postData = await res.data.map(
@@ -27,6 +38,18 @@ const Jobs = () => {
             )
         );
         setPostData(_postData);
+    };
+
+    const fetchPageSize = async () => {
+        const res = await axios.get(
+            process.env.REACT_APP_DB_HOST + `/community/studies/size`
+        );
+        // setPostSize(res.data);
+        setPostSize(2000); // 채용 정보 개수 받아오는 api가 없어서 임시로 설정함
+    };
+
+    const changePage = ({ selected }) => {
+        setCurrentPage(selected);
     };
 
     return (
@@ -77,6 +100,17 @@ const Jobs = () => {
                     </div>
                 </div>
             </div>
+            <ReactPaginate
+                previousLabel={'<'}
+                nextLabel={'>'}
+                pageCount={Math.ceil(postSize / postsPerPage)} // 페이지 버튼 개수 출력하는 부분 -> 글 전체 개수 넘겨받아서 사용해야함
+                onPageChange={changePage}
+                containerClassName={'btn-pagination'}
+                previousLinkClassName={'btn-pagination-previous'}
+                nextLinkClassName={'btn-pagination-next'}
+                disabledClassName={'btn-pagination-disabled'}
+                activeClassName={'btn-pagination-active'}
+            />
             <FooterGray />
         </div>
     )
