@@ -244,32 +244,35 @@ const QuestionsView = () => {
                               {comment.contents}
                             </div>
                             <div className="comment-date">
-                              {comment.createAt.slice(0, 4) == year &&
-                              comment.createAt.slice(5, 7) == month &&
-                              comment.createAt.slice(8, 10) == date
-                                ? comment.createAt.slice(11, 13) == hours
-                                  ? comment.createAt.slice(14, 16) == minutes
-                                    ? seconds -
-                                      comment.createAt.slice(17, 19) +
-                                      '초 전'
-                                    : minutes -
-                                        comment.createAt.slice(14, 16) ==
-                                        1 &&
-                                      seconds < comment.createAt.slice(17, 19)
-                                    ? 60 -
-                                      comment.createAt.slice(17, 19) +
-                                      seconds +
-                                      '초 전'
-                                    : minutes -
-                                      comment.createAt.slice(14, 16) +
-                                      '분 전'
-                                  : hours -
-                                    comment.createAt.slice(11, 13) +
-                                    '시간 전'
+                              {comment.createAt.slice(0, 4) == year
+                                ? comment.createAt.slice(5, 7) == month &&
+                                  comment.createAt.slice(8, 10) == date
+                                  ? comment.createAt.slice(11, 13) == hours
+                                    ? comment.createAt.slice(14, 16) == minutes
+                                      ? seconds -
+                                        comment.createAt.slice(17, 19) +
+                                        '초 전'
+                                      : minutes -
+                                          comment.createAt.slice(14, 16) ==
+                                          1 &&
+                                        seconds < comment.createAt.slice(17, 19)
+                                      ? 60 -
+                                        comment.createAt.slice(17, 19) +
+                                        seconds +
+                                        '초 전'
+                                      : minutes -
+                                        comment.createAt.slice(14, 16) +
+                                        '분 전'
+                                    : hours -
+                                      comment.createAt.slice(11, 13) +
+                                      '시간 전'
+                                  : comment.createAt.slice(5, 7) +
+                                    '.' +
+                                    comment.createAt.slice(8, 10)
                                 : comment.createAt.slice(2, 4) +
-                                  '/' +
+                                  '.' +
                                   comment.createAt.slice(5, 7) +
-                                  '/' +
+                                  '.' +
                                   comment.createAt.slice(8, 10)}
                             </div>
                             <div className="comments-options">
