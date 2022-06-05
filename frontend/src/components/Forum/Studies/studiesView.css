@@ -210,7 +210,6 @@
     
     .studies-comments-all {
         position: relative;
-        left: 30%;
     }
 
     .number-comments {
@@ -226,9 +225,9 @@
         border-radius: 0.5rem;
         background: #fff;
         position: relative;
-        width: 50%;
+        max-width: 40%;
+        left: 30%;
         height: 100%;
-        left: -4%;
         margin-top: 10px;
     }
 
@@ -338,7 +337,20 @@
           top: 20px;
       }
 
-      /* .studies-detail-top {
-          width: 100%;
-      } */
+      .comment-top {
+          display: flex;
+      }
+
+      .btn-more {
+          background-color: transparent;
+          position: relative;
+          left: 740%;
+          bottom: 10%;
+          cursor: pointer;
+      }
+
+      .img-more {
+          width: 20px;
+          height: 20px;
+      }
 }

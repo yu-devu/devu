@@ -9,6 +9,7 @@ import warning from '../../../img/warning.png';
 import hit from '../../../img/hit.png';
 import like from '../../../img/like.png';
 import imgComment from '../../../img/comment.png';
+import more from '../../../img/more.png';
 import FooterGray from '../../Home/FooterGray';
 
 const StudiesView = () => {
@@ -23,9 +24,11 @@ const StudiesView = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [postData, setPostData] = useState([]);
+  const [comments, setComments] = useState([]);
   const [isLike, setLike] = useState(false);
   const username = localStorage.getItem('username');
   const [comment, setComment] = useState('');
+  const [dropdown, setDropdown] = useState(false);
   const onChangeComment = (e) => {
     setComment(e.target.value);
   };
@@ -61,7 +64,10 @@ const StudiesView = () => {
       studyStatus: res.data.studyStatus,
       comments: res.data.comments,
     };
+    console.log(_postData);
     setPostData(_postData);
+    console.log(_postData.comments);
+    setComments(_postData.comments);
     comment_num = res.data.comments.length;
   };
 
@@ -226,7 +232,12 @@ const StudiesView = () => {
                 </div>
                 <div className="studies-sidebar-btn">
                   <img className="img-detail-like" src={like} alt="" />
-                  <button className="detail-sidebar-btn">
+                  <button
+                    className="detail-sidebar-btn"
+                    onClick={() => {
+                      handleLike();
+                    }}
+                  >
                     {postData.like}
                   </button>
                 </div>
@@ -242,7 +253,6 @@ const StudiesView = () => {
             </div>
             <div className="studies-content-bottom">
               <div className="studies-tags">
-                {/* {postData.tags} */}
                 {postData.tags &&
                   postData.tags.map((tag) => (
                     <div className="studies-tag">{tag}</div>
@@ -290,7 +300,7 @@ const StudiesView = () => {
                   <div className="number-comments">
                     {/* <h6 className="number-comments-text">개의 답글</h6> */}
                   </div>
-                  <div className="studies-comments">
+                  <div div className="studies-comments">
                     {postData.comments &&
                       postData.comments.map((comment) => (
                         <div className="container-comments">
@@ -303,9 +313,46 @@ const StudiesView = () => {
                                   alt=""
                                 />
                               </div>
-                              <div className="comment-owner">학생1</div>
+                              <div className="comment-top">
+                                <div className="comment-owner">
+                                  {comment.username}
+                                </div>
+                                {comment.username === username ? (
+                                  <button className="btn-more">
+                                    <img
+                                      className="img-more"
+                                      alt=""
+                                      src={more}
+                                      onClick={() => {
+                                        if (dropdown) setDropdown(false);
+                                        else setDropdown(true);
+                                      }}
+                                    />
+                                    {dropdown && (
+                                      <div>
+                                        <button
+                                          onClick={() => {
+                                            console.log(comment);
+                                            //   handleCommentModify(comment.id);
+                                          }}
+                                        >
+                                          수정
+                                        </button>
+                                        <button
+                                          onClick={() => {
+                                            handleCommentDelete(
+                                              comment.commentId
+                                            );
+                                          }}
+                                        >
+                                          삭제
+                                        </button>
+                                      </div>
+                                    )}
+                                  </button>
+                                ) : null}
+                              </div>
                             </div>
-                            <hr className="comment-line" />
                             <div className="comment-content">
                               {comment.contents}
                             </div>
@@ -340,48 +387,6 @@ const StudiesView = () => {
                                   comment.createAt.slice(5, 7) +
                                   '.' +
                                   comment.createAt.slice(8, 10)}
-                            </div>
-                            <div className="comments-options">
-                              <div className="comment-comment">
-                                <img
-                                  className="img-comment-comment"
-                                  src={imgComment}
-                                  alt=""
-                                />
-                                0
-                              </div>
-                              <div className="comment-like">
-                                <img
-                                  className="img-comment-like"
-                                  src={like}
-                                  alt=""
-                                  onClick={() => {
-                                    handleLike();
-                                  }}
-                                />
-                                0
-                              </div>
-                              {postData.username === username ? (
-                                <div className="studies-btns">
-                                  <button
-                                    className="btn-modify-content"
-                                    onClick={() => {
-                                      console.log(comment);
-                                      //   handleCommentModify(comment.id);
-                                    }}
-                                  >
-                                    수정
-                                  </button>
-                                  <button
-                                    className="btn-delete-content"
-                                    onClick={() => {
-                                      handleCommentDelete(comment.id);
-                                    }}
-                                  >
-                                    삭제
-                                  </button>
-                                </div>
-                              ) : null}
                             </div>
                           </div>
                         </div>

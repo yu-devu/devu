@@ -9,6 +9,7 @@ import warning from '../../../img/warning.png';
 import hit from '../../../img/hit.png';
 import like from '../../../img/like.png';
 import imgComment from '../../../img/comment.png';
+import more from '../../../img/more.png';
 import FooterGray from '../../Home/FooterGray';
 
 const QuestionsView = () => {
@@ -26,6 +27,7 @@ const QuestionsView = () => {
   const [isLike, setLike] = useState(false);
   const username = localStorage.getItem('username');
   const [comment, setComment] = useState('');
+  const [dropdown, setDropdown] = useState(false);
   const onChangeComment = (e) => {
     setComment(e.target.value);
   };
@@ -291,9 +293,46 @@ const QuestionsView = () => {
                                   alt=""
                                 />
                               </div>
-                              <div className="comment-owner">학생1</div>
+                              <div className="comment-top">
+                                <div className="comment-owner">
+                                  {comment.username}
+                                </div>
+                                {comment.username === username ? (
+                                  <button className="btn-more">
+                                    <img
+                                      className="img-more"
+                                      alt=""
+                                      src={more}
+                                      onClick={() => {
+                                        if (dropdown) setDropdown(false);
+                                        else setDropdown(true);
+                                      }}
+                                    />
+                                    {dropdown && (
+                                      <div>
+                                        <button
+                                          onClick={() => {
+                                            console.log(comment);
+                                            //   handleCommentModify(comment.id);
+                                          }}
+                                        >
+                                          수정
+                                        </button>
+                                        <button
+                                          onClick={() => {
+                                            handleCommentDelete(
+                                              comment.commentId
+                                            );
+                                          }}
+                                        >
+                                          삭제
+                                        </button>
+                                      </div>
+                                    )}
+                                  </button>
+                                ) : null}
+                              </div>
                             </div>
-                            <hr className="comment-line" />
                             <div className="comment-content">
                               {comment.contents}
                             </div>
@@ -323,7 +362,7 @@ const QuestionsView = () => {
                                   : comment.createAt.slice(5, 7) +
                                     '.' +
                                     comment.createAt.slice(8, 10)
-                                : comment.createAt.slice(2, 4) +
+                                : comment.createAt.slice(0, 4) +
                                   '.' +
                                   comment.createAt.slice(5, 7) +
                                   '.' +
@@ -349,21 +388,6 @@ const QuestionsView = () => {
                                 />
                                 0
                               </div>
-                              {postData.username === username ? (
-                                <div className="studies-btns">
-                                  <button className="btn-modify-content">
-                                    수정
-                                  </button>
-                                  <button
-                                    className="btn-delete-content"
-                                    onClick={() => {
-                                      handleCommentDelete(comment.id);
-                                    }}
-                                  >
-                                    삭제
-                                  </button>
-                                </div>
-                              ) : null}
                             </div>
                           </div>
                         </div>
