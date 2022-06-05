@@ -52,7 +52,9 @@ const ChatsView = () => {
       like: res.data.like,
       username: res.data.username,
       date: res.data.createAt.substr(0, 10),
-      time: res.data.createAt.substr(11, 8),
+      hours: Number(res.data.createAt.substr(11, 2)) + 9,
+      minutes: Number(res.data.createAt.substr(14, 2)),
+      seconds: Number(res.data.createAt.substr(17, 2)),
       tags: res.data.tags,
       studyStatus: res.data.studyStatus,
       comments: res.data.comments,
@@ -132,6 +134,7 @@ const ChatsView = () => {
         )
         .then((res) => {
           console.log(res);
+          navigate(0);
         })
         .catch((res) => {
           console.log(res);
@@ -154,7 +157,8 @@ const ChatsView = () => {
                 </div>
                 <div className="chats-owner">{postData.username}</div>
                 <div className="chats-date">
-                  {postData.date} {postData.time}
+                  {postData.date} {postData.hours}:{postData.minutes}:
+                  {postData.seconds}
                 </div>
               </div>
               <div className="chats-top">
