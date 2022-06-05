@@ -37,6 +37,7 @@ const Chats = () => {
   useEffect(() => {
     fetchData();
     fetchPageSize();
+    window.scrollTo(0, 0);
   }, [currentPage, selectedTag, status, order]);
 
   const fetchData = async () => {
@@ -175,15 +176,15 @@ const Chats = () => {
                               ? seconds - post.postSecond + '초 전'
                               : minutes - post.postMinute == 1 &&
                                 seconds < post.postSecond
-                              ? 60 - post.postSecond + seconds + '초 전'
-                              : minutes - post.postMinute + '분 전'
+                                ? 60 - post.postSecond + seconds + '초 전'
+                                : minutes - post.postMinute + '분 전'
                             : hours - post.postHour + '시간 전'
                           : post.postMonth + '.' + post.postDay
                         : post.postYear.slice(2, 4) +
-                          '.' +
-                          post.postMonth +
-                          '.' +
-                          post.postDay}
+                        '.' +
+                        post.postMonth +
+                        '.' +
+                        post.postDay}
                     </div>
                   </div>
                   <div className="chats-line"></div>
