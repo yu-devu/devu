@@ -85,6 +85,7 @@ public class CommentApiController {
         }
     }
 
+    //삭제 가능
     @GetMapping("/comments/{postId}")
     ResponseEntity<?> getComments(@PathVariable(name = "postId") Long postId, @PageableDefault(size = 20) Pageable pageable) {
         try {

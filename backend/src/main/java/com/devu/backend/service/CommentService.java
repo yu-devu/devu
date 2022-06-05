@@ -71,6 +71,7 @@ public class CommentService {
         return comment;
     }
 
+    //삭제 가능
     public Page<CommentResponseDto> commentsByPost(Long postId, Pageable pageable) {
         return commentRepository.findByPostId(postId, pageable).map(
                 comment -> CommentResponseDto
