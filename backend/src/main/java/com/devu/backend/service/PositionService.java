@@ -1,5 +1,6 @@
 package com.devu.backend.service;
 
+import com.devu.backend.api.position.PositionDto;
 import com.devu.backend.api.position.PositionResponseDto;
 import com.devu.backend.entity.CompanyType;
 import com.devu.backend.entity.Position;
@@ -290,13 +291,23 @@ public class PositionService {
             collectCoupang(i);
     }
 
-    public List<PositionResponseDto> getAllPosition(Pageable pageable) {
+    public PositionDto getAllPosition(Pageable pageable) {
         Page<PositionResponseDto> allPosition = positionRepository.findAll(pageable).map(PositionResponseDto::new);
-        return allPosition.getContent();
+        long size = positionRepository.count();
+        return PositionDto.builder().size(size)
+                .positions(allPosition.getContent())
+                .build();
     }
 
-    public List<PositionResponseDto> getNaver(Pageable pageable) {
-        return getPositionByCompany(pageable, CompanyType.NAVER);
+    public PositionDto getNaver(Pageable pageable) {
+        return getPositionDto(pageable, CompanyType.NAVER);
+    }
+
+    private PositionDto getPositionDto(Pageable pageable, CompanyType company) {
+        long size = positionRepository.countByCompany(company);
+        return PositionDto.builder().size(size)
+                .positions(getPositionByCompany(pageable, company))
+                .build();
     }
 
     private List<PositionResponseDto> getPositionByCompany(Pageable pageable, CompanyType company) {
@@ -304,19 +315,19 @@ public class PositionService {
         return positionsByCompany.getContent();
     }
 
-    public List<PositionResponseDto> getKakao(Pageable pageable) {
-        return getPositionByCompany(pageable, CompanyType.KAKAO);
+    public PositionDto getKakao(Pageable pageable) {
+        return getPositionDto(pageable, CompanyType.KAKAO);
     }
 
-    public List<PositionResponseDto> getLine(Pageable pageable) {
-        return getPositionByCompany(pageable, CompanyType.LINE);
+    public PositionDto getLine(Pageable pageable) {
+        return getPositionDto(pageable, CompanyType.LINE);
     }
 
-    public List<PositionResponseDto> getCoupang(Pageable pageable) {
-        return getPositionByCompany(pageable, CompanyType.COUPANG);
+    public PositionDto getCoupang(Pageable pageable) {
+        return getPositionDto(pageable, CompanyType.COUPANG);
     }
 
-    public List<PositionResponseDto> getBaemin(Pageable pageable) {
-        return getPositionByCompany(pageable, CompanyType.BAEMIN);
+    public PositionDto getBaemin(Pageable pageable) {
+        return getPositionDto(pageable, CompanyType.BAEMIN);
     }
 }

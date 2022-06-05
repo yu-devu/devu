@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PositionRepository extends JpaRepository<Position, Long> {
     Page<Position> findByCompany(CompanyType company, Pageable pageable);
+
+    long countByCompany(CompanyType company);
 }
