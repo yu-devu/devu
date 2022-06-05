@@ -36,7 +36,7 @@ const Studies = () => {
   let year = now.getFullYear();
   let month = now.getMonth() + 1;
   let date = now.getDate();
-  let fullDate = year + "-" + month + "-" + date;
+  let fullDate = year + '-' + month + '-' + date;
 
   const [currentPage, setCurrentPage] = useState(0);
   const [postSize, setPostSize] = useState(0);
@@ -143,7 +143,19 @@ const Studies = () => {
                     <div className="top-detail">
                       <div className="top-title">{top.title}</div>
                       <div className="top-content">{top.content}</div>
-                      <div className="top-date">{top.date === fullDate ? top.postHour != hours ? hours - top.postHour + " 시간 전" : top.postMinute != minutes ? minutes - top.postMinute + " 분 전" : "1분 전" : top.postYear != year ? year - top.postYear + " 년 전" : top.postMonth != month ? month - top.postMonth + " 달전" : date - top.postDay + " 일전"}</div>
+                      <div className="top-date">
+                        {top.date === fullDate
+                          ? top.postHour != hours
+                            ? hours - top.postHour + ' 시간 전'
+                            : top.postMinute != minutes
+                            ? minutes - top.postMinute + ' 분 전'
+                            : '1분 전'
+                          : top.postYear != year
+                          ? year - top.postYear + ' 년 전'
+                          : top.postMonth != month
+                          ? month - top.postMonth + ' 달전'
+                          : date - top.postDay + ' 일전'}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -153,83 +165,88 @@ const Studies = () => {
         </div>
         <div className="body-studies">
           <div className="cat-menu">
-            {status === "" ? <div className="cat-menu-items">
-              <p
-                className="cat-item-selected"
-                onClick={() => {
-                  setStatus('');
-                }}
-              >
-                전체
-              </p>
-              <p
-                className="cat-item"
-                onClick={() => {
-                  setStatus('ACTIVE');
-                }}
-              >
-                모집중
-              </p>
-              <p
-                className="cat-item"
-                onClick={() => {
-                  setStatus('CLOSED');
-                }}
-              >
-                모집완료
-              </p>
-            </div> : status === "ACTIVE" ? <div className="cat-menu-items">
-              <p
-                className="cat-item"
-                onClick={() => {
-                  setStatus('');
-                }}
-              >
-                전체
-              </p>
-              <p
-                className="cat-item-selected"
-                onClick={() => {
-                  setStatus('ACTIVE');
-                }}
-              >
-                모집중
-              </p>
-              <p
-                className="cat-item"
-                onClick={() => {
-                  setStatus('CLOSED');
-                }}
-              >
-                모집완료
-              </p>
-            </div> : <div className="cat-menu-items">
-              <p
-                className="cat-item"
-                onClick={() => {
-                  setStatus('');
-                }}
-              >
-                전체
-              </p>
-              <p
-                className="cat-item"
-                onClick={() => {
-                  setStatus('ACTIVE');
-                }}
-              >
-                모집중
-              </p>
-              <p
-                className="cat-item-selected"
-                onClick={() => {
-                  setStatus('CLOSED');
-                }}
-              >
-                모집완료
-              </p>
-            </div>}
-
+            {status === '' ? (
+              <div className="cat-menu-items">
+                <p
+                  className="cat-item-selected"
+                  onClick={() => {
+                    setStatus('');
+                  }}
+                >
+                  전체
+                </p>
+                <p
+                  className="cat-item"
+                  onClick={() => {
+                    setStatus('ACTIVE');
+                  }}
+                >
+                  모집중
+                </p>
+                <p
+                  className="cat-item"
+                  onClick={() => {
+                    setStatus('CLOSED');
+                  }}
+                >
+                  모집완료
+                </p>
+              </div>
+            ) : status === 'ACTIVE' ? (
+              <div className="cat-menu-items">
+                <p
+                  className="cat-item"
+                  onClick={() => {
+                    setStatus('');
+                  }}
+                >
+                  전체
+                </p>
+                <p
+                  className="cat-item-selected"
+                  onClick={() => {
+                    setStatus('ACTIVE');
+                  }}
+                >
+                  모집중
+                </p>
+                <p
+                  className="cat-item"
+                  onClick={() => {
+                    setStatus('CLOSED');
+                  }}
+                >
+                  모집완료
+                </p>
+              </div>
+            ) : (
+              <div className="cat-menu-items">
+                <p
+                  className="cat-item"
+                  onClick={() => {
+                    setStatus('');
+                  }}
+                >
+                  전체
+                </p>
+                <p
+                  className="cat-item"
+                  onClick={() => {
+                    setStatus('ACTIVE');
+                  }}
+                >
+                  모집중
+                </p>
+                <p
+                  className="cat-item-selected"
+                  onClick={() => {
+                    setStatus('CLOSED');
+                  }}
+                >
+                  모집완료
+                </p>
+              </div>
+            )}
           </div>
           <div className="search-and-write">
             <div className="studies-search">
@@ -516,7 +533,19 @@ const Studies = () => {
                     </div>
                     <div className="post-tail">
                       <div className="post-owner">{post.username}</div>
-                      <div className="post-date">{post.date === fullDate ? post.postHour != hours ? hours - post.postHour + " 시간 전" : post.postMinute != minutes ? minutes - post.postMinute + " 분 전" : "1분 전" : post.postYear != year ? year - post.postYear + " 년전" : post.postMonth != month ? month - post.postMonth + " 달전" : date - post.postDay + " 일전"}</div>
+                      <div className="post-date">
+                        {post.date === fullDate
+                          ? post.postHour != hours
+                            ? hours - post.postHour + ' 시간 전'
+                            : post.postMinute != minutes
+                            ? minutes - post.postMinute + ' 분 전'
+                            : '1분 전'
+                          : post.postYear != year
+                          ? year - post.postYear + ' 년전'
+                          : post.postMonth != month
+                          ? month - post.postMonth + ' 달전'
+                          : date - post.postDay + ' 일전'}
+                      </div>
                     </div>
                     <div className="studies-line"></div>
                   </div>
