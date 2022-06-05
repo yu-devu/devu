@@ -119,7 +119,7 @@ const StudiesWrite = () => {
               const data = editor.getData();
               setPostContent({
                 ...postContent,
-                content: data.replace('<p>', '').replace('</p>', ''),
+                content: data.replace('<p>', '').replace('</p>', '').replace('</strong>', '').replace('<strong>', ''),
               });
             }}
             onBlur={(event, editor) => { }}

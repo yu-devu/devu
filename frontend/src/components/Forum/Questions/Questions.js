@@ -38,8 +38,6 @@ const Questions = () => {
   let month = now.getMonth() + 1;
   let date = now.getDate();
 
-  const reactStringReplace = require('react-string-replace');
-
   const [currentPage, setCurrentPage] = useState(0);
   const [postSize, setPostSize] = useState(0);
   const [postsPerPage] = useState(20);
