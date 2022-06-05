@@ -94,6 +94,7 @@ const Questions = () => {
         }
       )
     );
+    console.log(_postData);
     setPostData(_postData);
     CKEditor.instances.textarea_id.getData();
   };

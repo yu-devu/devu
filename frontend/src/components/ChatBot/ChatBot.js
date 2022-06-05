@@ -90,8 +90,8 @@ const ChatBot = () => {
     const botMessage = document.querySelector('#message1');
     const userMessage = document.querySelector('#message2');
     botMessage.innerHTML = '입력 중...';
-    const baseDate = '20220523';
-    const baseTime = '2300';
+    const baseDate = '20220605';
+    const baseTime = '1400';
 
     const formData = new FormData();
     formData.append('baseDate', baseDate);
@@ -134,7 +134,7 @@ const ChatBot = () => {
     console.log(res);
     setTimeout(() => {
       botMessage.innerHTML = '현재 날씨는 맑음입니다!';
-      document.querySelector('#input').value = '';
+      // document.querySelector('#input').value = '';
     }, 2000);
     userMessage.innerHTML = document.querySelector('#weather').value;
   };
