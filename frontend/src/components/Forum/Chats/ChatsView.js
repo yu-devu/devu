@@ -59,6 +59,7 @@ const ChatsView = () => {
       tags: res.data.tags,
       studyStatus: res.data.studyStatus,
       comments: res.data.comments,
+      commentsSize: res.data.commentsSize,
     };
     setPostData(_postData);
     comment_num = res.data.comments.length;
@@ -172,7 +173,8 @@ const ChatsView = () => {
                   {postData.hit}
                 </div>
                 <div className="chats-like">
-                  <img className="img-detail-like" src={like} alt="" />
+                  <img className="img-detail-like" src={like} alt=""
+                    onClick={() => { handleLike(); }} />
                   {postData.like}
                 </div>
                 {postData.username === username ? (
@@ -216,7 +218,7 @@ const ChatsView = () => {
               {postData.comments ? (
                 <div className="chats-comments-all">
                   <div className="number-comments">
-                    <h6 className="number-comments-text">개의 답글</h6>
+                    {/* <h6 className="number-comments-text">{postData.commentsSize}개의 답글</h6> */}
                   </div>
                   <div className="chats-comments">
                     {postData.comments &&

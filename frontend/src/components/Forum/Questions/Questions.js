@@ -40,7 +40,7 @@ const Questions = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
   const [postSize, setPostSize] = useState(0);
-  const [postsPerPage] = useState(20);
+  const [postsPerPage] = useState(10);
   const [postData, setPostData] = useState([]);
   const [lastIdx, setLastIdx] = useState(0);
   const [selectedTag, setSelectedTag] = useState([]);
@@ -499,7 +499,7 @@ const Questions = () => {
               </select>
               <div className="questions-line"></div>
               {/* 게시물 미리보기 */}
-              {postData.slice(0, 20).map((post) => (
+              {postData.slice(0, postsPerPage).map((post) => (
                 <li key={post.id} className="list-questions">
                   <div className="post-questions">
                     <div className="post-header">

@@ -213,7 +213,7 @@ const QuestionsView = () => {
                   <img className="img-detail-hit" src={hit} alt="" />
                   <h8 className="detail-sidebar-text">{postData.hit}</h8>
                 </div>
-                <div className="questions-sidebar-btn">
+                <div className="questions-sidebar-btn" onClick={() => { handleLike(); }}>
                   <img className="img-detail-like" src={like} alt="" />
                   <button className="detail-sidebar-btn">
                     {postData.like}

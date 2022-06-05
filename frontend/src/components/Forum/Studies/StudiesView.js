@@ -38,7 +38,7 @@ const StudiesView = () => {
 
     useEffect(() => {
         fetchData();
-    }, [location, isLike]);
+    }, [isLike]);
 
     const fetchData = async () => {
         const res = await axios.get(
@@ -223,22 +223,12 @@ const StudiesView = () => {
                                     <img className="img-detail-hit" src={hit} alt="" />
                                     <h8 className="detail-sidebar-text">{postData.hit}</h8>
                                 </div>
-                                {isLike ? (
-                                    <div className="studies-sidebar-btn">
-                                        <img className="img-detail-like" src={like} alt="" />
-                                        <button className="detail-sidebar-btn" onClick={() => { handleLike(); }}>
-                                            {postData.like}
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <div className="studies-sidebar-btn-like">
-                                        <img className="img-detail-like" src={like} alt="" />
-                                        <button className="detail-sidebar-btn" onClick={() => { handleLike(); }}>
-                                            {postData.like}
-                                        </button>
-                                    </div>
-                                )}
-
+                                <div className="studies-sidebar-btn" onClick={() => { handleLike(); }}>
+                                    <img className="img-detail-like" src={like} alt="" />
+                                    <button className="detail-sidebar-btn">
+                                        {postData.like}
+                                    </button>
+                                </div>
                                 <div className="studies-sidebar-btn">
                                     <img className="img-detail-like" src={share} alt="" />
                                     <button className="detail-sidebar-btn">공유</button>
