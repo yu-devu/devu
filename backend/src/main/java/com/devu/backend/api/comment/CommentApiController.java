@@ -85,20 +85,6 @@ public class CommentApiController {
         }
     }
 
-    //삭제 가능
-    @GetMapping("/comments/{postId}")
-    ResponseEntity<?> getComments(@PathVariable(name = "postId") Long postId, @PageableDefault(size = 20) Pageable pageable) {
-        try {
-            List<CommentResponseDto> comments = commentService.commentsByPost(postId, pageable).getContent();
-            return ResponseEntity.ok().body(comments);
-        }catch (Exception e) {
-            e.printStackTrace();
-            ResponseErrorDto errorDto = ResponseErrorDto.builder()
-                    .error(e.getMessage())
-                    .build();
-            return ResponseEntity.badRequest().body(errorDto);
-        }
-    }
 
     @PatchMapping("/comments/{id}")
     ResponseEntity<?> updateComment(@PathVariable(name = "id") Long commentId,
