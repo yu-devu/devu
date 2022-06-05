@@ -21,6 +21,7 @@ const StudiesView = () => {
     let month = now.getMonth() + 1;
     let date = now.getDate();
 
+<<<<<<< HEAD
     const navigate = useNavigate();
     const location = useLocation();
     const [postData, setPostData] = useState([]);
@@ -30,6 +31,19 @@ const StudiesView = () => {
     const onChangeComment = (e) => {
         setComment(e.target.value);
     };
+=======
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [postData, setPostData] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [isLike, setLike] = useState(false);
+  const username = localStorage.getItem('username');
+  const [comment, setComment] = useState('');
+  const [dropdown, setDropdown] = useState(false);
+  const onChangeComment = (e) => {
+    setComment(e.target.value);
+  };
+>>>>>>> main
 
     let pathname = location.pathname;
     let [a, b, postId] = pathname.split('/');
@@ -63,6 +77,15 @@ const StudiesView = () => {
         setPostData(_postData);
         comment_num = res.data.comments.length;
     };
+<<<<<<< HEAD
+=======
+    console.log(_postData);
+    setPostData(_postData);
+    console.log(_postData.comments);
+    setComments(_postData.comments);
+    comment_num = res.data.comments.length;
+  };
+>>>>>>> main
 
     const handleLike = async () => {
         const data = {
@@ -180,6 +203,7 @@ const StudiesView = () => {
         }
     };
 
+<<<<<<< HEAD
     return (
         <div>
             <Submenu />
@@ -313,29 +337,206 @@ const StudiesView = () => {
                                                         </div>
                                                         <div className="comment-date">
                                                             {/* {comment.createAt.slice(0, 4) == year
+=======
+  return (
+    <div>
+      <Submenu />
+      <div>
+        {postData ? (
+          <div className="studies-view">
+            <div className="studies-detail-top">
+              <div className="studies-contents-all">
+                <div className="studies-detail-top">
+                  <div className="studies-profile">
+                    <img className="studies-photo" src={ab} alt="" />
+                  </div>
+                  <div className="studies-owner">{postData.username}</div>
+                  <div className="studies-date">
+                    {postData.date} {postData.hours}:{postData.minutes}:
+                    {postData.seconds}
+                  </div>
+                </div>
+                <div className="studies-top">
+                  <div className="studies-status">
+                    {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
+                  </div>
+                  <div className="studies-title">{postData.title}</div>
+                </div>
+                <div className="studies-content">{postData.content}</div>
+              </div>
+              <div className="studies-sidebar">
+                {postData.username === username ? (
+                  <button
+                    className="studies-sidebar-status"
+                    onClick={() => handleStatus()}
+                  >
+                    {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
+                  </button>
+                ) : (
+                  <div className="studies-sidebar-status">
+                    {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
+                  </div>
+                )}
+                <div className="studies-sidebar-item">
+                  <img className="img-detail-hit" src={hit} alt="" />
+                  <h8 className="detail-sidebar-text">{postData.hit}</h8>
+                </div>
+                <div className="studies-sidebar-btn">
+                  <img className="img-detail-like" src={like} alt="" />
+                  <button
+                    className="detail-sidebar-btn"
+                    onClick={() => {
+                      handleLike();
+                    }}
+                  >
+                    {postData.like}
+                  </button>
+                </div>
+                <div className="studies-sidebar-btn">
+                  <img className="img-detail-like" src={share} alt="" />
+                  <button className="detail-sidebar-btn">공유</button>
+                </div>
+                <div className="studies-sidebar-btn">
+                  <img className="img-detail-like" src={warning} alt="" />
+                  <button className="detail-sidebar-btn">신고</button>
+                </div>
+              </div>
+            </div>
+            <div className="studies-content-bottom">
+              <div className="studies-tags">
+                {postData.tags &&
+                  postData.tags.map((tag) => (
+                    <div className="studies-tag">{tag}</div>
+                  ))}
+              </div>
+              {postData.username === username ? (
+                <div className="studies-btns">
+                  <Link
+                    className="btn-modify"
+                    to={`/studiesDetail/${postId}/modify`}
+                  >
+                    수정
+                  </Link>
+                  <button
+                    className="btn-delete-post"
+                    onClick={() => {
+                      handlePostDelete();
+                    }}
+                  >
+                    삭제
+                  </button>
+                </div>
+              ) : null}
+            </div>
+            <div className="studies-detail-bottom">
+              <div className="studies-write-comments">
+                <input
+                  id="comment"
+                  name="comment"
+                  value={comment}
+                  onChange={(e) => onChangeComment(e)}
+                  placeholder="댓글을 달아주세요."
+                />
+                <button
+                  className="btn-comment"
+                  onClick={() => {
+                    handleComment();
+                  }}
+                >
+                  댓글달기
+                </button>
+              </div>
+              {postData.comments ? (
+                <div className="studies-comments-all">
+                  <div className="number-comments">
+                    {/* <h6 className="number-comments-text">개의 답글</h6> */}
+                  </div>
+                  <div div className="studies-comments">
+                    {postData.comments &&
+                      postData.comments.map((comment) => (
+                        <div className="container-comments">
+                          <div className="comment-detail">
+                            <div className="comments-top">
+                              <div>
+                                <img
+                                  className="comment-photo"
+                                  src={ab}
+                                  alt=""
+                                />
+                              </div>
+                              <div className="comment-top">
+                                <div className="comment-owner">
+                                  {comment.username}
+                                </div>
+                                {comment.username === username ? (
+                                  <button className="btn-more">
+                                    <img
+                                      className="img-more"
+                                      alt=""
+                                      src={more}
+                                      onClick={() => {
+                                        if (dropdown) setDropdown(false);
+                                        else setDropdown(true);
+                                      }}
+                                    />
+                                    {dropdown && (
+                                      <div>
+                                        <button
+                                          onClick={() => {
+                                            console.log(comment);
+                                            //   handleCommentModify(comment.id);
+                                          }}
+                                        >
+                                          수정
+                                        </button>
+                                        <button
+                                          onClick={() => {
+                                            handleCommentDelete(
+                                              comment.commentId
+                                            );
+                                          }}
+                                        >
+                                          삭제
+                                        </button>
+                                      </div>
+                                    )}
+                                  </button>
+                                ) : null}
+                              </div>
+                            </div>
+                            <div className="comment-content">
+                              {comment.contents}
+                            </div>
+                            <div className="comment-date">
+                              {comment.createAt.slice(0, 4) == year
+>>>>>>> main
                                 ? comment.createAt.slice(5, 7) == month &&
                                   comment.createAt.slice(8, 10) == date
                                   ? comment.createAt.slice(11, 13) == hours
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
-                                      comment.createAt.slice(17, 19) +
-                                      '초 전'
+                                        comment.createAt.slice(17, 19) +
+                                        '초 전'
                                       : minutes -
-                                        comment.createAt.slice(14, 16) ==
-                                        1 &&
+                                          comment.createAt.slice(14, 16) ==
+                                          1 &&
                                         seconds < comment.createAt.slice(17, 19)
-                                        ? 60 -
+                                      ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
                                         '초 전'
-                                        : minutes -
+                                      : minutes -
                                         comment.createAt.slice(14, 16) +
                                         '분 전'
                                     : hours -
-                                    comment.createAt.slice(11, 13) +
-                                    '시간 전'
+                                      comment.createAt.slice(11, 13) +
+                                      '시간 전'
                                   : comment.createAt.slice(5, 7) +
+                                    '.' +
+                                    comment.createAt.slice(8, 10)
+                                : comment.createAt.slice(2, 4) +
                                   '.' +
+<<<<<<< HEAD
                                   comment.createAt.slice(8, 10)
                                 : comment.createAt.slice(0, 4) +
                                 '.' +
@@ -401,6 +602,27 @@ const StudiesView = () => {
             </div >
         </div >
     );
+=======
+                                  comment.createAt.slice(5, 7) +
+                                  '.' +
+                                  comment.createAt.slice(8, 10)}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              ) : null}
+              <FooterGray />
+            </div>
+          </div>
+        ) : (
+          '해당 게시글을 찾을 수 없습니다.'
+        )}
+      </div>
+    </div>
+  );
+>>>>>>> main
 };
 
 export default StudiesView;
