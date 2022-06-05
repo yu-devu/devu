@@ -1,19 +1,48 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios';
 import './jobs.css'
 import magnify from '../../img/magnify.png';
 import FooterGray from "../Home/FooterGray";
+import logo from '../../img/logo_gray.png'
 
 const Jobs = () => {
+    const [postData, setPostData] = useState([]);
+    useEffect(() => {
+        fetchData();
+    });
+
+    const fetchData = async () => {
+        const res = await axios.get(
+            process.env.REACT_APP_DB_HOST + `/api/position/all`
+        );
+
+        const _postData = await res.data.map(
+            (rowData) => (
+                {
+                    company: rowData.company,
+                    title: rowData.title,
+                    duration: rowData.duration,
+                    link: rowData.link,
+                }
+            )
+        );
+        setPostData(_postData);
+    };
+
     return (
         <div>
             <div>
                 <h1 className='text-jobs'>채용중인 포지션</h1>
                 <div className='top-jobs'>
                     <select className='select1-jobs'>
-                        <option>직군 전체</option>
-                    </select>
-                    <select className='select2-jobs'>
                         <option>직무 전체</option>
+                        <option>백엔드/서버 개발자</option>
+                        <option>프론트엔드/웹퍼블리셔</option>
+                        <option>SW 엔지니어</option>
+                        <option>안드로이드 개발자</option>
+                        <option>IOS 개발자</option>
+                        <option>데이터 엔지니어</option>
+                        <option>데이터 사이언티스트</option>
                     </select>
                     <div className='search-jobs'>
                         <input
@@ -31,106 +60,20 @@ const Jobs = () => {
                 </div>
                 <div className='middle-jobs'>
                     <div className='job-cards'>
-                        <div className='job-card'>
-                            <div className='img-job'></div>
-                            <div className='top-job'>
-                                <div className='location-job'>대구</div>
-                                <div className='name-job'>기업명</div>
+                        {postData.slice(0, 20).map((post) => (
+                            <div className='job-card'>
+                                <div className='img-job'>
+                                    <img className='job-logo' src={logo} />
+                                </div>
+                                <div className='top-job'>
+                                    <div className='name-job'>{post.company}</div>
+                                </div>
+                                <div className='content-job'>
+                                    <a className='job-link' target="_blank" href={post.link}>{post.title}</a>
+                                </div>
+                                <div className='date-job'>{post.duration}</div>
                             </div>
-                            <div className='content-job'>구하는 개발자 포지션/정보란 (엔지니어)</div>
-                            <div className='exp-job'>경력무관</div>
-                            <div className='date-job'>채용 시 마감</div>
-                        </div>
-                        <div className='job-card'>
-                            <div className='img-job'></div>
-                            <div className='top-job'>
-                                <div className='location-job'>대구</div>
-                                <div className='name-job'>기업명</div>
-                            </div>
-                            <div className='content-job'>구하는 개발자 포지션/정보란 (엔지니어)</div>
-                            <div className='exp-job'>경력무관</div>
-                            <div className='date-job'>채용 시 마감</div>
-                        </div>
-                        <div className='job-card'>
-                            <div className='img-job'></div>
-                            <div className='top-job'>
-                                <div className='location-job'>대구</div>
-                                <div className='name-job'>기업명</div>
-                            </div>
-                            <div className='content-job'>구하는 개발자 포지션/정보란 (엔지니어)</div>
-                            <div className='exp-job'>경력무관</div>
-                            <div className='date-job'>채용 시 마감</div>
-                        </div>
-                        <div className='job-card'>
-                            <div className='img-job'></div>
-                            <div className='top-job'>
-                                <div className='location-job'>대구</div>
-                                <div className='name-job'>기업명</div>
-                            </div>
-                            <div className='content-job'>구하는 개발자 포지션/정보란 (엔지니어)</div>
-                            <div className='exp-job'>경력무관</div>
-                            <div className='date-job'>채용 시 마감</div>
-                        </div>
-                        <div className='job-card'>
-                            <div className='img-job'></div>
-                            <div className='top-job'>
-                                <div className='location-job'>대구</div>
-                                <div className='name-job'>기업명</div>
-                            </div>
-                            <div className='content-job'>구하는 개발자 포지션/정보란 (엔지니어)</div>
-                            <div className='exp-job'>경력무관</div>
-                            <div className='date-job'>채용 시 마감</div>
-                        </div>
-                        <div className='job-card'>
-                            <div className='img-job'></div>
-                            <div className='top-job'>
-                                <div className='location-job'>대구</div>
-                                <div className='name-job'>기업명</div>
-                            </div>
-                            <div className='content-job'>구하는 개발자 포지션/정보란 (엔지니어)</div>
-                            <div className='exp-job'>경력무관</div>
-                            <div className='date-job'>채용 시 마감</div>
-                        </div>
-                        <div className='job-card'>
-                            <div className='img-job'></div>
-                            <div className='top-job'>
-                                <div className='location-job'>대구</div>
-                                <div className='name-job'>기업명</div>
-                            </div>
-                            <div className='content-job'>구하는 개발자 포지션/정보란 (엔지니어)</div>
-                            <div className='exp-job'>경력무관</div>
-                            <div className='date-job'>채용 시 마감</div>
-                        </div>
-                        <div className='job-card'>
-                            <div className='img-job'></div>
-                            <div className='top-job'>
-                                <div className='location-job'>대구</div>
-                                <div className='name-job'>기업명</div>
-                            </div>
-                            <div className='content-job'>구하는 개발자 포지션/정보란 (엔지니어)</div>
-                            <div className='exp-job'>경력무관</div>
-                            <div className='date-job'>채용 시 마감</div>
-                        </div>
-                        <div className='job-card'>
-                            <div className='img-job'></div>
-                            <div className='top-job'>
-                                <div className='location-job'>대구</div>
-                                <div className='name-job'>기업명</div>
-                            </div>
-                            <div className='content-job'>구하는 개발자 포지션/정보란 (엔지니어)</div>
-                            <div className='exp-job'>경력무관</div>
-                            <div className='date-job'>채용 시 마감</div>
-                        </div>
-                        <div className='job-card'>
-                            <div className='img-job'></div>
-                            <div className='top-job'>
-                                <div className='location-job'>대구</div>
-                                <div className='name-job'>기업명</div>
-                            </div>
-                            <div className='content-job'>구하는 개발자 포지션/정보란 (엔지니어)</div>
-                            <div className='exp-job'>경력무관</div>
-                            <div className='date-job'>채용 시 마감</div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>
