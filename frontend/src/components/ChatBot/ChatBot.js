@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 import React, { useState } from 'react';
 import chatbot from '../../img/chatbot.png';
@@ -147,9 +146,15 @@ const ChatBot = () => {
     const today = new Date();
     const DateH = today.getHours();
     const DateM = today.getMinutes();
+    let i = 0;
     // const DateS = today.getSeconds();
-    if (DateH < 5 || DateH === 5 || DateM < 30 || DateH === 23 || DateM > 18) {
+    if (
+      DateH < 5 ||
+      (DateH === 5 && DateM < 30) ||
+      (DateH === 23 && DateM > 18)
+    ) {
       setTimeout(() => {
+        console.log(DateH);
         botMessage.innerHTML = '첫차는 5:30에 들어옵니다!';
         document.querySelector('#input').value = '';
       }, 2000);
@@ -159,14 +164,13 @@ const ChatBot = () => {
 
       if (DateD === 0) {
         // 일요일
-        let i = 0;
         await axios
           .get(process.env.REACT_APP_DB_HOST + '/api/holidaySubway')
           .then((e) => {
             for (i = 0; i < e.data.length; i++) {
               const candiDate = e.data[i].split(':');
               if (candiDate[0] == DateH) {
-                if (candiDate[1] >= DateM) {
+                if (candiDate[1] > DateM) {
                   leftTime = Number(candiDate[1]) - DateM;
                   break;
                 }
@@ -176,22 +180,20 @@ const ChatBot = () => {
               const candiDate = e.data[i].split(':');
               leftTime = Number(candiDate[1]) - DateM + 60;
             }
-            console.log('success');
-            console.log('leftTime = ' + leftTime);
+            console.log('일요일 leftTime = ' + leftTime);
           })
           .catch((res) => {
             console.log('false');
           });
       } else if (DateD > 0 && DateD < 6) {
         // 평일
-        let i = 0;
         await axios
           .get(process.env.REACT_APP_DB_HOST + '/api/weekdaySubway ')
           .then((e) => {
             for (i = 0; i < e.data.length; i++) {
               const candiDate = e.data[i].split(':');
               if (candiDate[0] == DateH) {
-                if (candiDate[1] >= DateM) {
+                if (candiDate[1] > DateM) {
                   leftTime = Number(candiDate[1]) - DateM;
                   break;
                 }
@@ -201,22 +203,20 @@ const ChatBot = () => {
               const candiDate = e.data[i].split(':');
               leftTime = Number(candiDate[1]) - DateM + 60;
             }
-            console.log('success');
-            console.log('leftTime = ' + leftTime);
+            console.log('평일 leftTime = ' + leftTime);
           })
           .catch((res) => {
             console.log('false');
           });
       } else {
         // 토요일
-        let i = 0;
         await axios
           .get(process.env.REACT_APP_DB_HOST + '/api/weekendSubway')
           .then((e) => {
             for (i = 0; i < e.data.length; i++) {
               const candiDate = e.data[i].split(':');
               if (candiDate[0] == DateH) {
-                if (candiDate[1] >= DateM) {
+                if (candiDate[1] > DateM) {
                   leftTime = Number(candiDate[1]) - DateM;
                   break;
                 }
@@ -226,8 +226,7 @@ const ChatBot = () => {
               const candiDate = e.data[i].split(':');
               leftTime = Number(candiDate[1]) - DateM + 60;
             }
-            console.log('success');
-            console.log('leftTime = ' + leftTime);
+            console.log('토요일 leftTime = ' + leftTime);
           })
           .catch((res) => {
             console.log('false');
@@ -239,7 +238,6 @@ const ChatBot = () => {
         document.querySelector('#input').value = '';
       }, 2000);
     }
-
 
     userMessage.innerHTML = document.querySelector('#subway').value;
   };
