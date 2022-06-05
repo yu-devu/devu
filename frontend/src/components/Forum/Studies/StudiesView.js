@@ -101,30 +101,34 @@ const StudiesView = () => {
   console.log(postData.time);
 
   const handleComment = async () => {
-    const data = {
-      username: username,
-      postId: postId,
-      contents: comment,
-      // parent: parent,
-      // group: group,
-    };
+    if (comment !== '') {
+      const data = {
+        username: username,
+        postId: postId,
+        contents: comment,
+        // parent: parent,
+        // group: group,
+      };
 
-    await axios
-      .post(
-        process.env.REACT_APP_DB_HOST + `/api/comments`,
-        JSON.stringify(data),
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      )
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((res) => {
-        console.log(res);
-      });
+      await axios
+        .post(
+          process.env.REACT_APP_DB_HOST + `/api/comments`,
+          JSON.stringify(data),
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+    } else {
+      alert('댓글을 작성해주세요!');
+    }
   };
 
   return (
