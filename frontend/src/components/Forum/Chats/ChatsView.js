@@ -6,7 +6,7 @@ import Submenu from '../Submenu';
 import ab from '../../../img/a.png';
 import hit from '../../../img/hit.png';
 import like from '../../../img/like.png';
-import imgComment from '../../../img/comment.png';
+import more from '../../../img/more.png';
 import FooterGray from '../../Home/FooterGray';
 
 const ChatsView = () => {
@@ -24,8 +24,14 @@ const ChatsView = () => {
   const [isLike, setLike] = useState(false);
   const username = localStorage.getItem('username');
   const [comment, setComment] = useState('');
+  const [modifycomment, setModifyComment] = useState('');
+  const [dropdown, setDropdown] = useState(false);
+  const [commentModifyMode, handleCommentModifyMode] = useState(0);
   const onChangeComment = (e) => {
     setComment(e.target.value);
+  };
+  const onChangeModifyComment = (e) => {
+    setModifyComment(e.target.value);
   };
 
   let pathname = location.pathname;
@@ -35,8 +41,7 @@ const ChatsView = () => {
 
   useEffect(() => {
     fetchData();
-    // console.log(location);
-    // console.log(isLike);
+    window.scrollTo(0, 0);
   }, [location, isLike]);
 
   const fetchData = async () => {
@@ -110,6 +115,31 @@ const ChatsView = () => {
     } else {
       alert('취소하였습니다!');
     }
+  };
+
+  const handleCommentModify = async (id) => {
+    const data = {
+      contents: modifycomment,
+    };
+
+    await axios
+      .patch(
+        process.env.REACT_APP_DB_HOST + `/api/comments/${id}`,
+        JSON.stringify(data),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `${localStorage.getItem('accessToken')}`,
+            // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
+          },
+        }
+      )
+      .then(() => {
+        navigate(0);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
   };
 
   const handleComment = async () => {
@@ -197,6 +227,7 @@ const ChatsView = () => {
             <div className="chats-detail-bottom">
               <div className="chats-write-comments">
                 <input
+                  className='comment'
                   id="comment"
                   name="comment"
                   value={comment}
@@ -215,7 +246,6 @@ const ChatsView = () => {
               {postData.comments ? (
                 <div className="chats-comments-all">
                   <div className="number-comments">
-                    <h6 className="number-comments-text">개의 답글</h6>
                   </div>
                   <div className="chats-comments">
                     {postData.comments &&
@@ -230,12 +260,74 @@ const ChatsView = () => {
                                   alt=""
                                 />
                               </div>
-                              <div className="comment-owner">학생1</div>
+                              <div className="comment-top">
+                                <div className="comment-owner">
+                                  {comment.username}
+                                </div>
+                                {comment.username === username ? (
+                                  <button className="btn-more"
+                                    onClick={() => {
+                                      if (dropdown) setDropdown(false);
+                                      else setDropdown(true);
+                                    }}
+                                    onBlur={() => {
+                                      setDropdown(false)
+                                    }}>
+                                    <img
+                                      className="img-more"
+                                      alt=""
+                                      src={more}
+                                    />
+                                    {dropdown && (
+                                      <ul className='more-submenu'>
+                                        <button
+                                          onClick={() => {
+                                            handleCommentModifyMode(
+                                              comment.commentId
+                                            );
+                                          }}
+                                        >
+                                          수정
+                                        </button>
+                                        <button
+                                          onClick={() => {
+                                            handleCommentDelete(
+                                              comment.commentId
+                                            );
+                                          }}
+                                        >
+                                          삭제
+                                        </button>
+                                      </ul>
+                                    )}
+                                  </button>
+                                ) : null}
+                              </div>
                             </div>
-                            <hr className="comment-line" />
-                            <div className="comment-content">
-                              {comment.contents}
-                            </div>
+                            {comment.commentId === commentModifyMode ? (
+                              <div className="questions-write-comments">
+                                <input
+                                  id="comment"
+                                  name="comment"
+                                  defaultValue={comment.contents}
+                                  //   value={modifycomment}
+                                  onChange={(e) => onChangeModifyComment(e)}
+                                />
+
+                                <button
+                                  className="btn-comment"
+                                  onClick={() => {
+                                    handleCommentModify(comment.commentId);
+                                  }}
+                                >
+                                  수정하기
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="comment-content">
+                                {comment.contents}
+                              </div>
+                            )}
                             <div className="comment-date">
                               {comment.createAt.slice(0, 4) == year
                                 ? comment.createAt.slice(5, 7) == month &&
@@ -243,66 +335,30 @@ const ChatsView = () => {
                                   ? comment.createAt.slice(11, 13) == hours
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
-                                        comment.createAt.slice(17, 19) +
-                                        '초 전'
+                                      comment.createAt.slice(17, 19) +
+                                      '초 전'
                                       : minutes -
-                                          comment.createAt.slice(14, 16) ==
-                                          1 &&
+                                        comment.createAt.slice(14, 16) ==
+                                        1 &&
                                         seconds < comment.createAt.slice(17, 19)
-                                      ? 60 -
+                                        ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
                                         '초 전'
-                                      : minutes -
+                                        : minutes -
                                         comment.createAt.slice(14, 16) +
                                         '분 전'
                                     : hours -
-                                      comment.createAt.slice(11, 13) +
-                                      '시간 전'
+                                    comment.createAt.slice(11, 13) +
+                                    '시간 전'
                                   : comment.createAt.slice(5, 7) +
-                                    '.' +
-                                    comment.createAt.slice(8, 10)
+                                  '.' +
+                                  comment.createAt.slice(8, 10)
                                 : comment.createAt.slice(2, 4) +
-                                  '.' +
-                                  comment.createAt.slice(5, 7) +
-                                  '.' +
-                                  comment.createAt.slice(8, 10)}
-                            </div>
-                            <div className="comments-options">
-                              <div className="comment-comment">
-                                <img
-                                  className="img-comment-comment"
-                                  src={imgComment}
-                                  alt=""
-                                />
-                                0
-                              </div>
-                              <div className="comment-like">
-                                <img
-                                  className="img-comment-like"
-                                  src={like}
-                                  alt=""
-                                  onClick={() => {
-                                    handleLike();
-                                  }}
-                                />
-                                0
-                              </div>
-                              {postData.username === username ? (
-                                <div className="studies-btns">
-                                  <button className="btn-modify-content">
-                                    수정
-                                  </button>
-                                  <button
-                                    className="btn-delete-content"
-                                    onClick={() => {
-                                      handleCommentDelete(comment.id);
-                                    }}
-                                  >
-                                    삭제
-                                  </button>
-                                </div>
-                              ) : null}
+                                '.' +
+                                comment.createAt.slice(5, 7) +
+                                '.' +
+                                comment.createAt.slice(8, 10)}
                             </div>
                           </div>
                         </div>

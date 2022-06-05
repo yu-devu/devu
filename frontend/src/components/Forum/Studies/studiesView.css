@@ -195,7 +195,7 @@
     .btn-comment {
         border-radius: 50px;
         position: relative;
-        left: 66%;
+        left: 6%;
         width: 10%;
         padding: 1%;
         background-color: black;
@@ -210,7 +210,6 @@
     
     .studies-comments-all {
         position: relative;
-        left: 30%;
     }
 
     .number-comments {
@@ -226,15 +225,15 @@
         border-radius: 0.5rem;
         background: #fff;
         position: relative;
-        width: 50%;
+        max-width: 40%;
+        left: 30%;
         height: 100%;
-        left: -4%;
         margin-top: 10px;
     }
 
     .comment-detail {
         position: relative;
-        left: 8%;
+        /* left: 8%; */
     }
 
     .comments-top {
@@ -338,7 +337,46 @@
           top: 20px;
       }
 
-      /* .studies-detail-top {
-          width: 100%;
-      } */
+      .comment-top {
+          display: flex;
+      }
+
+      .btn-more {
+          background-color: transparent;
+          position: relative;
+          margin-left: 500px;
+          bottom: 10%;
+          cursor: pointer;
+      }
+
+      .img-more {
+          width: 20px;
+          height: 20px;
+      }
+
+      .more-submenu {
+        z-index: 100;
+        width: 6rem;
+        position: absolute;
+        left: 1rem;
+        text-align: start;
+        border: 1px solid rgba(241, 241, 241, 1);
+        border-top: none;
+      }
+
+      .more-submenu button {
+        background: white;
+        cursor: pointer;
+        width: 100%;
+        color: #030303;
+        padding: 10%;
+      }
+
+      .more-submenu button:hover {
+          background-color: var(--color-hover);
+      }
+
+      .comment {
+          width: 80%;
+      }
 }

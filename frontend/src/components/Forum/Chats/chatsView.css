@@ -140,7 +140,7 @@
   .btn-comment {
       border-radius: 50px;
       position: relative;
-      left: 66%;
+      /* left: 66%; */
       width: 10%;
       padding: 1%;
       background-color: black;
@@ -155,7 +155,6 @@
   
   .chats-comments-all {
       position: relative;
-      left: 30%;
   }
 
   .number-comments {
@@ -167,19 +166,19 @@
   }
 
   .container-comments {
-      filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.102));
-      border-radius: 0.5rem;
-      background: #fff;
-      position: relative;
-      width: 50%;
-      height: 100%;
-      left: -4%;
-      margin-top: 10px;
-  }
+    filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.102));
+    border-radius: 0.5rem;
+    background: #fff;
+    position: relative;
+    max-width: 40%;
+    left: 30%;
+    min-height: 120px;
+    margin-top: 10px;
+}
 
   .comment-detail {
       position: relative;
-      left: 8%;
+      left: 4%;
   }
 
   .comments-top {
@@ -205,11 +204,13 @@
 
   .comment-content {
       font-weight: 400;
+      margin-left: 10px;
   }
 
   .comment-date {
       font-size: 14px;
       color: rgba(128,128,128,1);
+      margin-left: 10px;
   }
 
   .comments-options {
