@@ -24,18 +24,21 @@ const StudiesView = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [postData, setPostData] = useState([]);
+    const [comments, setComments] = useState([]);
     const [isLike, setLike] = useState(false);
     const username = localStorage.getItem('username');
     const [comment, setComment] = useState('');
-    const [modifycomment, setModifyComment] = useState('');
     const [dropdown, setDropdown] = useState(false);
-    const [commentModifyMode, handleCommentModifyMode] = useState(0);
     const onChangeComment = (e) => {
         setComment(e.target.value);
     };
-    const onChangeModifyComment = (e) => {
-        setModifyComment(e.target.value);
-    };
+
+    // const moreButton = document.getElementById('btn-more');
+
+    // moreButton.addEventListener('click', () => {
+    //   const dropdown = document.querySelector('more-submenu');
+    //   dropdown.style.display = 'block';
+    // });
 
     let pathname = location.pathname;
     let [a, b, postId] = pathname.split('/');
@@ -44,8 +47,7 @@ const StudiesView = () => {
 
     useEffect(() => {
         fetchData();
-        // console.log(location);
-        // console.log(isLike);
+        window.scrollTo(0, 0);
     }, [location, isLike]);
 
     const fetchData = async () => {
@@ -68,7 +70,10 @@ const StudiesView = () => {
             studyStatus: res.data.studyStatus,
             comments: res.data.comments,
         };
+        console.log(_postData);
         setPostData(_postData);
+        console.log(_postData.comments);
+        setComments(_postData.comments);
         comment_num = res.data.comments.length;
     };
 
@@ -145,28 +150,13 @@ const StudiesView = () => {
     };
 
     const handleCommentModify = async (id) => {
-        const data = {
-            contents: modifycomment,
-        };
-
-        await axios
-            .patch(
-                process.env.REACT_APP_DB_HOST + `/api/comments/${id}`,
-                JSON.stringify(data),
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `${localStorage.getItem('accessToken')}`,
-                        // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
-                    },
-                }
-            )
-            .then(() => {
-                navigate(0);
-            })
-            .catch((res) => {
-                console.log(res);
-            });
+        // await axios
+        //   .delete(process.env.REACT_APP_DB_HOST + `/api/comments/${id}`)
+        //   .then(() => {
+        //     console.log('삭제 성공!');
+        //     navigate(0);
+        //   })
+        //   .catch((res) => console.log(res));
     };
 
     console.log(postData.hours + ':' + postData.minutes + ':' + postData.seconds);
@@ -296,6 +286,7 @@ const StudiesView = () => {
                         <div className="studies-detail-bottom">
                             <div className="studies-write-comments">
                                 <input
+                                    className='comment'
                                     id="comment"
                                     name="comment"
                                     value={comment}
@@ -334,23 +325,25 @@ const StudiesView = () => {
                                                                     {comment.username}
                                                                 </div>
                                                                 {comment.username === username ? (
-                                                                    <button className="btn-more">
+                                                                    <button className="btn-more"
+                                                                        onClick={() => {
+                                                                            if (dropdown) setDropdown(false);
+                                                                            else setDropdown(true);
+                                                                        }}
+                                                                        onBlur={() => {
+                                                                            setDropdown(false)
+                                                                        }}>
                                                                         <img
                                                                             className="img-more"
                                                                             alt=""
                                                                             src={more}
-                                                                            onClick={() => {
-                                                                                if (dropdown) setDropdown(false);
-                                                                                else setDropdown(true);
-                                                                            }}
                                                                         />
                                                                         {dropdown && (
-                                                                            <div>
+                                                                            <ul className='more-submenu'>
                                                                                 <button
                                                                                     onClick={() => {
-                                                                                        handleCommentModifyMode(
-                                                                                            comment.commentId
-                                                                                        );
+                                                                                        console.log(comment);
+                                                                                        //   handleCommentModify(comment.id);
                                                                                     }}
                                                                                 >
                                                                                     수정
@@ -364,38 +357,15 @@ const StudiesView = () => {
                                                                                 >
                                                                                     삭제
                                                                                 </button>
-                                                                            </div>
+                                                                            </ul>
                                                                         )}
                                                                     </button>
                                                                 ) : null}
                                                             </div>
                                                         </div>
-
-                                                        {comment.commentId === commentModifyMode ? (
-                                                            <div className="questions-write-comments">
-                                                                <input
-                                                                    id="comment"
-                                                                    name="comment"
-                                                                    defaultValue={comment.contents}
-                                                                    //   value={modifycomment}
-                                                                    onChange={(e) => onChangeModifyComment(e)}
-                                                                />
-
-                                                                <button
-                                                                    className="btn-comment"
-                                                                    onClick={() => {
-                                                                        handleCommentModify(comment.commentId);
-                                                                    }}
-                                                                >
-                                                                    수정하기
-                                                                </button>
-                                                            </div>
-                                                        ) : (
-                                                            <div className="comment-content">
-                                                                {comment.contents}
-                                                            </div>
-                                                        )}
-
+                                                        <div className="comment-content">
+                                                            {comment.contents}
+                                                        </div>
                                                         <div className="comment-date">
                                                             {comment.createAt.slice(0, 4) == year
                                                                 ? comment.createAt.slice(5, 7) == month &&

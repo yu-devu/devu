@@ -7,7 +7,6 @@ import ab from '../../../img/a.png';
 import hit from '../../../img/hit.png';
 import like from '../../../img/like.png';
 import more from '../../../img/more.png';
-import imgComment from '../../../img/comment.png';
 import FooterGray from '../../Home/FooterGray';
 
 const ChatsView = () => {
@@ -42,8 +41,7 @@ const ChatsView = () => {
 
   useEffect(() => {
     fetchData();
-    // console.log(location);
-    // console.log(isLike);
+    window.scrollTo(0, 0);
   }, [location, isLike]);
 
   const fetchData = async () => {
@@ -231,6 +229,7 @@ const ChatsView = () => {
             <div className="chats-detail-bottom">
               <div className="chats-write-comments">
                 <input
+                  className='comment'
                   id="comment"
                   name="comment"
                   value={comment}
@@ -249,7 +248,6 @@ const ChatsView = () => {
               {postData.comments ? (
                 <div className="chats-comments-all">
                   <div className="number-comments">
-                    {/* <h6 className="number-comments-text">{postData.commentsSize}개의 답글</h6> */}
                   </div>
                   <div className="chats-comments">
                     {postData.comments &&
@@ -269,18 +267,21 @@ const ChatsView = () => {
                                   {comment.username}
                                 </div>
                                 {comment.username === username ? (
-                                  <button className="btn-more">
+                                  <button className="btn-more"
+                                    onClick={() => {
+                                      if (dropdown) setDropdown(false);
+                                      else setDropdown(true);
+                                    }}
+                                    onBlur={() => {
+                                      setDropdown(false)
+                                    }}>
                                     <img
                                       className="img-more"
                                       alt=""
                                       src={more}
-                                      onClick={() => {
-                                        if (dropdown) setDropdown(false);
-                                        else setDropdown(true);
-                                      }}
                                     />
                                     {dropdown && (
-                                      <div>
+                                      <ul className='more-submenu'>
                                         <button
                                           onClick={() => {
                                             handleCommentModifyMode(
@@ -299,7 +300,7 @@ const ChatsView = () => {
                                         >
                                           삭제
                                         </button>
-                                      </div>
+                                      </ul>
                                     )}
                                   </button>
                                 ) : null}
@@ -336,30 +337,30 @@ const ChatsView = () => {
                                   ? comment.createAt.slice(11, 13) == hours
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
-                                        comment.createAt.slice(17, 19) +
-                                        '초 전'
+                                      comment.createAt.slice(17, 19) +
+                                      '초 전'
                                       : minutes -
-                                          comment.createAt.slice(14, 16) ==
-                                          1 &&
+                                        comment.createAt.slice(14, 16) ==
+                                        1 &&
                                         seconds < comment.createAt.slice(17, 19)
-                                      ? 60 -
+                                        ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
                                         '초 전'
-                                      : minutes -
+                                        : minutes -
                                         comment.createAt.slice(14, 16) +
                                         '분 전'
                                     : hours -
-                                      comment.createAt.slice(11, 13) +
-                                      '시간 전'
+                                    comment.createAt.slice(11, 13) +
+                                    '시간 전'
                                   : comment.createAt.slice(5, 7) +
-                                    '.' +
-                                    comment.createAt.slice(8, 10)
+                                  '.' +
+                                  comment.createAt.slice(8, 10)
                                 : comment.createAt.slice(2, 4) +
-                                  '.' +
-                                  comment.createAt.slice(5, 7) +
-                                  '.' +
-                                  comment.createAt.slice(8, 10)}
+                                '.' +
+                                comment.createAt.slice(5, 7) +
+                                '.' +
+                                comment.createAt.slice(8, 10)}
                             </div>
                           </div>
                         </div>
