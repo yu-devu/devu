@@ -114,6 +114,29 @@ const StudiesView = () => {
     }
   };
 
+  const handleStatus = async () => {
+    const data = {
+      postId: postData.id,
+      username: postData.username,
+    };
+    await axios
+      .post(
+        process.env.REACT_APP_DB_HOST + `/api/change/study_status`,
+        JSON.stringify(data),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then(() => {
+        navigate(0);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  };
+
   const handleCommentModify = async (id) => {
     // await axios
     //   .delete(process.env.REACT_APP_DB_HOST + `/api/comments/${id}`)
@@ -185,9 +208,18 @@ const StudiesView = () => {
                 <div className="studies-content">{postData.content}</div>
               </div>
               <div className="studies-sidebar">
-                <div className="studies-sidebar-status">
-                  {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
-                </div>
+                {postData.username === username ? (
+                  <button
+                    className="studies-sidebar-status"
+                    onClick={() => handleStatus()}
+                  >
+                    {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
+                  </button>
+                ) : (
+                  <div className="studies-sidebar-status">
+                    {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
+                  </div>
+                )}
                 <div className="studies-sidebar-item">
                   <img className="img-detail-hit" src={hit} alt="" />
                   <h8 className="detail-sidebar-text">{postData.hit}</h8>
