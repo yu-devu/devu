@@ -6,6 +6,7 @@ import Submenu from '../Submenu';
 import ab from '../../../img/a.png';
 import hit from '../../../img/hit.png';
 import like from '../../../img/like.png';
+import more from '../../../img/more.png';
 import imgComment from '../../../img/comment.png';
 import FooterGray from '../../Home/FooterGray';
 
@@ -230,44 +231,48 @@ const ChatsView = () => {
                                   alt=""
                                 />
                               </div>
-                              <div className="comment-owner">학생1</div>
+                              <div className='comment-top'>
+                                <div className="comment-owner">{comment.username}</div>
+                                <button className='btn-more'>
+                                  <img className='img-more' alt='' src={more} />
+                                </button>
+                              </div>
                             </div>
-                            <hr className="comment-line" />
                             <div className="comment-content">
                               {comment.contents}
                             </div>
-                            {/* <div className="comment-date">
-                              {comment.createAt.slice(0, 4) == year
+                            <div className="comment-date">
+                              {/* {comment.createAt.slice(0, 4) == year
                                 ? comment.createAt.slice(5, 7) == month &&
                                   comment.createAt.slice(8, 10) == date
                                   ? comment.createAt.slice(11, 13) == hours
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
-                                        comment.createAt.slice(17, 19) +
-                                        '초 전'
+                                      comment.createAt.slice(17, 19) +
+                                      '초 전'
                                       : minutes -
-                                          comment.createAt.slice(14, 16) ==
-                                          1 &&
+                                        comment.createAt.slice(14, 16) ==
+                                        1 &&
                                         seconds < comment.createAt.slice(17, 19)
-                                      ? 60 -
+                                        ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
                                         '초 전'
-                                      : minutes -
+                                        : minutes -
                                         comment.createAt.slice(14, 16) +
                                         '분 전'
                                     : hours -
-                                      comment.createAt.slice(11, 13) +
-                                      '시간 전'
+                                    comment.createAt.slice(11, 13) +
+                                    '시간 전'
                                   : comment.createAt.slice(5, 7) +
-                                    '.' +
-                                    comment.createAt.slice(8, 10)
-                                : comment.createAt.slice(2, 4) +
                                   '.' +
-                                  comment.createAt.slice(5, 7) +
-                                  '.' +
-                                  comment.createAt.slice(8, 10)}
-                            </div> */}
+                                  comment.createAt.slice(8, 10)
+                                : comment.createAt.slice(0, 4) +
+                                '.' +
+                                comment.createAt.slice(5, 7) +
+                                '.' +
+                                comment.createAt.slice(8, 10)} */}
+                            </div>
                             <div className="comments-options">
                               <div className="comment-comment">
                                 <img
