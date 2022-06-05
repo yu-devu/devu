@@ -1,5 +1,6 @@
 package com.devu.backend.service;
 
+import com.devu.backend.api.comment.CommentResponseDto;
 import com.devu.backend.api.status.ResponseStatusDto;
 import com.devu.backend.common.exception.PostNotFoundException;
 import com.devu.backend.common.exception.UserNotFoundException;
@@ -251,7 +252,18 @@ public class PostService {
                 .content(chat.getContent())
                 .title(chat.getTitle())
                 .like(chat.getLikes().size())
-                .comments(chat.getComments())
+                .comments(
+                        chat.getComments().stream()
+                                .map(comment -> CommentResponseDto.builder()
+                                        .username(comment.getUser().getUsername())
+                                        .contents(comment.getContents())
+                                        .commentId(comment.getId())
+                                        .deleted(comment.isDeleted())
+                                        .group(comment.getGroupNum())
+                                        .parent(comment.getParent())
+                                        .build()
+                                ).collect(Collectors.toList())
+                )
                 .tags(chat.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                 .createAt(chat.getCreateAt())
                 .url(chat.getImages().stream().map(Image::getPath).collect(Collectors.toList()))
@@ -274,7 +286,18 @@ public class PostService {
                 .title(study.getTitle())
                 .studyStatus(study.getStudyStatus())
                 .like(study.getLikes().size())
-                .comments(study.getComments())
+                .comments(
+                        study.getComments().stream()
+                                .map(comment -> CommentResponseDto.builder()
+                                        .username(comment.getUser().getUsername())
+                                        .contents(comment.getContents())
+                                        .commentId(comment.getId())
+                                        .deleted(comment.isDeleted())
+                                        .group(comment.getGroupNum())
+                                        .parent(comment.getParent())
+                                        .build()
+                                ).collect(Collectors.toList())
+                )
                 .tags(study.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                 .createAt(study.getCreateAt())
                 .url(study.getImages().stream().map(Image::getPath).collect(Collectors.toList()))
@@ -297,7 +320,18 @@ public class PostService {
                 .title(question.getTitle())
                 .questionStatus(question.getQuestionStatus())
                 .like(question.getLikes().size())
-                .comments(question.getComments())
+                .comments(
+                        question.getComments().stream()
+                                .map(comment -> CommentResponseDto.builder()
+                                        .username(comment.getUser().getUsername())
+                                        .contents(comment.getContents())
+                                        .commentId(comment.getId())
+                                        .deleted(comment.isDeleted())
+                                        .group(comment.getGroupNum())
+                                        .parent(comment.getParent())
+                                        .build()
+                                ).collect(Collectors.toList())
+                )
                 .tags(question.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                 .createAt(question.getCreateAt())
                 .url(question.getImages().stream().map(Image::getPath).collect(Collectors.toList()))

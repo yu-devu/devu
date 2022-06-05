@@ -71,20 +71,6 @@ public class CommentService {
         return comment;
     }
 
-    public Page<CommentResponseDto> commentsByPost(Long postId, Pageable pageable) {
-        return commentRepository.findByPostId(postId, pageable).map(
-                comment -> CommentResponseDto
-                        .builder()
-                        .username(comment.getUser().getUsername())
-                        .title(comment.getPost().getTitle())
-                        .commentId(comment.getId())
-                        .group(comment.getGroupNum())
-                        .contents(comment.getContents())
-                        .parent(comment.getParent())
-                        .deleted(comment.isDeleted())
-                        .build()
-        );
-    }
 
     @Transactional
     public void deleteComment(Comment comment) {

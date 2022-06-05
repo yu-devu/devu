@@ -54,7 +54,9 @@ const QuestionsView = () => {
       like: res.data.like,
       username: res.data.username,
       date: res.data.createAt.substr(0, 10),
-      time: res.data.createAt.substr(11, 8),
+      hours: Number(res.data.createAt.substr(11, 2)) + 9,
+      minutes: Number(res.data.createAt.substr(14, 2)),
+      seconds: Number(res.data.createAt.substr(17, 2)),
       tags: res.data.tags,
       questionsStatus: res.data.questionsStatus,
       comments: res.data.comments,
@@ -134,6 +136,7 @@ const QuestionsView = () => {
         )
         .then((res) => {
           console.log(res);
+          navigate(0);
         })
         .catch((res) => {
           console.log(res);
@@ -157,7 +160,8 @@ const QuestionsView = () => {
                   </div>
                   <div className="questions-owner">{postData.username}</div>
                   <div className="questions-date">
-                    {postData.date} {postData.time}
+                    {postData.date} {postData.hours}:{postData.minutes}:
+                    {postData.seconds}
                   </div>
                 </div>
                 <div className="questions-top">

@@ -54,7 +54,9 @@ const StudiesView = () => {
       like: res.data.like,
       username: res.data.username,
       date: res.data.createAt.substr(0, 10),
-      time: res.data.createAt.substr(11, 8),
+      hours: Number(res.data.createAt.substr(11, 2)) + 9,
+      minutes: Number(res.data.createAt.substr(14, 2)),
+      seconds: Number(res.data.createAt.substr(17, 2)),
       tags: res.data.tags,
       studyStatus: res.data.studyStatus,
       comments: res.data.comments,
@@ -112,6 +114,29 @@ const StudiesView = () => {
     }
   };
 
+  const handleStatus = async () => {
+    const data = {
+      postId: postData.id,
+      username: postData.username,
+    };
+    await axios
+      .post(
+        process.env.REACT_APP_DB_HOST + `/api/change/study_status`,
+        JSON.stringify(data),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then(() => {
+        navigate(0);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  };
+
   const handleCommentModify = async (id) => {
     // await axios
     //   .delete(process.env.REACT_APP_DB_HOST + `/api/comments/${id}`)
@@ -122,7 +147,7 @@ const StudiesView = () => {
     //   .catch((res) => console.log(res));
   };
 
-  console.log(postData.time);
+  console.log(postData.hours + ':' + postData.minutes + ':' + postData.seconds);
 
   const handleComment = async () => {
     if (comment !== '') {
@@ -170,7 +195,8 @@ const StudiesView = () => {
                   </div>
                   <div className="studies-owner">{postData.username}</div>
                   <div className="studies-date">
-                    {postData.date} {postData.time}
+                    {postData.date} {postData.hours}:{postData.minutes}:
+                    {postData.seconds}
                   </div>
                 </div>
                 <div className="studies-top">
@@ -182,9 +208,18 @@ const StudiesView = () => {
                 <div className="studies-content">{postData.content}</div>
               </div>
               <div className="studies-sidebar">
-                <div className="studies-sidebar-status">
-                  {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
-                </div>
+                {postData.username === username ? (
+                  <button
+                    className="studies-sidebar-status"
+                    onClick={() => handleStatus()}
+                  >
+                    {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
+                  </button>
+                ) : (
+                  <div className="studies-sidebar-status">
+                    {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
+                  </div>
+                )}
                 <div className="studies-sidebar-item">
                   <img className="img-detail-hit" src={hit} alt="" />
                   <h8 className="detail-sidebar-text">{postData.hit}</h8>
