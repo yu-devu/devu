@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,4 +19,6 @@ public class CommentResponseDto {
     private Long group;
     private String parent;
     private boolean deleted;
+    private LocalDateTime createAt;
+    private LocalDateTime lastModifiedAt;
 }
