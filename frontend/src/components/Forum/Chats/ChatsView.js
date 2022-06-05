@@ -82,13 +82,27 @@ const ChatsView = () => {
       });
   };
 
-  const handleDelete = async () => {
+  const handlePostDelete = async () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       await axios
         .delete(process.env.REACT_APP_DB_HOST + `/community/study/${postId}`)
         .then(() => {
           console.log('삭제 성공!');
           navigate(-1);
+        })
+        .catch((res) => console.log(res));
+    } else {
+      alert('취소하였습니다!');
+    }
+  };
+
+  const handleCommentDelete = async (id) => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      await axios
+        .delete(process.env.REACT_APP_DB_HOST + `/api/comments/${id}`)
+        .then(() => {
+          console.log('삭제 성공!');
+          navigate(0);
         })
         .catch((res) => console.log(res));
     } else {
@@ -167,7 +181,7 @@ const ChatsView = () => {
                     <button
                       className="btn-delete-post"
                       onClick={() => {
-                        handleDelete();
+                        handlePostDelete();
                       }}
                     >
                       삭제
@@ -270,6 +284,21 @@ const ChatsView = () => {
                                 />
                                 0
                               </div>
+                              {postData.username === username ? (
+                                <div className="studies-btns">
+                                  <button className="btn-modify-content">
+                                    수정
+                                  </button>
+                                  <button
+                                    className="btn-delete-content"
+                                    onClick={() => {
+                                      handleCommentDelete(comment.id);
+                                    }}
+                                  >
+                                    삭제
+                                  </button>
+                                </div>
+                              ) : null}
                             </div>
                           </div>
                         </div>

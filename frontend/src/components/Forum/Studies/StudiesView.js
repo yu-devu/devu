@@ -84,7 +84,7 @@ const StudiesView = () => {
       });
   };
 
-  const handleDelete = async () => {
+  const handlePostDelete = async () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       await axios
         .delete(process.env.REACT_APP_DB_HOST + `/community/study/${postId}`)
@@ -96,6 +96,30 @@ const StudiesView = () => {
     } else {
       alert('취소하였습니다!');
     }
+  };
+
+  const handleCommentDelete = async (id) => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      await axios
+        .delete(process.env.REACT_APP_DB_HOST + `/api/comments/${id}`)
+        .then(() => {
+          console.log('삭제 성공!');
+          navigate(0);
+        })
+        .catch((res) => console.log(res));
+    } else {
+      alert('취소하였습니다!');
+    }
+  };
+
+  const handleCommentModify = async (id) => {
+    // await axios
+    //   .delete(process.env.REACT_APP_DB_HOST + `/api/comments/${id}`)
+    //   .then(() => {
+    //     console.log('삭제 성공!');
+    //     navigate(0);
+    //   })
+    //   .catch((res) => console.log(res));
   };
 
   console.log(postData.time);
@@ -122,6 +146,7 @@ const StudiesView = () => {
         )
         .then((res) => {
           console.log(res);
+          navigate(0);
         })
         .catch((res) => {
           console.log(res);
@@ -199,7 +224,7 @@ const StudiesView = () => {
                   <button
                     className="btn-delete-post"
                     onClick={() => {
-                      handleDelete();
+                      handlePostDelete();
                     }}
                   >
                     삭제
@@ -301,6 +326,27 @@ const StudiesView = () => {
                                 />
                                 0
                               </div>
+                              {postData.username === username ? (
+                                <div className="studies-btns">
+                                  <button
+                                    className="btn-modify-content"
+                                    onClick={() => {
+                                      console.log(comment);
+                                      //   handleCommentModify(comment.id);
+                                    }}
+                                  >
+                                    수정
+                                  </button>
+                                  <button
+                                    className="btn-delete-content"
+                                    onClick={() => {
+                                      handleCommentDelete(comment.id);
+                                    }}
+                                  >
+                                    삭제
+                                  </button>
+                                </div>
+                              ) : null}
                             </div>
                           </div>
                         </div>
