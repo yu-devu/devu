@@ -113,7 +113,7 @@ const ChatBot = () => {
     };
     setWeatherData(_weatherData)
     setTimeout(() => {
-      botMessage.innerHTML = "현재 날씨는 " + (weatherData.sky == 4 ? "흐림" : weatherData.sky == 3 ? "구름 많음" : "맑음") + "입니다! \n기온은 " + weatherData.tmp + "°C이며 습도는 " + weatherData.reh + "%입니다!";
+      botMessage.innerHTML = "현재 날씨는 " + (_weatherData.sky == 4 ? "흐림" : _weatherData.sky == 3 ? "구름 많음" : "맑음") + "입니다! \n기온은 " + _weatherData.tmp + "°C이며 습도는 " + _weatherData.reh + "%입니다!";
       // document.querySelector('#input').value = '';
     }, 2000);
     userMessage.innerHTML = document.querySelector('#weather').value;
