@@ -58,7 +58,7 @@ const QuestionsView = () => {
       minutes: Number(res.data.createAt.substr(14, 2)),
       seconds: Number(res.data.createAt.substr(17, 2)),
       tags: res.data.tags,
-      questionsStatus: res.data.questionsStatus,
+      questionStatus: res.data.questionStatus,
       comments: res.data.comments,
     };
     setPostData(_postData);
@@ -114,6 +114,29 @@ const QuestionsView = () => {
     }
   };
 
+  const handleStatus = async () => {
+    const data = {
+      postId: postData.id,
+      username: postData.username,
+    };
+    await axios
+      .post(
+        process.env.REACT_APP_DB_HOST + `/api/change/question_status`,
+        JSON.stringify(data),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+      .then(() => {
+        navigate(0);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
+  };
+
   const handleComment = async () => {
     if (comment !== '') {
       const data = {
@@ -166,16 +189,25 @@ const QuestionsView = () => {
                 </div>
                 <div className="questions-top">
                   <div className="questions-status">
-                    {postData.questionsStatus === 'SOLVED' ? '해결' : '미해결'}
+                    {postData.questionStatus === 'SOLVED' ? '해결' : '미해결'}
                   </div>
                   <div className="questions-title">{postData.title}</div>
                 </div>
                 <div className="questions-content">{postData.content}</div>
               </div>
               <div className="questions-sidebar">
-                <div className="questions-sidebar-status">
-                  {postData.questionsStatus === 'SOLVED' ? '해결' : '미해결'}
-                </div>
+                {postData.username === username ? (
+                  <button
+                    className="studies-sidebar-status"
+                    onClick={() => handleStatus()}
+                  >
+                    {postData.questionStatus === 'SOLVED' ? '해결' : '미해결'}
+                  </button>
+                ) : (
+                  <div className="questions-sidebar-status">
+                    {postData.questionStatus === 'SOLVED' ? '해결' : '미해결'}
+                  </div>
+                )}
                 <div className="questions-sidebar-item">
                   <img className="img-detail-hit" src={hit} alt="" />
                   <h8 className="detail-sidebar-text">{postData.hit}</h8>

@@ -89,7 +89,7 @@ const Questions = () => {
           postMinute: rowData.createAt.substr(14, 2),
           postSecond: rowData.createAt.substr(17, 2),
           tags: rowData.tags,
-          questionsStatus: rowData.questionsStatus,
+          questionsStatus: rowData.questionStatus,
           commentsSize: rowData.commentsSize,
         }
       )
