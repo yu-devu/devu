@@ -187,7 +187,7 @@ const Chats = () => {
                         post.postDay}
                     </div>
                   </div>
-                  <div className="chats-line"></div>
+                  <div className="chats-line2"></div>
                 </div>
               </li>
             ))}

@@ -235,7 +235,7 @@ const QuestionsView = () => {
               <div className="questions-sidebar">
                 {postData.username === username ? (
                   <button
-                    className="studies-sidebar-status"
+                    className="questions-sidebar-status"
                     onClick={() => handleStatus()}
                   >
                     {postData.questionStatus === 'SOLVED' ? '해결' : '미해결'}
