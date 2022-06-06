@@ -37,6 +37,7 @@ const Chats = () => {
   useEffect(() => {
     fetchData();
     fetchPageSize();
+    window.scrollTo(0, 0);
   }, [currentPage, selectedTag, status, order]);
 
   const fetchData = async () => {

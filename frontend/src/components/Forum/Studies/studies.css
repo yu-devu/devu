@@ -411,7 +411,6 @@
   .btn-pagination {
     left: 38%;
     position: relative;
-    height: 100px;
     display: flex;
     cursor: pointer;
   }
@@ -428,11 +427,28 @@
     margin-right: 5px;
   }
 
-  .btn-pagination-active a {
+  .btn-pagination .btn-pagination-active a {
+    color: white;
+    border: 1px solid rgba(241, 241, 245, 1);
+    border-radius: 100%;
+    background: var(--color-primary);
+    padding: 4px 10px;
+    margin-right: -3px;
+  }
+
+  .btn-pagination li {
+    height: 10px;
+    margin-right: 15px;
+  }
+
+  .btn-pagination li a {
     color: black;
   }
 
-  LI {
-    margin-right: 5px;
+  .btn-pagination li a:hover {
+    border: 1px solid rgba(241, 241, 245, 1);
+    border-radius: 100%;
+    background: var(--color-hover);
+    padding: 4px 10px;
   }
 }
