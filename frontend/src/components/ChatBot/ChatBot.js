@@ -79,7 +79,6 @@ const ChatBot = () => {
     let now = new Date();
     let hours = now.getHours();
     let minutes = now.getMinutes();
-    let seconds = now.getSeconds();
     let year = now.getFullYear();
     let month = now.getMonth() + 1;
     let date = now.getDate();
@@ -87,22 +86,9 @@ const ChatBot = () => {
     const baseDate = year * 10000 + month * 100 + date;
     const bt = hours * 100 + minutes;
 
-    const baseTime =
-      200 < bt < 500
-        ? 200
-        : 500 < bt < 800
-        ? 500
-        : 800 < bt < 1100
-        ? 800
-        : 1100 < bt < 1400
-        ? 1100
-        : 1400 < bt < 1700
-        ? 1400
-        : 1700 < bt < 2000
-        ? 1700
-        : 2000 < bt < 2300
-        ? 2000
-        : 2300;
+    const b2 = bt < 500 ? 200 : bt < 800 ? 500 : bt < 1100 ? 800 : bt < 1400 ? 1100 : bt < 1700 ? 1400 : bt < 2000 ? 1700 : bt < 2300 ? 2000 : 2300
+
+    const baseTime = b2 < 1000 ? "0" + String(b2) : b2
 
     console.log(baseTime);
     const res = await axios.get(
@@ -154,7 +140,6 @@ const ChatBot = () => {
     const DateH = today.getHours();
     const DateM = today.getMinutes();
     let i = 0;
-    // const DateS = today.getSeconds();
     if (
       DateH < 5 ||
       (DateH === 5 && DateM < 30) ||
