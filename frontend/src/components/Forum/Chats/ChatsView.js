@@ -8,6 +8,7 @@ import hit from '../../../img/hit.png';
 import share from '../../../img/share.png';
 import warning from '../../../img/warning.png';
 import like from '../../../img/like.png';
+import like_color from '../../../img/like_color.png';
 import more from '../../../img/more.png';
 import FooterGray from '../../Home/FooterGray';
 
@@ -121,28 +122,32 @@ const ChatsView = () => {
   };
 
   const handleCommentModify = async (id) => {
-    const data = {
-      contents: modifycomment,
-    };
+    if (modifycomment !== '') {
+      const data = {
+        contents: modifycomment,
+      };
 
-    await axios
-      .patch(
-        process.env.REACT_APP_DB_HOST + `/api/comments/${id}`,
-        JSON.stringify(data),
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `${localStorage.getItem('accessToken')}`,
-            // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
-          },
-        }
-      )
-      .then(() => {
-        navigate(0);
-      })
-      .catch((res) => {
-        console.log(res);
-      });
+      await axios
+        .patch(
+          process.env.REACT_APP_DB_HOST + `/api/comments/${id}`,
+          JSON.stringify(data),
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `${localStorage.getItem('accessToken')}`,
+              // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
+            },
+          }
+        )
+        .then(() => {
+          navigate(0);
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+    } else {
+      alert('댓글을 작성해주세요!');
+    }
   };
 
   const handleComment = async () => {
@@ -203,21 +208,27 @@ const ChatsView = () => {
                 </div>
                 <div className="chats-content">{postData.content}</div>
               </div>
-              <div className="chats-sidebar">
-                <div className="chats-sidebar-item">
-                  <img className="img-detail-hit" src={hit} alt="" />
-                  <h8 className="detail-sidebar-text">{postData.hit}</h8>
+              <div className="chats-top">
+                <div className="chats-title">{postData.title}</div>
+              </div>
+              <div className="chats-content">{postData.content}</div>
+              <div className="chats-options">
+                <div className="chats-hit">
+                  {isLike ? (
+                    <img className="img-detail-like" src={like_color} alt="" />
+                  ) : (
+                    <img className="img-detail-like" src={like} alt="" />
+                  )}
+                  {postData.hit}
                 </div>
-                <div className="chats-sidebar-btn">
-                  <img className="img-detail-like" src={like} alt="" />
-                  <button
-                    className="detail-sidebar-btn"
-                    onClick={() => {
-                      handleLike();
-                    }}
-                  >
-                    {postData.like}
-                  </button>
+                <div className="chats-like">
+                  <img
+                    className="img-detail-like"
+                    src={like}
+                    alt=""
+                    onClick={() => handleLike()}
+                  />
+                  {postData.like}
                 </div>
                 <div className="chats-sidebar-btn">
                   <img className="img-detail-like" src={share} alt="" />
@@ -258,7 +269,7 @@ const ChatsView = () => {
             <div className="chats-detail-bottom">
               <div className="chats-write-comments">
                 <input
-                  className='comment'
+                  className="comment"
                   id="comment"
                   name="comment"
                   value={comment}
@@ -276,8 +287,7 @@ const ChatsView = () => {
               </div>
               {postData.comments ? (
                 <div className="chats-comments-all">
-                  <div className="number-comments">
-                  </div>
+                  <div className="number-comments"></div>
                   <div className="chats-comments">
                     {postData.comments &&
                       postData.comments.map((comment) => (
@@ -318,7 +328,6 @@ const ChatsView = () => {
                                     {comment.commentId ===
                                     showDropdownContent ? (
                                       <div>
-
                                         <button
                                           onClick={() => {
                                             setShowModifyContent(
@@ -340,7 +349,6 @@ const ChatsView = () => {
                                         </button>
                                       </div>
                                     ) : null}
-
                                   </button>
                                 ) : null}
                               </div>
@@ -383,30 +391,30 @@ const ChatsView = () => {
                                   ? comment.createAt.slice(11, 13) == hours
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
-                                      comment.createAt.slice(17, 19) +
-                                      '초 전'
+                                        comment.createAt.slice(17, 19) +
+                                        '초 전'
                                       : minutes -
-                                        comment.createAt.slice(14, 16) ==
-                                        1 &&
+                                          comment.createAt.slice(14, 16) ==
+                                          1 &&
                                         seconds < comment.createAt.slice(17, 19)
-                                        ? 60 -
+                                      ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
                                         '초 전'
-                                        : minutes -
+                                      : minutes -
                                         comment.createAt.slice(14, 16) +
                                         '분 전'
                                     : hours -
-                                    comment.createAt.slice(11, 13) +
-                                    '시간 전'
+                                      comment.createAt.slice(11, 13) +
+                                      '시간 전'
                                   : comment.createAt.slice(5, 7) +
-                                  '.' +
-                                  comment.createAt.slice(8, 10)
+                                    '.' +
+                                    comment.createAt.slice(8, 10)
                                 : comment.createAt.slice(2, 4) +
-                                '.' +
-                                comment.createAt.slice(5, 7) +
-                                '.' +
-                                comment.createAt.slice(8, 10)}
+                                  '.' +
+                                  comment.createAt.slice(5, 7) +
+                                  '.' +
+                                  comment.createAt.slice(8, 10)}
                             </div>
                           </div>
                         </div>
