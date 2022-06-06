@@ -56,7 +56,7 @@ const MyPage = () => {
         await axios.get(
             process.env.REACT_APP_DB_HOST + `/api/myPosts`)
             .then((res) => {
-                console.log(res);
+                // console.log(res);
                 const _postData = res.data.map(
                     (rowData) => (
                         {
@@ -82,7 +82,7 @@ const MyPage = () => {
                     )
                 );
                 setPostData(_postData);
-                console.log(_postData);
+                // console.log(_postData);
                 setMyPostStudy(_postData.filter(filterStudy));
                 setMyPostQuestion(_postData.filter(filterQuestion));
                 setMyPostChat(_postData.filter(filterChat));
@@ -94,10 +94,9 @@ const MyPage = () => {
         await axios.get(
             process.env.REACT_APP_DB_HOST + `/api/myLikes`)
             .then((res) => {
-                console.log(res);
+                // console.log(res);
                 const _likeData = res.data.map(
                     (rowData) => (
-                        // setLastIdx(lastIdx + 1),
                         {
                             id: rowData.id,
                             title: rowData.title,
@@ -121,7 +120,7 @@ const MyPage = () => {
                     )
                 );
                 setLikeData(_likeData);
-                console.log(_likeData);
+                // console.log(_likeData);
                 setMyLikeStudy(_likeData.filter(filterStudy));
                 setMyLikeQuestion(_likeData.filter(filterQuestion));
                 setMyLikeChat(_likeData.filter(filterChat));
@@ -173,7 +172,7 @@ const MyPage = () => {
                     }
                 </tr>
                 {isPost ? ( // 작성한 글 / 좋아요한 글 구분
-                    {
+                    {   // 작성한 글에서 각 게시판 별로 구분
                         isStudy: (myPostStudy.slice(0, myPostStudy.length).map((post) => (
                             <tr className='cate-mypage-detail'>
                                 <td width="300" onClick={() => { navigate('/studiesDetail/' + post.id) }}>{post.title}</td>
@@ -244,7 +243,7 @@ const MyPage = () => {
                             </tr>
                         ))),
                     }[isPostStatus])
-                    : ({
+                    : ({ // 좋아요한 글에서 각 게시판 별로 구분
                         isStudy: (myLikeStudy.slice(0, myLikeStudy.length).map((post) => (
                             <tr className='cate-mypage-detail'>
                                 <td width="300" onClick={() => { navigate('/studiesDetail/' + post.id) }}>{post.title}</td>
