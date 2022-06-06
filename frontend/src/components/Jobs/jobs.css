@@ -1,116 +1,140 @@
 @media (min-width: 1024px) {
-    .text-jobs {
-        position: relative;
-        left: 20%;
-        font-size: 17px;
-        margin-top: 1%;
-        margin-bottom: 1%;
-    }
+  .text-jobs {
+    position: relative;
+    left: 20%;
+    font-size: 17px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+  }
 
-    .top-jobs {
-        position: relative;
-        left: 20%;
-        display: flex;
-    }
+  .top-jobs {
+    position: relative;
+    left: 20%;
+    display: flex;
+  }
 
-    .select1-jobs {
-        background-color: transparent;
-        border-radius: 50px;
-        width: 10%;
-        padding: 0 10px;
-        border: 1px solid rgba(241, 241, 241, 1);
-    }
+  .select1-jobs {
+    background-color: transparent;
+    border-radius: 50px;
+    width: 10%;
+    padding: 0 10px;
+    border: 1px solid rgba(241, 241, 241, 1);
+  }
 
-    .search-jobs {
-        background-color: transparent;
-        border-radius: 50px;
-        width: 15%;
-        padding: 0 8px;
-        border: 1px solid rgba(241, 241, 241, 1);
-        margin-left: 35.7%;
-    }
+  .search-jobs {
+    background-color: transparent;
+    border-radius: 50px;
+    width: 15%;
+    padding: 0 8px;
+    border: 1px solid rgba(241, 241, 241, 1);
+    margin-left: 35.7%;
+  }
 
-    .search-jobs-input {
-        width: 80%;
-    }
+  .search-jobs-input {
+    width: 80%;
+  }
 
-    .btn-search-jobs {
-        left: 12%;
-        top: 4px;
-        background-color: transparent;
-        position: relative;
-        cursor: pointer;
-    }
+  .btn-search-jobs {
+    left: 12%;
+    top: 4px;
+    background-color: transparent;
+    position: relative;
+    cursor: pointer;
+  }
 
-    .img-mag-jobs {
-        height: 18px;
-        position: relative;
-    }
+  .img-mag-jobs {
+    height: 18px;
+    position: relative;
+  }
 
-    .middle-jobs {
-        position: relative;
-        width: auto;
-        flex-grow: 1;
-    }
+  .middle-jobs {
+    position: relative;
+    width: auto;
+    flex-grow: 1;
+  }
 
-    .job-cards {
-        position: relative;
-        left: 20%;
-        margin-top: 2%;
-        display: flex;
-        flex-flow: row wrap;
-        width: 70%;
-    }
+  .job-cards {
+    position: relative;
+    left: 20%;
+    margin-top: 2%;
+    display: flex;
+    flex-flow: row wrap;
+    width: 70%;
+  }
 
-    .job-card {
-        margin-right: 1%;
-        margin-bottom: 1%;
-        max-width: 21%;
-        margin-bottom: 4%;
-    }
+  .job-card {
+    margin-right: 1%;
+    margin-bottom: 1%;
+    max-width: 21%;
+    margin-bottom: 4%;
+  }
 
-    .img-job {
-        border: 1px solid #707070;
-        border-radius: 1%;
-        width: 100%;
-        height: 170px;
-        background: transparent;
-    }
+  .img-job {
+    /* border: 1px solid #707070; */
+    border-radius: 1%;
+    width: 100%;
+    height: 170px;
+    background: transparent;
+  }
 
-    .top-job {
-        position: relative;
-        display: flex;
-    }
+  .top-job {
+    position: relative;
+    display: flex;
+  }
 
-    .name-job {
-        font-weight: 600;
-        margin-left: 1%;
-    }
+  .name-job {
+    font-weight: 600;
+    margin-left: 1%;
+  }
 
-    .content-job {
-        font-weight: 600;
-        position: relative;
-    }
+  .content-job {
+    font-weight: 600;
+    position: relative;
+  }
 
-    .date-job {
-        font-size: 15px;
-        color: var(--color-gray);
-    }
+  .date-job {
+    font-size: 15px;
+    color: var(--color-gray);
+  }
 
-    .job-link {
-        color: black;
-    }
+  .job-link {
+    color: black;
+  }
 
-    .job-link:hover {
-        color: var(--color-primary);
-    }
+  .job-link:hover {
+    color: var(--color-primary);
+  }
 
-    .job-logo {
-        width: 100%;
-        height: 50%;
-        top: 31%;
-        right: 3.5%;
-        position: relative;
-        color: #c5c5c5;
-    }
+  .job-logo {
+    width: 100%;
+    height: 50%;
+    top: 31%;
+    right: 3.5%;
+    position: relative;
+    color: #c5c5c5;
+  }
+
+  .btn-pagination {
+    left: 38%;
+    position: relative;
+    height: 100px;
+    display: flex;
+    cursor: pointer;
+  }
+
+  .btn-pagination-previous {
+    margin-right: 5px;
+  }
+
+  .btn-pagination-next {
+    margin-left: 5px;
+  }
+
+  .btn-pagination-disabled LI {
+    margin-right: 5px;
+  }
+
+  .btn-pagination-active a {
+    color: black;
+  }
 }
