@@ -40,10 +40,6 @@ const StudiesView = () => {
     setModifyComment(e.target.value);
   };
 
-  function filterStudy(element) {
-    if (element.studyStatus !== null) return true;
-  }
-
   // const moreButton = document.getElementById('btn-more');
 
   // moreButton.addEventListener('click', () => {
@@ -97,7 +93,6 @@ const StudiesView = () => {
   };
 
   const handleLike = async () => {
-    // console.log(myLikeStudy);
     const data = {
       username: username,
       postId: postData.id,
@@ -369,46 +364,34 @@ const StudiesView = () => {
                                   {comment.username}
                                 </div>
                                 {comment.username === username &&
-<<<<<<< HEAD
                                 comment.commentId !== showModifyContent ? (
                                   <button className="btn-more">
-=======
-                                  comment.commentId !== showModifyContent ? (
-                                  <button className="btn-more"
-                                    onClick={() => {
-                                      if (
-                                        showDropdownContent ===
-                                        comment.commentId
-                                      )
-                                        setShowDropdownContent(0);
-                                      else
-                                        setShowDropdownContent(
-                                          comment.commentId
-                                        );
-                                    }}
-                                  >
->>>>>>> b07ce0617fa14d2605fd5fdf79be44d042c9d59a
                                     <img
                                       className="img-more"
                                       alt=""
                                       src={more}
+                                      onClick={() => {
+                                        console.log(comment.commentId);
+                                        if (
+                                          showDropdownContent ===
+                                          comment.commentId
+                                        )
+                                          setShowDropdownContent(0);
+                                        else
+                                          setShowDropdownContent(
+                                            comment.commentId
+                                          );
+                                      }}
                                     />
                                     {comment.commentId ===
-<<<<<<< HEAD
                                     showDropdownContent ? (
                                       <div>
-=======
-                                      showDropdownContent ? (
-                                      <ul className='more-submenu' >
->>>>>>> b07ce0617fa14d2605fd5fdf79be44d042c9d59a
                                         <button
                                           onClick={() => {
                                             setShowModifyContent(
                                               comment.commentId
                                             );
                                             setShowDropdownContent(0);
-                                          }} onBlur={() => {
-                                            setShowDropdownContent(0)
                                           }}
                                         >
                                           수정
@@ -422,39 +405,36 @@ const StudiesView = () => {
                                         >
                                           삭제
                                         </button>
-                                      </ul>
+                                      </div>
                                     ) : null}
                                   </button>
                                 ) : null}
                               </div>
                             </div>
                             {comment.commentId === showModifyContent ? (
-                              <div className="container-modify-comments">
+                              <div className="questions-write-comments">
                                 <input
-                                  className="comment"
                                   id="comment"
                                   name="comment"
                                   defaultValue={comment.contents}
                                   onChange={(e) => onChangeModifyComment(e)}
                                 />
-                                <div className='btn-comments'>
-                                  <button
-                                    className="btn-comment-sub"
-                                    onClick={() => {
-                                      handleCommentModify(comment.commentId);
-                                    }}
-                                  >
-                                    수정하기
-                                  </button>
-                                  <button
-                                    className="btn-comment-sub"
-                                    onClick={() => {
-                                      setShowModifyContent(0);
-                                    }}
-                                  >
-                                    취소
-                                  </button>
-                                </div>
+                                <button
+                                  className="btn-comment"
+                                  onClick={() => {
+                                    handleCommentModify(comment.commentId);
+                                  }}
+                                >
+                                  수정하기
+                                </button>
+                                <button
+                                  className="btn-comment"
+                                  onClick={() => {
+                                    setShowModifyContent(0);
+                                  }}
+                                >
+                                  취소
+                                </button>
                               </div>
                             ) : (
                               <div className="comment-content">

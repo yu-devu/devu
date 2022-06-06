@@ -378,13 +378,8 @@ const QuestionsView = () => {
                                       }}
                                     />
                                     {comment.commentId ===
-<<<<<<< HEAD
                                     showDropdownContent ? (
-                                      <div>
-=======
-                                      showDropdownContent ? (
-                                      <ul className='more-submenu' >
->>>>>>> b07ce0617fa14d2605fd5fdf79be44d042c9d59a
+                                      <ul className="more-submenu">
                                         <button
                                           onClick={() => {
                                             setShowModifyContent(
@@ -419,7 +414,7 @@ const QuestionsView = () => {
                                   defaultValue={comment.contents}
                                   onChange={(e) => onChangeModifyComment(e)}
                                 />
-                                <div className='btn-comments'>
+                                <div className="btn-comments">
                                   <button
                                     className="btn-comment-sub"
                                     onClick={() => {
