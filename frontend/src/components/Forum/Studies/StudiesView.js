@@ -27,8 +27,9 @@ const StudiesView = () => {
   const username = localStorage.getItem('username');
   const [comment, setComment] = useState('');
   const [modifycomment, setModifyComment] = useState('');
-  const [dropdown, setDropdown] = useState(false);
-  const [commentModifyMode, handleCommentModifyMode] = useState(0);
+
+  const [showDropdownContent, setShowDropdownContent] = useState(0);
+  const [showModifyContent, setShowModifyContent] = useState(0);
   const onChangeComment = (e) => {
     setComment(e.target.value);
   };
@@ -174,7 +175,7 @@ const StudiesView = () => {
       });
   };
 
-  console.log(postData.hours + ':' + postData.minutes + ':' + postData.seconds);
+  //   console.log(postData.hours + ':' + postData.minutes + ':' + postData.seconds);
 
   const handleComment = async () => {
     if (comment !== '') {
@@ -339,27 +340,35 @@ const StudiesView = () => {
                                 <div className="comment-owner">
                                   {comment.username}
                                 </div>
-                                {comment.username === username ? (
-                                  <button className="btn-more"
-                                    onClick={() => {
-                                      if (dropdown) setDropdown(false);
-                                      else setDropdown(true);
-                                    }}
-                                    onBlur={() => {
-                                      setDropdown(false)
-                                    }}>
+                                {comment.username === username &&
+                                comment.commentId !== showModifyContent ? (
+                                  <button className="btn-more">
                                     <img
                                       className="img-more"
                                       alt=""
                                       src={more}
+                                      onClick={() => {
+                                        console.log(comment.commentId);
+                                        if (
+                                          showDropdownContent ===
+                                          comment.commentId
+                                        )
+                                          setShowDropdownContent(0);
+                                        else
+                                          setShowDropdownContent(
+                                            comment.commentId
+                                          );
+                                      }}
                                     />
-                                    {dropdown && (
-                                      <ul className='more-submenu'>
+                                    {comment.commentId ===
+                                    showDropdownContent ? (
+                                      <div>
                                         <button
                                           onClick={() => {
-                                            handleCommentModifyMode(
+                                            setShowModifyContent(
                                               comment.commentId
                                             );
+                                            setShowDropdownContent(0);
                                           }}
                                         >
                                           수정
@@ -373,20 +382,18 @@ const StudiesView = () => {
                                         >
                                           삭제
                                         </button>
-                                      </ul>
-                                    )}
+                                      </div>
+                                    ) : null}
                                   </button>
                                 ) : null}
                               </div>
                             </div>
-
-                            {comment.commentId === commentModifyMode ? (
+                            {comment.commentId === showModifyContent ? (
                               <div className="questions-write-comments">
                                 <input
                                   id="comment"
                                   name="comment"
                                   defaultValue={comment.contents}
-                                  //   value={modifycomment}
                                   onChange={(e) => onChangeModifyComment(e)}
                                 />
 
@@ -397,6 +404,14 @@ const StudiesView = () => {
                                   }}
                                 >
                                   수정하기
+                                </button>
+                                <button
+                                  className="btn-comment"
+                                  onClick={() => {
+                                    setShowModifyContent(0);
+                                  }}
+                                >
+                                  취소
                                 </button>
                               </div>
                             ) : (

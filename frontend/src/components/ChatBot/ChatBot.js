@@ -90,7 +90,7 @@ const ChatBot = () => {
 
     const baseTime = b2 < 1000 ? "0" + String(b2) : b2
 
-    console.log(baseTime)
+    console.log(baseTime);
     const res = await axios.get(
       process.env.REACT_APP_DB_HOST + '/api/weather',
       {
@@ -98,7 +98,8 @@ const ChatBot = () => {
           baseDate: baseDate,
           baseTime: baseTime,
         },
-      });
+      }
+    );
     const _weatherData = {
       sky: res.data.reformed.SKY, // 하늘 상태
       pop: res.data.reformed.POP, // 강수 확률
@@ -112,9 +113,21 @@ const ChatBot = () => {
       pcp: res.data.reformed.PCP, // 강수량
       wav: res.data.reformed.WAV, // 파고
     };
-    setWeatherData(_weatherData)
+    setWeatherData(_weatherData);
     setTimeout(() => {
-      botMessage.innerHTML = "현재 날씨는 " + (weatherData.sky == 4 ? "흐림" : weatherData.sky == 3 ? "구름 많음" : "맑음") + "입니다! \n기온은 " + _weatherData.tmp + "°C이며 습도는 " + _weatherData.reh + "%입니다!";
+      botMessage.innerHTML =
+        '현재 날씨는 ' +
+        (_weatherData.sky == 4
+          ? '흐림'
+          : _weatherData.sky == 3
+          ? '구름 많음'
+          : '맑음') +
+        '입니다! \n기온은 ' +
+        _weatherData.tmp +
+        '°C이며 습도는 ' +
+        _weatherData.reh +
+        '%입니다!';
+      // document.querySelector('#input').value = '';
     }, 2000);
     userMessage.innerHTML = document.querySelector('#weather').value;
   };
