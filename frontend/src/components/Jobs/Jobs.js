@@ -14,7 +14,6 @@ const Jobs = () => {
 
     useEffect(() => {
         fetchData();
-        fetchPageSize();
     }, [currentPage]);
 
     const fetchData = async () => {
@@ -26,7 +25,7 @@ const Jobs = () => {
                 },
             }
         );
-
+        setPostSize(res.data.size); // pagination 구현하기 위해 채용 정보의 총 개수를 불러와서 저장
         const _postData = await res.data.map(
             (rowData) => (
                 {
@@ -37,15 +36,9 @@ const Jobs = () => {
                 }
             )
         );
+        console.log(_postData);
         setPostData(_postData);
-    };
 
-    const fetchPageSize = async () => {
-        const res = await axios.get(
-            process.env.REACT_APP_DB_HOST + `/community/studies/size`
-        );
-        // setPostSize(res.data);
-        setPostSize(2000); // 채용 정보 개수 받아오는 api가 없어서 임시로 설정함
     };
 
     const changePage = ({ selected }) => {
@@ -83,11 +76,12 @@ const Jobs = () => {
                 </div>
                 <div className='middle-jobs'>
                     <div className='job-cards'>
-                        {postData.slice(0, 20).map((post) => (
+                        {postData.slice(0, postsPerPage).map((post) => (
                             <div className='job-card'>
                                 <div className='img-job'>
                                     <img className='job-logo' src={logo} />
                                 </div>
+                                {/* post.company 별로 회사 대표 이미지 불러올 수 있도록 변경해야 함 */}
                                 <div className='top-job'>
                                     <div className='name-job'>{post.company}</div>
                                 </div>
