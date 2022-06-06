@@ -21,6 +21,7 @@ const QuestionsWrite = () => {
 
     useEffect(() => {
         organizeTags();
+        window.scrollTo(0, 0);
     }, [tags]); // postTags의 동기처리를 위해 useEffect 사용함
 
     const handleTitle = (e) => {
