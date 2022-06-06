@@ -27,6 +27,7 @@ import mysql from '../../../img/mysql.png';
 import comment from '../../../img/comment.png';
 import hit from '../../../img/hit.png';
 import like from '../../../img/like.png';
+import like_color from '../../../img/like_color.png';
 import { Link } from 'react-router-dom';
 
 const Questions = () => {
@@ -48,6 +49,7 @@ const Questions = () => {
   const [sentence, setSentence] = useState('');
   const [status, setStatus] = useState('');
   const [order, setOrder] = useState('');
+  const [likePosts, setLikePosts] = useState([]);
   const onChangeSentence = (e) => {
     setSentence(e.target.value);
   };
@@ -57,6 +59,7 @@ const Questions = () => {
     fetchData();
     fetchPageSize();
     window.scrollTo(0, 0);
+    fetchLikeData();
   }, [currentPage, selectedTag, status, order]);
 
   const fetchData = async () => {
@@ -98,6 +101,16 @@ const Questions = () => {
     console.log(_postData);
     setPostData(_postData);
     CKEditor.instances.textarea_id.getData();
+  };
+
+  const fetchLikeData = async () => {
+    await axios
+      .get(process.env.REACT_APP_DB_HOST + `/api/myLikes`)
+      .then((res) => {
+        const _likePosts = res.data.map((rowData) => rowData.id);
+        setLikePosts(_likePosts);
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleKeyPress = (e) => {
@@ -142,10 +155,18 @@ const Questions = () => {
                       <img className="top-photo" src={a} alt="" />
                     </div>
                     <div className="top-detail">
-                      <div className="top-title"><Link to={`/questionsDetail/${top.id}`}>
-                        {top.title.length > 10 ? top.title.substr(0, 10) + '...' : top.title}
-                      </Link></div>
-                      <div className="top-content">{top.content.length > 20 ? top.title.substr(0, 20) + '...' : top.content}</div>
+                      <div className="top-title">
+                        <Link to={`/questionsDetail/${top.id}`}>
+                          {top.title.length > 10
+                            ? top.title.substr(0, 10) + '...'
+                            : top.title}
+                        </Link>
+                      </div>
+                      <div className="top-content">
+                        {top.content.length > 20
+                          ? top.title.substr(0, 20) + '...'
+                          : top.content}
+                      </div>
                       <div className="top-date">
                         {top.postYear == year
                           ? top.postMonth == month && top.postDay == date
@@ -154,15 +175,15 @@ const Questions = () => {
                                 ? seconds - top.postSecond + '초 전'
                                 : minutes - top.postMinute == 1 &&
                                   seconds < top.postSecond
-                                  ? 60 - top.postSecond + seconds + '초 전'
-                                  : minutes - top.postMinute + '분 전'
+                                ? 60 - top.postSecond + seconds + '초 전'
+                                : minutes - top.postMinute + '분 전'
                               : hours - top.postHour + '시간 전'
                             : top.postMonth + '.' + top.postDay
                           : top.postYear.slice(2, 4) +
-                          '.' +
-                          top.postMonth +
-                          '.' +
-                          top.postDay}
+                            '.' +
+                            top.postMonth +
+                            '.' +
+                            top.postDay}
                       </div>
                     </div>
                   </div>
@@ -532,7 +553,11 @@ const Questions = () => {
                         </div>
                         <div className="post-like">
                           <div className="text-like">{post.like}</div>
-                          <img className="img-like" src={like} alt="" />
+                          {likePosts.includes(post.id) ? (
+                            <img className="img-like" src={like_color} alt="" />
+                          ) : (
+                            <img className="img-like" src={like} alt="" />
+                          )}
                         </div>
                       </div>
                     </div>
@@ -551,15 +576,15 @@ const Questions = () => {
                                 ? seconds - post.postSecond + '초 전'
                                 : minutes - post.postMinute == 1 &&
                                   seconds < post.postSecond
-                                  ? 60 - post.postSecond + seconds + '초 전'
-                                  : minutes - post.postMinute + '분 전'
+                                ? 60 - post.postSecond + seconds + '초 전'
+                                : minutes - post.postMinute + '분 전'
                               : hours - post.postHour + '시간 전'
                             : post.postMonth + '.' + post.postDay
                           : post.postYear.slice(2, 4) +
-                          '.' +
-                          post.postMonth +
-                          '.' +
-                          post.postDay}
+                            '.' +
+                            post.postMonth +
+                            '.' +
+                            post.postDay}
                       </div>
                     </div>
                     <div className="questions-line2"></div>
