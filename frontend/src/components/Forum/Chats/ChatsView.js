@@ -324,7 +324,7 @@ const ChatsView = () => {
                                     />
                                     {comment.commentId ===
                                       showDropdownContent ? (
-                                      <div>
+                                      <ul className='more-submenu' >
                                         <button
                                           onClick={() => {
                                             setShowModifyContent(
@@ -344,36 +344,39 @@ const ChatsView = () => {
                                         >
                                           삭제
                                         </button>
-                                      </div>
+                                      </ul>
                                     ) : null}
                                   </button>
                                 ) : null}
                               </div>
                             </div>
                             {comment.commentId === showModifyContent ? (
-                              <div className="questions-write-comments">
+                              <div className="container-modify-comments">
                                 <input
+                                  className="comment"
                                   id="comment"
                                   name="comment"
                                   defaultValue={comment.contents}
                                   onChange={(e) => onChangeModifyComment(e)}
                                 />
-                                <button
-                                  className="btn-comment"
-                                  onClick={() => {
-                                    handleCommentModify(comment.commentId);
-                                  }}
-                                >
-                                  수정하기
-                                </button>
-                                <button
-                                  className="btn-comment"
-                                  onClick={() => {
-                                    setShowModifyContent(0);
-                                  }}
-                                >
-                                  취소
-                                </button>
+                                <div className='btn-comments'>
+                                  <button
+                                    className="btn-comment-sub"
+                                    onClick={() => {
+                                      handleCommentModify(comment.commentId);
+                                    }}
+                                  >
+                                    수정하기
+                                  </button>
+                                  <button
+                                    className="btn-comment-sub"
+                                    onClick={() => {
+                                      setShowModifyContent(0);
+                                    }}
+                                  >
+                                    취소
+                                  </button>
+                                </div>
                               </div>
                             ) : (
                               <div className="comment-content">
