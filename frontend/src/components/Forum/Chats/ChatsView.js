@@ -5,6 +5,8 @@ import './chatsView.css';
 import Submenu from '../Submenu';
 import ab from '../../../img/a.png';
 import hit from '../../../img/hit.png';
+import share from '../../../img/share.png';
+import warning from '../../../img/warning.png';
 import like from '../../../img/like.png';
 import like_color from '../../../img/like_color.png';
 import more from '../../../img/more.png';
@@ -186,16 +188,25 @@ const ChatsView = () => {
       <div>
         {postData ? (
           <div className="chats-view">
-            <div className="chats-contents-all">
-              <div className="chats-detail-top">
-                <div className="chats-profile">
-                  <img className="chats-photo" src={ab} alt="" />
+            <div className="chats-detail-top">
+              <div className="chats-contents-all">
+                <div className="chats-detail-top">
+                  <div className="chats-profile">
+                    <img className="chats-photo" src={ab} alt="" />
+                  </div>
+                  <div className="chats-owner">{postData.username}</div>
+                  <div className="chats-date">
+                    {postData.date} {postData.hours}:{postData.minutes}:
+                    {postData.seconds}
+                  </div>
                 </div>
-                <div className="chats-owner">{postData.username}</div>
-                <div className="chats-date">
-                  {postData.date} {postData.hours}:{postData.minutes}:
-                  {postData.seconds}
+                <div className="chats-top">
+                  <div className="chats-status">
+                    {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
+                  </div>
+                  <div className="chats-title">{postData.title}</div>
                 </div>
+                <div className="chats-content">{postData.content}</div>
               </div>
               <div className="chats-top">
                 <div className="chats-title">{postData.title}</div>
@@ -219,25 +230,41 @@ const ChatsView = () => {
                   />
                   {postData.like}
                 </div>
-                {postData.username === username ? (
-                  <div className="chats-btns">
-                    <Link
-                      className="btn-modify"
-                      to={`/chatsDetail/${postId}/modify`}
-                    >
-                      수정
-                    </Link>
-                    <button
-                      className="btn-delete-post"
-                      onClick={() => {
-                        handlePostDelete();
-                      }}
-                    >
-                      삭제
-                    </button>
-                  </div>
-                ) : null}
+                <div className="chats-sidebar-btn">
+                  <img className="img-detail-like" src={share} alt="" />
+                  <button className="detail-sidebar-btn">공유</button>
+                </div>
+                <div className="chats-sidebar-btn">
+                  <img className="img-detail-like" src={warning} alt="" />
+                  <button className="detail-sidebar-btn">신고</button>
+                </div>
               </div>
+            </div>
+            <div className="chats-content-bottom">
+              <div className="chats-tags">
+                {postData.tags &&
+                  postData.tags.map((tag) => (
+                    <div className="chats-tag">{tag}</div>
+                  ))}
+              </div>
+              {postData.username === username ? (
+                <div className="chats-btns">
+                  <Link
+                    className="btn-modify"
+                    to={`/chatsDetail/${postId}/modify`}
+                  >
+                    수정
+                  </Link>
+                  <button
+                    className="btn-delete-post"
+                    onClick={() => {
+                      handlePostDelete();
+                    }}
+                  >
+                    삭제
+                  </button>
+                </div>
+              ) : null}
             </div>
             <div className="chats-detail-bottom">
               <div className="chats-write-comments">

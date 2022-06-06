@@ -558,7 +558,7 @@ const Studies = () => {
                           post.postDay}
                       </div>
                     </div>
-                    <div className="studies-line"></div>
+                    <div className="studies-line2"></div>
                   </div>
                 </li>
               ))}

@@ -1,272 +1,379 @@
 @media (min-width: 1024px) {
-  .chats-view {
-      position: relative;
-      width: 100%;
-      padding-bottom: 1px;
-      top: 22px;
-  }
+    .chats-view {
+        position: relative;
+        width: 100%;
+        padding-bottom: 1px;
+        top: 22px;
+    }
 
-  .chats-contents-all {
-      position: relative;
-      left: 30%;
-      top: 22px;
-  }
+    .chats-contents-all {
+        position: relative;
+        left: 30%;
+        top: 22px;
+        width: 270px;
+    }
 
-  .chats-profile {
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      border: 1px solid rgba(0, 0, 0, 0.6);
-      background-color: transparent;
-  }
+    .chats-profile {
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        border: 1px solid rgba(0, 0, 0, 0.6);
+        background-color: transparent;
+    }
 
-  .chats-photo {
-      width: 30px;
-      height: 30px;
-      /* filter: brightness(80%); */
-  }
+    .chats-photo {
+        width: 30px;
+        height: 30px;
+    }
 
-  .chats-detail-top {
-      display: flex;
-  }
-  
-  .chats-owner {
-      margin-left: 10px;
-      position: relative;
-      margin-top: 3px;
-  }
+    .chats-detail-top {
+        display: flex;
+    }
+    
+    .chats-owner {
+        margin-left: 10px;
+        position: relative;
+        margin-top: 3px;
+    }
 
-  .chats-date {
-      position: relative;
-      margin-top: 4px;
-      margin-left: 10px;
-      font-size: 14px;
-      color: rgba(128,128,128,1);
-  }
+    .chats-date {
+        position: relative;
+        margin-top: 4px;
+        margin-left: 10px;
+        font-size: 14px;
+        color: rgba(128,128,128,1);
+    }
 
-  .chats-top {
-      display: flex;
-      margin-top: 10px;
-  }
+    .chats-top {
+        display: flex;
+        margin-top: 10px;
+    }
 
-  .chats-status {
-      color: white;
-      background-color: var(--color-primary);
-      padding: 2px 5px 0;
-      font-size: 14px;
-      margin-right: 10px;
-      height: 1%;
-  }
+    .chats-status {
+        color: white;
+        background-color: var(--color-primary);
+        padding: 2px 5px 0;
+        font-size: 14px;
+        margin-right: 10px;
+        height: 1%;
+    }
 
-  .chats-title {
-      font-weight: 600;
-      font-size: 20px;
-  }
+    .chats-title {
+        font-weight: 600;
+        font-size: 20px;
+    }
 
-  .chats-content {
-      font-size: 18px;
-      margin-top: 20px;
-  }
+    .chats-content {
+        font-size: 18px;
+        margin-top: 20px;
+        min-height: 100px;
+    }
 
-  .chats-tags {
-      display: flex;
-  }
+    .chats-tags {
+        display: flex;
+        width: 177px;
+    }
 
-  .chats-tag {
-      margin-top: 10px;
-      text-align: center;
-      position: relative;
-      border-radius: 100px;
-      border: 1px solid rgba(219,219,219,1);
-      width: 80px;
-      background-color: rgba(241,241,245,1);
-      font-size: 14px;
-      margin-right: 10px;
-  }
+    .chats-tag {
+        margin-top: 10px;
+        text-align: center;
+        position: relative;
+        border-radius: 100px;
+        border: 1px solid rgba(219,219,219,1);
+        width: 80px;
+        background-color: rgba(241,241,245,1);
+        font-size: 14px;
+        margin-right: 10px;
+    }
 
-  .chats-options {
-      display: flex;
-      margin-top: 15px;
-  }
+    .chats-options {
+        display: flex;
+        margin-top: 15px;
+    }
 
-  .chats-hit {
-      margin-right: 15px;
-  }
+    .chats-sidebar-status {
+        margin-right: 15px;
+        border: 1px solid rgba(241, 241, 241, 1);
+        border-radius: 10px;
+        text-align: center;
+        background-color: var(--color-primary);
+        color: white;
+        padding-top: 7px;
+        padding-bottom: 7px;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-bottom: 10%;
+    }
 
-  .chats-like {
+    .chats-sidebar-item {
+        margin-right: 15px;
+        border: 1px solid rgba(241, 241, 241, 1);
+        border-radius: 10px;
+        padding-top: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-bottom: 10%;
+        text-align: center;
+    }
 
-  }
+    .chats-sidebar-btn {
+        margin-right: 15px;
+        border: 1px solid rgba(241, 241, 241, 1);
+        border-radius: 10px;
+        padding-top: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-bottom: 10%;
+        cursor: pointer;
+        text-align: center;
+    }
 
-  .img-detail-hit {
-      width: 26px;
-      height: 20px;
-      position: relative;
-      top: 4%;
-      margin-right: 5px;
-  }
+    .chats-sidebar-btn:hover {
+        background-color: var(--color-hover);
+    }
 
-  .img-detail-like {
-      width: 23px;
-      height: 20px;
-      position: relative;
-      top: 4%;
-      margin-right: 5px;
-  }
+    .img-detail-hit {
+        width: 30px;
+        height: 30px;
+        position: relative;
+        top: 5px;
+        right: 1px;
+    }
 
-  .chats-detail-bottom {
-      position: relative;
-      background-color: rgb(242, 242, 242);
-      width: 100%;
-      margin-top: 3%;
-      padding-bottom: 10px;
-      height: 100%;
-  }
+    .detail-sidebar-text {
+        position: relative;
+        bottom: 3px;
+        right: 3px;
+        font-size: 14px;
+    }
 
-  .chats-write-comments {
-      filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.102));
-      border-radius: 0.5rem;
-      background: #fff;
-      position: relative;
-      width: 40%;
-      height: 100%;
-      left: 30%;
-      top: 20px;
-      padding-left: 2ch;
-      padding-top: 1ch;
-      color: var(--color-gray);
-      padding-bottom: 1ch;
-  }
+    .detail-sidebar-btn {
+        position: relative;
+        bottom: 3px;
+        right: 3px;
+        background-color: transparent;
+        cursor: pointer;
+        font-size: 14px;
+    }
 
-  .btn-comment {
-      border-radius: 50px;
-      position: relative;
-      /* left: 66%; */
-      width: 10%;
-      padding: 1%;
-      background-color: black;
-      color: white;
-      font-size: 12px;
-      cursor: pointer;
-  }
 
-  .btn-comment:hover {
-    filter: brightness(70%);
-}
-  
-  .chats-comments-all {
-      position: relative;
-  }
+    .img-detail-like {
+        width: 30px;
+        height: 30px;
+        position: relative;
+        top: 5px;
+        right: 5px;
+    }
 
-  .number-comments {
-      margin-top: 3%;
-  }
-  
-  .number-comments-text {
-      padding-top: 1.7%;
-  }
+    .chats-detail-bottom {
+        position: relative;
+        background-color: rgb(242, 242, 242);
+        width: 100%;
+        margin-top: 3%;
+        padding-bottom: 10px;
+        height: 100%;
+    }
 
-  .container-comments {
-    filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.102));
-    border-radius: 0.5rem;
-    background: #fff;
-    position: relative;
-    max-width: 40%;
-    left: 30%;
-    min-height: 120px;
-    margin-top: 10px;
-}
+    .chats-write-comments {
+        filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.102));
+        border-radius: 0.5rem;
+        background: #fff;
+        position: relative;
+        width: 40%;
+        height: 100%;
+        left: 30%;
+        top: 20px;
+        padding-left: 2ch;
+        padding-top: 1ch;
+        color: var(--color-gray);
+        padding-bottom: 1ch;
+    }
 
-  .comment-detail {
-      position: relative;
-      left: 4%;
-  }
+    .btn-comment {
+        border-radius: 50px;
+        position: relative;
+        left: 6%;
+        width: 10%;
+        padding: 1%;
+        background-color: black;
+        color: white;
+        font-size: 12px;
+        cursor: pointer;
+    }
 
-  .comments-top {
-      display: flex;
-      padding-top: 2%;
-  }
+    .btn-comment:hover {
+        filter: brightness(70%);
+    }
+    
+    .chats-comments-all {
+        position: relative;
+    }
 
-  .comment-photo {
-      width: 35px;
-      height: 35px;
-  }
+    .number-comments {
+        margin-top: 3%;
+    }
+    
+    .number-comments-text {
+        padding-top: 1.7%;
+    }
 
-  .comment-owner {
-      font-size: 17px;
-      font-weight: 500;
-  }
+    .container-comments {
+        filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.102));
+        border-radius: 0.5rem;
+        background: #fff;
+        position: relative;
+        max-width: 40%;
+        left: 30%;
+        height: 100%;
+        margin-top: 10px;
+    }
 
-  .comment-line {
-      width: 84%;
-      margin-bottom: 3%;
-      background-color: rgba(128,128,128,1);
-  }
+    .comment-detail {
+        position: relative;
+        /* left: 8%; */
+    }
 
-  .comment-content {
-      font-weight: 400;
-      margin-left: 10px;
-  }
+    .comments-top {
+        display: flex;
+        padding-top: 2%;
+    }
 
-  .comment-date {
-      font-size: 14px;
-      color: rgba(128,128,128,1);
-      margin-left: 10px;
-  }
+    .comment-photo {
+        width: 35px;
+        height: 35px;
+    }
 
-  .comments-options {
-      display: flex;
-      margin-top: 3%;
-      padding-bottom: 3%;
-  }
+    .comment-owner {
+        font-size: 17px;
+        font-weight: 500;
+    }
 
-  .comment-comment {
-      margin-right: 15px;
-  }
+    .comment-line {
+        width: 84%;
+        margin-bottom: 3%;
+        background-color: rgba(128,128,128,1);
+    }
 
-  .img-comment-comment {
-      width: 20px;
-      height: 20px;
-      margin-right: 5px;
-  }
+    .comment-content {
+        font-weight: 400;
+    }
 
-  .img-comment-like {
-      width: 20px;
-      height: 20px;
-      margin-right: 5px;
-  }
+    .comment-date {
+        font-size: 14px;
+        color: rgba(128,128,128,1);
+    }
 
-  .btn-modify {
-    background-color: transparent;
-    border: 1px solid rgba(241, 241, 241, 1);
-    border-radius: 10%;
-    padding: 5% 5%;
-    padding-top: 7%;
-    cursor: pointer;
-    color: black;
-    font-size: 13px;
-    margin-right: 10px;
-  }
+    .comments-options {
+        display: flex;
+        margin-top: 3%;
+        padding-bottom: 3%;
+    }
 
-  .btn-modify:hover {
-    background-color: var(--color-hover);
-  }
+    .comment-comment {
+        margin-right: 15px;
+    }
 
-  .btn-delete-post {
-    background-color: transparent;
-    border: 1px solid rgba(241, 241, 241, 1);
-    border-radius: 10%;
-    padding: 5% 5%;
-    cursor: pointer;
-  }
+    .img-comment-comment {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+    }
 
-  .btn-delete-post:hover {
-    background-color: var(--color-hover);
-  }
+    .img-comment-like {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+    }
+    
+    .btn-modify {
+        background-color: transparent;
+        border: 1px solid rgba(241, 241, 241, 1);
+        border-radius: 10%;
+        padding: 5% 5%;
+        padding-top: 7%;
+        cursor: pointer;
+        color: black;
+        font-size: 13px;
+        margin-right: 10px;
+      }
+    
+      .btn-modify:hover {
+        background-color: var(--color-hover);
+      }
+    
+      .btn-delete-post {
+        background-color: transparent;
+        border: 1px solid rgba(241, 241, 241, 1);
+        border-radius: 10%;
+        padding: 5% 5%;
+        cursor: pointer;
+      }
+    
+      .btn-delete-post:hover {
+        background-color: var(--color-hover);
+      }
+    
+      .chats-btns {
+        left: 23.8%;
+        position: relative;
+        display: flex;
+        width: 90px;
+        top: 7px;
+      }
 
-  .chats-btns {
-    left: 29.5%;
-    position: relative;
-    display: flex;
-    width: 90px;
-  }
+      .chats-sidebar {
+          position: relative;
+          left: 48%;
+          top: 22px;
+      }
+
+      .chats-content-bottom {
+          display: flex;
+          position: relative;
+          left: 30%;
+          top: 20px;
+      }
+
+      .comment-top {
+          display: flex;
+      }
+
+      .btn-more {
+          background-color: transparent;
+          position: relative;
+          margin-left: 500px;
+          bottom: 10%;
+          cursor: pointer;
+      }
+
+      .img-more {
+          width: 20px;
+          height: 20px;
+      }
+
+      .more-submenu {
+        z-index: 100;
+        width: 6rem;
+        position: absolute;
+        left: 1rem;
+        text-align: start;
+        border: 1px solid rgba(241, 241, 241, 1);
+        border-top: none;
+      }
+
+      .more-submenu button {
+        background: white;
+        cursor: pointer;
+        width: 100%;
+        color: #030303;
+        padding: 10%;
+      }
+
+      .more-submenu button:hover {
+          background-color: var(--color-hover);
+      }
+
+      .comment {
+          width: 80%;
+      }
 }
