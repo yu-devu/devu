@@ -3,7 +3,7 @@
   width: 8rem;
   position: absolute;
   top: 67px;
-  list-style: none;
+  /* list-style: none; */
   text-align: start;
   border: 1px solid rgba(241, 241, 241, 1);
   border-top: none;
@@ -12,7 +12,7 @@
 .community-submenu li {
   background: white;
   cursor: pointer;
-  font-size: 15px;
+  width: 100%;
 }
   
 .community-submenu li a:hover {

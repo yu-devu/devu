@@ -195,7 +195,7 @@
     .btn-comment {
         border-radius: 50px;
         position: relative;
-        left: 66%;
+        /* left: 66%; */
         width: 10%;
         padding: 1%;
         background-color: black;
@@ -233,7 +233,7 @@
 
     .comment-detail {
         position: relative;
-        left: 8%;
+        /* left: 8%; */
     }
 
     .comments-top {

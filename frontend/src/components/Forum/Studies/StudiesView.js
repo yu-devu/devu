@@ -38,6 +38,13 @@ const StudiesView = () => {
     setModifyComment(e.target.value);
   };
 
+  // const moreButton = document.getElementById('btn-more');
+
+  // moreButton.addEventListener('click', () => {
+  //   const dropdown = document.querySelector('more-submenu');
+  //   dropdown.style.display = 'block';
+  // });
+
   let pathname = location.pathname;
   let [a, b, postId] = pathname.split('/');
   var comment_num;
@@ -45,8 +52,7 @@ const StudiesView = () => {
 
   useEffect(() => {
     fetchData();
-    // console.log(location);
-    // console.log(isLike);
+    window.scrollTo(0, 0);
   }, [location, isLike]);
 
   const fetchData = async () => {
@@ -300,6 +306,7 @@ const StudiesView = () => {
             <div className="studies-detail-bottom">
               <div className="studies-write-comments">
                 <input
+                  className='comment'
                   id="comment"
                   name="comment"
                   value={comment}
@@ -337,7 +344,6 @@ const StudiesView = () => {
                                 <div className="comment-owner">
                                   {comment.username}
                                 </div>
-
                                 {comment.username === username &&
                                 comment.commentId !== showModifyContent ? (
                                   <button className="btn-more">
@@ -424,30 +430,30 @@ const StudiesView = () => {
                                   ? comment.createAt.slice(11, 13) == hours
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
-                                        comment.createAt.slice(17, 19) +
-                                        '초 전'
+                                      comment.createAt.slice(17, 19) +
+                                      '초 전'
                                       : minutes -
-                                          comment.createAt.slice(14, 16) ==
-                                          1 &&
+                                        comment.createAt.slice(14, 16) ==
+                                        1 &&
                                         seconds < comment.createAt.slice(17, 19)
-                                      ? 60 -
+                                        ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
                                         '초 전'
-                                      : minutes -
+                                        : minutes -
                                         comment.createAt.slice(14, 16) +
                                         '분 전'
                                     : hours -
-                                      comment.createAt.slice(11, 13) +
-                                      '시간 전'
+                                    comment.createAt.slice(11, 13) +
+                                    '시간 전'
                                   : comment.createAt.slice(5, 7) +
-                                    '.' +
-                                    comment.createAt.slice(8, 10)
+                                  '.' +
+                                  comment.createAt.slice(8, 10)
                                 : comment.createAt.slice(2, 4) +
-                                  '.' +
-                                  comment.createAt.slice(5, 7) +
-                                  '.' +
-                                  comment.createAt.slice(8, 10)}
+                                '.' +
+                                comment.createAt.slice(5, 7) +
+                                '.' +
+                                comment.createAt.slice(8, 10)}
                             </div>
                           </div>
                         </div>
