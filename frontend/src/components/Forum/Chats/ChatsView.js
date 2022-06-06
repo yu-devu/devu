@@ -121,28 +121,32 @@ const ChatsView = () => {
   };
 
   const handleCommentModify = async (id) => {
-    const data = {
-      contents: modifycomment,
-    };
+    if (modifycomment !== '') {
+      const data = {
+        contents: modifycomment,
+      };
 
-    await axios
-      .patch(
-        process.env.REACT_APP_DB_HOST + `/api/comments/${id}`,
-        JSON.stringify(data),
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `${localStorage.getItem('accessToken')}`,
-            // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
-          },
-        }
-      )
-      .then(() => {
-        navigate(0);
-      })
-      .catch((res) => {
-        console.log(res);
-      });
+      await axios
+        .patch(
+          process.env.REACT_APP_DB_HOST + `/api/comments/${id}`,
+          JSON.stringify(data),
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `${localStorage.getItem('accessToken')}`,
+              // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
+            },
+          }
+        )
+        .then(() => {
+          navigate(0);
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+    } else {
+      alert('댓글을 작성해주세요!');
+    }
   };
 
   const handleComment = async () => {
