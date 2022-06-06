@@ -25,6 +25,7 @@ const Chats = () => {
   const [postSize, setPostSize] = useState(0);
   const [postsPerPage] = useState(10);
   const [postData, setPostData] = useState([]);
+  const [isLike, setLike] = useState(false);
   const [lastIdx, setLastIdx] = useState(0);
   const [selectedTag, setSelectedTag] = useState([]);
   const [sentence, setSentence] = useState('');
@@ -41,7 +42,7 @@ const Chats = () => {
     fetchPageSize();
     window.scrollTo(0, 0);
     fetchLikeData();
-  }, [currentPage, selectedTag, status, order]);
+  }, [currentPage, selectedTag, status, order, isLike]);
 
   const fetchData = async () => {
     const res = await axios.get(
@@ -91,6 +92,27 @@ const Chats = () => {
         setLikePosts(_likePosts);
       })
       .catch((err) => console.log(err));
+  };
+
+  const handleLike = async (id) => {
+    const data = {
+      username: username,
+      postId: id,
+    };
+    await axios
+      .post(process.env.REACT_APP_DB_HOST + `/api/like`, JSON.stringify(data), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        console.log('res.data', res.data.liked);
+        if (res.data.liked) setLike(true);
+        else setLike(false);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
   };
 
   const handleKeyPress = (e) => {
@@ -173,7 +195,10 @@ const Chats = () => {
                         <div className="text-hit">{post.hit}</div>
                         <img className="img-hit" src={hit} alt="" />
                       </div>
-                      <div className="post-like">
+                      <div
+                        className="post-like"
+                        onClick={() => handleLike(post.id)}
+                      >
                         <div className="text-like">{post.like}</div>
                         {likePosts.includes(post.id) ? (
                           <img className="img-like" src={like_color} alt="" />
