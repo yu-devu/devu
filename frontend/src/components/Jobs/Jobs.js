@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import './jobs.css'
 import magnify from '../../img/magnify.png';
 import FooterGray from "../Home/FooterGray";
-import logo from '../../img/logo_gray.png'
+// import logo from '../../img/logo_gray.png'
+import Naver from '../../img/NaverLogo.png';
+import Kakao from '../../img/KakaoLogo.png';
+import Line from '../../img/LineLogo.png';
+import Coupang from '../../img/CoupangLogo.png';
+import Baemin from '../../img/BaeminLogo.png';
 
 const Jobs = () => {
+    const navigate = useNavigate();
     const [postData, setPostData] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [postSize, setPostSize] = useState(0);
@@ -26,7 +33,7 @@ const Jobs = () => {
             }
         );
         setPostSize(res.data.size); // pagination 구현하기 위해 채용 정보의 총 개수를 불러와서 저장
-        const _postData = await res.data.map(
+        const _postData = await res.data.positions.map(
             (rowData) => (
                 {
                     company: rowData.company,
@@ -36,7 +43,6 @@ const Jobs = () => {
                 }
             )
         );
-        console.log(_postData);
         setPostData(_postData);
 
     };
@@ -79,7 +85,14 @@ const Jobs = () => {
                         {postData.slice(0, postsPerPage).map((post) => (
                             <div className='job-card'>
                                 <div className='img-job'>
-                                    <img className='job-logo' src={logo} />
+                                    {{
+                                        "NAVER": <img className='job-logo' src={Naver} />,
+                                        "KAKAO": <img className='job-logo' src={Kakao} />,
+                                        "LINE": <img className='job-logo' src={Line} />,
+                                        "COUPANG": <img className='job-logo' src={Coupang} />,
+                                        "BAEMIN": <img className='job-logo' src={Baemin} />,
+                                    }[post.company]}
+
                                 </div>
                                 {/* post.company 별로 회사 대표 이미지 불러올 수 있도록 변경해야 함 */}
                                 <div className='top-job'>
