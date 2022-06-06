@@ -40,7 +40,7 @@ const Questions = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
   const [postSize, setPostSize] = useState(0);
-  const [postsPerPage] = useState(20);
+  const [postsPerPage] = useState(10);
   const [postData, setPostData] = useState([]);
   const [lastIdx, setLastIdx] = useState(0);
   const [selectedTag, setSelectedTag] = useState([]);
@@ -142,7 +142,9 @@ const Questions = () => {
                       <img className="top-photo" src={a} alt="" />
                     </div>
                     <div className="top-detail">
-                      <div className="top-title">{top.title.length > 10 ? top.title.substr(0, 10) + '...' : top.title}</div>
+                      <div className="top-title"><Link to={`/questionsDetail/${top.id}`}>
+                        {top.title.length > 10 ? top.title.substr(0, 10) + '...' : top.title}
+                      </Link></div>
                       <div className="top-content">{top.content.length > 20 ? top.title.substr(0, 20) + '...' : top.content}</div>
                       <div className="top-date">
                         {top.postYear == year
@@ -500,7 +502,7 @@ const Questions = () => {
               </select>
               <div className="questions-line"></div>
               {/* 게시물 미리보기 */}
-              {postData.slice(0, 20).map((post) => (
+              {postData.slice(0, postsPerPage).map((post) => (
                 <li key={post.id} className="list-questions">
                   <div className="post-questions">
                     <div className="post-header">
