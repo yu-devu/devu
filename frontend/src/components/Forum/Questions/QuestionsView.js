@@ -8,6 +8,7 @@ import share from '../../../img/share.png';
 import warning from '../../../img/warning.png';
 import hit from '../../../img/hit.png';
 import like from '../../../img/like.png';
+import like_color from '../../../img/like_color.png';
 import imgComment from '../../../img/comment.png';
 import more from '../../../img/more.png';
 import FooterGray from '../../Home/FooterGray';
@@ -249,8 +250,19 @@ const QuestionsView = () => {
                   <h8 className="detail-sidebar-text">{postData.hit}</h8>
                 </div>
                 <div className="questions-sidebar-btn">
-                  <img className="img-detail-like" src={like} alt="" />
-                  <button className="detail-sidebar-btn">
+                  <button
+                    className="detail-sidebar-btn"
+                    onClick={() => handleLike()}
+                  >
+                    {isLike ? (
+                      <img
+                        className="img-detail-like"
+                        src={like_color}
+                        alt=""
+                      />
+                    ) : (
+                      <img className="img-detail-like" src={like} alt="" />
+                    )}
                     {postData.like}
                   </button>
                 </div>
@@ -294,7 +306,7 @@ const QuestionsView = () => {
             <div className="questions-detail-bottom">
               <div className="questions-write-comments">
                 <input
-                  className='comment'
+                  className="comment"
                   id="comment"
                   name="comment"
                   value={comment}
@@ -419,30 +431,30 @@ const QuestionsView = () => {
                                   ? comment.createAt.slice(11, 13) == hours
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
-                                      comment.createAt.slice(17, 19) +
-                                      '초 전'
+                                        comment.createAt.slice(17, 19) +
+                                        '초 전'
                                       : minutes -
-                                        comment.createAt.slice(14, 16) ==
-                                        1 &&
+                                          comment.createAt.slice(14, 16) ==
+                                          1 &&
                                         seconds < comment.createAt.slice(17, 19)
-                                        ? 60 -
+                                      ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
                                         '초 전'
-                                        : minutes -
+                                      : minutes -
                                         comment.createAt.slice(14, 16) +
                                         '분 전'
                                     : hours -
-                                    comment.createAt.slice(11, 13) +
-                                    '시간 전'
+                                      comment.createAt.slice(11, 13) +
+                                      '시간 전'
                                   : comment.createAt.slice(5, 7) +
-                                  '.' +
-                                  comment.createAt.slice(8, 10)
+                                    '.' +
+                                    comment.createAt.slice(8, 10)
                                 : comment.createAt.slice(0, 4) +
-                                '.' +
-                                comment.createAt.slice(5, 7) +
-                                '.' +
-                                comment.createAt.slice(8, 10)}
+                                  '.' +
+                                  comment.createAt.slice(5, 7) +
+                                  '.' +
+                                  comment.createAt.slice(8, 10)}
                             </div>
                           </div>
                         </div>
