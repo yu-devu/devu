@@ -8,7 +8,6 @@ import share from '../../../img/share.png';
 import warning from '../../../img/warning.png';
 import hit from '../../../img/hit.png';
 import like from '../../../img/like.png';
-import imgComment from '../../../img/comment.png';
 import more from '../../../img/more.png';
 import FooterGray from '../../Home/FooterGray';
 
