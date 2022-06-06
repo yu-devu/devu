@@ -29,6 +29,7 @@ const StudiesView = () => {
   const username = localStorage.getItem('username');
   const [comment, setComment] = useState('');
   const [modifycomment, setModifyComment] = useState('');
+  const [likePosts, setLikePosts] = useState([]);
 
   const [showDropdownContent, setShowDropdownContent] = useState(0);
   const [showModifyContent, setShowModifyContent] = useState(0);
@@ -54,6 +55,7 @@ const StudiesView = () => {
   useEffect(() => {
     fetchData();
     window.scrollTo(0, 0);
+    fetchLikeData();
   }, [location, isLike]);
 
   const fetchData = async () => {
@@ -78,6 +80,16 @@ const StudiesView = () => {
     };
     setPostData(_postData);
     comment_num = res.data.comments.length;
+  };
+
+  const fetchLikeData = async () => {
+    await axios
+      .get(process.env.REACT_APP_DB_HOST + `/api/myLikes`)
+      .then((res) => {
+        const _likePosts = res.data.map((rowData) => rowData.id);
+        setLikePosts(_likePosts);
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleLike = async () => {
@@ -257,12 +269,12 @@ const StudiesView = () => {
                   <img className="img-detail-hit" src={hit} alt="" />
                   <h8 className="detail-sidebar-text">{postData.hit}</h8>
                 </div>
-                <div className="studies-sidebar-btn"
-                  onClick={() => handleLike()}>
-                  <button
-                    className="detail-sidebar-btn"
-                  >
-                    {isLike ? (
+                <div
+                  className="studies-sidebar-btn"
+                  onClick={() => handleLike()}
+                >
+                  <button className="detail-sidebar-btn">
+                    {likePosts.includes(postData.id) ? (
                       <img
                         className="img-detail-like"
                         src={like_color}
@@ -352,36 +364,34 @@ const StudiesView = () => {
                                   {comment.username}
                                 </div>
                                 {comment.username === username &&
-                                  comment.commentId !== showModifyContent ? (
-                                  <button className="btn-more"
-                                    onClick={() => {
-                                      if (
-                                        showDropdownContent ===
-                                        comment.commentId
-                                      )
-                                        setShowDropdownContent(0);
-                                      else
-                                        setShowDropdownContent(
-                                          comment.commentId
-                                        );
-                                    }}
-                                  >
+                                comment.commentId !== showModifyContent ? (
+                                  <button className="btn-more">
                                     <img
                                       className="img-more"
                                       alt=""
                                       src={more}
+                                      onClick={() => {
+                                        console.log(comment.commentId);
+                                        if (
+                                          showDropdownContent ===
+                                          comment.commentId
+                                        )
+                                          setShowDropdownContent(0);
+                                        else
+                                          setShowDropdownContent(
+                                            comment.commentId
+                                          );
+                                      }}
                                     />
                                     {comment.commentId ===
-                                      showDropdownContent ? (
-                                      <ul className='more-submenu' >
+                                    showDropdownContent ? (
+                                      <div>
                                         <button
                                           onClick={() => {
                                             setShowModifyContent(
                                               comment.commentId
                                             );
                                             setShowDropdownContent(0);
-                                          }} onBlur={() => {
-                                            setShowDropdownContent(0)
                                           }}
                                         >
                                           수정
@@ -395,39 +405,36 @@ const StudiesView = () => {
                                         >
                                           삭제
                                         </button>
-                                      </ul>
+                                      </div>
                                     ) : null}
                                   </button>
                                 ) : null}
                               </div>
                             </div>
                             {comment.commentId === showModifyContent ? (
-                              <div className="container-modify-comments">
+                              <div className="questions-write-comments">
                                 <input
-                                  className="comment"
                                   id="comment"
                                   name="comment"
                                   defaultValue={comment.contents}
                                   onChange={(e) => onChangeModifyComment(e)}
                                 />
-                                <div className='btn-comments'>
-                                  <button
-                                    className="btn-comment-sub"
-                                    onClick={() => {
-                                      handleCommentModify(comment.commentId);
-                                    }}
-                                  >
-                                    수정하기
-                                  </button>
-                                  <button
-                                    className="btn-comment-sub"
-                                    onClick={() => {
-                                      setShowModifyContent(0);
-                                    }}
-                                  >
-                                    취소
-                                  </button>
-                                </div>
+                                <button
+                                  className="btn-comment"
+                                  onClick={() => {
+                                    handleCommentModify(comment.commentId);
+                                  }}
+                                >
+                                  수정하기
+                                </button>
+                                <button
+                                  className="btn-comment"
+                                  onClick={() => {
+                                    setShowModifyContent(0);
+                                  }}
+                                >
+                                  취소
+                                </button>
                               </div>
                             ) : (
                               <div className="comment-content">
@@ -442,30 +449,30 @@ const StudiesView = () => {
                                   ? comment.createAt.slice(11, 13) == hours
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
-                                      comment.createAt.slice(17, 19) +
-                                      '초 전'
+                                        comment.createAt.slice(17, 19) +
+                                        '초 전'
                                       : minutes -
-                                        comment.createAt.slice(14, 16) ==
-                                        1 &&
+                                          comment.createAt.slice(14, 16) ==
+                                          1 &&
                                         seconds < comment.createAt.slice(17, 19)
-                                        ? 60 -
+                                      ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
                                         '초 전'
-                                        : minutes -
+                                      : minutes -
                                         comment.createAt.slice(14, 16) +
                                         '분 전'
                                     : hours -
-                                    comment.createAt.slice(11, 13) +
-                                    '시간 전'
+                                      comment.createAt.slice(11, 13) +
+                                      '시간 전'
                                   : comment.createAt.slice(5, 7) +
-                                  '.' +
-                                  comment.createAt.slice(8, 10)
+                                    '.' +
+                                    comment.createAt.slice(8, 10)
                                 : comment.createAt.slice(2, 4) +
-                                '.' +
-                                comment.createAt.slice(5, 7) +
-                                '.' +
-                                comment.createAt.slice(8, 10)}
+                                  '.' +
+                                  comment.createAt.slice(5, 7) +
+                                  '.' +
+                                  comment.createAt.slice(8, 10)}
                             </div>
                           </div>
                         </div>

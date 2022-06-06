@@ -9,6 +9,7 @@ import Footer from '../../Home/Footer';
 import comment from '../../../img/comment.png';
 import hit from '../../../img/hit.png';
 import like from '../../../img/like.png';
+import like_color from '../../../img/like_color.png';
 import { Link } from 'react-router-dom';
 
 const Chats = () => {
@@ -24,11 +25,13 @@ const Chats = () => {
   const [postSize, setPostSize] = useState(0);
   const [postsPerPage] = useState(10);
   const [postData, setPostData] = useState([]);
+  const [isLike, setLike] = useState(false);
   const [lastIdx, setLastIdx] = useState(0);
   const [selectedTag, setSelectedTag] = useState([]);
   const [sentence, setSentence] = useState('');
   const [status, setStatus] = useState('');
   const [order, setOrder] = useState('');
+  const [likePosts, setLikePosts] = useState([]);
   const onChangeSentence = (e) => {
     setSentence(e.target.value);
   };
@@ -38,7 +41,8 @@ const Chats = () => {
     fetchData();
     fetchPageSize();
     window.scrollTo(0, 0);
-  }, [currentPage, selectedTag, status, order]);
+    fetchLikeData();
+  }, [currentPage, selectedTag, status, order, isLike]);
 
   const fetchData = async () => {
     const res = await axios.get(
@@ -78,6 +82,37 @@ const Chats = () => {
     setPostData(_postData);
     CKEditor.instances.textarea_id.setData(postData.content);
     CKEditor.instances.textarea_id.getData();
+  };
+
+  const fetchLikeData = async () => {
+    await axios
+      .get(process.env.REACT_APP_DB_HOST + `/api/myLikes`)
+      .then((res) => {
+        const _likePosts = res.data.map((rowData) => rowData.id);
+        setLikePosts(_likePosts);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleLike = async (id) => {
+    const data = {
+      username: username,
+      postId: id,
+    };
+    await axios
+      .post(process.env.REACT_APP_DB_HOST + `/api/like`, JSON.stringify(data), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => {
+        console.log('res.data', res.data.liked);
+        if (res.data.liked) setLike(true);
+        else setLike(false);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
   };
 
   const handleKeyPress = (e) => {
@@ -160,9 +195,16 @@ const Chats = () => {
                         <div className="text-hit">{post.hit}</div>
                         <img className="img-hit" src={hit} alt="" />
                       </div>
-                      <div className="post-like">
+                      <div
+                        className="post-like"
+                        onClick={() => handleLike(post.id)}
+                      >
                         <div className="text-like">{post.like}</div>
-                        <img className="img-like" src={like} alt="" />
+                        {likePosts.includes(post.id) ? (
+                          <img className="img-like" src={like_color} alt="" />
+                        ) : (
+                          <img className="img-like" src={like} alt="" />
+                        )}
                       </div>
                     </div>
                   </div>
@@ -176,15 +218,15 @@ const Chats = () => {
                               ? seconds - post.postSecond + '초 전'
                               : minutes - post.postMinute == 1 &&
                                 seconds < post.postSecond
-                                ? 60 - post.postSecond + seconds + '초 전'
-                                : minutes - post.postMinute + '분 전'
+                              ? 60 - post.postSecond + seconds + '초 전'
+                              : minutes - post.postMinute + '분 전'
                             : hours - post.postHour + '시간 전'
                           : post.postMonth + '.' + post.postDay
                         : post.postYear.slice(2, 4) +
-                        '.' +
-                        post.postMonth +
-                        '.' +
-                        post.postDay}
+                          '.' +
+                          post.postMonth +
+                          '.' +
+                          post.postDay}
                     </div>
                   </div>
                   <div className="chats-line2"></div>
