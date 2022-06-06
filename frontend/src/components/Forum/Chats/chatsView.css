@@ -133,11 +133,11 @@
     }
 
     .img-detail-hit {
-        width: 30px;
+        width: 40px;
         height: 30px;
         position: relative;
         top: 5px;
-        right: 1px;
+        right: 5px;
     }
 
     .detail-sidebar-text {
@@ -149,8 +149,6 @@
 
     .detail-sidebar-btn {
         position: relative;
-        bottom: 3px;
-        right: 3px;
         background-color: transparent;
         cursor: pointer;
         font-size: 14px;
@@ -289,7 +287,7 @@
         background-color: transparent;
         border: 1px solid rgba(241, 241, 241, 1);
         border-radius: 10%;
-        padding: 5% 5%;
+        padding: 8% 5%;
         padding-top: 7%;
         cursor: pointer;
         color: black;

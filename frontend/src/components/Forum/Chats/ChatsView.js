@@ -201,34 +201,31 @@ const ChatsView = () => {
                   </div>
                 </div>
                 <div className="chats-top">
-                  <div className="chats-status">
-                    {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
-                  </div>
                   <div className="chats-title">{postData.title}</div>
                 </div>
                 <div className="chats-content">{postData.content}</div>
               </div>
-              <div className="chats-top">
-                <div className="chats-title">{postData.title}</div>
-              </div>
-              <div className="chats-content">{postData.content}</div>
-              <div className="chats-options">
-                <div className="chats-hit">
-                  {isLike ? (
-                    <img className="img-detail-like" src={like_color} alt="" />
-                  ) : (
-                    <img className="img-detail-like" src={like} alt="" />
-                  )}
-                  {postData.hit}
+              <div className="chats-sidebar">
+                <div className="chats-sidebar-item">
+                  <img className="img-detail-hit" src={hit} alt="" />
+                  <h8 className="detail-sidebar-text">{postData.hit}</h8>
                 </div>
-                <div className="chats-like">
-                  <img
-                    className="img-detail-like"
-                    src={like}
-                    alt=""
-                    onClick={() => handleLike()}
-                  />
-                  {postData.like}
+                <div className="chats-sidebar-btn"
+                  onClick={() => handleLike()}>
+                  <button
+                    className="detail-sidebar-btn"
+                  >
+                    {isLike ? (
+                      <img
+                        className="img-detail-like"
+                        src={like_color}
+                        alt=""
+                      />
+                    ) : (
+                      <img className="img-detail-like" src={like} alt="" />
+                    )}
+                    {postData.like}
+                  </button>
                 </div>
                 <div className="chats-sidebar-btn">
                   <img className="img-detail-like" src={share} alt="" />
@@ -306,7 +303,7 @@ const ChatsView = () => {
                                   {comment.username}
                                 </div>
                                 {comment.username === username &&
-                                comment.commentId !== showModifyContent ? (
+                                  comment.commentId !== showModifyContent ? (
                                   <button className="btn-more">
                                     <img
                                       className="img-more"
@@ -326,7 +323,7 @@ const ChatsView = () => {
                                       }}
                                     />
                                     {comment.commentId ===
-                                    showDropdownContent ? (
+                                      showDropdownContent ? (
                                       <div>
                                         <button
                                           onClick={() => {
@@ -391,30 +388,30 @@ const ChatsView = () => {
                                   ? comment.createAt.slice(11, 13) == hours
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
-                                        comment.createAt.slice(17, 19) +
-                                        '초 전'
+                                      comment.createAt.slice(17, 19) +
+                                      '초 전'
                                       : minutes -
-                                          comment.createAt.slice(14, 16) ==
-                                          1 &&
+                                        comment.createAt.slice(14, 16) ==
+                                        1 &&
                                         seconds < comment.createAt.slice(17, 19)
-                                      ? 60 -
+                                        ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
                                         '초 전'
-                                      : minutes -
+                                        : minutes -
                                         comment.createAt.slice(14, 16) +
                                         '분 전'
                                     : hours -
-                                      comment.createAt.slice(11, 13) +
-                                      '시간 전'
+                                    comment.createAt.slice(11, 13) +
+                                    '시간 전'
                                   : comment.createAt.slice(5, 7) +
-                                    '.' +
-                                    comment.createAt.slice(8, 10)
+                                  '.' +
+                                  comment.createAt.slice(8, 10)
                                 : comment.createAt.slice(2, 4) +
-                                  '.' +
-                                  comment.createAt.slice(5, 7) +
-                                  '.' +
-                                  comment.createAt.slice(8, 10)}
+                                '.' +
+                                comment.createAt.slice(5, 7) +
+                                '.' +
+                                comment.createAt.slice(8, 10)}
                             </div>
                           </div>
                         </div>

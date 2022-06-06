@@ -249,10 +249,10 @@ const QuestionsView = () => {
                   <img className="img-detail-hit" src={hit} alt="" />
                   <h8 className="detail-sidebar-text">{postData.hit}</h8>
                 </div>
-                <div className="questions-sidebar-btn">
+                <div className="questions-sidebar-btn"
+                  onClick={() => handleLike()}>
                   <button
                     className="detail-sidebar-btn"
-                    onClick={() => handleLike()}
                   >
                     {isLike ? (
                       <img
@@ -431,30 +431,30 @@ const QuestionsView = () => {
                                   ? comment.createAt.slice(11, 13) == hours
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
-                                        comment.createAt.slice(17, 19) +
-                                        '초 전'
+                                      comment.createAt.slice(17, 19) +
+                                      '초 전'
                                       : minutes -
-                                          comment.createAt.slice(14, 16) ==
-                                          1 &&
+                                        comment.createAt.slice(14, 16) ==
+                                        1 &&
                                         seconds < comment.createAt.slice(17, 19)
-                                      ? 60 -
+                                        ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
                                         '초 전'
-                                      : minutes -
+                                        : minutes -
                                         comment.createAt.slice(14, 16) +
                                         '분 전'
                                     : hours -
-                                      comment.createAt.slice(11, 13) +
-                                      '시간 전'
+                                    comment.createAt.slice(11, 13) +
+                                    '시간 전'
                                   : comment.createAt.slice(5, 7) +
-                                    '.' +
-                                    comment.createAt.slice(8, 10)
+                                  '.' +
+                                  comment.createAt.slice(8, 10)
                                 : comment.createAt.slice(0, 4) +
-                                  '.' +
-                                  comment.createAt.slice(5, 7) +
-                                  '.' +
-                                  comment.createAt.slice(8, 10)}
+                                '.' +
+                                comment.createAt.slice(5, 7) +
+                                '.' +
+                                comment.createAt.slice(8, 10)}
                             </div>
                           </div>
                         </div>
