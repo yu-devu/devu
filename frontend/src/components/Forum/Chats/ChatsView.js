@@ -6,6 +6,7 @@ import Submenu from '../Submenu';
 import ab from '../../../img/a.png';
 import hit from '../../../img/hit.png';
 import like from '../../../img/like.png';
+import like_color from '../../../img/like_color.png';
 import more from '../../../img/more.png';
 import FooterGray from '../../Home/FooterGray';
 
@@ -25,8 +26,9 @@ const ChatsView = () => {
   const username = localStorage.getItem('username');
   const [comment, setComment] = useState('');
   const [modifycomment, setModifyComment] = useState('');
-  const [dropdown, setDropdown] = useState(false);
-  const [commentModifyMode, handleCommentModifyMode] = useState(0);
+
+  const [showDropdownContent, setShowDropdownContent] = useState(0);
+  const [showModifyContent, setShowModifyContent] = useState(0);
   const onChangeComment = (e) => {
     setComment(e.target.value);
   };
@@ -63,7 +65,6 @@ const ChatsView = () => {
       tags: res.data.tags,
       studyStatus: res.data.studyStatus,
       comments: res.data.comments,
-      commentsSize: res.data.commentsSize,
     };
     setPostData(_postData);
     comment_num = res.data.comments.length;
@@ -119,28 +120,32 @@ const ChatsView = () => {
   };
 
   const handleCommentModify = async (id) => {
-    const data = {
-      contents: modifycomment,
-    };
+    if (modifycomment !== '') {
+      const data = {
+        contents: modifycomment,
+      };
 
-    await axios
-      .patch(
-        process.env.REACT_APP_DB_HOST + `/api/comments/${id}`,
-        JSON.stringify(data),
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `${localStorage.getItem('accessToken')}`,
-            // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
-          },
-        }
-      )
-      .then(() => {
-        navigate(0);
-      })
-      .catch((res) => {
-        console.log(res);
-      });
+      await axios
+        .patch(
+          process.env.REACT_APP_DB_HOST + `/api/comments/${id}`,
+          JSON.stringify(data),
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `${localStorage.getItem('accessToken')}`,
+              // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
+            },
+          }
+        )
+        .then(() => {
+          navigate(0);
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+    } else {
+      alert('댓글을 작성해주세요!');
+    }
   };
 
   const handleComment = async () => {
@@ -198,12 +203,20 @@ const ChatsView = () => {
               <div className="chats-content">{postData.content}</div>
               <div className="chats-options">
                 <div className="chats-hit">
-                  <img className="img-detail-hit" src={hit} alt="" />
+                  {isLike ? (
+                    <img className="img-detail-like" src={like_color} alt="" />
+                  ) : (
+                    <img className="img-detail-like" src={like} alt="" />
+                  )}
                   {postData.hit}
                 </div>
                 <div className="chats-like">
-                  <img className="img-detail-like" src={like} alt=""
-                    onClick={() => { handleLike(); }} />
+                  <img
+                    className="img-detail-like"
+                    src={like}
+                    alt=""
+                    onClick={() => handleLike()}
+                  />
                   {postData.like}
                 </div>
                 {postData.username === username ? (
@@ -229,7 +242,7 @@ const ChatsView = () => {
             <div className="chats-detail-bottom">
               <div className="chats-write-comments">
                 <input
-                  className='comment'
+                  className="comment"
                   id="comment"
                   name="comment"
                   value={comment}
@@ -247,8 +260,7 @@ const ChatsView = () => {
               </div>
               {postData.comments ? (
                 <div className="chats-comments-all">
-                  <div className="number-comments">
-                  </div>
+                  <div className="number-comments"></div>
                   <div className="chats-comments">
                     {postData.comments &&
                       postData.comments.map((comment) => (
@@ -266,27 +278,35 @@ const ChatsView = () => {
                                 <div className="comment-owner">
                                   {comment.username}
                                 </div>
-                                {comment.username === username ? (
-                                  <button className="btn-more"
-                                    onClick={() => {
-                                      if (dropdown) setDropdown(false);
-                                      else setDropdown(true);
-                                    }}
-                                    onBlur={() => {
-                                      setDropdown(false)
-                                    }}>
+                                {comment.username === username &&
+                                  comment.commentId !== showModifyContent ? (
+                                  <button className="btn-more">
                                     <img
                                       className="img-more"
                                       alt=""
                                       src={more}
+                                      onClick={() => {
+                                        console.log(comment.commentId);
+                                        if (
+                                          showDropdownContent ===
+                                          comment.commentId
+                                        )
+                                          setShowDropdownContent(0);
+                                        else
+                                          setShowDropdownContent(
+                                            comment.commentId
+                                          );
+                                      }}
                                     />
-                                    {dropdown && (
-                                      <ul className='more-submenu'>
+                                    {comment.commentId ===
+                                      showDropdownContent ? (
+                                      <div>
                                         <button
                                           onClick={() => {
-                                            handleCommentModifyMode(
+                                            setShowModifyContent(
                                               comment.commentId
                                             );
+                                            setShowDropdownContent(0);
                                           }}
                                         >
                                           수정
@@ -300,22 +320,20 @@ const ChatsView = () => {
                                         >
                                           삭제
                                         </button>
-                                      </ul>
-                                    )}
+                                      </div>
+                                    ) : null}
                                   </button>
                                 ) : null}
                               </div>
                             </div>
-                            {comment.commentId === commentModifyMode ? (
+                            {comment.commentId === showModifyContent ? (
                               <div className="questions-write-comments">
                                 <input
                                   id="comment"
                                   name="comment"
                                   defaultValue={comment.contents}
-                                  //   value={modifycomment}
                                   onChange={(e) => onChangeModifyComment(e)}
                                 />
-
                                 <button
                                   className="btn-comment"
                                   onClick={() => {
@@ -324,12 +342,21 @@ const ChatsView = () => {
                                 >
                                   수정하기
                                 </button>
+                                <button
+                                  className="btn-comment"
+                                  onClick={() => {
+                                    setShowModifyContent(0);
+                                  }}
+                                >
+                                  취소
+                                </button>
                               </div>
                             ) : (
                               <div className="comment-content">
                                 {comment.contents}
                               </div>
                             )}
+
                             <div className="comment-date">
                               {comment.createAt.slice(0, 4) == year
                                 ? comment.createAt.slice(5, 7) == month &&
