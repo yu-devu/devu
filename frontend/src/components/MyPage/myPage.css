@@ -2,8 +2,9 @@
   .mypage-top {
     display: flex;
     position: relative;
-    left: 30%;
+    left: 25%;
     margin-top: 4%;
+    width: 100%;
   }
 
   .profile-mypage {
@@ -33,6 +34,7 @@
     border: 1px solid var(--color-primary);
     color: var(--color-primary);
     cursor: pointer;
+    margin-left: 250px;
   }
 
   .btn-change-info:hover {
@@ -42,7 +44,7 @@
   .tag-mypage {
     position: relative;
     display: flex;
-    left: 30%;
+    left: 25%;
     margin-top: 2.5%;
   }
 
@@ -61,7 +63,7 @@
 
   .submenu-mypage {
     position: relative;
-    left: 30%;
+    left: 25%;
     margin-top: 1.7%;
   }
 
@@ -74,21 +76,31 @@
     cursor: pointer;
   }
 
+  .btn-mypage-submenu-clicked {
+    margin-right: 25px;
+    color: var(--color-primary);
+    border-bottom: 2px solid var(--color-primary);
+    font-size: 17px;
+    font-weight: 600;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
   .btn-mypage-submenu:hover {
     color: black;
   }
 
   .line-mypage {
     position: relative;
-    width: 40%;
+    width: 49%;
     margin-top: 1%;
-    left: 30%;
+    left: 25%;
     background: 767676;
   }
 
   .bottom-mypage {
     position: relative;
-    left: 30%;
+    left: 25%;
   }
 
   .cate-mypage {
@@ -97,7 +109,7 @@
     margin-top: 4%;
     padding-top: 1%;
     padding-bottom: 1%;
-    width: 99%;
+    /* width: %; */
     background-color: rgb(248, 248, 248);
   }
 
@@ -108,7 +120,7 @@
     margin-top: 4%;
     padding-top: 1%;
     padding-bottom: 1%;
-    width: 94.5%;
+    /* width: 94.5%; */
   }
 
   th {
