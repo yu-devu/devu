@@ -29,6 +29,7 @@ const StudiesView = () => {
   const username = localStorage.getItem('username');
   const [comment, setComment] = useState('');
   const [modifycomment, setModifyComment] = useState('');
+  const [likePosts, setLikePosts] = useState([]);
 
   const [showDropdownContent, setShowDropdownContent] = useState(0);
   const [showModifyContent, setShowModifyContent] = useState(0);
@@ -38,6 +39,10 @@ const StudiesView = () => {
   const onChangeModifyComment = (e) => {
     setModifyComment(e.target.value);
   };
+
+  function filterStudy(element) {
+    if (element.studyStatus !== null) return true;
+  }
 
   // const moreButton = document.getElementById('btn-more');
 
@@ -54,6 +59,7 @@ const StudiesView = () => {
   useEffect(() => {
     fetchData();
     window.scrollTo(0, 0);
+    fetchLikeData();
   }, [location, isLike]);
 
   const fetchData = async () => {
@@ -80,7 +86,18 @@ const StudiesView = () => {
     comment_num = res.data.comments.length;
   };
 
+  const fetchLikeData = async () => {
+    await axios
+      .get(process.env.REACT_APP_DB_HOST + `/api/myLikes`)
+      .then((res) => {
+        const _likePosts = res.data.map((rowData) => rowData.id);
+        setLikePosts(_likePosts);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const handleLike = async () => {
+    // console.log(myLikeStudy);
     const data = {
       username: username,
       postId: postData.id,
@@ -257,12 +274,12 @@ const StudiesView = () => {
                   <img className="img-detail-hit" src={hit} alt="" />
                   <h8 className="detail-sidebar-text">{postData.hit}</h8>
                 </div>
-                <div className="studies-sidebar-btn"
-                  onClick={() => handleLike()}>
-                  <button
-                    className="detail-sidebar-btn"
-                  >
-                    {isLike ? (
+                <div
+                  className="studies-sidebar-btn"
+                  onClick={() => handleLike()}
+                >
+                  <button className="detail-sidebar-btn">
+                    {likePosts.includes(postData.id) ? (
                       <img
                         className="img-detail-like"
                         src={like_color}
@@ -352,7 +369,7 @@ const StudiesView = () => {
                                   {comment.username}
                                 </div>
                                 {comment.username === username &&
-                                  comment.commentId !== showModifyContent ? (
+                                comment.commentId !== showModifyContent ? (
                                   <button className="btn-more">
                                     <img
                                       className="img-more"
@@ -372,7 +389,7 @@ const StudiesView = () => {
                                       }}
                                     />
                                     {comment.commentId ===
-                                      showDropdownContent ? (
+                                    showDropdownContent ? (
                                       <div>
                                         <button
                                           onClick={() => {
@@ -437,30 +454,30 @@ const StudiesView = () => {
                                   ? comment.createAt.slice(11, 13) == hours
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
-                                      comment.createAt.slice(17, 19) +
-                                      '초 전'
+                                        comment.createAt.slice(17, 19) +
+                                        '초 전'
                                       : minutes -
-                                        comment.createAt.slice(14, 16) ==
-                                        1 &&
+                                          comment.createAt.slice(14, 16) ==
+                                          1 &&
                                         seconds < comment.createAt.slice(17, 19)
-                                        ? 60 -
+                                      ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
                                         '초 전'
-                                        : minutes -
+                                      : minutes -
                                         comment.createAt.slice(14, 16) +
                                         '분 전'
                                     : hours -
-                                    comment.createAt.slice(11, 13) +
-                                    '시간 전'
+                                      comment.createAt.slice(11, 13) +
+                                      '시간 전'
                                   : comment.createAt.slice(5, 7) +
-                                  '.' +
-                                  comment.createAt.slice(8, 10)
+                                    '.' +
+                                    comment.createAt.slice(8, 10)
                                 : comment.createAt.slice(2, 4) +
-                                '.' +
-                                comment.createAt.slice(5, 7) +
-                                '.' +
-                                comment.createAt.slice(8, 10)}
+                                  '.' +
+                                  comment.createAt.slice(5, 7) +
+                                  '.' +
+                                  comment.createAt.slice(8, 10)}
                             </div>
                           </div>
                         </div>
