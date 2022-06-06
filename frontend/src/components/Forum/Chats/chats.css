@@ -64,21 +64,29 @@
 
   .select-chats {
     position: relative;
-    left: 28%;
+    left: 25%;
   }
 
   .chats-line {
     border: solid 1px lightgray;
     margin-top: 10px;
-    width: 58%;
+    width: 52%;
     position: relative;
-    left: 28%;
+    left: 25%;
+    justify-content: center;
+  }
+
+  .chats-line2 {
+    border: solid 1px lightgray;
+    margin-top: 10px;
+    width: 87%;
+    position: relative;
+    justify-content: center;
   }
 
   .post-header-chats {
     display: flex;
     position: relative;
-    left: 28%;
     margin-top: 30px;
   }
 
@@ -90,7 +98,6 @@
   .post-body-chats {
     display: flex;
     position: relative;
-    left: 28%;
     margin-top: 10px;
     width: 60%;
   }
@@ -103,8 +110,6 @@
 
   .post-options-chats {
     display: flex;
-    position: absolute;
-    left: 63%;
   }
 
   .text-hit {
@@ -130,7 +135,6 @@
   .post-tail-chats {
     display: flex;
     position: relative;
-    left: 28%;
     margin-top: 20px;
   }
 
@@ -146,6 +150,17 @@
 
   .post-content {
     max-width: 70%;
+  }
+
+  .post-chats {
+    position: relative;
+    left: 25%;
+    max-width: 60%;
+  }
+
+  .post-content-chats {
+    max-width: 85%;
+    min-width: 85%;
   }
 
   .choice-tag {
@@ -223,9 +238,7 @@
 
   .body-content-chats {
     position: relative;
-    right: 0.8%;
     display: block;
-    width: 90%;
   }
 
   .choicing {

@@ -230,7 +230,7 @@ const QuestionsView = () => {
               <div className="questions-sidebar">
                 {postData.username === username ? (
                   <button
-                    className="studies-sidebar-status"
+                    className="questions-sidebar-status"
                     onClick={() => handleStatus()}
                   >
                     {postData.questionStatus === 'SOLVED' ? '해결' : '미해결'}
@@ -330,7 +330,7 @@ const QuestionsView = () => {
                                 </div>
 
                                 {comment.username === username &&
-                                comment.commentId !== showModifyContent ? (
+                                  comment.commentId !== showModifyContent ? (
                                   <button className="btn-more">
                                     <img
                                       className="img-more"
@@ -350,7 +350,7 @@ const QuestionsView = () => {
                                       }}
                                     />
                                     {comment.commentId ===
-                                    showDropdownContent ? (
+                                      showDropdownContent ? (
                                       <div>
                                         <button
                                           onClick={() => {

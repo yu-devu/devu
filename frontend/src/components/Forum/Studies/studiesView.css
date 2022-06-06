@@ -103,6 +103,7 @@
         padding-right: 15px;
         padding-left: 15px;
         margin-bottom: 10%;
+        width: 85%;
     }
 
     .studies-sidebar-item {
@@ -110,7 +111,6 @@
         border: 1px solid rgba(241, 241, 241, 1);
         border-radius: 10px;
         padding-top: 7px;
-        /* padding-bottom: 7px; */
         padding-right: 15px;
         padding-left: 15px;
         margin-bottom: 10%;
@@ -122,7 +122,6 @@
         border: 1px solid rgba(241, 241, 241, 1);
         border-radius: 10px;
         padding-top: 7px;
-        /* padding-bottom: 7px; */
         padding-right: 15px;
         padding-left: 15px;
         margin-bottom: 10%;
@@ -238,6 +237,7 @@
     .comments-top {
         display: flex;
         padding-top: 2%;
+        margin-left: 10px;
     }
 
     .comment-photo {
@@ -250,19 +250,16 @@
         font-weight: 500;
     }
 
-    .comment-line {
-        width: 84%;
-        margin-bottom: 3%;
-        background-color: rgba(128,128,128,1);
-    }
-
     .comment-content {
         font-weight: 400;
+        margin-left: 20px;
     }
 
     .comment-date {
         font-size: 14px;
         color: rgba(128,128,128,1);
+        margin-left: 20px;
+        padding-bottom: 10px;
     }
 
     .comments-options {

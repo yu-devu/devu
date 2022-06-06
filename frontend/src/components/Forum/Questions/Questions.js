@@ -560,7 +560,7 @@ const Questions = () => {
                           post.postDay}
                       </div>
                     </div>
-                    <div className="questions-line"></div>
+                    <div className="questions-line2"></div>
                   </div>
                 </li>
               ))}
