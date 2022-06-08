@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../../img/logo_main.png';
 import axios from 'axios';
 import './changePasswordModal.css'
 
@@ -30,7 +31,7 @@ function ChangePasswordModal() {
                     }
                 )
                 .then(() => {
-                    alert('이메일 전송 완료!');
+                    alert('이메일 전송 완료! \n이메일이 오지 않을 경우 스펨 이메일함을 확인해보세요.');
                     setClickAuthkey(true);
                 })
                 .catch((res) => alert(JSON.parse(res.request.response).error));
@@ -46,44 +47,53 @@ function ChangePasswordModal() {
                 className='btn-findpw'
                 onClick={() => {
                     openPasswordModal();
-                    // console.log(showModal)
                 }}
             >
                 비밀번호 찾기
             </button>
             {showModal ? (
                 <div>
-                    <p>
-                        비밀번호를 잃어버리셨나요? devU에 가입한 이메일을 정확히 입력해
-                        주세요. 이메일을 통해 비밀번호 수정 링크가 전송됩니다.
-                    </p>
-                    <input
-                        id="email"
-                        name="email"
-                        value={email}
-                        onChange={(e) => onChangeEmail(e)}
-                        placeholder="이메일"
-                    />
-                    {!clickAuthkey ? (
-                        <button
-                            onClick={() => {
-                                passwordUrlEmail();
-                            }}
-                        >
-                            비밀번호 찾기
-                        </button>
-                    ) : (
-                        <div>
-                            <button
-                                onClick={() => {
-                                    passwordUrlEmail();
-                                }}
-                            >
-                                재전송
+                    <div className="background">
+                        <div className="container-modal-pw">
+                            <img className="logo-login" src={logo} alt="" />
+                            <button className="closeIcon" onClick={closePasswordModal}>
+                                X
                             </button>
-                            <p>만약 메일이 오지 않는다면, 스팸메일함을 확인해주세요</p>
+                            <div className="login-input">
+                                <h2>
+                                    Devu에 가입한 이메일을 정확히 입력해주세요.
+                                </h2>
+                                <input
+                                    className='input-email'
+                                    id="email"
+                                    name="email"
+                                    value={email}
+                                    onChange={(e) => onChangeEmail(e)}
+                                    placeholder="이메일"
+                                />
+                                {!clickAuthkey ? (
+                                    <button className='btn-getemail'
+                                        onClick={() => {
+                                            passwordUrlEmail();
+                                        }}
+                                    >
+                                        비밀번호 찾기
+                                    </button>
+                                ) : (
+                                    <div>
+                                        <button className='btn-getemail'
+                                            onClick={() => {
+                                                passwordUrlEmail();
+                                            }}
+                                        >
+                                            재전송
+                                        </button>
+                                        {/* <h2>만약 메일이 오지 않는다면, 스팸메일함을 확인해주세요</h2> */}
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    )}
+                    </div>
                 </div>
             ) : null}
         </>
