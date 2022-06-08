@@ -123,8 +123,11 @@
     /* width: 94.5%; */
   }
 
+  .cate-mypage-detail-title {
+    cursor: pointer;
+  }
+
   th {
     font-weight: 500;
   }
-
 }

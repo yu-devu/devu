@@ -118,12 +118,24 @@ const MyPage = () => {
                     )
                 );
                 setLikeData(_likeData);
-                // console.log(_likeData);
                 setMyLikeStudy(_likeData.filter(filterStudy));
                 setMyLikeQuestion(_likeData.filter(filterQuestion));
                 setMyLikeChat(_likeData.filter(filterChat));
             })
             .catch((err) => console.log(err));
+    }
+
+    const deleteAccount = async () => {
+        if (window.confirm('정말 탈퇴하시겠습니까?')) {
+            await axios.delete(process.env.REACT_APP_DB_HOST + `/api/user`)
+                .then(() => {
+                    console.log("회원 탈퇴!");
+                    navigate('/');
+                })
+                .catch((res) => console.log(res));
+        } else {
+            alert('취소하였습니다!');
+        }
     }
 
     return (
@@ -136,6 +148,7 @@ const MyPage = () => {
                     <h1>{username}님 안녕하세요</h1>
                 </div>
                 <button className='btn-change-info'>정보변경</button>
+                <button className='btn-change-info' onClick={() => { deleteAccount(); }}>회원탈퇴</button>
             </div>
             <div className='tag-mypage'>
                 <button className='btn-mypage-tag' onClick={() => { { setIsPost(true); setIsPostStatus("isStudy"); } }}>작성한글</button>
@@ -164,7 +177,7 @@ const MyPage = () => {
                     {   // 작성한 글에서 각 게시판 별로 구분
                         isStudy: (myPostStudy.slice(0, myPostStudy.length).map((post) => (
                             <tr className='cate-mypage-detail'>
-                                <td width="250" onClick={() => { navigate('/studiesDetail/' + post.id) }}>{post.title}</td>
+                                <td className='cate-mypage-detail-title' width="250" onClick={() => { navigate('/studiesDetail/' + post.id) }}>{post.title}</td>
                                 <td width="150">{post.postYear == year
                                     ? post.postMonth == month && post.postDay == date
                                         ? post.postHour == hours
@@ -187,7 +200,7 @@ const MyPage = () => {
                         ))),
                         isQuestion: (myPostQuestion.slice(0, myPostQuestion.length).map((post) => (
                             <tr className='cate-mypage-detail'>
-                                <td width="250" onClick={() => { navigate('/questionsDetail/' + post.id) }}>{post.title}</td>
+                                <td className='cate-mypage-detail-title' width="250" onClick={() => { navigate('/questionsDetail/' + post.id) }}>{post.title}</td>
                                 <td width="150">{post.postYear == year
                                     ? post.postMonth == month && post.postDay == date
                                         ? post.postHour == hours
@@ -210,7 +223,7 @@ const MyPage = () => {
                         ))),
                         isChat: (myPostChat.slice(0, myPostChat.length).map((post) => (
                             <tr className='cate-mypage-detail'>
-                                <td width="250" onClick={() => { navigate('/chatsDetail/' + post.id) }}>{post.title}</td>
+                                <td className='cate-mypage-detail-title' width="250" onClick={() => { navigate('/chatsDetail/' + post.id) }}>{post.title}</td>
                                 <td width="150">{post.postYear == year
                                     ? post.postMonth == month && post.postDay == date
                                         ? post.postHour == hours
@@ -235,7 +248,7 @@ const MyPage = () => {
                     : ({ // 좋아요한 글에서 각 게시판 별로 구분
                         isStudy: (myLikeStudy.slice(0, myLikeStudy.length).map((post) => (
                             <tr className='cate-mypage-detail'>
-                                <td width="250" onClick={() => { navigate('/studiesDetail/' + post.id) }}>{post.title}</td>
+                                <td className='cate-mypage-detail-title' width="250" onClick={() => { navigate('/studiesDetail/' + post.id) }}>{post.title}</td>
                                 <td width="150">{post.postYear == year
                                     ? post.postMonth == month && post.postDay == date
                                         ? post.postHour == hours
@@ -258,7 +271,7 @@ const MyPage = () => {
                         ))),
                         isQuestion: (myLikeQuestion.slice(0, myLikeQuestion.length).map((post) => (
                             <tr className='cate-mypage-detail'>
-                                <td width="250" onClick={() => { navigate('/questionsDetail/' + post.id) }}>{post.title}</td>
+                                <td className='cate-mypage-detail-title' width="250" onClick={() => { navigate('/questionsDetail/' + post.id) }}>{post.title}</td>
                                 <td width="150">{post.postYear == year
                                     ? post.postMonth == month && post.postDay == date
                                         ? post.postHour == hours
@@ -281,7 +294,7 @@ const MyPage = () => {
                         ))),
                         isChat: (myLikeChat.slice(0, myLikeChat.length).map((post) => (
                             <tr className='cate-mypage-detail'>
-                                <td width="250" onClick={() => { navigate('/chatsDetail/' + post.id) }}>{post.title}</td>
+                                <td className='cate-mypage-detail-title' width="250" onClick={() => { navigate('/chatsDetail/' + post.id) }}>{post.title}</td>
                                 <td width="150">{post.postYear == year
                                     ? post.postMonth == month && post.postDay == date
                                         ? post.postHour == hours
