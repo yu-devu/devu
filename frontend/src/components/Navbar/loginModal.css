@@ -8,7 +8,7 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 200;
   }
-  
+
   .container-modal {
     font-size: 20px;
     position: fixed;
@@ -22,7 +22,7 @@
     text-align: center;
     z-index: 102;
   }
-  
+
   .menuContainer {
     display: flex;
     flex-direction: column;
@@ -30,14 +30,14 @@
     height: 80%;
     padding-top: 3rem;
   }
-  
+
   .logo-login {
     width: 27%;
     height: 5%;
     margin-top: 10%;
     position: relative;
   }
-  
+
   .closeIcon {
     font-size: 20px;
     position: absolute;
@@ -50,12 +50,12 @@
     font-weight: lighter;
     cursor: pointer;
   }
-  
+
   .login-email-input {
     display: block;
     padding-bottom: 14px;
     border: none;
-    border-bottom: 1px solid #CCC;
+    border-bottom: 1px solid #ccc;
     width: 85%;
     position: relative;
     left: 7%;
@@ -64,12 +64,12 @@
     background: transparent;
     font-weight: 400;
   }
-  
+
   .login-password-input {
     display: block;
     padding-bottom: 14px;
     border: none;
-    border-bottom: 1px solid #CCC;
+    border-bottom: 1px solid #ccc;
     width: 85%;
     position: relative;
     left: 7%;
@@ -77,11 +77,11 @@
     margin-top: 10%;
     font-weight: 400;
   }
-  
+
   .login-input {
     position: relative;
   }
-  
+
   .btn-login {
     position: relative;
     width: 85%;
@@ -96,7 +96,7 @@
     padding-top: 3%;
     padding-bottom: 3%;
   }
-  
+
   .btn-login-register {
     display: block;
     position: relative;
@@ -104,28 +104,29 @@
     background-color: white;
     color: black;
     border-radius: 10px;
-    border: 1px solid #CCC;
+    border: 1px solid #ccc;
     font-weight: 500;
     font-size: 16px;
     cursor: pointer;
     line-height: 230%;
     left: 7.5%;
   }
-  
+
   .btn-login:hover {
     filter: brightness(60%);
   }
-  
+
   .btn-login-register:hover {
     color: #207dff;
   }
-  
+
   .login-modal-middle {
     display: flex;
     position: relative;
+    flex-wrap: wrap;
   }
-  
-  .keep-login{
+
+  .keep-login {
     text-align: center;
     display: flex;
     position: relative;
@@ -133,14 +134,14 @@
     width: max-content;
     margin-top: 5%;
   }
-  
+
   .login-text {
     top: 25%;
     margin-left: 9px;
     font-size: 70%;
     color: var(--color-gray);
   }
-  
+
   .btn-onoff {
     position: absolute;
     top: -0.5px;
@@ -153,7 +154,7 @@
     transition: 0.2s;
     border: #aaaaaa;
   }
-  
+
   .switch-label {
     position: relative;
     cursor: pointer;
@@ -168,29 +169,29 @@
     transition: 0.2s;
     margin-top: 10px;
   }
-  
+
   .switch {
     position: absolute;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
   }
-  
-  .switch:checked+.switch-label {
+
+  .switch:checked + .switch-label {
     background: var(--color-primary);
     border: 2px solid var(--color-primary);
   }
-  
-  .switch:checked+.switch-label:hover {
+
+  .switch:checked + .switch-label:hover {
     background: var(--color-primary);
   }
-  
-  .switch:checked+.switch-label .btn-onoff {
+
+  .switch:checked + .switch-label .btn-onoff {
     left: 17px;
     background: #fff;
     box-shadow: 1px 2px 3px #00000020;
   }
-  
+
   .btns-login {
     position: relative;
   }
