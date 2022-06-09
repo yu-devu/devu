@@ -25,7 +25,7 @@ const Chats = () => {
   const [postSize, setPostSize] = useState(0);
   const [postsPerPage] = useState(10);
   const [postData, setPostData] = useState([]);
-  const [isLike, setLike] = useState(false);
+  const [isLike, setLike] = useState(1);
   const [lastIdx, setLastIdx] = useState(0);
   const [selectedTag, setSelectedTag] = useState([]);
   const [sentence, setSentence] = useState('');
@@ -42,6 +42,7 @@ const Chats = () => {
     fetchPageSize();
     window.scrollTo(0, 0);
     fetchLikeData();
+    setLike(1);
   }, [currentPage, selectedTag, status, order, isLike]);
 
   const fetchData = async () => {
@@ -107,8 +108,8 @@ const Chats = () => {
       })
       .then((res) => {
         console.log('res.data', res.data.liked);
-        if (res.data.liked) setLike(true);
-        else setLike(false);
+        if (res.data.liked) setLike(like + 1);
+        else setLike(like - 1);
       })
       .catch((res) => {
         console.log(res);
@@ -218,15 +219,15 @@ const Chats = () => {
                               ? seconds - post.postSecond + '초 전'
                               : minutes - post.postMinute == 1 &&
                                 seconds < post.postSecond
-                              ? 60 - post.postSecond + seconds + '초 전'
-                              : minutes - post.postMinute + '분 전'
+                                ? 60 - post.postSecond + seconds + '초 전'
+                                : minutes - post.postMinute + '분 전'
                             : hours - post.postHour + '시간 전'
                           : post.postMonth + '.' + post.postDay
                         : post.postYear.slice(2, 4) +
-                          '.' +
-                          post.postMonth +
-                          '.' +
-                          post.postDay}
+                        '.' +
+                        post.postMonth +
+                        '.' +
+                        post.postDay}
                     </div>
                   </div>
                   <div className="chats-line2"></div>

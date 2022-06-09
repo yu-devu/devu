@@ -14,481 +14,501 @@ import more from '../../../img/more.png';
 import FooterGray from '../../Home/FooterGray';
 
 const StudiesView = () => {
-  let now = new Date();
-  let hours = now.getHours() - 9;
-  let minutes = now.getMinutes();
-  let seconds = now.getSeconds();
-  let year = now.getFullYear();
-  let month = now.getMonth() + 1;
-  let date = now.getDate();
+    let now = new Date();
+    let hours = now.getHours() - 9;
+    let minutes = now.getMinutes();
+    let seconds = now.getSeconds();
+    let year = now.getFullYear();
+    let month = now.getMonth() + 1;
+    let date = now.getDate();
 
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [postData, setPostData] = useState([]);
-  const [isLike, setLike] = useState(false);
-  const username = localStorage.getItem('username');
-  const [comment, setComment] = useState('');
-  const [modifycomment, setModifyComment] = useState('');
-  const [likePosts, setLikePosts] = useState([]);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [postData, setPostData] = useState([]);
+    const [isLike, setLike] = useState(1);
+    const username = localStorage.getItem('username');
+    const [comment, setComment] = useState('');
+    const [modifycomment, setModifyComment] = useState('');
+    const [likePosts, setLikePosts] = useState([]);
 
-  const [showDropdownContent, setShowDropdownContent] = useState(0);
-  const [showModifyContent, setShowModifyContent] = useState(0);
-  const onChangeComment = (e) => {
-    setComment(e.target.value);
-  };
-  const onChangeModifyComment = (e) => {
-    setModifyComment(e.target.value);
-  };
-
-  // const moreButton = document.getElementById('btn-more');
-
-  // moreButton.addEventListener('click', () => {
-  //   const dropdown = document.querySelector('more-submenu');
-  //   dropdown.style.display = 'block';
-  // });
-
-  let pathname = location.pathname;
-  let [a, b, postId] = pathname.split('/');
-  var comment_num;
-  // useLocation으로 pathname을 추출한 후, '/'를 기준으로 parameter를 분리함
-
-  useEffect(() => {
-    fetchData();
-    window.scrollTo(0, 0);
-    fetchLikeData();
-  }, [location, isLike]);
-
-  const fetchData = async () => {
-    const res = await axios.get(
-      process.env.REACT_APP_DB_HOST + `/community/studies/${postId}`
-    );
-    // console.log(res.data);
-    const _postData = {
-      id: res.data.id,
-      title: res.data.title,
-      content: res.data.content,
-      hit: res.data.hit,
-      like: res.data.like,
-      username: res.data.username,
-      date: res.data.createAt.substr(0, 10),
-      hours: Number(res.data.createAt.substr(11, 2)) + 9,
-      minutes: Number(res.data.createAt.substr(14, 2)),
-      seconds: Number(res.data.createAt.substr(17, 2)),
-      tags: res.data.tags,
-      studyStatus: res.data.studyStatus,
-      comments: res.data.comments,
+    const [showDropdownContent, setShowDropdownContent] = useState(0);
+    const [showModifyContent, setShowModifyContent] = useState(0);
+    const onChangeComment = (e) => {
+        setComment(e.target.value);
     };
-    setPostData(_postData);
-    comment_num = res.data.comments.length;
-  };
-
-  const fetchLikeData = async () => {
-    await axios
-      .get(process.env.REACT_APP_DB_HOST + `/api/myLikes`)
-      .then((res) => {
-        const _likePosts = res.data.map((rowData) => rowData.id);
-        setLikePosts(_likePosts);
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const handleLike = async () => {
-    const data = {
-      username: username,
-      postId: postData.id,
+    const onChangeModifyComment = (e) => {
+        setModifyComment(e.target.value);
     };
-    await axios
-      .post(process.env.REACT_APP_DB_HOST + `/api/like`, JSON.stringify(data), {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then((res) => {
-        console.log('res.data', res.data.liked);
-        if (res.data.liked) setLike(true);
-        else setLike(false);
-      })
-      .catch((res) => {
-        console.log(res);
-      });
-  };
 
-  const handlePostDelete = async () => {
-    if (window.confirm('정말 삭제하시겠습니까?')) {
-      await axios
-        .delete(process.env.REACT_APP_DB_HOST + `/community/study/${postId}`)
-        .then(() => {
-          console.log('삭제 성공!');
-          navigate(-1);
-        })
-        .catch((res) => console.log(res));
-    } else {
-      alert('취소하였습니다!');
+    // const moreButton = document.getElementById('btn-more');
+
+    // moreButton.addEventListener('click', () => {
+    //   const dropdown = document.querySelector('more-submenu');
+    //   dropdown.style.display = 'block';
+    // });
+
+    let pathname = location.pathname;
+    let [a, b, postId] = pathname.split('/');
+    var comment_num;
+    // useLocation으로 pathname을 추출한 후, '/'를 기준으로 parameter를 분리함
+
+    useEffect(() => {
+        fetchData();
+        window.scrollTo(0, 0);
+        fetchLikeData();
+    }, []);
+
+    useEffect(() => {
+        console.log("useEffect");
+        fetchLikeData();
+        handleGetLike();
+    }, [isLike]);
+
+    const fetchData = async () => {
+        const res = await axios.get(
+            process.env.REACT_APP_DB_HOST + `/community/studies/${postId}`
+        );
+        // console.log(res.data);
+        const _postData = {
+            id: res.data.id,
+            title: res.data.title,
+            content: res.data.content,
+            hit: res.data.hit,
+            like: res.data.like,
+            username: res.data.username,
+            date: res.data.createAt.substr(0, 10),
+            hours: Number(res.data.createAt.substr(11, 2)) + 9,
+            minutes: Number(res.data.createAt.substr(14, 2)),
+            seconds: Number(res.data.createAt.substr(17, 2)),
+            tags: res.data.tags,
+            studyStatus: res.data.studyStatus,
+            comments: res.data.comments,
+        };
+        setPostData(_postData);
+        comment_num = res.data.comments.length;
+    };
+
+    const fetchLikeData = async () => {
+        await axios
+            .get(process.env.REACT_APP_DB_HOST + `/api/myLikes`)
+            .then((res) => {
+                const _likePosts = res.data.map((rowData) => rowData.id);
+                setLikePosts(_likePosts);
+            })
+            .catch((err) => console.log(err));
+    };
+
+    const handlePostLike = async () => {
+        const data = {
+            username: username,
+            postId: postData.id,
+        };
+        await axios
+            .post(process.env.REACT_APP_DB_HOST + `/api/like`, JSON.stringify(data), {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then((res) => {
+                console.log('res.data', res.data.liked);
+                if (res.data.liked) setLike(like + 1);
+                else setLike(like - 1);
+            })
+            .catch((res) => {
+                console.log(res);
+            });
+    };
+
+    const handleGetLike = async () => {
+        axios.get(process.env.REACT_APP_DB_HOST + `/api/like`,
+            {
+                params: {
+                    postId: postId,
+                },
+            }
+        ).then((res) => {
+            setPostData({
+                ...postData,
+                like: res.data.likeSize,
+            });
+        }).catch((err) => console.log(err));
     }
-  };
 
-  const handleCommentDelete = async (id) => {
-    if (window.confirm('정말 삭제하시겠습니까?')) {
-      await axios
-        .delete(process.env.REACT_APP_DB_HOST + `/api/comments/${id}`)
-        .then(() => {
-          console.log('삭제 성공!');
-          navigate(0);
-        })
-        .catch((res) => console.log(res));
-    } else {
-      alert('취소하였습니다!');
-    }
-  };
-
-  const handleStatus = async () => {
-    const data = {
-      postId: postData.id,
-      username: postData.username,
-    };
-    await axios
-      .post(
-        process.env.REACT_APP_DB_HOST + `/api/change/study_status`,
-        JSON.stringify(data),
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+    const handlePostDelete = async () => {
+        if (window.confirm('정말 삭제하시겠습니까?')) {
+            await axios
+                .delete(process.env.REACT_APP_DB_HOST + `/community/study/${postId}`)
+                .then(() => {
+                    console.log('삭제 성공!');
+                    navigate(-1);
+                })
+                .catch((res) => console.log(res));
+        } else {
+            alert('취소하였습니다!');
         }
-      )
-      .then(() => {
-        navigate(0);
-      })
-      .catch((res) => {
-        console.log(res);
-      });
-  };
+    };
 
-  const handleCommentModify = async (id) => {
-    if (modifycomment !== '') {
-      const data = {
-        contents: modifycomment,
-      };
-      await axios
-        .patch(
-          process.env.REACT_APP_DB_HOST + `/api/comments/${id}`,
-          JSON.stringify(data),
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `${localStorage.getItem('accessToken')}`,
-              // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
-            },
-          }
-        )
-        .then(() => {
-          navigate(0);
-        })
-        .catch((res) => {
-          console.log(res);
-        });
-    } else {
-      alert('댓글을 작성해주세요!');
-    }
-  };
+    const handleCommentDelete = async (id) => {
+        if (window.confirm('정말 삭제하시겠습니까?')) {
+            await axios
+                .delete(process.env.REACT_APP_DB_HOST + `/api/comments/${id}`)
+                .then(() => {
+                    console.log('삭제 성공!');
+                    navigate(0);
+                })
+                .catch((res) => console.log(res));
+        } else {
+            alert('취소하였습니다!');
+        }
+    };
 
-  //   console.log(postData.hours + ':' + postData.minutes + ':' + postData.seconds);
+    const handleStatus = async () => {
+        const data = {
+            postId: postData.id,
+            username: postData.username,
+        };
+        await axios
+            .post(
+                process.env.REACT_APP_DB_HOST + `/api/change/study_status`,
+                JSON.stringify(data),
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            )
+            .then(() => {
+                navigate(0);
+            })
+            .catch((res) => {
+                console.log(res);
+            });
+    };
 
-  const handleComment = async () => {
-    if (comment !== '') {
-      const data = {
-        username: username,
-        postId: postId,
-        contents: comment,
-        // parent: parent,
-        // group: group,
-      };
+    const handleCommentModify = async (id) => {
+        if (modifycomment !== '') {
+            const data = {
+                contents: modifycomment,
+            };
+            await axios
+                .patch(
+                    process.env.REACT_APP_DB_HOST + `/api/comments/${id}`,
+                    JSON.stringify(data),
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: `${localStorage.getItem('accessToken')}`,
+                            // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
+                        },
+                    }
+                )
+                .then(() => {
+                    navigate(0);
+                })
+                .catch((res) => {
+                    console.log(res);
+                });
+        } else {
+            alert('댓글을 작성해주세요!');
+        }
+    };
 
-      await axios
-        .post(
-          process.env.REACT_APP_DB_HOST + `/api/comments`,
-          JSON.stringify(data),
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        )
-        .then((res) => {
-          console.log(res);
-          navigate(0);
-        })
-        .catch((res) => {
-          console.log(res);
-        });
-    } else {
-      alert('댓글을 작성해주세요!');
-    }
-  };
+    //   console.log(postData.hours + ':' + postData.minutes + ':' + postData.seconds);
 
-  return (
-    <div>
-      <Submenu />
-      <div>
-        {postData ? (
-          <div className="studies-view">
-            <div className="studies-detail-top">
-              <div className="studies-contents-all">
-                <div className="studies-detail-top">
-                  <div className="studies-profile">
-                    <img className="studies-photo" src={ab} alt="" />
-                  </div>
-                  <div className="studies-owner">{postData.username}</div>
-                  <div className="studies-date">
-                    {postData.date} {postData.hours}:{postData.minutes}:
-                    {postData.seconds}
-                  </div>
-                </div>
-                <div className="studies-top">
-                  <div className="studies-status">
-                    {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
-                  </div>
-                  <div className="studies-title">{postData.title}</div>
-                </div>
-                <div className="studies-content">{postData.content}</div>
-              </div>
-              <div className="studies-sidebar">
-                {postData.username === username ? (
-                  <button
-                    className="studies-sidebar-status"
-                    onClick={() => handleStatus()}
-                  >
-                    {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
-                  </button>
-                ) : (
-                  <div className="studies-sidebar-status">
-                    {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
-                  </div>
-                )}
-                <div className="studies-sidebar-item">
-                  <img className="img-detail-hit" src={hit} alt="" />
-                  <h8 className="detail-sidebar-text">{postData.hit}</h8>
-                </div>
-                <div
-                  className="studies-sidebar-btn"
-                  onClick={() => handleLike()}
-                >
-                  <button className="detail-sidebar-btn">
-                    {likePosts.includes(postData.id) ? (
-                      <img
-                        className="img-detail-like"
-                        src={like_color}
-                        alt=""
-                      />
-                    ) : (
-                      <img className="img-detail-like" src={like} alt="" />
-                    )}
-                    {postData.like}
-                  </button>
-                </div>
-                <div className="studies-sidebar-btn">
-                  <img className="img-detail-like" src={share} alt="" />
-                  <button className="detail-sidebar-btn">공유</button>
-                </div>
-                <div className="studies-sidebar-btn">
-                  <img className="img-detail-like" src={warning} alt="" />
-                  <button className="detail-sidebar-btn">신고</button>
-                </div>
-              </div>
-            </div>
-            <div className="studies-content-bottom">
-              <div className="studies-tags">
-                {postData.tags &&
-                  postData.tags.map((tag) => (
-                    <div className="studies-tag">{tag}</div>
-                  ))}
-              </div>
-              {postData.username === username ? (
-                <div className="studies-btns">
-                  <Link
-                    className="btn-modify"
-                    to={`/studiesDetail/${postId}/modify`}
-                  >
-                    수정
-                  </Link>
-                  <button
-                    className="btn-delete-post"
-                    onClick={() => {
-                      handlePostDelete();
-                    }}
-                  >
-                    삭제
-                  </button>
-                </div>
-              ) : null}
-            </div>
-            <div className="studies-detail-bottom">
-              <div className="studies-write-comments">
-                <input
-                  className="comment"
-                  id="comment"
-                  name="comment"
-                  value={comment}
-                  onChange={(e) => onChangeComment(e)}
-                  placeholder="댓글을 달아주세요."
-                />
-                <button
-                  className="btn-comment"
-                  onClick={() => {
-                    handleComment();
-                  }}
-                >
-                  댓글달기
-                </button>
-              </div>
-              {postData.comments ? (
-                <div className="studies-comments-all">
-                  <div className="number-comments">
-                    {/* <h6 className="number-comments-text">개의 답글</h6> */}
-                  </div>
-                  <div div className="studies-comments">
-                    {postData.comments &&
-                      postData.comments.map((comment) => (
-                        <div className="container-comments">
-                          <div className="comment-detail">
-                            <div className="comments-top">
-                              <div>
-                                <img
-                                  className="comment-photo"
-                                  src={ab}
-                                  alt=""
-                                />
-                              </div>
-                              <div className="comment-top">
-                                <div className="comment-owner">
-                                  {comment.username}
+    const handleComment = async () => {
+        if (comment !== '') {
+            const data = {
+                username: username,
+                postId: postId,
+                contents: comment,
+                // parent: parent,
+                // group: group,
+            };
+            await axios
+                .post(
+                    process.env.REACT_APP_DB_HOST + `/api/comments`,
+                    JSON.stringify(data),
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                )
+                .then((res) => {
+                    console.log(res);
+                    navigate(0);
+                })
+                .catch((res) => {
+                    console.log(res);
+                });
+        } else {
+            alert('댓글을 작성해주세요!');
+        }
+    };
+
+    return (
+        <div>
+            <Submenu />
+            <div>
+                {postData ? (
+                    <div className="studies-view">
+                        <div className="studies-detail-top">
+                            <div className="studies-contents-all">
+                                <div className="studies-detail-top">
+                                    <div className="studies-profile">
+                                        <img className="studies-photo" src={ab} alt="" />
+                                    </div>
+                                    <div className="studies-owner">{postData.username}</div>
+                                    <div className="studies-date">
+                                        {postData.date} {postData.hours}:{postData.minutes}:
+                                        {postData.seconds}
+                                    </div>
                                 </div>
-                                {comment.username === username &&
-                                comment.commentId !== showModifyContent ? (
-                                  <button className="btn-more">
-                                    <img
-                                      className="img-more"
-                                      alt=""
-                                      src={more}
-                                      onClick={() => {
-                                        console.log(comment.commentId);
-                                        if (
-                                          showDropdownContent ===
-                                          comment.commentId
-                                        )
-                                          setShowDropdownContent(0);
-                                        else
-                                          setShowDropdownContent(
-                                            comment.commentId
-                                          );
-                                      }}
-                                    />
-                                    {comment.commentId ===
-                                    showDropdownContent ? (
-                                      <div>
-                                        <button
-                                          onClick={() => {
-                                            setShowModifyContent(
-                                              comment.commentId
-                                            );
-                                            setShowDropdownContent(0);
-                                          }}
-                                        >
-                                          수정
-                                        </button>
-                                        <button
-                                          onClick={() => {
-                                            handleCommentDelete(
-                                              comment.commentId
-                                            );
-                                          }}
-                                        >
-                                          삭제
-                                        </button>
-                                      </div>
-                                    ) : null}
-                                  </button>
-                                ) : null}
-                              </div>
+                                <div className="studies-top">
+                                    <div className="studies-status">
+                                        {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
+                                    </div>
+                                    <div className="studies-title">{postData.title}</div>
+                                </div>
+                                <div className="studies-content">{postData.content}</div>
                             </div>
-                            {comment.commentId === showModifyContent ? (
-                              <div className="questions-write-comments">
+                            <div className="studies-sidebar">
+                                {postData.username === username ? (
+                                    <button
+                                        className="studies-sidebar-status"
+                                        onClick={() => handleStatus()}
+                                    >
+                                        {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
+                                    </button>
+                                ) : (
+                                    <div className="studies-sidebar-status">
+                                        {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
+                                    </div>
+                                )}
+                                <div className="studies-sidebar-item">
+                                    <img className="img-detail-hit" src={hit} alt="" />
+                                    <h8 className="detail-sidebar-text">{postData.hit}</h8>
+                                </div>
+                                <div
+                                    className="studies-sidebar-btn"
+                                    onClick={() => handlePostLike()}
+                                >
+                                    <button className="detail-sidebar-btn">
+                                        {likePosts.includes(postData.id) ? (
+                                            <img
+                                                className="img-detail-like"
+                                                src={like_color}
+                                                alt=""
+                                            />
+                                        ) : (
+                                            <img className="img-detail-like" src={like} alt="" />
+                                        )}
+                                        {postData.like}
+                                    </button>
+                                </div>
+                                <div className="studies-sidebar-btn">
+                                    <img className="img-detail-like" src={share} alt="" />
+                                    <button className="detail-sidebar-btn">공유</button>
+                                </div>
+                                <div className="studies-sidebar-btn">
+                                    <img className="img-detail-like" src={warning} alt="" />
+                                    <button className="detail-sidebar-btn">신고</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="studies-content-bottom">
+                            <div className="studies-tags">
+                                {postData.tags &&
+                                    postData.tags.map((tag) => (
+                                        <div className="studies-tag">{tag}</div>
+                                    ))}
+                            </div>
+                            {postData.username === username ? (
+                                <div className="studies-btns">
+                                    <Link
+                                        className="btn-modify"
+                                        to={`/studiesDetail/${postId}/modify`}
+                                    >
+                                        수정
+                                    </Link>
+                                    <button
+                                        className="btn-delete-post"
+                                        onClick={() => {
+                                            handlePostDelete();
+                                        }}
+                                    >
+                                        삭제
+                                    </button>
+                                </div>
+                            ) : null}
+                        </div>
+                        <div className="studies-detail-bottom">
+                            <div className="studies-write-comments">
                                 <input
-                                  id="comment"
-                                  name="comment"
-                                  defaultValue={comment.contents}
-                                  onChange={(e) => onChangeModifyComment(e)}
+                                    className="comment"
+                                    id="comment"
+                                    name="comment"
+                                    value={comment}
+                                    onChange={(e) => onChangeComment(e)}
+                                    placeholder="댓글을 달아주세요."
                                 />
                                 <button
-                                  className="btn-comment"
-                                  onClick={() => {
-                                    handleCommentModify(comment.commentId);
-                                  }}
+                                    className="btn-comment"
+                                    onClick={() => {
+                                        handleComment();
+                                    }}
                                 >
-                                  수정하기
+                                    댓글달기
                                 </button>
-                                <button
-                                  className="btn-comment"
-                                  onClick={() => {
-                                    setShowModifyContent(0);
-                                  }}
-                                >
-                                  취소
-                                </button>
-                              </div>
-                            ) : (
-                              <div className="comment-content">
-                                {comment.contents}
-                              </div>
-                            )}
-
-                            <div className="comment-date">
-                              {comment.createAt.slice(0, 4) == year
-                                ? comment.createAt.slice(5, 7) == month &&
-                                  comment.createAt.slice(8, 10) == date
-                                  ? comment.createAt.slice(11, 13) == hours
-                                    ? comment.createAt.slice(14, 16) == minutes
-                                      ? seconds -
-                                        comment.createAt.slice(17, 19) +
-                                        '초 전'
-                                      : minutes -
-                                          comment.createAt.slice(14, 16) ==
-                                          1 &&
-                                        seconds < comment.createAt.slice(17, 19)
-                                      ? 60 -
-                                        comment.createAt.slice(17, 19) +
-                                        seconds +
-                                        '초 전'
-                                      : minutes -
-                                        comment.createAt.slice(14, 16) +
-                                        '분 전'
-                                    : hours -
-                                      comment.createAt.slice(11, 13) +
-                                      '시간 전'
-                                  : comment.createAt.slice(5, 7) +
-                                    '.' +
-                                    comment.createAt.slice(8, 10)
-                                : comment.createAt.slice(2, 4) +
-                                  '.' +
-                                  comment.createAt.slice(5, 7) +
-                                  '.' +
-                                  comment.createAt.slice(8, 10)}
                             </div>
-                          </div>
+                            {postData.comments ? (
+                                <div className="studies-comments-all">
+                                    <div className="number-comments">
+                                        {/* <h6 className="number-comments-text">개의 답글</h6> */}
+                                    </div>
+                                    <div div className="studies-comments">
+                                        {postData.comments &&
+                                            postData.comments.map((comment) => (
+                                                <div className="container-comments">
+                                                    <div className="comment-detail">
+                                                        <div className="comments-top">
+                                                            <div>
+                                                                <img
+                                                                    className="comment-photo"
+                                                                    src={ab}
+                                                                    alt=""
+                                                                />
+                                                            </div>
+                                                            <div className="comment-top">
+                                                                <div className="comment-owner">
+                                                                    {comment.username}
+                                                                </div>
+                                                                {comment.username === username &&
+                                                                    comment.commentId !== showModifyContent ? (
+                                                                    <button className="btn-more">
+                                                                        <img
+                                                                            className="img-more"
+                                                                            alt=""
+                                                                            src={more}
+                                                                            onClick={() => {
+                                                                                console.log(comment.commentId);
+                                                                                if (
+                                                                                    showDropdownContent ===
+                                                                                    comment.commentId
+                                                                                )
+                                                                                    setShowDropdownContent(0);
+                                                                                else
+                                                                                    setShowDropdownContent(
+                                                                                        comment.commentId
+                                                                                    );
+                                                                            }}
+                                                                        />
+                                                                        {comment.commentId ===
+                                                                            showDropdownContent ? (
+                                                                            <div>
+                                                                                <button
+                                                                                    onClick={() => {
+                                                                                        setShowModifyContent(
+                                                                                            comment.commentId
+                                                                                        );
+                                                                                        setShowDropdownContent(0);
+                                                                                    }}
+                                                                                >
+                                                                                    수정
+                                                                                </button>
+                                                                                <button
+                                                                                    onClick={() => {
+                                                                                        handleCommentDelete(
+                                                                                            comment.commentId
+                                                                                        );
+                                                                                    }}
+                                                                                >
+                                                                                    삭제
+                                                                                </button>
+                                                                            </div>
+                                                                        ) : null}
+                                                                    </button>
+                                                                ) : null}
+                                                            </div>
+                                                        </div>
+                                                        {comment.commentId === showModifyContent ? (
+                                                            <div className="questions-write-comments">
+                                                                <input
+                                                                    id="comment"
+                                                                    name="comment"
+                                                                    defaultValue={comment.contents}
+                                                                    onChange={(e) => onChangeModifyComment(e)}
+                                                                />
+                                                                <button
+                                                                    className="btn-comment"
+                                                                    onClick={() => {
+                                                                        handleCommentModify(comment.commentId);
+                                                                    }}
+                                                                >
+                                                                    수정하기
+                                                                </button>
+                                                                <button
+                                                                    className="btn-comment"
+                                                                    onClick={() => {
+                                                                        setShowModifyContent(0);
+                                                                    }}
+                                                                >
+                                                                    취소
+                                                                </button>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="comment-content">
+                                                                {comment.contents}
+                                                            </div>
+                                                        )}
+
+                                                        <div className="comment-date">
+                                                            {comment.createAt.slice(0, 4) == year
+                                                                ? comment.createAt.slice(5, 7) == month &&
+                                                                    comment.createAt.slice(8, 10) == date
+                                                                    ? comment.createAt.slice(11, 13) == hours
+                                                                        ? comment.createAt.slice(14, 16) == minutes
+                                                                            ? seconds -
+                                                                            comment.createAt.slice(17, 19) +
+                                                                            '초 전'
+                                                                            : minutes -
+                                                                                comment.createAt.slice(14, 16) ==
+                                                                                1 &&
+                                                                                seconds < comment.createAt.slice(17, 19)
+                                                                                ? 60 -
+                                                                                comment.createAt.slice(17, 19) +
+                                                                                seconds +
+                                                                                '초 전'
+                                                                                : minutes -
+                                                                                comment.createAt.slice(14, 16) +
+                                                                                '분 전'
+                                                                        : hours -
+                                                                        comment.createAt.slice(11, 13) +
+                                                                        '시간 전'
+                                                                    : comment.createAt.slice(5, 7) +
+                                                                    '.' +
+                                                                    comment.createAt.slice(8, 10)
+                                                                : comment.createAt.slice(2, 4) +
+                                                                '.' +
+                                                                comment.createAt.slice(5, 7) +
+                                                                '.' +
+                                                                comment.createAt.slice(8, 10)}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                    </div>
+                                </div>
+                            ) : null}
+                            <FooterGray />
                         </div>
-                      ))}
-                  </div>
-                </div>
-              ) : null}
-              <FooterGray />
+                    </div>
+                ) : (
+                    '해당 게시글을 찾을 수 없습니다.'
+                )}
             </div>
-          </div>
-        ) : (
-          '해당 게시글을 찾을 수 없습니다.'
-        )}
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default StudiesView;
