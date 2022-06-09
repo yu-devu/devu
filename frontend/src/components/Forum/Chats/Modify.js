@@ -16,14 +16,14 @@ const Modify = () => {
     let pathname = location.pathname;
     let [a, b, postId, c] = pathname.split('/');
 
-
     const handleTitle = (e) => {
-        const { name, value } = e.target;
         setPostContent({
             ...postContent,
-            [name]: value,
+            title: e.target.value,
         });
+        console.log(postContent);
     };
+
     const handleModify = async () => {
 
         if (postContent === '') {

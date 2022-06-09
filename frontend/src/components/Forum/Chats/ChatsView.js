@@ -129,7 +129,7 @@ const ChatsView = () => {
   const handlePostDelete = async () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       await axios
-        .delete(process.env.REACT_APP_DB_HOST + `/community/study/${postId}`)
+        .delete(process.env.REACT_APP_DB_HOST + `/community/chat/${postId}`)
         .then(() => {
           console.log('삭제 성공!');
           navigate(-1);
