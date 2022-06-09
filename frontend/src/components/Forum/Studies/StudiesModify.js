@@ -24,19 +24,21 @@ const StudiesModify = () => {
     const username = localStorage.getItem('username');
 
     useEffect(() => {
-        organizeTags();
         fetchData();
+    }, []);
+
+    useEffect(() => {
+        organizeTags();
     }, [tags]); // postTags의 동기처리를 위해 useEffect 사용함
 
     const handleTitle = (e) => {
-        const { name, value } = e.target;
+        // const { name, value } = e.target;
         setPostContent({
             ...postContent,
-            [name]: value,
+            title: e.target.value,
         });
+        console.log(postContent);
     };
-
-    console.log(typeof postData.tags)
 
     const onChangeTags = (e) => {
         setTags(e);
@@ -48,6 +50,7 @@ const StudiesModify = () => {
             array.push(tags[i].value);
         }
         setPostTags(array);
+        console.log(array);
     };
 
     const fetchData = async () => {
@@ -60,6 +63,10 @@ const StudiesModify = () => {
             tags: res.data.tags,
         };
         setPostData(_postData);
+        setPostContent({
+            title: res.data.title,
+            content: res.data.content,
+        })
     };
 
     const handleModify = async () => {
@@ -69,19 +76,18 @@ const StudiesModify = () => {
             postTags[0] !== ''
         ) {
             const formData = new FormData();
+
+            console.log(postContent, postTags);
             formData.append('title', postContent.title);
             formData.append('username', username);
             formData.append('content', postContent.content);
             formData.append('tags', postTags);
-
-            console.log(formData)
-
+            console.log(formData);
             await axios
                 .patch(process.env.REACT_APP_DB_HOST + `/community/study/${postId}`, formData, {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `${localStorage.getItem('accessToken')}`,
-                        // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
                     },
                 })
                 .then(() => {
@@ -120,7 +126,6 @@ const StudiesModify = () => {
                             className="tag-selecter"
                             isMulti
                             options={options}
-                            defaultValue={tags['C']}
                             value={tags}
                             name="tags"
                             placeholder="#태그를 선택해주세요"
@@ -142,22 +147,22 @@ const StudiesModify = () => {
                                 ...postContent,
                                 content: data.replace('<p>', '').replace('</p>', ''),
                             });
+                            console.log(postContent)
                         }}
                         onBlur={(event, editor) => { }}
                         onFocus={(event, editor) => { }}
                     />
                     <div className="bt-se">
-                        <button className="btn-cancel" onClick={() => {
-                            navigate(-1);
-                        }}>취소</button>
+                        <button
+                            className="btn-cancel"
+                            onClick={() => {
+                                navigate(-1);
+                            }}>취소</button>
                         <button
                             className="btn-post"
                             onClick={() => {
                                 handleModify();
-                            }}
-                        >
-                            저장
-                        </button>
+                            }}>저장</button>
                     </div>
                 </div>
             </div>

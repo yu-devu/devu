@@ -24,19 +24,21 @@ const QuestionsModify = () => {
     const username = localStorage.getItem('username');
 
     useEffect(() => {
-        organizeTags();
         fetchData();
+    }, []);
+
+    useEffect(() => {
+        organizeTags();
     }, [tags]); // postTags의 동기처리를 위해 useEffect 사용함
 
     const handleTitle = (e) => {
-        const { name, value } = e.target;
+        // const { name, value } = e.target;
         setPostContent({
             ...postContent,
-            [name]: value,
+            title: e.target.value,
         });
+        console.log(postContent);
     };
-
-    console.log(typeof postData.tags)
 
     const onChangeTags = (e) => {
         setTags(e);
@@ -48,6 +50,7 @@ const QuestionsModify = () => {
             array.push(tags[i].value);
         }
         setPostTags(array);
+        console.log(array);
     };
 
     const fetchData = async () => {
@@ -60,6 +63,10 @@ const QuestionsModify = () => {
             tags: res.data.tags,
         };
         setPostData(_postData);
+        setPostContent({
+            title: res.data.title,
+            content: res.data.content,
+        })
     };
 
     const handleModify = async () => {
