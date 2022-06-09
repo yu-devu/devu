@@ -1,6 +1,5 @@
 package com.devu.backend.api.like;
 
-import com.devu.backend.common.exception.UnlikedPostException;
 import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.entity.User;
 import com.devu.backend.entity.post.Post;
@@ -24,6 +23,7 @@ public class LikeApiController {
             ResponseLikeSizeDto responseDto = ResponseLikeSizeDto.builder()
                     .likeSize(post.getLikes().size())
                     .postId(postId).build();
+            log.info("Post Id {} has {} likes", responseDto.getPostId(), responseDto.getLikeSize());
             return ResponseEntity.ok().body(responseDto);
         }catch (Exception e){
             e.printStackTrace();
