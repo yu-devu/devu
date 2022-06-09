@@ -15,29 +15,33 @@ function ChangePasswordModal() {
     const [clickAuthkey, setClickAuthkey] = useState(false);
 
     const passwordUrlEmail = async () => {
-        if (email.includes('@ynu.ac.kr') || email.includes('@yu.ac.kr')) {
-            const data = {
-                referUrl: referUrl,
-                email: email,
-            };
-            await axios
-                .post(
-                    process.env.REACT_APP_DB_HOST + `/api/password_url_email`,
-                    JSON.stringify(data),
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    }
-                )
-                .then(() => {
-                    alert('이메일 전송 완료! \n이메일이 오지 않을 경우 스펨 이메일함을 확인해보세요.');
-                    setClickAuthkey(true);
-                })
-                .catch((res) => alert(JSON.parse(res.request.response).error));
-            // axios 통신 실패시, '정상적인 접근 경로가 아닙니다.'
+        if (email !== "") {
+            if (email.includes('@ynu.ac.kr') || email.includes('@yu.ac.kr')) {
+                const data = {
+                    referUrl: referUrl,
+                    email: email,
+                };
+                await axios
+                    .post(
+                        process.env.REACT_APP_DB_HOST + `/api/password_url_email`,
+                        JSON.stringify(data),
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        }
+                    )
+                    .then(() => {
+                        alert('이메일 전송 완료! \n이메일이 오지 않을 경우 스팸 이메일함을 확인해보세요.');
+                        setClickAuthkey(true);
+                    })
+                    .catch((res) => alert(JSON.parse(res.request.response).error));
+                // axios 통신 실패시, '정상적인 접근 경로가 아닙니다.'
+            } else {
+                alert('이메일 형식을 확인해주세요!');
+            }
         } else {
-            alert('이메일 형식을 확인해주세요!');
+            alert('이메일을 입력해주세요!');
         }
     };
 
@@ -88,7 +92,6 @@ function ChangePasswordModal() {
                                         >
                                             재전송
                                         </button>
-                                        {/* <h2>만약 메일이 오지 않는다면, 스팸메일함을 확인해주세요</h2> */}
                                     </div>
                                 )}
                             </div>

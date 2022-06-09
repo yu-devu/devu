@@ -43,7 +43,7 @@ const Studies = () => {
   const [postSize, setPostSize] = useState(0);
   const [postsPerPage] = useState(10);
   const [postData, setPostData] = useState([]);
-  const [isLike, setLike] = useState(false);
+  const [isLike, setLike] = useState(1);
   const [lastIdx, setLastIdx] = useState(0);
   const [selectedTag, setSelectedTag] = useState([]);
   const [choiced, setChoiced] = useState(false);
@@ -61,6 +61,7 @@ const Studies = () => {
     fetchPageSize();
     window.scrollTo(0, 0);
     fetchLikeData();
+    setLike(1);
   }, [currentPage, selectedTag, status, order, isLike]);
 
   const fetchData = async () => {
@@ -127,8 +128,8 @@ const Studies = () => {
       })
       .then((res) => {
         console.log('res.data', res.data.liked);
-        if (res.data.liked) setLike(true);
-        else setLike(false);
+        if (res.data.liked) setLike(like + 1);
+        else setLike(like - 1);
       })
       .catch((res) => {
         console.log(res);
@@ -197,15 +198,15 @@ const Studies = () => {
                                 ? seconds - top.postSecond + '초 전'
                                 : minutes - top.postMinute == 1 &&
                                   seconds < top.postSecond
-                                ? 60 - top.postSecond + seconds + '초 전'
-                                : minutes - top.postMinute + '분 전'
+                                  ? 60 - top.postSecond + seconds + '초 전'
+                                  : minutes - top.postMinute + '분 전'
                               : hours - top.postHour + '시간 전'
                             : top.postMonth + '.' + top.postDay
                           : top.postYear.slice(2, 4) +
-                            '.' +
-                            top.postMonth +
-                            '.' +
-                            top.postDay}
+                          '.' +
+                          top.postMonth +
+                          '.' +
+                          top.postDay}
                       </div>
                     </div>
                   </div>
@@ -600,15 +601,15 @@ const Studies = () => {
                                 ? seconds - post.postSecond + '초 전'
                                 : minutes - post.postMinute == 1 &&
                                   seconds < post.postSecond
-                                ? 60 - post.postSecond + seconds + '초 전'
-                                : minutes - post.postMinute + '분 전'
+                                  ? 60 - post.postSecond + seconds + '초 전'
+                                  : minutes - post.postMinute + '분 전'
                               : hours - post.postHour + '시간 전'
                             : post.postMonth + '.' + post.postDay
                           : post.postYear.slice(2, 4) +
-                            '.' +
-                            post.postMonth +
-                            '.' +
-                            post.postDay}
+                          '.' +
+                          post.postMonth +
+                          '.' +
+                          post.postDay}
                       </div>
                     </div>
                     <div className="studies-line2"></div>

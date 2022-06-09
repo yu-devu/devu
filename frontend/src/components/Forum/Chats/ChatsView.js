@@ -48,7 +48,13 @@ const ChatsView = () => {
     fetchData();
     window.scrollTo(0, 0);
     fetchLikeData();
-  }, [location, isLike]);
+  }, []);
+
+  useEffect(() => {
+    console.log("useEffect");
+    fetchLikeData();
+    handleGetLike();
+  }, [isLike]);
 
   const fetchData = async () => {
     const res = await axios.get(
@@ -84,7 +90,7 @@ const ChatsView = () => {
       .catch((err) => console.log(err));
   };
 
-  const handleLike = async () => {
+  const handlePostLike = async () => {
     const data = {
       username: username,
       postId: postData.id,
@@ -96,14 +102,29 @@ const ChatsView = () => {
         },
       })
       .then((res) => {
-        console.log('res.data', res.data);
-        if (res.data.liked) setLike(true);
-        else setLike(false);
+        console.log('res.data', res.data.liked);
+        if (res.data.liked) setLike(like + 1);
+        else setLike(like - 1);
       })
       .catch((res) => {
         console.log(res);
       });
   };
+
+  const handleGetLike = async () => {
+    axios.get(process.env.REACT_APP_DB_HOST + `/api/like`,
+      {
+        params: {
+          postId: postId,
+        },
+      }
+    ).then((res) => {
+      setPostData({
+        ...postData,
+        like: res.data.likeSize,
+      });
+    }).catch((err) => console.log(err));
+  }
 
   const handlePostDelete = async () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
@@ -222,7 +243,7 @@ const ChatsView = () => {
                   <img className="img-detail-hit" src={hit} alt="" />
                   <h8 className="detail-sidebar-text">{postData.hit}</h8>
                 </div>
-                <div className="chats-sidebar-btn" onClick={() => handleLike()}>
+                <div className="chats-sidebar-btn" onClick={() => handlePostLike()}>
                   <button className="detail-sidebar-btn">
                     {likePosts.includes(postData.id) ? (
                       <img
@@ -312,7 +333,7 @@ const ChatsView = () => {
                                   {comment.username}
                                 </div>
                                 {comment.username === username &&
-                                comment.commentId !== showModifyContent ? (
+                                  comment.commentId !== showModifyContent ? (
                                   <button className="btn-more">
                                     <img
                                       className="img-more"
@@ -332,7 +353,7 @@ const ChatsView = () => {
                                       }}
                                     />
                                     {comment.commentId ===
-                                    showDropdownContent ? (
+                                      showDropdownContent ? (
                                       <ul className="more-submenu">
                                         <button
                                           onClick={() => {
@@ -400,30 +421,30 @@ const ChatsView = () => {
                                   ? comment.createAt.slice(11, 13) == hours
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
-                                        comment.createAt.slice(17, 19) +
-                                        '초 전'
+                                      comment.createAt.slice(17, 19) +
+                                      '초 전'
                                       : minutes -
-                                          comment.createAt.slice(14, 16) ==
-                                          1 &&
+                                        comment.createAt.slice(14, 16) ==
+                                        1 &&
                                         seconds < comment.createAt.slice(17, 19)
-                                      ? 60 -
+                                        ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
                                         '초 전'
-                                      : minutes -
+                                        : minutes -
                                         comment.createAt.slice(14, 16) +
                                         '분 전'
                                     : hours -
-                                      comment.createAt.slice(11, 13) +
-                                      '시간 전'
+                                    comment.createAt.slice(11, 13) +
+                                    '시간 전'
                                   : comment.createAt.slice(5, 7) +
-                                    '.' +
-                                    comment.createAt.slice(8, 10)
+                                  '.' +
+                                  comment.createAt.slice(8, 10)
                                 : comment.createAt.slice(2, 4) +
-                                  '.' +
-                                  comment.createAt.slice(5, 7) +
-                                  '.' +
-                                  comment.createAt.slice(8, 10)}
+                                '.' +
+                                comment.createAt.slice(5, 7) +
+                                '.' +
+                                comment.createAt.slice(8, 10)}
                             </div>
                           </div>
                         </div>
