@@ -8,10 +8,7 @@ import com.devu.backend.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -19,6 +16,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class LikeApiController {
     private final LikeService likeService;
+
+    @GetMapping("/like")
+    public ResponseEntity<?> getLike(@RequestParam(name = "postId") Long postId) {
+        try {
+            Post post = likeService.findPostById(postId);
+            ResponseLikeSizeDto responseDto = ResponseLikeSizeDto.builder()
+                    .likeSize(post.getLikes().size())
+                    .postId(postId).build();
+            return ResponseEntity.ok().body(responseDto);
+        }catch (Exception e){
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return ResponseEntity.badRequest().body(errorDto);
+        }
+    }
 
     @PostMapping("/like")
     public ResponseEntity<?> addLike(@RequestBody RequestLikeDto requestLikeDto) {
