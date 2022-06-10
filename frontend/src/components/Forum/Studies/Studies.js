@@ -146,8 +146,10 @@ const Studies = () => {
     const _selectedTag = [...selectedTag];
     if (!_selectedTag.includes(tag)) {
       _selectedTag.push(tag);
+      setSelectedTag(_selectedTag);
+    } else {
+      setSelectedTag(_selectedTag.filter((index) => index != tag));
     }
-    setSelectedTag(_selectedTag);
   };
 
   const fetchPageSize = async () => {
@@ -198,15 +200,15 @@ const Studies = () => {
                                 ? seconds - top.postSecond + '초 전'
                                 : minutes - top.postMinute == 1 &&
                                   seconds < top.postSecond
-                                  ? 60 - top.postSecond + seconds + '초 전'
-                                  : minutes - top.postMinute + '분 전'
+                                ? 60 - top.postSecond + seconds + '초 전'
+                                : minutes - top.postMinute + '분 전'
                               : hours - top.postHour + '시간 전'
                             : top.postMonth + '.' + top.postDay
                           : top.postYear.slice(2, 4) +
-                          '.' +
-                          top.postMonth +
-                          '.' +
-                          top.postDay}
+                            '.' +
+                            top.postMonth +
+                            '.' +
+                            top.postDay}
                       </div>
                     </div>
                   </div>
@@ -601,15 +603,15 @@ const Studies = () => {
                                 ? seconds - post.postSecond + '초 전'
                                 : minutes - post.postMinute == 1 &&
                                   seconds < post.postSecond
-                                  ? 60 - post.postSecond + seconds + '초 전'
-                                  : minutes - post.postMinute + '분 전'
+                                ? 60 - post.postSecond + seconds + '초 전'
+                                : minutes - post.postMinute + '분 전'
                               : hours - post.postHour + '시간 전'
                             : post.postMonth + '.' + post.postDay
                           : post.postYear.slice(2, 4) +
-                          '.' +
-                          post.postMonth +
-                          '.' +
-                          post.postDay}
+                            '.' +
+                            post.postMonth +
+                            '.' +
+                            post.postDay}
                       </div>
                     </div>
                     <div className="studies-line2"></div>
