@@ -53,16 +53,17 @@ const StudiesView = () => {
   // useLocation으로 pathname을 추출한 후, '/'를 기준으로 parameter를 분리함
 
   useEffect(() => {
+    console.log('useEffect2');
+    fetchLikeData();
+    handleGetLike();
+  }, [isLike]);
+
+  useEffect(() => {
+    console.log('useEffect1');
     fetchData();
     window.scrollTo(0, 0);
     fetchLikeData();
   }, []);
-
-  useEffect(() => {
-    console.log('useEffect');
-    fetchLikeData();
-    handleGetLike();
-  }, [isLike]);
 
   const fetchData = async () => {
     await axios
