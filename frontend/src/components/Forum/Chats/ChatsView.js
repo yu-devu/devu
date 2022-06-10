@@ -87,7 +87,7 @@ const ChatsView = () => {
         const _likePosts = res.data.map((rowData) => rowData.id);
         setLikePosts(_likePosts);
       })
-      .catch((err) => console.log(err));
+      .catch((e) => console.log(e));
   };
 
   const handlePostLike = async () => {
@@ -102,13 +102,10 @@ const ChatsView = () => {
         },
       })
       .then((res) => {
-        console.log('res.data', res.data.liked);
         if (res.data.liked) setLike(like + 1);
         else setLike(like - 1);
       })
-      .catch((res) => {
-        console.log(res);
-      });
+      .catch((e) => console.log(e));
   };
 
   const handleGetLike = async () => {
