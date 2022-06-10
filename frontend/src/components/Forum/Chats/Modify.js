@@ -6,7 +6,6 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import './modify.css';
 
 const Modify = () => {
-<<<<<<< HEAD
   const location = useLocation();
   const navigate = useNavigate();
   const [postContent, setPostContent] = useState({
@@ -41,30 +40,6 @@ const Modify = () => {
             'Content-Type': 'application/json',
             Authorization: `${localStorage.getItem('accessToken')}`,
           },
-=======
-    const location = useLocation();
-    const navigate = useNavigate();
-    const [postContent, setPostContent] = useState({
-        title: '',
-        content: '',
-    });
-    let pathname = location.pathname;
-    let [a, b, postId, c] = pathname.split('/');
-
-    const handleTitle = (e) => {
-        setPostContent({
-            ...postContent,
-            title: e.target.value,
-        });
-        console.log(postContent);
-    };
-
-    const handleModify = async () => {
-
-        if (postContent === '') {
-            alert('글을 작성해주세요!');
-            return;
->>>>>>> ca9db37cb9607b0c882343064b2eae3fdd830ac0
         }
       )
       .then(() => {
