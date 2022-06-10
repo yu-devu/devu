@@ -115,27 +115,47 @@
     color: #c5c5c5;
   }
 
-  .btn-pagination {
-    left: 24%;
+  .btn-pagination-jobs {
+    left: 38%;
     position: relative;
-    height: 100px;
     display: flex;
     cursor: pointer;
   }
 
-  .btn-pagination-previous {
+  .btn-pagination-jobs-previous {
     margin-right: 5px;
   }
 
-  .btn-pagination-next {
+  .btn-pagination-jobs-next {
     margin-left: 5px;
   }
 
-  .btn-pagination-disabled LI {
+  .btn-pagination-jobs-disabled LI {
     margin-right: 5px;
   }
 
-  .btn-pagination-active a {
+  .btn-pagination-jobs .btn-pagination-jobs-active a {
+    color: white;
+    border: 1px solid rgba(241, 241, 245, 1);
+    border-radius: 100%;
+    background: var(--color-primary);
+    padding: 4px 10px;
+    margin-right: -3px;
+  }
+
+  .btn-pagination-jobs li {
+    height: 10px;
+    margin-right: 30px;
+  }
+
+  .btn-pagination-jobs li a {
     color: black;
+  }
+
+  .btn-pagination-jobs li a:hover {
+    border: 1px solid rgba(241, 241, 245, 1);
+    border-radius: 100%;
+    background: var(--color-hover);
+    padding: 4px 10px;
   }
 }

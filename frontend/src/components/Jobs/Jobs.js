@@ -170,7 +170,7 @@ const Jobs = () => {
               type="text"
               placeholder="채용 관련 정보를 찾아보세요."
               className="search-jobs-input"
-              onChange={(e) => {}}
+              onChange={(e) => { }}
             />
             <button className="btn-search-jobs">
               <img className="img-mag-jobs" src={magnify} alt="" />
@@ -212,11 +212,11 @@ const Jobs = () => {
         nextLabel={'>'}
         pageCount={Math.ceil(postSize / postsPerPage)} // 페이지 버튼 개수 출력하는 부분 -> 글 전체 개수 넘겨받아서 사용해야함
         onPageChange={changePage}
-        containerClassName={'btn-pagination'}
-        previousLinkClassName={'btn-pagination-previous'}
-        nextLinkClassName={'btn-pagination-next'}
-        disabledClassName={'btn-pagination-disabled'}
-        activeClassName={'btn-pagination-active'}
+        containerClassName={'btn-pagination-jobs'}
+        previousLinkClassName={'btn-pagination-jobs-previous'}
+        nextLinkClassName={'btn-pagination-jobs-next'}
+        disabledClassName={'btn-pagination-jobs-disabled'}
+        activeClassName={'btn-pagination-jobs-active'}
       />
       <FooterGray />
     </div>
