@@ -45,16 +45,16 @@ const ChatsView = () => {
   // useLocation으로 pathname을 추출한 후, '/'를 기준으로 parameter를 분리함
 
   useEffect(() => {
-    fetchData();
-    window.scrollTo(0, 0);
-    fetchLikeData();
-  }, []);
-
-  useEffect(() => {
     console.log('useEffect');
     fetchLikeData();
     handleGetLike();
   }, [isLike]);
+
+  useEffect(() => {
+    fetchData();
+    window.scrollTo(0, 0);
+    fetchLikeData();
+  }, []);
 
   const fetchData = async () => {
     const res = await axios.get(
@@ -127,12 +127,10 @@ const ChatsView = () => {
   const handlePostDelete = async () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       await axios
-        .delete(process.env.REACT_APP_DB_HOST + `/community/study/${postId}`)
+        .delete(process.env.REACT_APP_DB_HOST + `/community/chat/${postId}`)
         .then(() => navigate(-1))
         .catch((e) => console.log(e));
-    } else {
-      alert('취소하였습니다!');
-    }
+    } else alert('취소하였습니다!');
   };
 
   const handleCommentDelete = async (id) => {
