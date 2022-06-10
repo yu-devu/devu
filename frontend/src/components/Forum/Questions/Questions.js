@@ -112,7 +112,7 @@ const Questions = () => {
         const _likePosts = res.data.map((rowData) => rowData.id);
         setLikePosts(_likePosts);
       })
-      .catch((err) => console.log(err));
+      .catch((e) => console.log(e));
   };
 
   const handleLike = async (id) => {
@@ -127,19 +127,14 @@ const Questions = () => {
         },
       })
       .then((res) => {
-        console.log('res.data', res.data.liked);
         if (res.data.liked) setLike(like + 1);
         else setLike(like - 1);
       })
-      .catch((res) => {
-        console.log(res);
-      });
+      .catch((e) => console.log(e));
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      fetchData();
-    }
+    if (e.key === 'Enter') fetchData();
   };
 
   const handleTags = (tag) => {
@@ -153,16 +148,15 @@ const Questions = () => {
   };
 
   const fetchPageSize = async () => {
-    const res = await axios.get(
-      process.env.REACT_APP_DB_HOST + `/community/questions/size`
-    );
-    setPostSize(res.data);
+    await axios
+      .get(process.env.REACT_APP_DB_HOST + `/community/questions/size`)
+      .then((res) => {
+        setPostSize(res.data);
+      })
+      .catch((e) => console.log(e));
   };
 
-  const changePage = ({ selected }) => {
-    setCurrentPage(selected);
-  };
-
+  const changePage = ({ selected }) => setCurrentPage(selected);
   return (
     <div>
       <Submenu />
