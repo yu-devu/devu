@@ -86,9 +86,24 @@ const ChatBot = () => {
     const baseDate = year * 10000 + month * 100 + date;
     const bt = hours * 100 + minutes;
 
-    const b2 = bt < 500 ? 200 : bt < 800 ? 500 : bt < 1100 ? 800 : bt < 1400 ? 1100 : bt < 1700 ? 1400 : bt < 2000 ? 1700 : bt < 2300 ? 2000 : 2300
+    const b2 =
+      bt < 500
+        ? 200
+        : bt < 800
+        ? 500
+        : bt < 1100
+        ? 800
+        : bt < 1400
+        ? 1100
+        : bt < 1700
+        ? 1400
+        : bt < 2000
+        ? 1700
+        : bt < 2300
+        ? 2000
+        : 2300;
 
-    const baseTime = b2 < 1000 ? "0" + String(b2) : b2
+    const baseTime = b2 < 1000 ? '0' + String(b2) : b2;
 
     console.log(baseTime);
     const res = await axios.get(
@@ -158,18 +173,18 @@ const ChatBot = () => {
       if (DateD === 0)
         await axios
           .get(process.env.REACT_APP_DB_HOST + '/api/holidaySubway') // 일요일
-          .then((e) => (arrInfo = e.data))
-          .catch((res) => console.log('false'));
+          .then((res) => (arrInfo = res.data))
+          .catch((e) => console.log(e));
       else if (DateD > 0 && DateD < 6)
         await axios
           .get(process.env.REACT_APP_DB_HOST + '/api/weekdaySubway ') // 평일
-          .then((e) => (arrInfo = e.data))
-          .catch((res) => console.log('false'));
+          .then((res) => (arrInfo = res.data))
+          .catch((e) => console.log(e));
       else
         await axios
           .get(process.env.REACT_APP_DB_HOST + '/api/weekendSubway') // 토요일
-          .then((e) => (arrInfo = e.data))
-          .catch((res) => console.log('false'));
+          .then((res) => (arrInfo = res.data))
+          .catch((e) => console.log(e));
 
       for (i = 0; i < arrInfo.length; i++) {
         const candiDate = arrInfo[i].split(':');
