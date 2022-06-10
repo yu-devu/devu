@@ -23,6 +23,7 @@ const QuestionsModify = () => {
   });
   const username = localStorage.getItem('username');
 
+<<<<<<< HEAD
   useEffect(() => {
     organizeTags();
     fetchData();
@@ -49,6 +50,37 @@ const QuestionsModify = () => {
     }
     setPostTags(array);
   };
+=======
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        organizeTags();
+    }, [tags]); // postTags의 동기처리를 위해 useEffect 사용함
+
+    const handleTitle = (e) => {
+        // const { name, value } = e.target;
+        setPostContent({
+            ...postContent,
+            title: e.target.value,
+        });
+        console.log(postContent);
+    };
+
+    const onChangeTags = (e) => {
+        setTags(e);
+    };
+
+    const organizeTags = () => {
+        let array = [];
+        for (let i = 0; i < tags.length; i++) {
+            array.push(tags[i].value);
+        }
+        setPostTags(array);
+        console.log(array);
+    };
+>>>>>>> ca9db37cb9607b0c882343064b2eae3fdd830ac0
 
   const fetchData = async () => {
     await axios
@@ -60,9 +92,29 @@ const QuestionsModify = () => {
           tags: res.data.tags,
         };
         setPostData(_postData);
+<<<<<<< HEAD
       })
       .catch((e) => console.log(e));
   };
+=======
+        setPostContent({
+            title: res.data.title,
+            content: res.data.content,
+        })
+    };
+
+    const handleModify = async () => {
+        if (
+            postContent.title !== '' &&
+            postContent.content !== '' &&
+            postTags[0] !== ''
+        ) {
+            const formData = new FormData();
+            formData.append('title', postContent.title);
+            formData.append('username', username);
+            formData.append('content', postContent.content);
+            formData.append('tags', postTags);
+>>>>>>> ca9db37cb9607b0c882343064b2eae3fdd830ac0
 
   const handleModify = async () => {
     if (
