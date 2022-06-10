@@ -133,6 +133,10 @@ public class UserService {
 
     @Transactional
     public void logoutProcess(HttpServletRequest request, HttpServletResponse response) {
+        deleteRefreshCookie(request, response);
+    }
+
+    private void deleteRefreshCookie(HttpServletRequest request, HttpServletResponse response) {
         Cookie refreshCookie = cookieService.getCookie(request, "X-AUTH-REFRESH-TOKEN");
         if (refreshCookie != null) {
             String refreshToken = refreshCookie.getValue();
@@ -172,10 +176,11 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUser(String username) {
+    public void deleteUser(String username, HttpServletRequest request, HttpServletResponse response) {
         User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
         userRepository.delete(user);
         user.getPosts().clear();
+        deleteRefreshCookie(request, response);
     }
 
     @Transactional
