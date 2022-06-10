@@ -112,7 +112,7 @@ const Questions = () => {
         const _likePosts = res.data.map((rowData) => rowData.id);
         setLikePosts(_likePosts);
       })
-      .catch((err) => console.log(err));
+      .catch((e) => console.log(e));
   };
 
   const handleLike = async (id) => {
@@ -127,40 +127,36 @@ const Questions = () => {
         },
       })
       .then((res) => {
-        console.log('res.data', res.data.liked);
         if (res.data.liked) setLike(like + 1);
         else setLike(like - 1);
       })
-      .catch((res) => {
-        console.log(res);
-      });
+      .catch((e) => console.log(e));
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      fetchData();
-    }
+    if (e.key === 'Enter') fetchData();
   };
 
   const handleTags = (tag) => {
     const _selectedTag = [...selectedTag];
     if (!_selectedTag.includes(tag)) {
       _selectedTag.push(tag);
+      setSelectedTag(_selectedTag);
+    } else {
+      setSelectedTag(_selectedTag.filter((index) => index != tag));
     }
-    setSelectedTag(_selectedTag);
   };
 
   const fetchPageSize = async () => {
-    const res = await axios.get(
-      process.env.REACT_APP_DB_HOST + `/community/questions/size`
-    );
-    setPostSize(res.data);
+    await axios
+      .get(process.env.REACT_APP_DB_HOST + `/community/questions/size`)
+      .then((res) => {
+        setPostSize(res.data);
+      })
+      .catch((e) => console.log(e));
   };
 
-  const changePage = ({ selected }) => {
-    setCurrentPage(selected);
-  };
-
+  const changePage = ({ selected }) => setCurrentPage(selected);
   return (
     <div>
       <Submenu />
@@ -198,15 +194,15 @@ const Questions = () => {
                                 ? seconds - top.postSecond + '초 전'
                                 : minutes - top.postMinute == 1 &&
                                   seconds < top.postSecond
-                                  ? 60 - top.postSecond + seconds + '초 전'
-                                  : minutes - top.postMinute + '분 전'
+                                ? 60 - top.postSecond + seconds + '초 전'
+                                : minutes - top.postMinute + '분 전'
                               : hours - top.postHour + '시간 전'
                             : top.postMonth + '.' + top.postDay
                           : top.postYear.slice(2, 4) +
-                          '.' +
-                          top.postMonth +
-                          '.' +
-                          top.postDay}
+                            '.' +
+                            top.postMonth +
+                            '.' +
+                            top.postDay}
                       </div>
                     </div>
                   </div>
@@ -602,15 +598,15 @@ const Questions = () => {
                                 ? seconds - post.postSecond + '초 전'
                                 : minutes - post.postMinute == 1 &&
                                   seconds < post.postSecond
-                                  ? 60 - post.postSecond + seconds + '초 전'
-                                  : minutes - post.postMinute + '분 전'
+                                ? 60 - post.postSecond + seconds + '초 전'
+                                : minutes - post.postMinute + '분 전'
                               : hours - post.postHour + '시간 전'
                             : post.postMonth + '.' + post.postDay
                           : post.postYear.slice(2, 4) +
-                          '.' +
-                          post.postMonth +
-                          '.' +
-                          post.postDay}
+                            '.' +
+                            post.postMonth +
+                            '.' +
+                            post.postDay}
                       </div>
                     </div>
                     <div className="questions-line2"></div>

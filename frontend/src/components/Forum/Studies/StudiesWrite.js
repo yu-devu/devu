@@ -69,12 +69,8 @@ const StudiesWrite = () => {
           alert('글이 성공적으로 등록되었습니다!');
           navigate(-1);
         })
-        .catch(() => {
-          alert('글 등록 실패..');
-        });
-    } else {
-      alert('글을 작성해주세요!');
-    }
+        .catch(() => alert('글 등록 실패..'));
+    } else alert('글을 작성해주세요!');
   };
 
   return (
@@ -112,24 +108,32 @@ const StudiesWrite = () => {
           <CKEditor
             editor={ClassicEditor}
             config={{
-              placeholder: "- 궁금한 내용을 질문해주세요."
-
+              placeholder: '- 궁금한 내용을 질문해주세요.',
             }}
             data=""
             onChange={(event, editor) => {
               const data = editor.getData();
               setPostContent({
                 ...postContent,
-                content: data.replace('<p>', '').replace('</p>', '').replace('</strong>', '').replace('<strong>', ''),
+                content: data
+                  .replace('<p>', '')
+                  .replace('</p>', '')
+                  .replace('</strong>', '')
+                  .replace('<strong>', ''),
               });
             }}
-            onBlur={(event, editor) => { }}
-            onFocus={(event, editor) => { }}
+            onBlur={(event, editor) => {}}
+            onFocus={(event, editor) => {}}
           />
           <div className="bt-se">
-            <button className="btn-cancel" onClick={() => {
-              navigate(-1);
-            }}>취소</button>
+            <button
+              className="btn-cancel"
+              onClick={() => {
+                navigate(-1);
+              }}
+            >
+              취소
+            </button>
             <button
               className="btn-post"
               onClick={() => {

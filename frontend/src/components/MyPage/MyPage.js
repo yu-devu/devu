@@ -56,7 +56,6 @@ const MyPage = () => {
     await axios
       .get(process.env.REACT_APP_DB_HOST + `/api/myPosts`)
       .then((res) => {
-        // console.log(res);
         const _postData = res.data.map((rowData) => ({
           id: rowData.id,
           title: rowData.title,
@@ -82,7 +81,7 @@ const MyPage = () => {
         setMyPostQuestion(_postData.filter(filterQuestion));
         setMyPostChat(_postData.filter(filterChat));
       })
-      .catch((err) => console.log(err));
+      .catch((e) => console.log(e));
   };
 
   const fetchLikeData = async () => {
@@ -114,7 +113,7 @@ const MyPage = () => {
         setMyLikeQuestion(_likeData.filter(filterQuestion));
         setMyLikeChat(_likeData.filter(filterChat));
       })
-      .catch((err) => console.log(err));
+      .catch((e) => console.log(e));
   };
 
   const deleteAccount = async () => {
@@ -124,13 +123,11 @@ const MyPage = () => {
         .then(() => {
           localStorage.removeItem('username');
           localStorage.removeItem('accessToken');
-          console.log('회원 탈퇴!');
+          alert('회원 탈퇴가 완료되었습니다.');
           navigate('/');
         })
-        .catch((res) => console.log(res));
-    } else {
-      alert('취소하였습니다!');
-    }
+        .catch((e) => console.log(e));
+    } else alert('취소하였습니다!');
   };
 
   return (
