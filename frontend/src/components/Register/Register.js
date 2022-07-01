@@ -38,14 +38,11 @@ const Register = () => {
       await axios
         .post(process.env.REACT_APP_DB_HOST + `/email`, formData)
         .then((res) => {
-          if (res.data.error) {
-            alert(res.data.error);
-          }
+          if (res.data.error) alert(res.data.error);
           setClickAuthkey(true);
           showValidateInput();
-          console.log(res);
         })
-        .catch((res) => alert(JSON.parse(res.request.response).error));
+        .catch((e) => alert(JSON.parse(e.request.response).error));
     } else alert('이메일 형식을 확인해주세요!');
   };
 
@@ -105,10 +102,9 @@ const Register = () => {
         localStorage.setItem('accessToken', res.data.accessToken);
         window.location.reload(false);
       })
-      .catch((res) => {
-        console.log(res);
-        alert(JSON.parse(res.request.response).error); // 이메일, 비밀번호 오류 출력
-      });
+      .catch(
+        (e) => alert(JSON.parse(e.request.response).error) // 이메일, 비밀번호 오류 출력
+      );
   };
 
   return (
@@ -156,7 +152,10 @@ const Register = () => {
                 인증확인
               </button>
             ) : (
-              <button className="btn-validate-clicked" onClick={() => checkAuthkey()}>
+              <button
+                className="btn-validate-clicked"
+                onClick={() => checkAuthkey()}
+              >
                 인증완료
               </button>
             )}
@@ -173,7 +172,9 @@ const Register = () => {
               placeholder="특수문자, 영문, 숫자 포함 8자 이상"
             />
             {password && !passwordAvailability ? (
-              <p className='register-text'>특수문자, 문자, 숫자를 포함해 8자 이상 입력해주세요.</p>
+              <p className="register-text">
+                특수문자, 문자, 숫자를 포함해 8자 이상 입력해주세요.
+              </p>
             ) : null}
           </div>
           <h7 className="text-password-recheck">비밀번호확인</h7>
@@ -188,7 +189,7 @@ const Register = () => {
               placeholder="비밀번호와 동일"
             />
             {checkPassword && password !== checkPassword ? (
-              <p className='register-text'>비밀번호가 일치하지 않습니다.</p>
+              <p className="register-text">비밀번호가 일치하지 않습니다.</p>
             ) : null}
           </div>
           <h7 className="text-name">이름</h7>
@@ -206,9 +207,9 @@ const Register = () => {
             가입하기
           </button>
         </div>
-      </div >
+      </div>
       <FooterGray />
-    </div >
+    </div>
   );
 };
 

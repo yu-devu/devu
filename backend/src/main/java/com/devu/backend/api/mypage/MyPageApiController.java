@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -69,10 +71,10 @@ public class MyPageApiController {
     }
 
     @DeleteMapping("/user")
-    public ResponseEntity<?> deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<?> deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails, HttpServletRequest request, HttpServletResponse response) {
         try {
             String username = userDetails.getUser().getUsername();
-            userService.deleteUser(username);
+            userService.deleteUser(username, request, response);
             return ResponseEntity.ok().body(username+ " 님이 탈퇴했습니다.");
         }catch (Exception e){
             e.printStackTrace();

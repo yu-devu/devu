@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
 import './studies.css';
 import Submenu from '../Submenu';
 import a from '../../../img/a.png';
@@ -65,9 +64,8 @@ const Studies = () => {
   }, [currentPage, selectedTag, status, order, isLike]);
 
   const fetchData = async () => {
-    const res = await axios.get(
-      process.env.REACT_APP_DB_HOST + `/community/studies`,
-      {
+    await axios
+      .get(process.env.REACT_APP_DB_HOST + `/community/studies`, {
         params: {
           page: currentPage,
           status: status,
@@ -75,34 +73,35 @@ const Studies = () => {
           tags: selectedTag.join(','), // join(",")으로 해야 ?tags=REACT,SPRING으로 parameter 전송할 수 있음.
           s: sentence,
         },
-      }
-    );
-
-    const _postData = await res.data.map(
-      (rowData) => (
-        setLastIdx(lastIdx + 1),
-        {
-          id: rowData.id,
-          title: rowData.title,
-          content: rowData.content,
-          hit: rowData.hit,
-          like: rowData.like,
-          username: rowData.username,
-          postYear: rowData.createAt.substr(0, 4),
-          postMonth: rowData.createAt.substr(5, 2),
-          postDay: rowData.createAt.substr(8, 2),
-          postHour: rowData.createAt.substr(11, 2),
-          postMinute: rowData.createAt.substr(14, 2),
-          postSecond: rowData.createAt.substr(17, 2),
-          date: rowData.createAt.substr(0, 10),
-          time: rowData.createAt.substr(11, 8),
-          tags: rowData.tags,
-          studyStatus: rowData.studyStatus,
-          commentsSize: rowData.commentsSize,
-        }
-      )
-    );
-    setPostData(_postData);
+      })
+      .then((res) => {
+        const _postData = res.data.map(
+          (rowData) => (
+            setLastIdx(lastIdx + 1),
+            {
+              id: rowData.id,
+              title: rowData.title,
+              content: rowData.content,
+              hit: rowData.hit,
+              like: rowData.like,
+              username: rowData.username,
+              postYear: rowData.createAt.substr(0, 4),
+              postMonth: rowData.createAt.substr(5, 2),
+              postDay: rowData.createAt.substr(8, 2),
+              postHour: rowData.createAt.substr(11, 2),
+              postMinute: rowData.createAt.substr(14, 2),
+              postSecond: rowData.createAt.substr(17, 2),
+              date: rowData.createAt.substr(0, 10),
+              time: rowData.createAt.substr(11, 8),
+              tags: rowData.tags,
+              studyStatus: rowData.studyStatus,
+              commentsSize: rowData.commentsSize,
+            }
+          )
+        );
+        setPostData(_postData);
+      })
+      .catch((e) => console.log(e));
   };
 
   const fetchLikeData = async () => {
@@ -112,7 +111,7 @@ const Studies = () => {
         const _likePosts = res.data.map((rowData) => rowData.id);
         setLikePosts(_likePosts);
       })
-      .catch((err) => console.log(err));
+      .catch((e) => console.log(e));
   };
 
   const handleLike = async (id) => {
@@ -127,13 +126,10 @@ const Studies = () => {
         },
       })
       .then((res) => {
-        console.log('res.data', res.data.liked);
         if (res.data.liked) setLike(like + 1);
         else setLike(like - 1);
       })
-      .catch((res) => {
-        console.log(res);
-      });
+      .catch((e) => console.log(e));
   };
 
   const handleKeyPress = (e) => {
@@ -146,21 +142,20 @@ const Studies = () => {
     const _selectedTag = [...selectedTag];
     if (!_selectedTag.includes(tag)) {
       _selectedTag.push(tag);
+      setSelectedTag(_selectedTag);
+    } else {
+      setSelectedTag(_selectedTag.filter((index) => index != tag));
     }
-    setSelectedTag(_selectedTag);
   };
 
   const fetchPageSize = async () => {
-    const res = await axios.get(
-      process.env.REACT_APP_DB_HOST + `/community/studies/size`
-    );
-    setPostSize(res.data);
+    await axios
+      .get(process.env.REACT_APP_DB_HOST + `/community/studies/size`)
+      .then((res) => setPostSize(res.data))
+      .catch((e) => console.log(e));
   };
 
-  const changePage = ({ selected }) => {
-    setCurrentPage(selected);
-  };
-
+  const changePage = (selected) => setCurrentPage(selected);
   return (
     <div>
       <Submenu />

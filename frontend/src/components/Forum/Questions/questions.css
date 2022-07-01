@@ -361,9 +361,9 @@
 
   .body-content {
     position: relative;
-    right: 13.3%;
+    /* right: 13.3%;
     display: block;
-    width: 100%;
+    width: 100%; */
   }
 
   .choicing {

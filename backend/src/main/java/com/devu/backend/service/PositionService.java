@@ -59,7 +59,6 @@ public class PositionService {
                 String end = jsonObject.getString("endYmd");
                 String annoId = Integer.toString(jsonObject.getInt("annoId"));
                 String title =  jsonObject.getString("jobNm");
-
                 String link = "https://recruit.navercorp.com/naver/job/detail/developer?annoId=" + annoId +
                         "&classId=&jobId=&entTypeCd=&searchTxt=&searchSysComCd=";
                 String duration = start + " ~ " + end;
@@ -67,7 +66,7 @@ public class PositionService {
 
                 Position position = Position.builder()
                         .link(link)
-                        .title(title)
+                        .title(removeEmoji(title))
                         .company(CompanyType.NAVER)
                         .duration(duration)
                         .build();
@@ -104,7 +103,7 @@ public class PositionService {
                 String duration = openDate + " ~ 영입 종료시";
                 Position position = Position.builder()
                         .link(link)
-                        .title(title)
+                        .title(removeEmoji(title))
                         .company(CompanyType.BAEMIN)
                         .duration(duration)
                         .build();
@@ -155,7 +154,7 @@ public class PositionService {
 
                 Position position = Position.builder()
                         .link(link)
-                        .title(title)
+                        .title(removeEmoji(title))
                         .company(CompanyType.KAKAO)
                         .duration(duration)
                         .build();
@@ -204,7 +203,7 @@ public class PositionService {
 
                 Position position = Position.builder()
                         .link(link)
-                        .title(title)
+                        .title(removeEmoji(title))
                         .company(CompanyType.LINE)
                         .duration(duration)
                         .build();
@@ -237,7 +236,7 @@ public class PositionService {
 
                 Position position = Position.builder()
                         .link(link)
-                        .title(title)
+                        .title(removeEmoji(title))
                         .company(CompanyType.COUPANG)
                         .duration(duration)
                         .build();
@@ -314,6 +313,23 @@ public class PositionService {
     private List<PositionResponseDto> getPositionByCompany(Pageable pageable, CompanyType company) {
         Page<PositionResponseDto> positionsByCompany = positionRepository.findByCompany(company, pageable).map(PositionResponseDto::new);
         return positionsByCompany.getContent();
+    }
+
+
+    public static String removeEmoji(String input){
+        if(input == null)return null;
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < input.length(); i++) {
+            if (i < (input.length() - 1)) {
+                if (Character.isSurrogatePair(input.charAt(i), input.charAt(i + 1))) {
+                    i += 1;
+                    continue;
+                }
+            }
+            sb.append(input.charAt(i));
+        }
+        return sb.toString();
     }
 
     public PositionDto getKakao(Pageable pageable) {

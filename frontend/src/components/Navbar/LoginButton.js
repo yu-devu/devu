@@ -43,32 +43,37 @@ function LoginButton() {
       })
       .then((response) => {
         alert('로그인에 성공했습니다!');
-        navigate('/main')
+        navigate('/main');
         localStorage.setItem('username', response.data.username);
-        localStorage.setItem('accessToken', response.headers['x-auth-access-token']);
+        localStorage.setItem(
+          'accessToken',
+          response.headers['x-auth-access-token']
+        );
         window.location.reload(false);
       })
-      .catch((res) => {
-        console.log(res);
-        alert(JSON.parse(res.request.response).error); // 이메일, 비밀번호 오류 출력
-      });
+      .catch(
+        (e) => alert(JSON.parse(e.request.response).error) // 이메일, 비밀번호 오류 출력
+      );
   };
 
   const onSilentRefresh = async () => {
     await axios
       .post(process.env.REACT_APP_DB_HOST + '/silent-refresh')
-      .then((response) => {
-        console.log(response);
-        if (response.headers['x-auth-access-token']) {
-          localStorage.setItem('accessToken', response.headers['x-auth-access-token']);
+      .then((res) => {
+        console.log(res);
+        if (res.headers['x-auth-access-token']) {
+          localStorage.setItem(
+            'accessToken',
+            res.headers['x-auth-access-token']
+          );
         }
         setInterval(onSilentRefresh, JWT_EXPIRY_TIME - 60000); // accessToken 만료하기 1분 전에 로그인 연장
-        console.log("Timeout-loginButton.js");
+        console.log('Timeout-loginButton.js');
       })
-      .catch((res) => {
-        console.log(res);
+      .catch(
+        (e) => console.log(e)
         // alert(JSON.parse(res.request.response).error); // 이메일, 비밀번호 오류 출력
-      });
+      );
   };
 
   return (

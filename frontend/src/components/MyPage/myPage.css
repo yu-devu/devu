@@ -28,16 +28,32 @@
   .btn-change-info {
     margin-top: 3%;
     background-color: transparent;
-    width: 5%;
+    width: 20%;
     height: 30px;
-    border-radius: 10%;
+    border-radius: 10px;
     border: 1px solid var(--color-primary);
     color: var(--color-primary);
     cursor: pointer;
-    margin-left: 250px;
+    margin-left: 325px;
   }
 
   .btn-change-info:hover {
+    background-color: var(--color-hover);
+  }
+
+  .btn-delete-info {
+    margin-top: 1%;
+    background-color: transparent;
+    width: 20%;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    cursor: pointer;
+    margin-left: 325px;
+  }
+
+  .btn-delete-info:hover {
     background-color: var(--color-hover);
   }
 
@@ -125,6 +141,10 @@
 
   .cate-mypage-detail-title {
     cursor: pointer;
+  }
+
+  .mypage-btns {
+
   }
 
   th {

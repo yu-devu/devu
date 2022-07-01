@@ -46,9 +46,8 @@ const Chats = () => {
   }, [currentPage, selectedTag, status, order, isLike]);
 
   const fetchData = async () => {
-    const res = await axios.get(
-      process.env.REACT_APP_DB_HOST + `/community/chats`,
-      {
+    await axios
+      .get(process.env.REACT_APP_DB_HOST + `/community/chats`, {
         params: {
           page: currentPage,
           tags: selectedTag.join(','), // join(",")으로 해야 ?tags=REACT,SPRING으로 parameter 전송할 수 있음.
@@ -56,33 +55,33 @@ const Chats = () => {
           status: status,
           order: order,
         },
-      }
-    );
-    console.log(res);
-
-    const _postData = await res.data.map(
-      (rowData) => (
-        setLastIdx(lastIdx + 1),
-        {
-          id: rowData.id,
-          title: rowData.title,
-          content: rowData.content,
-          hit: rowData.hit,
-          like: rowData.like,
-          username: rowData.username,
-          postYear: rowData.createAt.substr(0, 4),
-          postMonth: rowData.createAt.substr(5, 2),
-          postDay: rowData.createAt.substr(8, 2),
-          postHour: rowData.createAt.substr(11, 2),
-          postMinute: rowData.createAt.substr(14, 2),
-          postSecond: rowData.createAt.substr(17, 2),
-          commentsSize: rowData.commentsSize,
-        }
-      )
-    );
-    setPostData(_postData);
-    CKEditor.instances.textarea_id.setData(postData.content);
-    CKEditor.instances.textarea_id.getData();
+      })
+      .then((res) => {
+        const _postData = res.data.map(
+          (rowData) => (
+            setLastIdx(lastIdx + 1),
+            {
+              id: rowData.id,
+              title: rowData.title,
+              content: rowData.content,
+              hit: rowData.hit,
+              like: rowData.like,
+              username: rowData.username,
+              postYear: rowData.createAt.substr(0, 4),
+              postMonth: rowData.createAt.substr(5, 2),
+              postDay: rowData.createAt.substr(8, 2),
+              postHour: rowData.createAt.substr(11, 2),
+              postMinute: rowData.createAt.substr(14, 2),
+              postSecond: rowData.createAt.substr(17, 2),
+              commentsSize: rowData.commentsSize,
+            }
+          )
+        );
+        setPostData(_postData);
+        CKEditor.instances.textarea_id.setData(postData.content);
+        CKEditor.instances.textarea_id.getData();
+      })
+      .catch((e) => console.log(e));
   };
 
   const fetchLikeData = async () => {
@@ -92,7 +91,7 @@ const Chats = () => {
         const _likePosts = res.data.map((rowData) => rowData.id);
         setLikePosts(_likePosts);
       })
-      .catch((err) => console.log(err));
+      .catch((e) => console.log(e));
   };
 
   const handleLike = async (id) => {
@@ -107,13 +106,10 @@ const Chats = () => {
         },
       })
       .then((res) => {
-        console.log('res.data', res.data.liked);
         if (res.data.liked) setLike(like + 1);
         else setLike(like - 1);
       })
-      .catch((res) => {
-        console.log(res);
-      });
+      .catch((e) => console.log(e));
   };
 
   const handleKeyPress = (e) => {
@@ -123,16 +119,13 @@ const Chats = () => {
   };
 
   const fetchPageSize = async () => {
-    const res = await axios.get(
-      process.env.REACT_APP_DB_HOST + `/community/chats/size`
-    );
-    setPostSize(res.data);
+    await axios
+      .get(process.env.REACT_APP_DB_HOST + `/community/chats/size`)
+      .then((res) => setPostSize(res.data))
+      .catch((e) => console.log(e));
   };
 
-  const changePage = ({ selected }) => {
-    setCurrentPage(selected);
-  };
-
+  const changePage = ({ selected }) => setCurrentPage(selected);
   return (
     <div>
       <Submenu />
@@ -219,15 +212,15 @@ const Chats = () => {
                               ? seconds - post.postSecond + '초 전'
                               : minutes - post.postMinute == 1 &&
                                 seconds < post.postSecond
-                                ? 60 - post.postSecond + seconds + '초 전'
-                                : minutes - post.postMinute + '분 전'
+                              ? 60 - post.postSecond + seconds + '초 전'
+                              : minutes - post.postMinute + '분 전'
                             : hours - post.postHour + '시간 전'
                           : post.postMonth + '.' + post.postDay
                         : post.postYear.slice(2, 4) +
-                        '.' +
-                        post.postMonth +
-                        '.' +
-                        post.postDay}
+                          '.' +
+                          post.postMonth +
+                          '.' +
+                          post.postDay}
                     </div>
                   </div>
                   <div className="chats-line2"></div>
