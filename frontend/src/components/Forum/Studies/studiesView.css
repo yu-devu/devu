@@ -369,26 +369,26 @@
   }
 
   .more-submenu button:hover {
-      background-color: var(--color-hover);
+    background-color: var(--color-hover);
   }
 
   .comment {
-      width: 80%;
+    width: 80%;
   }
 
   .container-modify-comments {
     filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.102));
-        border-radius: 0.5rem;
-        background: #fff;
-        position: relative;
-        display: flex;
-        width: 65%;
-        height: 100%;
-        left: 30%;
-        top: 20px;
-        padding-left: 2ch;
-        padding-top: 1ch;
-        color: var(--color-gray);
-        padding-bottom: 1ch;
+    border-radius: 0.5rem;
+    background: #fff;
+    position: relative;
+    display: flex;
+    width: 65%;
+    height: 100%;
+    left: 30%;
+    top: 20px;
+    padding-left: 2ch;
+    padding-top: 1ch;
+    color: var(--color-gray);
+    padding-bottom: 1ch;
   }
 }

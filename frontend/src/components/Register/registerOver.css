@@ -1,51 +1,51 @@
 @media (min-width: 1024px) {
-    .registerover-all {
-        position: relative;
-        left: 38%;
-        margin-top: 5%;
-    }
-    
-    .registerover-btns {
-        display: flex;
-        height: max-content;
-    }
-    
-    .btn-to-main {
-        text-align: center;
-        width: 10%;
-        height: 1%;
-        background-color: rgb(242, 242, 242);
-        color: black;
-        border-radius: 5px;
-        margin-top: 2%;
-        font-weight: 500;
-        cursor: pointer;
-        font-size: 16px;
-        padding-top: 0.7%;
-        padding-bottom: 0.7%;
-        cursor: pointer;
-        line-height: 126%;
-        margin-left: 6%;
-    }
+  .registerover-all {
+    position: relative;
+    left: 38%;
+    margin-top: 5%;
+  }
 
-    .btn-to-main:hover {
-        background: var(--color-hover);
-    }
+  .registerover-btns {
+    display: flex;
+    height: max-content;
+  }
 
-    .img-puzzle {
-        position: relative;
-        left: 6.5%;
-        width: 10%;
-        height: 10%;
-    }
+  .btn-to-main {
+    text-align: center;
+    width: 10%;
+    height: 1%;
+    background-color: rgb(242, 242, 242);
+    color: black;
+    border-radius: 5px;
+    margin-top: 2%;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 16px;
+    padding-top: 0.7%;
+    padding-bottom: 0.7%;
+    cursor: pointer;
+    line-height: 126%;
+    margin-left: 6%;
+  }
 
-    .text-main {
-        position: relative;
-    }
+  .btn-to-main:hover {
+    background: var(--color-hover);
+  }
 
-    .text-sub {
-        position: relative;
-        left: 5%;
-        color: var(--color-primary);
-    }
+  .img-puzzle {
+    position: relative;
+    left: 6.5%;
+    width: 10%;
+    height: 10%;
+  }
+
+  .text-main {
+    position: relative;
+  }
+
+  .text-sub {
+    position: relative;
+    left: 5%;
+    color: var(--color-primary);
+  }
 }

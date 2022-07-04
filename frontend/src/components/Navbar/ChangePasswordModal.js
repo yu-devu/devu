@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import logo from '../../img/logo_main.png';
-import axios from 'axios';
-import './changePasswordModal.css';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import logo from "../../img/logo_main.png";
+import axios from "axios";
+import "./changePasswordModal.css";
 
 function ChangePasswordModal() {
   const [showModal, setShowModal] = useState(false);
-  const [email, setEmail] = useState('');
-  const referUrl = 'http://54.180.29.69/';
+  const [email, setEmail] = useState("");
+  const referUrl = "http://54.180.29.69/";
   // 백엔드 ChangePasswordApiController 27번째 줄에 http://localhost:3000도 추가해야 할 듯함
   const closePasswordModal = () => setShowModal(false);
   const openPasswordModal = () => setShowModal(true);
@@ -15,8 +15,8 @@ function ChangePasswordModal() {
   const [clickAuthkey, setClickAuthkey] = useState(false);
 
   const passwordUrlEmail = async () => {
-    if (email !== '') {
-      if (email.includes('@ynu.ac.kr') || email.includes('@yu.ac.kr')) {
+    if (email !== "") {
+      if (email.includes("@ynu.ac.kr") || email.includes("@yu.ac.kr")) {
         const data = {
           referUrl: referUrl,
           email: email,
@@ -27,20 +27,20 @@ function ChangePasswordModal() {
             JSON.stringify(data),
             {
               headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
               },
             }
           )
           .then(() => {
             alert(
-              '이메일 전송 완료! \n이메일이 오지 않을 경우 스팸 이메일함을 확인해보세요.'
+              "이메일 전송 완료! \n이메일이 오지 않을 경우 스팸 이메일함을 확인해보세요."
             );
             setClickAuthkey(true);
           })
           .catch((e) => alert(JSON.parse(e.request.response).error));
         // axios 통신 실패시, '정상적인 접근 경로가 아닙니다.'
-      } else alert('이메일 형식을 확인해주세요!');
-    } else alert('이메일을 입력해주세요!');
+      } else alert("이메일 형식을 확인해주세요!");
+    } else alert("이메일을 입력해주세요!");
   };
 
   return (

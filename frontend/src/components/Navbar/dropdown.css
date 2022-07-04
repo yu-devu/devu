@@ -8,17 +8,17 @@
   border: 1px solid rgba(241, 241, 241, 1);
   border-top: none;
 }
-  
+
 .community-submenu li {
   background: white;
   cursor: pointer;
   width: 100%;
 }
-  
+
 .community-submenu li a:hover {
   background: white;
 }
-  
+
 .community-submenu.clicked {
   display: none;
 }

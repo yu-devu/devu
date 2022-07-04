@@ -1,9 +1,9 @@
-import React from 'react';
-import ChatBot from '../ChatBot/ChatBot';
-import './userhome.css';
-import Main from '../../img/main_user.png';
-import Footer from './Footer';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import ChatBot from "../ChatBot/ChatBot";
+import "./userhome.css";
+import Main from "../../img/main_user.png";
+import Footer from "./Footer";
+import { useNavigate } from "react-router-dom";
 
 const UserHome = () => {
   const examDate = new Date(2022, 6, 14);
@@ -12,7 +12,7 @@ const UserHome = () => {
   const today = now.getDate();
 
   const navigate = useNavigate();
-  const username = localStorage.getItem('username');
+  const username = localStorage.getItem("username");
   return (
     <div>
       <ChatBot />
