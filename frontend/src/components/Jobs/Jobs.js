@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import ReactPaginate from 'react-paginate';
-import './jobs.css';
-import magnify from '../../img/magnify.png';
-import FooterGray from '../Home/FooterGray';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import ReactPaginate from "react-paginate";
+import "./jobs.css";
+import magnify from "../../img/magnify.png";
+import FooterGray from "../Home/FooterGray";
 // import logo from '../../img/logo_gray.png'
-import Naver from '../../img/NaverLogo.png';
-import Kakao from '../../img/KakaoLogo.png';
-import Line from '../../img/LineLogo.png';
-import Coupang from '../../img/CoupangLogo.png';
-import Baemin from '../../img/BaeminLogo.png';
+import Naver from "../../img/NaverLogo.png";
+import Kakao from "../../img/KakaoLogo.png";
+import Line from "../../img/LineLogo.png";
+import Coupang from "../../img/CoupangLogo.png";
+import Baemin from "../../img/BaeminLogo.png";
 
 const Jobs = () => {
   const navigate = useNavigate();
@@ -18,14 +18,14 @@ const Jobs = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [postSize, setPostSize] = useState(0);
   const [postsPerPage] = useState(20);
-  const [company, setCompany] = useState('all');
+  const [company, setCompany] = useState("all");
 
   useEffect(() => {
     fetchData();
   }, [currentPage, company]);
 
   const fetchData = async () => {
-    if (company === 'all') {
+    if (company === "all") {
       await axios
         .get(process.env.REACT_APP_DB_HOST + `/api/position/all`, {
           params: {
@@ -43,7 +43,7 @@ const Jobs = () => {
           setPostData(_postData);
         })
         .catch((e) => console.log(e));
-    } else if (company === 'naver') {
+    } else if (company === "naver") {
       await axios
         .get(process.env.REACT_APP_DB_HOST + `/api/position/naver`, {
           params: {
@@ -61,7 +61,7 @@ const Jobs = () => {
           setPostData(_postData);
         })
         .catch((e) => console.log(e));
-    } else if (company === 'kakao') {
+    } else if (company === "kakao") {
       await axios
         .get(process.env.REACT_APP_DB_HOST + `/api/position/kakao`, {
           params: {
@@ -79,7 +79,7 @@ const Jobs = () => {
           setPostData(_postData);
         })
         .catch((e) => console.log(e));
-    } else if (company === 'line') {
+    } else if (company === "line") {
       await axios
         .get(process.env.REACT_APP_DB_HOST + `/api/position/line`, {
           params: {
@@ -97,7 +97,7 @@ const Jobs = () => {
           setPostData(_postData);
         })
         .catch((e) => console.log(e));
-    } else if (company === 'coupang') {
+    } else if (company === "coupang") {
       await axios
         .get(process.env.REACT_APP_DB_HOST + `/api/position/coupang`, {
           params: {
@@ -115,7 +115,7 @@ const Jobs = () => {
           setPostData(_postData);
         })
         .catch((e) => console.log(e));
-    } else if (company === 'baemin') {
+    } else if (company === "baemin") {
       await axios
         .get(process.env.REACT_APP_DB_HOST + `/api/position/baemin`, {
           params: {
@@ -170,7 +170,7 @@ const Jobs = () => {
               type="text"
               placeholder="채용 관련 정보를 찾아보세요."
               className="search-jobs-input"
-              onChange={(e) => { }}
+              onChange={(e) => {}}
             />
             <button className="btn-search-jobs">
               <img className="img-mag-jobs" src={magnify} alt="" />
@@ -208,15 +208,15 @@ const Jobs = () => {
         </div>
       </div>
       <ReactPaginate
-        previousLabel={'<'}
-        nextLabel={'>'}
+        previousLabel={"<"}
+        nextLabel={">"}
         pageCount={Math.ceil(postSize / postsPerPage)} // 페이지 버튼 개수 출력하는 부분 -> 글 전체 개수 넘겨받아서 사용해야함
         onPageChange={changePage}
-        containerClassName={'btn-pagination-jobs'}
-        previousLinkClassName={'btn-pagination-jobs-previous'}
-        nextLinkClassName={'btn-pagination-jobs-next'}
-        disabledClassName={'btn-pagination-jobs-disabled'}
-        activeClassName={'btn-pagination-jobs-active'}
+        containerClassName={"btn-pagination-jobs"}
+        previousLinkClassName={"btn-pagination-jobs-previous"}
+        nextLinkClassName={"btn-pagination-jobs-next"}
+        disabledClassName={"btn-pagination-jobs-disabled"}
+        activeClassName={"btn-pagination-jobs-active"}
       />
       <FooterGray />
     </div>

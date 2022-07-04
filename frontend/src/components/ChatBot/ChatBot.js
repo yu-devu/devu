@@ -1,7 +1,7 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-import chatbot from '../../img/chatbot.png';
-import './chatbot.css';
+import axios from "axios";
+import React, { useState } from "react";
+import chatbot from "../../img/chatbot.png";
+import "./chatbot.css";
 
 const ChatBot = () => {
   const [weatherData, setWeatherData] = useState([]);
@@ -13,68 +13,68 @@ const ChatBot = () => {
   };
 
   const showChatbot = () => {
-    document.getElementById('chatbot').style.removeProperty('display');
+    document.getElementById("chatbot").style.removeProperty("display");
     modalChange(true);
   };
 
   const welcomeMsg = () => {
-    const botMessage = document.querySelector('#message1');
-    botMessage.innerHTML = '무엇을 도와드릴까요?';
+    const botMessage = document.querySelector("#message1");
+    botMessage.innerHTML = "무엇을 도와드릴까요?";
   };
 
   const handleFood = () => {
-    const botMessage = document.querySelector('#message1');
-    const userMessage = document.querySelector('#message2');
-    botMessage.innerHTML = '입력 중...';
+    const botMessage = document.querySelector("#message1");
+    const userMessage = document.querySelector("#message2");
+    botMessage.innerHTML = "입력 중...";
     setTimeout(() => {
       restaurantChange(true);
-      document.getElementById('restaurant').style.removeProperty('display');
-      botMessage.innerHTML = '어떤 식당의 메뉴가 궁금하신가요?';
-      document.querySelector('#input').value = '';
+      document.getElementById("restaurant").style.removeProperty("display");
+      botMessage.innerHTML = "어떤 식당의 메뉴가 궁금하신가요?";
+      document.querySelector("#input").value = "";
     }, 2000);
-    userMessage.innerHTML = document.querySelector('#food').value;
+    userMessage.innerHTML = document.querySelector("#food").value;
   };
 
   const handleHumanities = () => {
-    const botMessage = document.querySelector('#message1');
-    const userMessage = document.querySelector('#message2');
-    botMessage.innerHTML = '입력 중...';
+    const botMessage = document.querySelector("#message1");
+    const userMessage = document.querySelector("#message2");
+    botMessage.innerHTML = "입력 중...";
     setTimeout(() => {
       restaurantChange(false);
-      botMessage.innerHTML = '인문계 학식은 영대돈까스입니다!';
-      document.querySelector('#input').value = '';
+      botMessage.innerHTML = "인문계 학식은 영대돈까스입니다!";
+      document.querySelector("#input").value = "";
     }, 2000);
-    userMessage.innerHTML = document.querySelector('#humanities').value;
+    userMessage.innerHTML = document.querySelector("#humanities").value;
   };
 
   const handleNature = () => {
-    const botMessage = document.querySelector('#message1');
-    const userMessage = document.querySelector('#message2');
-    botMessage.innerHTML = '입력 중...';
+    const botMessage = document.querySelector("#message1");
+    const userMessage = document.querySelector("#message2");
+    botMessage.innerHTML = "입력 중...";
     setTimeout(() => {
       restaurantChange(false);
-      botMessage.innerHTML = '자연계 학식은 불야돈까스입니다!';
-      document.querySelector('#input').value = '';
+      botMessage.innerHTML = "자연계 학식은 불야돈까스입니다!";
+      document.querySelector("#input").value = "";
     }, 2000);
-    userMessage.innerHTML = document.querySelector('#nature').value;
+    userMessage.innerHTML = document.querySelector("#nature").value;
   };
 
   const handleStaff = () => {
-    const botMessage = document.querySelector('#message1');
-    const userMessage = document.querySelector('#message2');
-    botMessage.innerHTML = '입력 중...';
+    const botMessage = document.querySelector("#message1");
+    const userMessage = document.querySelector("#message2");
+    botMessage.innerHTML = "입력 중...";
     setTimeout(() => {
       restaurantChange(false);
-      botMessage.innerHTML = '교직원 학식은 된장찌개입니다!';
-      document.querySelector('#input').value = '';
+      botMessage.innerHTML = "교직원 학식은 된장찌개입니다!";
+      document.querySelector("#input").value = "";
     }, 2000);
-    userMessage.innerHTML = document.querySelector('#staff').value;
+    userMessage.innerHTML = document.querySelector("#staff").value;
   };
 
   const handleWeather = async () => {
-    const botMessage = document.querySelector('#message1');
-    const userMessage = document.querySelector('#message2');
-    botMessage.innerHTML = '입력 중...';
+    const botMessage = document.querySelector("#message1");
+    const userMessage = document.querySelector("#message2");
+    botMessage.innerHTML = "입력 중...";
 
     let now = new Date();
     let hours = now.getHours();
@@ -103,11 +103,11 @@ const ChatBot = () => {
         ? 2000
         : 2300;
 
-    const baseTime = b2 < 1000 ? '0' + String(b2) : b2;
+    const baseTime = b2 < 1000 ? "0" + String(b2) : b2;
 
     console.log(baseTime);
     const res = await axios.get(
-      process.env.REACT_APP_DB_HOST + '/api/weather',
+      process.env.REACT_APP_DB_HOST + "/api/weather",
       {
         params: {
           baseDate: baseDate,
@@ -131,26 +131,26 @@ const ChatBot = () => {
     setWeatherData(_weatherData);
     setTimeout(() => {
       botMessage.innerHTML =
-        '현재 날씨는 ' +
+        "현재 날씨는 " +
         (_weatherData.sky == 4
-          ? '흐림'
+          ? "흐림"
           : _weatherData.sky == 3
-          ? '구름 많음'
-          : '맑음') +
-        '입니다! \n기온은 ' +
+          ? "구름 많음"
+          : "맑음") +
+        "입니다! \n기온은 " +
         _weatherData.tmp +
-        '°C이며 습도는 ' +
+        "°C이며 습도는 " +
         _weatherData.reh +
-        '%입니다!';
+        "%입니다!";
       // document.querySelector('#input').value = '';
     }, 2000);
-    userMessage.innerHTML = document.querySelector('#weather').value;
+    userMessage.innerHTML = document.querySelector("#weather").value;
   };
 
   const handleSubway = async () => {
-    const botMessage = document.querySelector('#message1');
-    const userMessage = document.querySelector('#message2');
-    botMessage.innerHTML = '입력 중...';
+    const botMessage = document.querySelector("#message1");
+    const userMessage = document.querySelector("#message2");
+    botMessage.innerHTML = "입력 중...";
     const today = new Date();
     const DateH = today.getHours();
     const DateM = today.getMinutes();
@@ -162,8 +162,8 @@ const ChatBot = () => {
     ) {
       setTimeout(() => {
         console.log(DateH);
-        botMessage.innerHTML = '첫차는 5:30에 들어옵니다!';
-        document.querySelector('#input').value = '';
+        botMessage.innerHTML = "첫차는 5:30에 들어옵니다!";
+        document.querySelector("#input").value = "";
       }, 1000);
     } else {
       const DateD = today.getDay();
@@ -172,22 +172,22 @@ const ChatBot = () => {
 
       if (DateD === 0)
         await axios
-          .get(process.env.REACT_APP_DB_HOST + '/api/holidaySubway') // 일요일
+          .get(process.env.REACT_APP_DB_HOST + "/api/holidaySubway") // 일요일
           .then((res) => (arrInfo = res.data))
           .catch((e) => console.log(e));
       else if (DateD > 0 && DateD < 6)
         await axios
-          .get(process.env.REACT_APP_DB_HOST + '/api/weekdaySubway ') // 평일
+          .get(process.env.REACT_APP_DB_HOST + "/api/weekdaySubway ") // 평일
           .then((res) => (arrInfo = res.data))
           .catch((e) => console.log(e));
       else
         await axios
-          .get(process.env.REACT_APP_DB_HOST + '/api/weekendSubway') // 토요일
+          .get(process.env.REACT_APP_DB_HOST + "/api/weekendSubway") // 토요일
           .then((res) => (arrInfo = res.data))
           .catch((e) => console.log(e));
 
       for (i = 0; i < arrInfo.length; i++) {
-        const candiDate = arrInfo[i].split(':');
+        const candiDate = arrInfo[i].split(":");
         if (candiDate[0] == DateH) {
           if (candiDate[1] > DateM) {
             leftTime = Number(candiDate[1]) - DateM;
@@ -196,25 +196,25 @@ const ChatBot = () => {
         } else if (candiDate[0] > DateH) break;
       }
       if (leftTime === 0) {
-        const candiDate = arrInfo[i].split(':');
+        const candiDate = arrInfo[i].split(":");
         leftTime = Number(candiDate[1]) - DateM + 60;
       }
 
       setTimeout(() => {
-        botMessage.innerHTML = leftTime + '분 뒤에 지하철이 들어옵니다!';
-        document.querySelector('#input').value = '';
+        botMessage.innerHTML = leftTime + "분 뒤에 지하철이 들어옵니다!";
+        document.querySelector("#input").value = "";
       }, 1000);
     }
 
-    userMessage.innerHTML = document.querySelector('#subway').value;
+    userMessage.innerHTML = document.querySelector("#subway").value;
   };
 
   return (
     <div>
       <div
         id="chatbot"
-        style={{ display: 'none' }}
-        className={modal ? '' : 'remove-class'}
+        style={{ display: "none" }}
+        className={modal ? "" : "remove-class"}
       >
         <div className="chatbot-all" onLoad={welcomeMsg}>
           <div className="chatbot-wrapper">
@@ -244,8 +244,8 @@ const ChatBot = () => {
               <div className="chatbot-options">
                 <div
                   id="restaurant"
-                  style={{ display: 'none' }}
-                  className={restaurant ? '' : 'remove-class'}
+                  style={{ display: "none" }}
+                  className={restaurant ? "" : "remove-class"}
                 >
                   <div id="restaurant" className="bottom-chatbot-food">
                     <button

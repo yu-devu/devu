@@ -1,33 +1,33 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import ReactPaginate from 'react-paginate';
-import './studies.css';
-import Submenu from '../Submenu';
-import a from '../../../img/a.png';
-import magnify from '../../../img/magnify.png';
-import Footer from '../../Home/Footer';
-import spring from '../../../img/spring.png';
-import c from '../../../img/c.png';
-import cpp from '../../../img/cpp.png';
-import js from '../../../img/js.png';
-import react from '../../../img/react.png';
-import node_js from '../../../img/node_js.png';
-import python from '../../../img/python.png';
-import go from '../../../img/go.png';
-import swift from '../../../img/swift.png';
-import angular from '../../../img/angular.png';
-import java from '../../../img/java.png';
-import flutter from '../../../img/flutter.png';
-import docker from '../../../img/docker.png';
-import ruby from '../../../img/ruby.png';
-import html from '../../../img/html.png';
-import css from '../../../img/css.png';
-import mysql from '../../../img/mysql.png';
-import comment from '../../../img/comment.png';
-import hit from '../../../img/hit.png';
-import like from '../../../img/like.png';
-import like_color from '../../../img/like_color.png';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import ReactPaginate from "react-paginate";
+import "./studies.css";
+import Submenu from "../Submenu";
+import a from "../../../img/a.png";
+import magnify from "../../../img/magnify.png";
+import Footer from "../../Home/Footer";
+import spring from "../../../img/spring.png";
+import c from "../../../img/c.png";
+import cpp from "../../../img/cpp.png";
+import js from "../../../img/js.png";
+import react from "../../../img/react.png";
+import node_js from "../../../img/node_js.png";
+import python from "../../../img/python.png";
+import go from "../../../img/go.png";
+import swift from "../../../img/swift.png";
+import angular from "../../../img/angular.png";
+import java from "../../../img/java.png";
+import flutter from "../../../img/flutter.png";
+import docker from "../../../img/docker.png";
+import ruby from "../../../img/ruby.png";
+import html from "../../../img/html.png";
+import css from "../../../img/css.png";
+import mysql from "../../../img/mysql.png";
+import comment from "../../../img/comment.png";
+import hit from "../../../img/hit.png";
+import like from "../../../img/like.png";
+import like_color from "../../../img/like_color.png";
+import { Link } from "react-router-dom";
 
 const Studies = () => {
   let now = new Date();
@@ -46,14 +46,14 @@ const Studies = () => {
   const [lastIdx, setLastIdx] = useState(0);
   const [selectedTag, setSelectedTag] = useState([]);
   const [choiced, setChoiced] = useState(false);
-  const [sentence, setSentence] = useState('');
-  const [status, setStatus] = useState('');
-  const [order, setOrder] = useState('');
+  const [sentence, setSentence] = useState("");
+  const [status, setStatus] = useState("");
+  const [order, setOrder] = useState("");
   const [likePosts, setLikePosts] = useState([]);
   const onChangeSentence = (e) => {
     setSentence(e.target.value);
   };
-  const username = localStorage.getItem('username');
+  const username = localStorage.getItem("username");
 
   useEffect(() => {
     fetchData();
@@ -70,7 +70,7 @@ const Studies = () => {
           page: currentPage,
           status: status,
           order: order,
-          tags: selectedTag.join(','), // join(",")으로 해야 ?tags=REACT,SPRING으로 parameter 전송할 수 있음.
+          tags: selectedTag.join(","), // join(",")으로 해야 ?tags=REACT,SPRING으로 parameter 전송할 수 있음.
           s: sentence,
         },
       })
@@ -122,7 +122,7 @@ const Studies = () => {
     await axios
       .post(process.env.REACT_APP_DB_HOST + `/api/like`, JSON.stringify(data), {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       })
       .then((res) => {
@@ -133,7 +133,7 @@ const Studies = () => {
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       fetchData();
     }
   };
@@ -176,13 +176,13 @@ const Studies = () => {
                       <div className="top-title">
                         <Link to={`/studiesDetail/${top.id}`}>
                           {top.title.length > 10
-                            ? top.title.substr(0, 10) + '...'
+                            ? top.title.substr(0, 10) + "..."
                             : top.title}
                         </Link>
                       </div>
                       <div className="top-content">
                         {top.content.length > 20
-                          ? top.title.substr(0, 20) + '...'
+                          ? top.title.substr(0, 20) + "..."
                           : top.content}
                       </div>
                       <div className="top-date">
@@ -190,18 +190,18 @@ const Studies = () => {
                           ? top.postMonth == month && top.postDay == date
                             ? top.postHour == hours
                               ? top.postMinute == minutes
-                                ? seconds - top.postSecond + '초 전'
+                                ? seconds - top.postSecond + "초 전"
                                 : minutes - top.postMinute == 1 &&
                                   seconds < top.postSecond
-                                  ? 60 - top.postSecond + seconds + '초 전'
-                                  : minutes - top.postMinute + '분 전'
-                              : hours - top.postHour + '시간 전'
-                            : top.postMonth + '.' + top.postDay
+                                ? 60 - top.postSecond + seconds + "초 전"
+                                : minutes - top.postMinute + "분 전"
+                              : hours - top.postHour + "시간 전"
+                            : top.postMonth + "." + top.postDay
                           : top.postYear.slice(2, 4) +
-                          '.' +
-                          top.postMonth +
-                          '.' +
-                          top.postDay}
+                            "." +
+                            top.postMonth +
+                            "." +
+                            top.postDay}
                       </div>
                     </div>
                   </div>
@@ -212,12 +212,12 @@ const Studies = () => {
         </div>
         <div className="body-studies">
           <div className="cat-menu">
-            {status === '' ? (
+            {status === "" ? (
               <div className="cat-menu-items">
                 <p
                   className="cat-item-selected"
                   onClick={() => {
-                    setStatus('');
+                    setStatus("");
                   }}
                 >
                   전체
@@ -225,7 +225,7 @@ const Studies = () => {
                 <p
                   className="cat-item"
                   onClick={() => {
-                    setStatus('ACTIVE');
+                    setStatus("ACTIVE");
                   }}
                 >
                   모집중
@@ -233,18 +233,18 @@ const Studies = () => {
                 <p
                   className="cat-item"
                   onClick={() => {
-                    setStatus('CLOSED');
+                    setStatus("CLOSED");
                   }}
                 >
                   모집완료
                 </p>
               </div>
-            ) : status === 'ACTIVE' ? (
+            ) : status === "ACTIVE" ? (
               <div className="cat-menu-items">
                 <p
                   className="cat-item"
                   onClick={() => {
-                    setStatus('');
+                    setStatus("");
                   }}
                 >
                   전체
@@ -252,7 +252,7 @@ const Studies = () => {
                 <p
                   className="cat-item-selected"
                   onClick={() => {
-                    setStatus('ACTIVE');
+                    setStatus("ACTIVE");
                   }}
                 >
                   모집중
@@ -260,7 +260,7 @@ const Studies = () => {
                 <p
                   className="cat-item"
                   onClick={() => {
-                    setStatus('CLOSED');
+                    setStatus("CLOSED");
                   }}
                 >
                   모집완료
@@ -271,7 +271,7 @@ const Studies = () => {
                 <p
                   className="cat-item"
                   onClick={() => {
-                    setStatus('');
+                    setStatus("");
                   }}
                 >
                   전체
@@ -279,7 +279,7 @@ const Studies = () => {
                 <p
                   className="cat-item"
                   onClick={() => {
-                    setStatus('ACTIVE');
+                    setStatus("ACTIVE");
                   }}
                 >
                   모집중
@@ -287,7 +287,7 @@ const Studies = () => {
                 <p
                   className="cat-item-selected"
                   onClick={() => {
-                    setStatus('CLOSED');
+                    setStatus("CLOSED");
                   }}
                 >
                   모집완료
@@ -326,10 +326,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('Spring');
+                  handleTags("Spring");
                 }}
               >
-                {selectedTag.includes('Spring') ? (
+                {selectedTag.includes("Spring") ? (
                   <img className="img-choiced" src={spring} alt="" />
                 ) : (
                   <img className="img-choice" src={spring} alt="" />
@@ -338,10 +338,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('C');
+                  handleTags("C");
                 }}
               >
-                {selectedTag.includes('C') ? (
+                {selectedTag.includes("C") ? (
                   <img className="img-choiced" src={c} alt="" />
                 ) : (
                   <img className="img-choice" src={c} alt="" />
@@ -350,10 +350,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('CPP');
+                  handleTags("CPP");
                 }}
               >
-                {selectedTag.includes('CPP') ? (
+                {selectedTag.includes("CPP") ? (
                   <img className="img-choiced" src={cpp} alt="" />
                 ) : (
                   <img className="img-choice" src={cpp} alt="" />
@@ -362,10 +362,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('JS');
+                  handleTags("JS");
                 }}
               >
-                {selectedTag.includes('JS') ? (
+                {selectedTag.includes("JS") ? (
                   <img className="img-choiced" src={js} alt="" />
                 ) : (
                   <img className="img-choice" src={js} alt="" />
@@ -374,10 +374,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('React');
+                  handleTags("React");
                 }}
               >
-                {selectedTag.includes('React') ? (
+                {selectedTag.includes("React") ? (
                   <img className="img-choiced" src={react} alt="" />
                 ) : (
                   <img className="img-choice" src={react} alt="" />
@@ -386,10 +386,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('NodeJS');
+                  handleTags("NodeJS");
                 }}
               >
-                {selectedTag.includes('NodeJS') ? (
+                {selectedTag.includes("NodeJS") ? (
                   <img className="img-choiced" src={node_js} alt="" />
                 ) : (
                   <img className="img-choice" src={node_js} alt="" />
@@ -398,10 +398,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('Python');
+                  handleTags("Python");
                 }}
               >
-                {selectedTag.includes('Python') ? (
+                {selectedTag.includes("Python") ? (
                   <img className="img-choiced" src={python} alt="" />
                 ) : (
                   <img className="img-choice" src={python} alt="" />
@@ -410,10 +410,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('Go');
+                  handleTags("Go");
                 }}
               >
-                {selectedTag.includes('Go') ? (
+                {selectedTag.includes("Go") ? (
                   <img className="img-choiced" src={go} alt="" />
                 ) : (
                   <img className="img-choice" src={go} alt="" />
@@ -422,10 +422,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('Swift');
+                  handleTags("Swift");
                 }}
               >
-                {selectedTag.includes('Swift') ? (
+                {selectedTag.includes("Swift") ? (
                   <img className="img-choiced" src={swift} alt="" />
                 ) : (
                   <img className="img-choice" src={swift} alt="" />
@@ -434,10 +434,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('Angular');
+                  handleTags("Angular");
                 }}
               >
-                {selectedTag.includes('Angular') ? (
+                {selectedTag.includes("Angular") ? (
                   <img className="img-choiced" src={angular} alt="" />
                 ) : (
                   <img className="img-choice" src={angular} alt="" />
@@ -446,10 +446,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('Java');
+                  handleTags("Java");
                 }}
               >
-                {selectedTag.includes('Java') ? (
+                {selectedTag.includes("Java") ? (
                   <img className="img-choiced" src={java} alt="" />
                 ) : (
                   <img className="img-choice" src={java} alt="" />
@@ -458,10 +458,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('Flutter');
+                  handleTags("Flutter");
                 }}
               >
-                {selectedTag.includes('Flutter') ? (
+                {selectedTag.includes("Flutter") ? (
                   <img className="img-choiced" src={flutter} alt="" />
                 ) : (
                   <img className="img-choice" src={flutter} alt="" />
@@ -470,10 +470,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('Docker');
+                  handleTags("Docker");
                 }}
               >
-                {selectedTag.includes('Docker') ? (
+                {selectedTag.includes("Docker") ? (
                   <img className="img-choiced" src={docker} alt="" />
                 ) : (
                   <img className="img-choice" src={docker} alt="" />
@@ -482,10 +482,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('Ruby');
+                  handleTags("Ruby");
                 }}
               >
-                {selectedTag.includes('Ruby') ? (
+                {selectedTag.includes("Ruby") ? (
                   <img className="img-choiced" src={ruby} alt="" />
                 ) : (
                   <img className="img-choice" src={ruby} alt="" />
@@ -494,10 +494,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('HTML');
+                  handleTags("HTML");
                 }}
               >
-                {selectedTag.includes('HTML') ? (
+                {selectedTag.includes("HTML") ? (
                   <img className="img-choiced" src={html} alt="" />
                 ) : (
                   <img className="img-choice" src={html} alt="" />
@@ -506,10 +506,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('CSS');
+                  handleTags("CSS");
                 }}
               >
-                {selectedTag.includes('CSS') ? (
+                {selectedTag.includes("CSS") ? (
                   <img className="img-choiced" src={css} alt="" />
                 ) : (
                   <img className="img-choice" src={css} alt="" />
@@ -518,10 +518,10 @@ const Studies = () => {
               <button
                 className="btn-choice"
                 onClick={() => {
-                  handleTags('MySQL');
+                  handleTags("MySQL");
                 }}
               >
-                {selectedTag.includes('MySQL') ? (
+                {selectedTag.includes("MySQL") ? (
                   <img className="img-choiced" src={mysql} alt="" />
                 ) : (
                   <img className="img-choice" src={mysql} alt="" />
@@ -546,7 +546,7 @@ const Studies = () => {
                   <div className="post-studies">
                     <div className="post-header">
                       <div className="post-status">
-                        {post.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
+                        {post.studyStatus === "ACTIVE" ? "모집중" : "모집완료"}
                       </div>
                       <div className="post-title">
                         <Link to={`/studiesDetail/${post.id}`}>
@@ -593,18 +593,18 @@ const Studies = () => {
                           ? post.postMonth == month && post.postDay == date
                             ? post.postHour == hours
                               ? post.postMinute == minutes
-                                ? seconds - post.postSecond + '초 전'
+                                ? seconds - post.postSecond + "초 전"
                                 : minutes - post.postMinute == 1 &&
                                   seconds < post.postSecond
-                                  ? 60 - post.postSecond + seconds + '초 전'
-                                  : minutes - post.postMinute + '분 전'
-                              : hours - post.postHour + '시간 전'
-                            : post.postMonth + '.' + post.postDay
+                                ? 60 - post.postSecond + seconds + "초 전"
+                                : minutes - post.postMinute + "분 전"
+                              : hours - post.postHour + "시간 전"
+                            : post.postMonth + "." + post.postDay
                           : post.postYear.slice(2, 4) +
-                          '.' +
-                          post.postMonth +
-                          '.' +
-                          post.postDay}
+                            "." +
+                            post.postMonth +
+                            "." +
+                            post.postDay}
                       </div>
                     </div>
                     <div className="studies-line2"></div>
@@ -612,15 +612,15 @@ const Studies = () => {
                 </li>
               ))}
               <ReactPaginate
-                previousLabel={'<'}
-                nextLabel={'>'}
+                previousLabel={"<"}
+                nextLabel={">"}
                 pageCount={Math.ceil(postSize / postsPerPage)} // 페이지 버튼 개수 출력하는 부분 -> 글 전체 개수 넘겨받아서 사용해야함
                 onPageChange={changePage}
-                containerClassName={'btn-pagination'}
-                previousLinkClassName={'btn-pagination-previous'}
-                nextLinkClassName={'btn-pagination-next'}
-                disabledClassName={'btn-pagination-disabled'}
-                activeClassName={'btn-pagination-active'}
+                containerClassName={"btn-pagination"}
+                previousLinkClassName={"btn-pagination-previous"}
+                nextLinkClassName={"btn-pagination-next"}
+                disabledClassName={"btn-pagination-disabled"}
+                activeClassName={"btn-pagination-active"}
               />
             </div>
           </div>

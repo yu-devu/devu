@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useLocation, Link, useNavigate } from 'react-router-dom';
-import './questionsView.css';
-import Submenu from '../Submenu';
-import ab from '../../../img/a.png';
-import share from '../../../img/share.png';
-import warning from '../../../img/warning.png';
-import hit from '../../../img/hit.png';
-import like from '../../../img/like.png';
-import like_color from '../../../img/like_color.png';
-import imgComment from '../../../img/comment.png';
-import more from '../../../img/more.png';
-import FooterGray from '../../Home/FooterGray';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useLocation, Link, useNavigate } from "react-router-dom";
+import "./questionsView.css";
+import Submenu from "../Submenu";
+import ab from "../../../img/a.png";
+import share from "../../../img/share.png";
+import warning from "../../../img/warning.png";
+import hit from "../../../img/hit.png";
+import like from "../../../img/like.png";
+import like_color from "../../../img/like_color.png";
+import imgComment from "../../../img/comment.png";
+import more from "../../../img/more.png";
+import FooterGray from "../../Home/FooterGray";
 
 const QuestionsView = () => {
   let now = new Date();
@@ -26,9 +26,9 @@ const QuestionsView = () => {
   const location = useLocation();
   const [postData, setPostData] = useState([]);
   const [isLike, setLike] = useState(0);
-  const username = localStorage.getItem('username');
-  const [comment, setComment] = useState('');
-  const [modifycomment, setModifyComment] = useState('');
+  const username = localStorage.getItem("username");
+  const [comment, setComment] = useState("");
+  const [modifycomment, setModifyComment] = useState("");
   const [likePosts, setLikePosts] = useState([]);
 
   const [showDropdownContent, setShowDropdownContent] = useState(0);
@@ -41,7 +41,7 @@ const QuestionsView = () => {
   };
 
   let pathname = location.pathname;
-  let [a, b, postId] = pathname.split('/');
+  let [a, b, postId] = pathname.split("/");
   var comment_num;
   // useLocation으로 pathname을 추출한 후, '/'를 기준으로 parameter를 분리함
 
@@ -99,11 +99,11 @@ const QuestionsView = () => {
     await axios
       .post(process.env.REACT_APP_DB_HOST + `/api/like`, JSON.stringify(data), {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       })
       .then((res) => {
-        console.log('res.data', res.data.liked);
+        console.log("res.data", res.data.liked);
         if (res.data.liked) setLike(like + 1);
         else setLike(like - 1);
       })
@@ -127,21 +127,21 @@ const QuestionsView = () => {
   };
 
   const handlePostDelete = async () => {
-    if (window.confirm('정말 삭제하시겠습니까?')) {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
       await axios
         .delete(process.env.REACT_APP_DB_HOST + `/community/question/${postId}`)
         .then(() => navigate(-1))
         .catch((e) => console.log(e));
-    } else alert('취소하였습니다!');
+    } else alert("취소하였습니다!");
   };
 
   const handleCommentDelete = async (id) => {
-    if (window.confirm('정말 삭제하시겠습니까?')) {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
       await axios
         .delete(process.env.REACT_APP_DB_HOST + `/api/comments/${id}`)
         .then(() => navigate(0))
         .catch((e) => console.log(e));
-    } else alert('취소하였습니다!');
+    } else alert("취소하였습니다!");
   };
 
   const handleStatus = async () => {
@@ -155,7 +155,7 @@ const QuestionsView = () => {
         JSON.stringify(data),
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         }
       )
@@ -164,7 +164,7 @@ const QuestionsView = () => {
   };
 
   const handleCommentModify = async (id) => {
-    if (modifycomment !== '') {
+    if (modifycomment !== "") {
       const data = {
         contents: modifycomment,
       };
@@ -175,8 +175,8 @@ const QuestionsView = () => {
           JSON.stringify(data),
           {
             headers: {
-              'Content-Type': 'application/json',
-              Authorization: `${localStorage.getItem('accessToken')}`,
+              "Content-Type": "application/json",
+              Authorization: `${localStorage.getItem("accessToken")}`,
               // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
             },
           }
@@ -190,7 +190,7 @@ const QuestionsView = () => {
   };
 
   const handleComment = async () => {
-    if (comment !== '') {
+    if (comment !== "") {
       const data = {
         username: username,
         postId: postId,
@@ -205,13 +205,13 @@ const QuestionsView = () => {
           JSON.stringify(data),
           {
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
           }
         )
         .then(() => navigate(0))
         .catch((e) => console.log(e));
-    } else alert('댓글을 작성해주세요!');
+    } else alert("댓글을 작성해주세요!");
   };
 
   return (
@@ -234,7 +234,7 @@ const QuestionsView = () => {
                 </div>
                 <div className="questions-top">
                   <div className="questions-status">
-                    {postData.questionStatus === 'SOLVED' ? '해결' : '미해결'}
+                    {postData.questionStatus === "SOLVED" ? "해결" : "미해결"}
                   </div>
                   <div className="questions-title">{postData.title}</div>
                 </div>
@@ -246,11 +246,11 @@ const QuestionsView = () => {
                     className="questions-sidebar-status"
                     onClick={() => handleStatus()}
                   >
-                    {postData.questionStatus === 'SOLVED' ? '해결' : '미해결'}
+                    {postData.questionStatus === "SOLVED" ? "해결" : "미해결"}
                   </button>
                 ) : (
                   <div className="questions-sidebar-status">
-                    {postData.questionStatus === 'SOLVED' ? '해결' : '미해결'}
+                    {postData.questionStatus === "SOLVED" ? "해결" : "미해결"}
                   </div>
                 )}
                 <div className="questions-sidebar-item">
@@ -443,7 +443,7 @@ const QuestionsView = () => {
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
                                         comment.createAt.slice(17, 19) +
-                                        '초 전'
+                                        "초 전"
                                       : minutes -
                                           comment.createAt.slice(14, 16) ==
                                           1 &&
@@ -451,20 +451,20 @@ const QuestionsView = () => {
                                       ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
-                                        '초 전'
+                                        "초 전"
                                       : minutes -
                                         comment.createAt.slice(14, 16) +
-                                        '분 전'
+                                        "분 전"
                                     : hours -
                                       comment.createAt.slice(11, 13) +
-                                      '시간 전'
+                                      "시간 전"
                                   : comment.createAt.slice(5, 7) +
-                                    '.' +
+                                    "." +
                                     comment.createAt.slice(8, 10)
                                 : comment.createAt.slice(0, 4) +
-                                  '.' +
+                                  "." +
                                   comment.createAt.slice(5, 7) +
-                                  '.' +
+                                  "." +
                                   comment.createAt.slice(8, 10)}
                             </div>
                           </div>
@@ -477,7 +477,7 @@ const QuestionsView = () => {
             </div>
           </div>
         ) : (
-          '해당 게시글을 찾을 수 없습니다.'
+          "해당 게시글을 찾을 수 없습니다."
         )}
       </div>
     </div>
