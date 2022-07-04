@@ -46,16 +46,15 @@ const QuestionsView = () => {
   // useLocation으로 pathname을 추출한 후, '/'를 기준으로 parameter를 분리함
 
   useEffect(() => {
+    fetchLikeData();
+    handleGetLike();
+  }, [isLike]);
+
+  useEffect(() => {
     fetchData();
     window.scrollTo(0, 0);
     fetchLikeData();
   }, []);
-
-  useEffect(() => {
-    console.log('useEffect');
-    fetchLikeData();
-    handleGetLike();
-  }, [isLike]);
 
   const fetchData = async () => {
     await axios
@@ -184,7 +183,10 @@ const QuestionsView = () => {
         )
         .then(() => navigate(0))
         .catch((e) => console.log(e));
-    } else alert('댓글을 작성해주세요!');
+    } else {
+      console.log(postData);
+      // alert('댓글을 작성해주세요!');
+    }
   };
 
   const handleComment = async () => {
