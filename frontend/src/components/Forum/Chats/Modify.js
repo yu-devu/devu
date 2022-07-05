@@ -1,19 +1,19 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import './modify.css';
+import axios from "axios";
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import "./modify.css";
 
 const Modify = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [postContent, setPostContent] = useState({
-    title: '',
-    content: '',
+    title: "",
+    content: "",
   });
   let pathname = location.pathname;
-  let [a, b, postId, c] = pathname.split('/');
+  let [a, b, postId, c] = pathname.split("/");
 
   const handleTitle = (e) => {
     const { name, value } = e.target;
@@ -23,8 +23,8 @@ const Modify = () => {
     });
   };
   const handleModify = async () => {
-    if (postContent === '') {
-      alert('글을 작성해주세요!');
+    if (postContent === "") {
+      alert("글을 작성해주세요!");
       return;
     }
     const data = {
@@ -37,16 +37,16 @@ const Modify = () => {
         JSON.stringify(data),
         {
           headers: {
-            'Content-Type': 'application/json',
-            Authorization: `${localStorage.getItem('accessToken')}`,
+            "Content-Type": "application/json",
+            Authorization: `${localStorage.getItem("accessToken")}`,
           },
         }
       )
       .then(() => {
-        alert('글이 성공적으로 수정되었습니다!');
+        alert("글이 성공적으로 수정되었습니다!");
         navigate(-1);
       })
-      .catch(() => alert('글 수정 실패..'));
+      .catch(() => alert("글 수정 실패.."));
   };
 
   return (

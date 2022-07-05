@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import ReactPaginate from 'react-paginate';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import './chats.css';
-import Submenu from '../Submenu';
-import magnify from '../../../img/magnify.png';
-import Footer from '../../Home/Footer';
-import comment from '../../../img/comment.png';
-import hit from '../../../img/hit.png';
-import like from '../../../img/like.png';
-import like_color from '../../../img/like_color.png';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import ReactPaginate from "react-paginate";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import "./chats.css";
+import Submenu from "../Submenu";
+import magnify from "../../../img/magnify.png";
+import Footer from "../../Home/Footer";
+import comment from "../../../img/comment.png";
+import hit from "../../../img/hit.png";
+import like from "../../../img/like.png";
+import like_color from "../../../img/like_color.png";
+import { Link } from "react-router-dom";
 
 const Chats = () => {
   let now = new Date();
@@ -28,14 +28,14 @@ const Chats = () => {
   const [isLike, setLike] = useState(1);
   const [lastIdx, setLastIdx] = useState(0);
   const [selectedTag, setSelectedTag] = useState([]);
-  const [sentence, setSentence] = useState('');
-  const [status, setStatus] = useState('');
-  const [order, setOrder] = useState('');
+  const [sentence, setSentence] = useState("");
+  const [status, setStatus] = useState("");
+  const [order, setOrder] = useState("");
   const [likePosts, setLikePosts] = useState([]);
   const onChangeSentence = (e) => {
     setSentence(e.target.value);
   };
-  const username = localStorage.getItem('username');
+  const username = localStorage.getItem("username");
 
   useEffect(() => {
     fetchData();
@@ -50,7 +50,7 @@ const Chats = () => {
       .get(process.env.REACT_APP_DB_HOST + `/community/chats`, {
         params: {
           page: currentPage,
-          tags: selectedTag.join(','), // join(",")으로 해야 ?tags=REACT,SPRING으로 parameter 전송할 수 있음.
+          tags: selectedTag.join(","), // join(",")으로 해야 ?tags=REACT,SPRING으로 parameter 전송할 수 있음.
           s: sentence,
           status: status,
           order: order,
@@ -102,7 +102,7 @@ const Chats = () => {
     await axios
       .post(process.env.REACT_APP_DB_HOST + `/api/like`, JSON.stringify(data), {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       })
       .then((res) => {
@@ -113,7 +113,7 @@ const Chats = () => {
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       fetchData();
     }
   };
@@ -209,17 +209,17 @@ const Chats = () => {
                         ? post.postMonth == month && post.postDay == date
                           ? post.postHour == hours
                             ? post.postMinute == minutes
-                              ? seconds - post.postSecond + '초 전'
+                              ? seconds - post.postSecond + "초 전"
                               : minutes - post.postMinute == 1 &&
                                 seconds < post.postSecond
-                              ? 60 - post.postSecond + seconds + '초 전'
-                              : minutes - post.postMinute + '분 전'
-                            : hours - post.postHour + '시간 전'
-                          : post.postMonth + '.' + post.postDay
+                              ? 60 - post.postSecond + seconds + "초 전"
+                              : minutes - post.postMinute + "분 전"
+                            : hours - post.postHour + "시간 전"
+                          : post.postMonth + "." + post.postDay
                         : post.postYear.slice(2, 4) +
-                          '.' +
+                          "." +
                           post.postMonth +
-                          '.' +
+                          "." +
                           post.postDay}
                     </div>
                   </div>
@@ -228,15 +228,15 @@ const Chats = () => {
               </li>
             ))}
             <ReactPaginate
-              previousLabel={'<'}
-              nextLabel={'>'}
+              previousLabel={"<"}
+              nextLabel={">"}
               pageCount={Math.ceil(postSize / postsPerPage)} // 페이지 버튼 개수 출력하는 부분 -> 글 전체 개수 넘겨받아서 사용해야함
               onPageChange={changePage}
-              containerClassName={'btn-pagination'}
-              previousLinkClassName={'btn-pagination-previous'}
-              nextLinkClassName={'btn-pagination-next'}
-              disabledClassName={'btn-pagination-disabled'}
-              activeClassName={'btn-pagination-active'}
+              containerClassName={"btn-pagination"}
+              previousLinkClassName={"btn-pagination-previous"}
+              nextLinkClassName={"btn-pagination-next"}
+              disabledClassName={"btn-pagination-disabled"}
+              activeClassName={"btn-pagination-active"}
             />
           </div>
         </div>

@@ -1,12 +1,12 @@
 .btn-login-nav {
-    border: none;
-    background: transparent;
-    padding: 6px 16px;
-    font-size: 15px;
-    color: var(--color-gray);
-    cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 6px 16px;
+  font-size: 15px;
+  color: var(--color-gray);
+  cursor: pointer;
 }
-  
+
 .btn-login-nav:hover {
   color: var(--color-primary);
 }

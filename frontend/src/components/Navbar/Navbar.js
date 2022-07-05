@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './navbar.css';
-import { navItems } from './NavItems';
-import Dropdown from './Dropdown';
-import LoginButton from './LoginButton';
-import RegisterButton from './RegisterButton';
-import LogoutButton from './LogoutButton';
-import MyPageButton from './MyPageButton';
-import Service from './Service';
-import MainLogo from "../../img/logo_main.png"
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "./navbar.css";
+import { navItems } from "./NavItems";
+import Dropdown from "./Dropdown";
+import LoginButton from "./LoginButton";
+import RegisterButton from "./RegisterButton";
+import LogoutButton from "./LogoutButton";
+import MyPageButton from "./MyPageButton";
+import Service from "./Service";
+import MainLogo from "../../img/logo_main.png";
 
 function Navbar() {
   const [dropdown, setDropdown] = useState(false);
   const [changing, setChanging] = useState(false);
   const [scrolling, setScrolling] = useState(false);
-  const isToken = localStorage.getItem('accessToken');
-  const username = localStorage.getItem('username');
+  const isToken = localStorage.getItem("accessToken");
+  const username = localStorage.getItem("username");
 
   const onMouseOverOut = () => {
     if (scrolling) return;
@@ -23,15 +23,15 @@ function Navbar() {
   };
 
   return (
-    <div className='nav'>
+    <div className="nav">
       <nav
         className="navbar"
         onMouseOver={onMouseOverOut}
         onMouseOut={onMouseOverOut}
         style={
           changing
-            ? { backgroundColor: '#white' }
-            : { backgroundColor: '#white' }
+            ? { backgroundColor: "#white" }
+            : { backgroundColor: "#white" }
         }
       >
         {isToken && username ? (
@@ -46,7 +46,7 @@ function Navbar() {
 
         <ul className="nav-items">
           {navItems.map((item) => {
-            if (item.title === '커뮤니티') {
+            if (item.title === "커뮤니티") {
               return (
                 <li
                   key={item.id}
@@ -67,11 +67,11 @@ function Navbar() {
           })}
         </ul>
         {isToken && username ? (
-          <div className='nav-right'>
+          <div className="nav-right">
             <MyPageButton /> <LogoutButton /> <Service />
           </div>
         ) : (
-          <div className='nav-right'>
+          <div className="nav-right">
             <LoginButton /> <RegisterButton /> <Service />
           </div>
         )}
