@@ -15,11 +15,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 class TokenServiceTest {
@@ -96,5 +97,20 @@ class TokenServiceTest {
 
         assertEquals(email, test);
     }
+
+    @Test
+    @DisplayName("헤더에서 액세스 토큰 얻기")
+    void resolveAccessToken() {
+        String test = "test@gmail.com";
+        String jwt = tokenService.createAccessToken(test);
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        given(request.getHeader("X-AUTH-ACCESS-TOKEN")).willReturn(jwt);
+
+        String resolveToken = tokenService.resolveToken(request, "ACCESS");
+
+        assertEquals(resolveToken, jwt);
+    }
+
+
 
 }
