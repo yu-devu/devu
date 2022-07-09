@@ -86,5 +86,15 @@ class TokenServiceTest {
         assertEquals(((UserDetails)authentication.getPrincipal()).getUsername(), test);
     }
 
+    @Test
+    @DisplayName("토큰으로 부터 유저 이메일 얻기")
+    void getUserEmail() {
+        String test = "test@gmail.com";
+        String jwt = tokenService.createAccessToken(test);
+
+        String email = tokenService.getUserEmail(jwt);
+
+        assertEquals(email, test);
+    }
 
 }
