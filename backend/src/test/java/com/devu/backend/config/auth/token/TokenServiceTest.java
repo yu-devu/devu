@@ -134,4 +134,30 @@ class TokenServiceTest {
         });
     }
 
+    @Test
+    @DisplayName("토큰 자체가 유효한지 - 유효")
+    void validateTokenExceptExpiration_valid() {
+        String test = "test@gmail.com";
+        User user = User.builder()
+                .email(test)
+                .build();
+        String jwt = tokenService.createAccessToken(test);
+        UserDetailsImpl userDetails = new UserDetailsImpl(user);
+
+        assertTrue(tokenService.validateTokenExceptExpiration(jwt, userDetails));
+    }
+
+    @Test
+    @DisplayName("토큰 자체가 유효한지 - 무효")
+    void validateTokenExceptExpiration_invalid() {
+        String test = "test@gmail.com";
+        String test1 = "test1@gmail.com";
+        User user = User.builder()
+                .email(test1)
+                .build();
+        String jwt = tokenService.createAccessToken(test);
+        UserDetailsImpl userDetails = new UserDetailsImpl(user);
+
+        assertFalse(tokenService.validateTokenExceptExpiration(jwt, userDetails));
+    }
 }
