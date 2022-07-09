@@ -5,6 +5,7 @@ import com.devu.backend.config.auth.UserDetailsServiceImpl;
 import com.devu.backend.entity.User;
 import com.devu.backend.repository.UserRepository;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -111,6 +112,26 @@ class TokenServiceTest {
         assertEquals(resolveToken, jwt);
     }
 
+    @Test
+    @DisplayName("토큰 시간이 유효한지 확인 - 유효")
+    void isTokenExpired_valid() {
+        String test = "test@gmail.com";
 
+        String jwt = tokenService.createAccessToken(test);
+        Boolean tokenExpired = tokenService.isTokenExpired(jwt);
+
+        assertEquals(tokenExpired, true);
+    }
+
+    @Test
+    @DisplayName("토큰이 시간이 유효한지 확인 - 무효")
+    void isTokenExpired_invalid() {
+        String test = "test@gmail.com";
+        String jwt = tokenService.createToken(test, 0);
+
+        assertThrows(ExpiredJwtException.class, () -> {
+            tokenService.isTokenExpired(jwt);
+        });
+    }
 
 }
