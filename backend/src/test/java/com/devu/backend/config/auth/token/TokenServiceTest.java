@@ -1,16 +1,25 @@
 package com.devu.backend.config.auth.token;
 
+import com.devu.backend.config.auth.UserDetailsImpl;
+import com.devu.backend.config.auth.UserDetailsServiceImpl;
+import com.devu.backend.entity.User;
+import com.devu.backend.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+
 
 @ExtendWith(MockitoExtension.class)
 class TokenServiceTest {
@@ -21,6 +30,12 @@ class TokenServiceTest {
 
     @InjectMocks
     private TokenService tokenService;
+
+    @Mock
+    private UserDetailsServiceImpl userDetailsService;
+
+    @Mock
+    private UserRepository userRepository;
 
     @Test
     @DisplayName("액세스 토큰 생성")
@@ -54,4 +69,22 @@ class TokenServiceTest {
         assertEquals(subject, test);
         assertEquals(expiration.getTime() - refreshTokenValidTime, issuedAt.getTime());
     }
+
+    @Test
+    @DisplayName("인증 얻기")
+    void getAuthentication() {
+        String test = "test@gmail.com";
+        User user = User.builder()
+                .email(test)
+                .build();
+        UserDetails userDetails = new UserDetailsImpl(user);
+        String jwt = tokenService.createAccessToken(test);
+        given(userDetailsService.loadUserByUsername(test)).willReturn(userDetails);
+
+        Authentication authentication = tokenService.getAuthentication(jwt);
+
+        assertEquals(((UserDetails)authentication.getPrincipal()).getUsername(), test);
+    }
+
+
 }
