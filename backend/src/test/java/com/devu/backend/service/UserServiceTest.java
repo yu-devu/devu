@@ -67,7 +67,7 @@ class UserServiceTest {
         given(userRepository.findById(user.getId())).willReturn(Optional.of(user));
 
         //when
-        User save = userService.createUser(user.getEmail());
+        User save = userService.createUserBeforeEmailValidation(user.getEmail());
 
         //then
         User findUser = userRepository.findById(user.getId()).get();

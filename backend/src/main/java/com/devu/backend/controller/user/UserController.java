@@ -46,7 +46,7 @@ public class UserController {
                         .build();
                 return ResponseEntity.ok().body(errorDto);
             }
-            User savedUser = userService.createUser(email);
+            User savedUser = userService.createUserBeforeEmailValidation(email);
             UserDTO userDTO = UserDTO.builder()
                     .email(savedUser.getEmail())
                     .build();
