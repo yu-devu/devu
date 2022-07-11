@@ -108,7 +108,7 @@ class UserServiceTest {
         //Mocking
         given(userRepository.findByEmail(user.getEmail())).willReturn(Optional.of(user));
         //when
-        userService.updateUser(updateDto);
+        userService.createUserAfterEmailValidation(updateDto);
         //then
         User findUser = userRepository.findByEmail(user.getEmail()).get();
         assertEquals(updateDto.getUsername(), findUser.getUsername());
