@@ -4,6 +4,7 @@ import com.devu.backend.config.auth.UserDetailsImpl;
 import com.devu.backend.config.auth.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,9 +19,15 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class TokenService {
 
-    private String secretKey = "Devu";
-    private long accessTokenValidTime = 1000L * 60 * 30; // 30분
-    private long refreshTokenValidTime = 1000L * 60 * 30 * (2 * 24 * 14); // 14일
+    @Value("${jwt.secret}")
+    private String secretKey;
+
+    @Value("${app.auth.accessTokenExpiry}")
+    private long accessTokenValidTime;
+
+    @Value("${app.auth.refreshTokenExpiry}")
+    private long refreshTokenValidTime;
+
     private final UserDetailsServiceImpl userDetailsService;
 
     @PostConstruct

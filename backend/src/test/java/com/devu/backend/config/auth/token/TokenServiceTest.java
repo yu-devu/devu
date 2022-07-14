@@ -158,6 +158,6 @@ class TokenServiceTest {
         String jwt = tokenService.createAccessToken(test);
         UserDetailsImpl userDetails = new UserDetailsImpl(user);
 
-        assertFalse(tokenService.validateTokenExceptExpiration(jwt, userDetails));
+        assertFalse(tokenService.validateToken(jwt, userDetails));
     }
 }
