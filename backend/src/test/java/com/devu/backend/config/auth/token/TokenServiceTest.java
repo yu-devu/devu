@@ -3,7 +3,6 @@ package com.devu.backend.config.auth.token;
 import com.devu.backend.config.auth.UserDetailsImpl;
 import com.devu.backend.config.auth.UserDetailsServiceImpl;
 import com.devu.backend.entity.User;
-import com.devu.backend.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -17,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Base64;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,9 +26,9 @@ import static org.mockito.Mockito.mock;
 @ExtendWith(MockitoExtension.class)
 class TokenServiceTest {
 
-    private String secretKey = "Devu";
-    private long accessTokenValidTime = 1000L * 60 * 30; // 30분
-    private long refreshTokenValidTime = 1000L * 60 * 30 * (2 * 24 * 14); // 14일
+    private final String secretKey = Base64.getEncoder().encodeToString("test".getBytes());
+    private final long accessTokenValidTime = 100000;
+    private final long refreshTokenValidTime = 500000;
 
     @InjectMocks
     private TokenService tokenService;
@@ -36,21 +36,22 @@ class TokenServiceTest {
     @Mock
     private UserDetailsServiceImpl userDetailsService;
 
-    @Mock
-    private UserRepository userRepository;
-
     @Test
     @DisplayName("액세스 토큰 생성")
     void createAccessToken() {
         String test = "test@gmail.com";
 
-        String jwt = tokenService.createAccessToken(test);
+        String jwt = tokenService.createTestToken(secretKey, test, accessTokenValidTime);
         String subject = decodeJwt(jwt).getSubject();
         Date issuedAt = decodeJwt(jwt).getIssuedAt();
         Date expiration = decodeJwt(jwt).getExpiration();
 
         assertEquals(subject, test);
-        assertEquals(expiration.getTime() - accessTokenValidTime, issuedAt.getTime());
+        assertEquals(getStartTime(expiration, accessTokenValidTime), issuedAt.getTime());
+    }
+
+    private long getStartTime(Date expiration, long accessTokenValidTime) {
+        return expiration.getTime() - accessTokenValidTime;
     }
 
     private Claims decodeJwt(String jwt) {
@@ -63,13 +64,13 @@ class TokenServiceTest {
     void createRefreshToken() {
         String test = "test@gmail.com";
 
-        String jwt = tokenService.createRefreshToken(test);
+        String jwt = tokenService.createTestToken(secretKey, test, refreshTokenValidTime);
         String subject = decodeJwt(jwt).getSubject();
         Date issuedAt = decodeJwt(jwt).getIssuedAt();
         Date expiration = decodeJwt(jwt).getExpiration();
 
         assertEquals(subject, test);
-        assertEquals(expiration.getTime() - refreshTokenValidTime, issuedAt.getTime());
+        assertEquals(getStartTime(expiration, refreshTokenValidTime), issuedAt.getTime());
     }
 
     @Test
@@ -80,10 +81,10 @@ class TokenServiceTest {
                 .email(test)
                 .build();
         UserDetails userDetails = new UserDetailsImpl(user);
-        String jwt = tokenService.createAccessToken(test);
+        String jwt = tokenService.createTestToken(secretKey, test, accessTokenValidTime);
         given(userDetailsService.loadUserByUsername(test)).willReturn(userDetails);
 
-        Authentication authentication = tokenService.getAuthentication(jwt);
+        Authentication authentication = tokenService.getTestAuthentication(jwt, secretKey);
 
         assertEquals(((UserDetails)authentication.getPrincipal()).getUsername(), test);
     }
@@ -92,9 +93,9 @@ class TokenServiceTest {
     @DisplayName("토큰으로 부터 유저 이메일 얻기")
     void getUserEmail() {
         String test = "test@gmail.com";
-        String jwt = tokenService.createAccessToken(test);
+        String jwt = tokenService.createTestToken(secretKey, test, accessTokenValidTime);
 
-        String email = tokenService.getUserEmail(jwt);
+        String email = tokenService.getTestUserEmail(jwt, secretKey);
 
         assertEquals(email, test);
     }
@@ -103,7 +104,7 @@ class TokenServiceTest {
     @DisplayName("헤더에서 액세스 토큰 얻기")
     void resolveAccessToken() {
         String test = "test@gmail.com";
-        String jwt = tokenService.createAccessToken(test);
+        String jwt = tokenService.createTestToken(secretKey, test, accessTokenValidTime);
         HttpServletRequest request = mock(HttpServletRequest.class);
         given(request.getHeader("X-AUTH-ACCESS-TOKEN")).willReturn(jwt);
 
@@ -117,8 +118,8 @@ class TokenServiceTest {
     void isTokenExpired_valid() {
         String test = "test@gmail.com";
 
-        String jwt = tokenService.createAccessToken(test);
-        Boolean tokenExpired = tokenService.isTokenExpired(jwt);
+        String jwt = tokenService.createTestToken(secretKey, test, accessTokenValidTime);
+        Boolean tokenExpired = tokenService.isTestTokenExpired(jwt, secretKey);
 
         assertEquals(tokenExpired, true);
     }
@@ -127,35 +128,35 @@ class TokenServiceTest {
     @DisplayName("토큰이 시간이 유효한지 확인 - 무효")
     void isTokenExpired_invalid() {
         String test = "test@gmail.com";
-        String jwt = tokenService.createToken(test, 0);
+        String jwt = tokenService.createTestToken(secretKey, test, 0);
 
         assertThrows(ExpiredJwtException.class, () -> {
-            tokenService.isTokenExpired(jwt);
+            tokenService.isTestTokenExpired(jwt, secretKey);
         });
     }
 
     @Test
     @DisplayName("토큰 자체가 유효한지 - 유효")
-    void validateTokenExceptExpiration_valid() {
+    void validateToken_valid() {
         String test = "test@gmail.com";
         User user = User.builder()
                 .email(test)
                 .build();
-        String jwt = tokenService.createAccessToken(test);
+        String jwt = tokenService.createTestToken(secretKey, test, accessTokenValidTime);
         UserDetailsImpl userDetails = new UserDetailsImpl(user);
 
-        assertTrue(tokenService.validateTokenExceptExpiration(jwt, userDetails));
+        assertTrue(tokenService.validateTestToken(jwt, userDetails, secretKey));
     }
 
     @Test
     @DisplayName("토큰 자체가 유효한지 - 무효")
-    void validateTokenExceptExpiration_invalid() {
+    void validateToken_invalid() {
         String test = "test@gmail.com";
         String test1 = "test1@gmail.com";
         User user = User.builder()
                 .email(test1)
                 .build();
-        String jwt = tokenService.createAccessToken(test);
+        String jwt = tokenService.createTestToken(secretKey, test, accessTokenValidTime);
         UserDetailsImpl userDetails = new UserDetailsImpl(user);
 
         assertFalse(tokenService.validateToken(jwt, userDetails));
