@@ -1,5 +1,5 @@
 {
-  "proxy": "http://54.180.29.69:8080",
+  "proxy": "http://15.165.205.119:8081",
   "name": "client",
   "version": "0.1.0",
   "private": true,
