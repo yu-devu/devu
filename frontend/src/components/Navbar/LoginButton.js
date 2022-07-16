@@ -49,7 +49,8 @@ function LoginButton() {
           "accessToken",
           response.headers["x-auth-access-token"]
         );
-        window.location.reload(false);
+        // window.location.reload(false); // 새로고침 필요하지 않아 주석처리.
+        setTimeout(onSilentRefresh, JWT_EXPIRY_TIME - 60000); // setTimeout은 해당 시간 후에 함수 호출
       })
       .catch(
         (e) => alert(JSON.parse(e.request.response).error) // 이메일, 비밀번호 오류 출력
@@ -67,13 +68,10 @@ function LoginButton() {
             res.headers["x-auth-access-token"]
           );
         }
-        setInterval(onSilentRefresh, JWT_EXPIRY_TIME - 60000); // accessToken 만료하기 1분 전에 로그인 연장
-        console.log("Timeout-loginButton.js");
+        setInterval(onSilentRefresh, JWT_EXPIRY_TIME - 60000); // accessToken 만료하기 1분 전에 로그인 연장, setInterval은 해당 주기마다 함수 실행
+        console.log("setInterval-loginButton.js");
       })
-      .catch(
-        (e) => console.log(e)
-        // alert(JSON.parse(res.request.response).error); // 이메일, 비밀번호 오류 출력
-      );
+      .catch((e) => console.log(e));
   };
 
   return (
