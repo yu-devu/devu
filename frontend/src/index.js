@@ -9,8 +9,8 @@ axios.defaults.headers.common["X-AUTH-ACCESS-TOKEN"] =
   localStorage.getItem("accessToken");
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <App />,
+  // </React.StrictMode>,
   document.getElementById("root")
 );

@@ -38,15 +38,18 @@ function App() {
             response.headers["x-auth-access-token"]
           );
         }
-        setInterval(onSilentRefresh, JWT_EXPIRY_TIME - 60000); // accessToken 만료하기 1분 전에 로그인 연장, setInterval은 해당 주기마다 함수 실행
+        setTimeout(onSilentRefresh, JWT_EXPIRY_TIME - 60000); // accessToken 만료하기 1분 전에 로그인 연장
         console.log("setInterval-App.js");
       })
       .catch((res) => console.log(res));
   };
 
-  if (performance.navigation.type === 1) {
-    //새로고침하면 바로 로그인 연장(토큰 갱신)
-    onSilentRefresh();
+  if (localStorage.getItem("username")) {
+    // 로그인 했을 때만 silentRefresh 실행할 수 있도록 함.
+    if (performance.navigation.type === 1) {
+      //새로고침하면 바로 로그인 연장(토큰 갱신)
+      onSilentRefresh();
+    }
   }
 
   return (
