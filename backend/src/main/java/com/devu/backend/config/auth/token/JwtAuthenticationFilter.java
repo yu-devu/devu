@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             if (accessToken != null && !accessToken.equals("undefined") && !accessToken.equals("null")) {
                 UserDetailsImpl userDetailsimpl = (UserDetailsImpl) userDetailsServiceimpl.loadUserByUsername(tokenService.getUserEmail(accessToken));
-                if (tokenService.validateTokenExceptExpiration(accessToken, userDetailsimpl)) {
+                if (tokenService.validateToken(accessToken, userDetailsimpl)) {
                     log.info("유효");
                     getAuthentication(accessToken);
                 } else {
