@@ -365,16 +365,15 @@ public class PostService {
         if (!updateDto.getImages().isEmpty()) {
             updateImage(chat, updateDto);
         }
-        if (!isSameTags(chat.getPostTags(), updateDto.getTags().stream().map(String::toUpperCase).collect(Collectors.toList()))) {
-            updateTags(updateDto, chat);
-        }
         chat.updatePost(updateDto);
     }
 
     @Transactional
     public void updateStudy(Long studyId, PostRequestUpdateDto updateDto) throws IOException {
         Study study = postRepository.findStudyById(studyId).orElseThrow(PostNotFoundException::new);
-        updateImage(study, updateDto);
+        if (!updateDto.getImages().isEmpty()) {
+            updateImage(study, updateDto);
+        }
         if (!isSameTags(study.getPostTags(), updateDto.getTags().stream().map(String::toUpperCase).collect(Collectors.toList()))) {
             updateTags(updateDto, study);
         }
@@ -384,7 +383,9 @@ public class PostService {
     @Transactional
     public void updateQuestion(Long questionId, PostRequestUpdateDto updateDto) throws IOException {
         Question question = postRepository.findQuestionById(questionId).orElseThrow(PostNotFoundException::new);
-        updateImage(question, updateDto);
+        if (!updateDto.getImages().isEmpty()) {
+            updateImage(question, updateDto);
+        }
         if (!isSameTags(question.getPostTags(), updateDto.getTags().stream().map(String::toUpperCase).collect(Collectors.toList()))) {
             updateTags(updateDto, question);
         }
@@ -416,7 +417,8 @@ public class PostService {
 
     @Transactional
     public void deleteChat(Chat chat) {
-        deleteImage(chat);
+        if (!chat.getImages().isEmpty())
+            deleteImage(chat);
         postRepository.delete(chat);
     }
 
@@ -432,13 +434,15 @@ public class PostService {
 
     @Transactional
     public void deleteStudy(Study study) {
-        deleteImage(study);
+        if (!study.getImages().isEmpty())
+            deleteImage(study);
         postRepository.delete(study);
     }
 
     @Transactional
     public void deleteQuestion(Question question) {
-        deleteImage(question);
+        if (!question.getImages().isEmpty())
+            deleteImage(question);
         postRepository.delete(question);
     }
 
