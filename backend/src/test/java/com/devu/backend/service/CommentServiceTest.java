@@ -99,7 +99,7 @@ class CommentServiceTest {
     private CommentCreateRequestDto createCreateRequestDto(User user,Chat chat) {
         return CommentCreateRequestDto.builder()
                 .postId(chat.getId())
-                .userId(user.getId())
+                .username(user.getUsername())
                 .contents("hi hello")
                 .build();
     }
