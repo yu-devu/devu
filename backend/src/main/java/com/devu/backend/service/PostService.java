@@ -66,9 +66,12 @@ public class PostService {
                 .hit(0L)
                 .images(new ArrayList<>())
                 .build();
-        addImage(requestPostDto, chat);
-        log.info("Create Chat {} By {}",chat.getTitle(),chat.getUser().getUsername());
+        Image image = addImage(requestPostDto);
+        chat.addImage(image);
+        imageRepository.save(image);
+        log.info("Save Image Entity {}",image.getPath());
         postRepository.save(chat);
+        log.info("Create Chat {} By {}",chat.getTitle(),chat.getUser().getUsername());
         user.addPost(chat);
         return PostResponseDto.builder()
                 .title(chat.getTitle())
@@ -92,10 +95,13 @@ public class PostService {
                 .images(new ArrayList<>())
                 .tags(postTags)
                 .build();
-        addImage(requestPostDto, study);
+        Image image = addImage(requestPostDto);
+        study.addImage(image);
+        imageRepository.save(image);
+        log.info("Save Image Entity {}",image.getPath());
         setPostOnPostTag(postTags,study);
-        log.info("Create Study {} By {}",study.getTitle(),study.getUser().getUsername());
         postRepository.save(study);
+        log.info("Create Study {} By {}",study.getTitle(),study.getUser().getUsername());
         user.addPost(study);
         return PostResponseDto.builder()
                 .title(study.getTitle())
@@ -120,10 +126,13 @@ public class PostService {
                 .images(new ArrayList<>())
                 .tags(postTags)
                 .build();
-        addImage(requestPostDto, question);
+        Image image = addImage(requestPostDto);
+        question.addImage(image);
+        imageRepository.save(image);
+        log.info("Save Image Entity {}",image.getPath());
         setPostOnPostTag(postTags,question);
-        log.info("Create Question {} By {}",question.getTitle(),question.getUser().getUsername());
         postRepository.save(question);
+        log.info("Create Question {} By {}",question.getTitle(),question.getUser().getUsername());
         user.addPost(question);
         return PostResponseDto.builder()
                 .title(question.getTitle())
@@ -151,13 +160,15 @@ public class PostService {
     }
 
     @Transactional
-    public void addImage(PostRequestCreateDto requestPostDto, Post post) throws IOException {
+    public Image addImage(PostRequestCreateDto requestPostDto) throws IOException {
         if (!CollectionUtils.isEmpty(requestPostDto.getImages())) {
             for (MultipartFile file : requestPostDto.getImages()) {
-                String url = s3Uploader.upload(file, "static", post);
-                log.info("s3 생성 {}", url);
+                Image image = s3Uploader.upload(file, "static");
+                log.info("s3 생성 {}", image.getPath());
+                return image;
             }
         }
+        return null;
     }
 
     private String getTagNameFromPostTags(PostTag postTag) {
@@ -354,7 +365,7 @@ public class PostService {
             log.info("업데이트 삭제");
         }
         for (MultipartFile multipartFile : updateDto.getImages()) {
-            s3Uploader.upload(multipartFile, "static", post);
+            s3Uploader.upload(multipartFile, "static");
             log.info("업데이트 추가");
         }
     }

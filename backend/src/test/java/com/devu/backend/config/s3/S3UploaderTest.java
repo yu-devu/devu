@@ -1,5 +1,6 @@
 package com.devu.backend.config.s3;
 
+import com.devu.backend.entity.Image;
 import com.devu.backend.entity.post.Chat;
 import com.devu.backend.repository.post.PostRepository;
 import io.findify.s3mock.S3Mock;
@@ -51,10 +52,10 @@ class S3UploaderTest {
                 .build();
         postRepository.save(chat);
 
-        String uploadUrl = s3Uploader.upload(file, dirName, chat);
+        Image image = s3Uploader.upload(file, dirName);
 
-        assertThat(uploadUrl).contains(path);
-        assertThat(uploadUrl).contains(dirName);
+        assertThat(image.getPath()).contains(path);
+        assertThat(image.getPath()).contains(dirName);
     }
 
 }
