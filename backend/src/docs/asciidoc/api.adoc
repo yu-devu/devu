@@ -1,0 +1,79 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Rest Docs API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+## Post
+
+=== Chat 수정
+
+==== REQUEST
+
+include::{snippets}/update-chat/httpie-request.adoc[]
+
+include::{snippets}/update-chat/request-parameters.adoc[]
+
+include::{snippets}/update-chat/request-parts.adoc[]
+
+==== RESPONSE
+include::{snippets}/update-chat/http-response.adoc[]
+
+=== Study 수정
+
+==== REQUEST
+
+include::{snippets}/update-study/httpie-request.adoc[]
+
+include::{snippets}/update-study/request-parameters.adoc[]
+
+include::{snippets}/update-study/request-parts.adoc[]
+
+==== RESPONSE
+include::{snippets}/update-study/http-response.adoc[]
+
+=== Question 수정
+
+==== REQUEST
+
+include::{snippets}/update-question/httpie-request.adoc[]
+
+include::{snippets}/update-question/request-parameters.adoc[]
+
+include::{snippets}/update-question/request-parts.adoc[]
+
+==== RESPONSE
+include::{snippets}/update-question/http-response.adoc[]
+
+=== Chat 삭제
+
+==== REQUEST
+
+include::{snippets}/delete-chat/httpie-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/delete-chat/http-response.adoc[]
+
+=== Study 삭제
+
+==== REQUEST
+
+include::{snippets}/delete-study/httpie-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/delete-study/http-response.adoc[]
+
+=== Question 삭제
+
+==== REQUEST
+
+include::{snippets}/delete-question/httpie-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/delete-question/http-response.adoc[]
