@@ -46,7 +46,7 @@ public class UserController {
                         .build();
                 return ResponseEntity.ok().body(errorDto);
             }
-            User savedUser = userService.createUser(email);
+            User savedUser = userService.createUserBeforeEmailValidation(email);
             UserDTO userDTO = UserDTO.builder()
                     .email(savedUser.getEmail())
                     .build();
@@ -81,7 +81,7 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userCreateRequestDto) {
         try {
-            User updatedUser = userService.updateUser(userCreateRequestDto);
+            User updatedUser = userService.createUserAfterEmailValidation(userCreateRequestDto);
             UserDTO userDTO = UserDTO.builder()
                     .email(updatedUser.getEmail())
                     .username(updatedUser.getUsername())

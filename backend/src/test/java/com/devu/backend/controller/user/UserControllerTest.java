@@ -68,7 +68,7 @@ class UserControllerTest {
         String url = "/email";
         String email = "test@yu.ac.kr";
 
-        User user = userService.createUser(email);
+        User user = userService.createUserBeforeEmailValidation(email);
         user.updateEmailConfirm(true);
         ResultActions actions = mockMvc.perform(post(url)
                 .param("email", email));
@@ -87,7 +87,7 @@ class UserControllerTest {
         String url = "/email";
         String email = "test@yu.ac.kr";
 
-        userService.createUser(email);
+        userService.createUserBeforeEmailValidation(email);
         ResultActions actions = mockMvc.perform(post(url)
                 .param("email", email));
 
@@ -141,7 +141,7 @@ class UserControllerTest {
                 .email(email)
                 .emailConfirm(false)
                 .build();
-        User savedUser = userService.createUser(user.getEmail());
+        User savedUser = userService.createUserBeforeEmailValidation(user.getEmail());
         return savedUser;
     }
 

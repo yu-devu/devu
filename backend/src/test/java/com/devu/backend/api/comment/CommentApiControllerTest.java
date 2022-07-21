@@ -75,7 +75,7 @@ class CommentApiControllerTest {
 
     private CommentCreateRequestDto getCommentCreateRequestDto(User user, Long id) {
         return CommentCreateRequestDto.builder()
-                .userId(user.getId())
+                .username(user.getUsername())
                 .postId(id)
                 .contents("테스트 댓글")
                 .build();
@@ -150,7 +150,7 @@ class CommentApiControllerTest {
 
     private CommentCreateRequestDto getCommentCreateRequestDto(User user, Chat chat, Long groupNum, String username) {
         return CommentCreateRequestDto.builder()
-                .userId(user.getId())
+                .username(user.getUsername())
                 .postId(chat.getId())
                 .contents("테스트 대댓글")
                 .group(groupNum)

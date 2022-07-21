@@ -31,29 +31,30 @@ public class S3Uploader {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String upload(MultipartFile multipartFile, String dirName, Post post) throws IOException {
+    public Image upload(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
 
-        return upload(uploadFile, dirName, post);
+        return upload(uploadFile, dirName);
     }
 
     public void delete(String name) {
         amazonS3Client.deleteObject(bucket, name);
     }
 
-    private String upload(File uploadFile, String dirName, Post post) {
+    private Image upload(File uploadFile, String dirName) {
         String fileName = dirName + "/" + UUID.randomUUID() + "_" + uploadFile.getName();
         log.info("New Image File Name : {}",fileName);
         String uploadImageUrl = putS3(uploadFile, fileName);
-        removeNewFile(uploadFile);
+        removeNewFile(uploadFile);//local에 임시로 생기는 파일 삭제
         Image image = Image.builder()
                 .name(fileName)
                 .path(uploadImageUrl)
                 .build();
         log.info("image : {}",image);
-        post.addImage(imageRepository.save(image));
-        return uploadImageUrl;
+        //변경점
+        //post.addImage(imageRepository.save(image));
+        return image;
     }
 
     private String putS3(File uploadFile, String fileName) {
