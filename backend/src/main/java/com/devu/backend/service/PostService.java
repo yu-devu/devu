@@ -66,10 +66,7 @@ public class PostService {
                 .hit(0L)
                 .images(new ArrayList<>())
                 .build();
-        Image image = addImage(requestPostDto);
-        chat.addImage(image);
-        imageRepository.save(image);
-        log.info("Save Image Entity {}",image.getPath());
+        createPostImages(requestPostDto,chat);
         postRepository.save(chat);
         log.info("Create Chat {} By {}",chat.getTitle(),chat.getUser().getUsername());
         user.addPost(chat);
@@ -95,10 +92,7 @@ public class PostService {
                 .images(new ArrayList<>())
                 .tags(postTags)
                 .build();
-        Image image = addImage(requestPostDto);
-        study.addImage(image);
-        imageRepository.save(image);
-        log.info("Save Image Entity {}",image.getPath());
+        createPostImages(requestPostDto,study);
         setPostOnPostTag(postTags,study);
         postRepository.save(study);
         log.info("Create Study {} By {}",study.getTitle(),study.getUser().getUsername());
@@ -126,10 +120,7 @@ public class PostService {
                 .images(new ArrayList<>())
                 .tags(postTags)
                 .build();
-        Image image = addImage(requestPostDto);
-        question.addImage(image);
-        imageRepository.save(image);
-        log.info("Save Image Entity {}",image.getPath());
+        createPostImages(requestPostDto,question);
         setPostOnPostTag(postTags,question);
         postRepository.save(question);
         log.info("Create Question {} By {}",question.getTitle(),question.getUser().getUsername());
@@ -160,15 +151,16 @@ public class PostService {
     }
 
     @Transactional
-    public Image addImage(PostRequestCreateDto requestPostDto) throws IOException {
+    public void createPostImages(PostRequestCreateDto requestPostDto,Post post) throws IOException {
         if (!CollectionUtils.isEmpty(requestPostDto.getImages())) {
             for (MultipartFile file : requestPostDto.getImages()) {
                 Image image = s3Uploader.upload(file, "static");
-                log.info("s3 생성 {}", image.getPath());
-                return image;
+                log.info("Created AWS S3 {}", image.getPath());
+                imageRepository.save(image);
+                log.info("Save Image Entity {}",image.getPath());
+                post.addImage(image);
             }
         }
-        return null;
     }
 
     private String getTagNameFromPostTags(PostTag postTag) {
