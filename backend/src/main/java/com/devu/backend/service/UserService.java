@@ -37,7 +37,7 @@ public class UserService {
     private final EmailService emailService;
 
     @Transactional
-    public User createUser(final String email) throws Exception {
+    public User createUserBeforeEmailValidation(final String email) throws Exception {
         String authKey = emailService.createKey();
         log.info("Email authKey = {}", authKey);
         emailService.sendValidationMail(email, authKey);
@@ -85,7 +85,7 @@ public class UserService {
     // 회원가입 마지막 절차 username,password 정보 기입
     // Dirty Checking으로 변경
     @Transactional
-    public User updateUser(final UserDTO userDto) {
+    public User createUserAfterEmailValidation(final UserDTO userDto) {
         User user = getByEmail(userDto.getEmail());
         if (!user.isEmailConfirm()) {
             throw new EmailConfirmNotCompleteException();
