@@ -1,0 +1,22 @@
+package com.devu.backend.controller.admin;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserDTO {
+    private Long userId;
+    private String username;
+    private String email;
+    private boolean emailValidation;
+
+    private int chatSize;
+    private int studiesSize;
+    private int questionsSize;
+
+}
