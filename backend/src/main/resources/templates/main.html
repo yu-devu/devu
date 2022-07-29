@@ -10,12 +10,20 @@
         <th>UserID</th>
         <th>username</th>
         <th>Email</th>
+        <th>Email Confirm 여부</th>
+        <th>현재 Study 갯수</th>
+        <th>현재 Question 갯수</th>
+        <th>현재 Chat 갯수</th>
         <th></th>
     </tr>
     <tr th:each="user : ${users}">
-        <td th:text="${user.id}">username</td>
+        <td th:text="${user.userId}">username</td>
         <td th:text="${user.username}">username</td>
-        <td th:text="${user.email}">0</td>
+        <td th:text="${user.email}">username</td>
+        <td th:text="${user.emailValidation}">0</td>
+        <td th:text="${user.studiesSize}">0</td>
+        <td th:text="${user.questionsSize}">0</td>
+        <td th:text="${user.chatSize}">0</td>
     </tr>
 </table>
 </body>
