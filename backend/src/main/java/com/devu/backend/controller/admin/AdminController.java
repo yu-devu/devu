@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RequiredArgsConstructor
-@RestController("/admin")
+@RestController
 public class AdminController {
     private final UserService userService;
 
-    @GetMapping("/")
+    @GetMapping("/admin")
     private ResponseEntity adminHome() {
         return ResponseEntity.ok().body("어드민 홈 테스트");
     }
