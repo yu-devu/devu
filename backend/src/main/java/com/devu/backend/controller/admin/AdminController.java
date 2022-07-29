@@ -7,8 +7,7 @@ import com.devu.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 import java.util.ArrayList;
@@ -43,5 +42,11 @@ public class AdminController {
         }
         model.addAttribute("users", userDTOS);
         return "main";
+    }
+
+    @PostMapping("/{userId}")
+    private String deleteUser(@PathVariable Long userId, Model model) {
+        log.info("userId = {}", userId);
+        return "redirect:/admin";
     }
 }
