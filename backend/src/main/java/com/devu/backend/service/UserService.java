@@ -183,6 +183,16 @@ public class UserService {
         deleteRefreshCookie(request, response);
     }
 
+    /*
+     * Admin 페이지에서 사용
+     * */
+    @Transactional
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        userRepository.delete(user);
+        user.getPosts().clear();
+    }
+
     @Transactional
     public UserDTO updateUsername(String before,String username) {
         User user = userRepository.findByUsername(before).orElseThrow(UserNotFoundException::new);
