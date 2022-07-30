@@ -204,4 +204,15 @@ public class UserService {
                 .build();
     }
 
+    @Transactional
+    public User createUserByAdmin(com.devu.backend.controller.admin.UserDTO userDTO) {
+        User user = User.builder()
+                .username(userDTO.getUsername())
+                .password(userDTO.getPassword())
+                .emailConfirm(userDTO.isEmailValidation())
+                .email(userDTO.getEmail())
+                .build();
+        return userRepository.save(user);
+    }
+
 }

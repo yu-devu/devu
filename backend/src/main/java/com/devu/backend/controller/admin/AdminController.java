@@ -2,6 +2,7 @@ package com.devu.backend.controller.admin;
 
 import com.devu.backend.controller.post.PostResponseDto;
 import com.devu.backend.entity.User;
+import com.devu.backend.service.EmailService;
 import com.devu.backend.service.PostService;
 import com.devu.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -20,6 +22,7 @@ import java.util.List;
 public class AdminController {
     private final UserService userService;
     private final PostService postService;
+    private final EmailService emailService;
 
     @GetMapping
     private String adminHome(Model model) {
@@ -43,6 +46,23 @@ public class AdminController {
         model.addAttribute("users", userDTOS);
         return "main";
     }
+
+    @PostMapping("/user")
+    private String createMockUser(Model model) {
+        String username = emailService.createKey();
+        String email = username + "test.com";
+        String password = "test";
+        UserDTO userDTO = UserDTO.builder()
+                .email(email)
+                .username(username)
+                .emailValidation(true)
+                .password(password)
+                .build();
+        User userByAdmin = userService.createUserByAdmin(userDTO);
+        log.info("Admin creates User {}",userByAdmin.getUsername());
+        return "redirect:/admin";
+    }
+
 
     @PostMapping("/{userId}")
     private String deleteUser(@PathVariable Long userId, Model model) {

@@ -14,6 +14,7 @@ public class UserDTO {
     private String username;
     private String email;
     private boolean emailValidation;
+    private String password;
 
     private int chatSize;
     private int studiesSize;
