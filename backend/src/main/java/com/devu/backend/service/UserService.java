@@ -204,6 +204,9 @@ public class UserService {
                 .build();
     }
 
+    /*
+     * Admin 페이지에서 사용
+     * */
     @Transactional
     public User createUserByAdmin(com.devu.backend.controller.admin.UserDTO userDTO) {
         User user = User.builder()
@@ -213,6 +216,13 @@ public class UserService {
                 .email(userDTO.getEmail())
                 .build();
         return userRepository.save(user);
+    }
+
+    /*
+     * Admin 페이지에서 사용
+     * */
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 
 }

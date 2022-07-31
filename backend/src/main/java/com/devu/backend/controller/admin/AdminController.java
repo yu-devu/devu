@@ -7,6 +7,7 @@ import com.devu.backend.service.PostService;
 import com.devu.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -50,7 +51,7 @@ public class AdminController {
     @PostMapping("/user")
     private String createMockUser(Model model) {
         String username = emailService.createKey();
-        String email = username + "test@com";
+        String email = username + "@test.com";
         String password = "test";
         UserDTO userDTO = UserDTO.builder()
                 .email(email)
@@ -69,5 +70,17 @@ public class AdminController {
         log.info("userId = {}", userId);
         userService.deleteUser(userId);
         return "redirect:/admin";
+    }
+
+    @GetMapping("/userInfo")
+    private String getUserInfo(@RequestParam Long userId, Model model) {
+        log.info("Query parameter = {}", userId);
+        User user = userService.getUserById(userId);
+        model.addAttribute("username", user.getUsername());
+        List<PostResponseDto> studies = postService.findAllStudiesByUser(user);
+        List<PostResponseDto> likeStudies = postService.findAllLikeStudiesByUser(user);
+        model.addAttribute("studies", studies);
+        model.addAttribute("likStudies", likeStudies);
+        return "user-info";
     }
 }

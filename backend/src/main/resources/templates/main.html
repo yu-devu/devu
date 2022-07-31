@@ -23,7 +23,10 @@
     <tr th:each="user : ${users}">
         <td th:text="${user.userId}">username</td>
         <td th:text="${user.username}">username</td>
-        <td th:text="${user.email}">username</td>
+        <td th:with="userId=${user.userId}"
+            th:text="${user.email}"
+            th:onclick="|location.href='@{'/admin/userInfo'(userId=${userId})}'|">
+        </td>
         <td th:text="${user.emailValidation}">0</td>
         <td th:text="${user.studiesSize}">0</td>
         <td th:text="${user.questionsSize}">0</td>
