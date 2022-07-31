@@ -50,7 +50,7 @@ public class AdminController {
     @PostMapping("/user")
     private String createMockUser(Model model) {
         String username = emailService.createKey();
-        String email = username + "test.com";
+        String email = username + "test@com";
         String password = "test";
         UserDTO userDTO = UserDTO.builder()
                 .email(email)
