@@ -1,9 +1,11 @@
 package com.devu.backend.controller.admin;
 
+import com.devu.backend.controller.post.PostRequestCreateDto;
 import com.devu.backend.controller.post.PostResponseDto;
 import com.devu.backend.entity.User;
 import com.devu.backend.service.EmailService;
 import com.devu.backend.service.PostService;
+import com.devu.backend.service.TagService;
 import com.devu.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,7 @@ public class AdminController {
     private final UserService userService;
     private final PostService postService;
     private final EmailService emailService;
+    private final TagService tagService;
 
     @GetMapping
     private String adminHome(Model model) {
@@ -76,11 +80,20 @@ public class AdminController {
     private String getUserInfo(@RequestParam Long userId, Model model) {
         log.info("Query parameter = {}", userId);
         User user = userService.getUserById(userId);
-        model.addAttribute("username", user.getUsername());
+        UserDTO userDTO = UserDTO.builder()
+                .username(user.getUsername())
+                .userId(user.getId())
+                .email(user.getEmail())
+                .build();
+        model.addAttribute("user", userDTO);
+        addStudyAttribute(model, user);
+        return "user-info";
+    }
+
+    private void addStudyAttribute(Model model, User user) {
         List<PostResponseDto> studies = postService.findAllStudiesByUser(user);
         List<PostResponseDto> likeStudies = postService.findAllLikeStudiesByUser(user);
         model.addAttribute("studies", studies);
         model.addAttribute("likStudies", likeStudies);
-        return "user-info";
     }
 }
