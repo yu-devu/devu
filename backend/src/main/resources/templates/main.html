@@ -2,13 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
     <title>Title</title>
 </head>
 <body>
 <form th:method="post" th:action="@{/admin/user}">
-    <button type="submit">테스트용 유저 데이터 생성</button>
+    <button class="btn btn-primary form-select" type="submit">테스트용 유저 데이터 생성</button>
 </form>
-<table border="1">
+<div>
+<table border="1" class="table">
+    <thead>
     <tr>
         <th>UserID</th>
         <th>username</th>
@@ -20,12 +23,15 @@
         <th>탈퇴</th>
         <th></th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="user : ${users}">
         <td th:text="${user.userId}">username</td>
         <td th:text="${user.username}">username</td>
         <td th:with="userId=${user.userId}"
             th:text="${user.email}"
-            th:onclick="|location.href='@{'/admin/userInfo'(userId=${userId})}'|">
+            th:onclick="|location.href='@{'/admin/userInfo'(userId=${userId})}'|"
+            style="cursor: pointer">
         </td>
         <td th:text="${user.emailValidation}">0</td>
         <td th:text="${user.studiesSize}">0</td>
@@ -33,10 +39,12 @@
         <td th:text="${user.chatSize}">0</td>
         <td th:with="userId=${user.userId}">
             <form th:action="@{'/admin/{userId}'(userId=${userId})}" th:method="delete">
-                <button type="submit" >회원 탈퇴</button>
+                <button type="submit" class="btn btn-danger">회원 탈퇴</button>
             </form>
         </td>
     </tr>
+    </tbody>
 </table>
+</div>
 </body>
 </html>

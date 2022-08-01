@@ -2,23 +2,28 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
     <title>User-Info Page</title>
 </head>
 <body>
+<div style="text-align: center">
+    <div style="display:inline-block">
+        <form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=study)}">
+            <button class="btn btn-primary float-none" type="submit" onclick="">테스트용 Study 데이터 생성</button>
+        </form>
+    </div>
+    <div style="display:inline-block">
+        <form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=question)}">
+            <button class="btn btn-primary float-none" type="submit" onclick="">테스트용 Question 데이터 생성</button>
+        </form>
+    </div>
+    <div style="display:inline-block">
+        <form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=chat)}">
+            <button class="btn btn-primary float-none" type="submit" onclick="">테스트용 Chat 데이터 생성</button>
+        </form>
+    </div>
+</div>
 <h2 th:text="${user.username} + '님의 정보입니다.'"></h2>
-<form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=study)}">
-    <button type="submit" onclick="">테스트용 Study 데이터 생성</button>
-</form>
-<form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=question)}">
-    <button type="submit" onclick="">테스트용 Question 데이터 생성</button>
-</form>
-<form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=chat)}">
-    <button type="submit" onclick="">테스트용 Chat 데이터 생성</button>
-</form>
-<form th:method="post" th:action="@{/admin/user}">
-</form>
-<form th:method="post" th:action="@{/admin/user}">
-</form>
 <h3>스터디 현황</h3>
 <h3>질문 현황</h3>
 <h3>채팅 현황</h3>
