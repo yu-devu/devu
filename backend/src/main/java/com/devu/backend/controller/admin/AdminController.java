@@ -27,7 +27,6 @@ public class AdminController {
     private final UserService userService;
     private final PostService postService;
     private final EmailService emailService;
-    private final TagService tagService;
 
     @GetMapping
     private String adminHome(Model model) {
@@ -95,5 +94,50 @@ public class AdminController {
         List<PostResponseDto> likeStudies = postService.findAllLikeStudiesByUser(user);
         model.addAttribute("studies", studies);
         model.addAttribute("likStudies", likeStudies);
+    }
+
+    @PostMapping("/post/{userId}")
+    private String createMockPost(@RequestParam String type,
+                                  @PathVariable Long userId ,
+                                  RedirectAttributes redirectAttributes) {
+        //log.info("UserId = {}", userId);
+        //log.info("Type = {}", type);
+        redirectAttributes.addAttribute("userId", userId);
+        User user = userService.getUserById(userId);
+        List<String> randomTags = createRandomTags();
+        for (String tag : randomTags) {
+            log.info("tag = {}", tag);
+        }
+        PostRequestCreateDto.builder()
+                .username(user.getUsername())
+                .build();
+        //postService.createChat();
+        return "redirect:/admin/userInfo";
+    }
+
+    private List<String> createRandomTags() {
+        List<String> tagData = getTagData();
+        Random rnd = new Random();
+        int index1 = rnd.nextInt(7); // 0~2 까지 랜덤
+        int index2 = rnd.nextInt(7); // 0~2 까지 랜덤
+        while (index1 == index2) {
+            index2 = rnd.nextInt(7);
+        }
+        List<String> tags = new ArrayList<>();
+        tags.add(tagData.get(index1));
+        tags.add(tagData.get(index2));
+        return tags;
+    }
+
+    private List<String> getTagData() {
+        List<String> tagData = new ArrayList<>();
+        tagData.add("Spring");
+        tagData.add("C");
+        tagData.add("React");
+        tagData.add("Docker");
+        tagData.add("Python");
+        tagData.add("Java");
+        tagData.add("NodeJS");
+        return tagData;
     }
 }
