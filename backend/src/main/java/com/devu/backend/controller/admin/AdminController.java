@@ -1,5 +1,6 @@
 package com.devu.backend.controller.admin;
 
+import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.controller.post.PostRequestCreateDto;
 import com.devu.backend.controller.post.PostResponseDto;
 import com.devu.backend.entity.User;
@@ -10,6 +11,7 @@ import com.devu.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.Banner;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -100,26 +102,48 @@ public class AdminController {
     private String createMockPost(@RequestParam String type,
                                   @PathVariable Long userId ,
                                   RedirectAttributes redirectAttributes) {
-        //log.info("UserId = {}", userId);
-        //log.info("Type = {}", type);
-        redirectAttributes.addAttribute("userId", userId);
-        User user = userService.getUserById(userId);
-        List<String> randomTags = createRandomTags();
-        for (String tag : randomTags) {
-            log.info("tag = {}", tag);
+        try {
+            redirectAttributes.addAttribute("userId", userId);
+            User user = userService.getUserById(userId);
+            List<String> randomTags = createRandomTags();
+            PostRequestCreateDto createDto = PostRequestCreateDto.builder()
+                    .username(user.getUsername())
+                    .title(user.getUsername())
+                    .content("test")
+                    .tags(randomTags)
+                    .build();
+            switch (type) {
+                case "study":
+                    createDto.setTitle(createDto.getTitle() + "의 스터디 게시글");
+                    PostResponseDto study = postService.createStudy(createDto);
+                    log.info("Mock study is created, id = {}",study.getId());
+                    break;
+                case "question":
+                    createDto.setTitle(createDto.getTitle() + "의 질문 게시글");
+                    PostResponseDto question = postService.createQuestion(createDto);
+                    log.info("Mock question is created, id = {}",question.getId());
+                    break;
+                case "chat":
+                    createDto.setTitle(createDto.getTitle() + "의 채팅 게시글");
+                    PostResponseDto chat = postService.createChat(createDto);
+                    log.info("Mock chat is created, id = {}",chat.getId());
+                    break;
+            }
+            return "redirect:/admin/userInfo";
+        } catch (Exception e) {
+            e.printStackTrace();
+            ResponseErrorDto errorDto = ResponseErrorDto.builder()
+                    .error(e.getMessage())
+                    .build();
+            return "error";
         }
-        PostRequestCreateDto.builder()
-                .username(user.getUsername())
-                .build();
-        //postService.createChat();
-        return "redirect:/admin/userInfo";
     }
 
     private List<String> createRandomTags() {
         List<String> tagData = getTagData();
         Random rnd = new Random();
-        int index1 = rnd.nextInt(7); // 0~2 까지 랜덤
-        int index2 = rnd.nextInt(7); // 0~2 까지 랜덤
+        int index1 = rnd.nextInt(7); // 0~6 까지 랜덤
+        int index2 = rnd.nextInt(7); // 0~6 까지 랜덤
         while (index1 == index2) {
             index2 = rnd.nextInt(7);
         }

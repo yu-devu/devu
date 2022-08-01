@@ -8,7 +8,11 @@
 <h2 th:text="${user.username} + '님의 정보입니다.'"></h2>
 <form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=study)}">
     <button type="submit" onclick="">테스트용 Study 데이터 생성</button>
+</form>
+<form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=question)}">
     <button type="submit" onclick="">테스트용 Question 데이터 생성</button>
+</form>
+<form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=chat)}">
     <button type="submit" onclick="">테스트용 Chat 데이터 생성</button>
 </form>
 <form th:method="post" th:action="@{/admin/user}">
