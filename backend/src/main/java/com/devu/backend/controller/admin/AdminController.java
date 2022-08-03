@@ -34,10 +34,14 @@ public class AdminController {
     private String adminHome(Model model) {
         List<User> users = userService.getUsers();
         List<UserDTO> userDTOS = new ArrayList<>();
+        int sumOfPosts = 0;
         for (User user : users) {
             List<PostResponseDto> allChatsByUser = postService.findAllChatsByUser(user);
             List<PostResponseDto> allStudiesByUser = postService.findAllStudiesByUser(user);
             List<PostResponseDto> allQuestionsByUser = postService.findAllQuestionsByUser(user);
+            sumOfPosts += allChatsByUser.size();
+            sumOfPosts += allQuestionsByUser.size();
+            sumOfPosts += allStudiesByUser.size();
             UserDTO userDto = UserDTO.builder()
                     .userId(user.getId())
                     .email(user.getEmail())
@@ -49,7 +53,12 @@ public class AdminController {
                     .build();
             userDTOS.add(userDto);
         }
+        SumDTO sumDTO = SumDTO.builder()
+                .sumOfUsers((long) users.size())
+                .sumOfPosts((long) sumOfPosts)
+                .build();
         model.addAttribute("users", userDTOS);
+        model.addAttribute("sums", sumDTO);
         return "main";
     }
 
