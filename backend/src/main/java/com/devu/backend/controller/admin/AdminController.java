@@ -35,6 +35,10 @@ public class AdminController {
         List<User> users = userService.getUsers();
         List<UserDTO> userDTOS = new ArrayList<>();
         int sumOfPosts = 0;
+        int sumOfChats = 0;
+        int sumOfStudies = 0;
+        int sumOfQuestions = 0;
+
         for (User user : users) {
             List<PostResponseDto> allChatsByUser = postService.findAllChatsByUser(user);
             List<PostResponseDto> allStudiesByUser = postService.findAllStudiesByUser(user);
@@ -42,6 +46,9 @@ public class AdminController {
             sumOfPosts += allChatsByUser.size();
             sumOfPosts += allQuestionsByUser.size();
             sumOfPosts += allStudiesByUser.size();
+            sumOfChats += allChatsByUser.size();
+            sumOfStudies += allStudiesByUser.size();
+            sumOfQuestions += allQuestionsByUser.size();
             UserDTO userDto = UserDTO.builder()
                     .userId(user.getId())
                     .email(user.getEmail())
@@ -56,6 +63,9 @@ public class AdminController {
         SumDTO sumDTO = SumDTO.builder()
                 .sumOfUsers((long) users.size())
                 .sumOfPosts((long) sumOfPosts)
+                .sumOfStudies((long) sumOfStudies)
+                .sumOfChats((long) sumOfChats)
+                .sumOfQuestions((long) sumOfQuestions)
                 .build();
         model.addAttribute("users", userDTOS);
         model.addAttribute("sums", sumDTO);

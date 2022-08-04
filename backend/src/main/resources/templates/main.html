@@ -51,10 +51,16 @@
         <tr>
             <th>현재 총 User 수</th>
             <th>현재 총 게시글 갯수</th>
+            <th>현재 총 스터디 게시글 갯수</th>
+            <th>현재 총 질문 게시글 갯수</th>
+            <th>현재 총 채팅 게시글 갯수</th>
         </tr>
         <tr>
-            <td th:text="${sums.sumOfUsers}"></td>
-            <td th:text="${sums.sumOfPosts}"></td>
+            <td th:text="${sums.sumOfUsers} + '명'"></td>
+            <td th:text="${sums.sumOfPosts} + '개'"></td>
+            <td th:text="${sums.sumOfStudies} + '개'"></td>
+            <td th:text="${sums.sumOfQuestions} + '개'"></td>
+            <td th:text="${sums.sumOfChats} + '개'"></td>
         </tr>
         </thead>
     </table>

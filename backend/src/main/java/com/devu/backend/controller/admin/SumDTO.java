@@ -12,5 +12,7 @@ import lombok.NoArgsConstructor;
 public class SumDTO {
     private Long sumOfUsers;
     private Long sumOfPosts;
-    //추후 추가 필요
+    private Long sumOfStudies;
+    private Long sumOfQuestions;
+    private Long sumOfChats;
 }
