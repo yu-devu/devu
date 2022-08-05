@@ -6,23 +6,6 @@
     <title>User-Info Page</title>
 </head>
 <body>
-<div style="text-align: center">
-    <div style="display:inline-block">
-        <form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=study)}">
-            <button class="btn btn-primary float-none" type="submit" onclick="">테스트용 Study 데이터 생성</button>
-        </form>
-    </div>
-    <div style="display:inline-block">
-        <form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=question)}">
-            <button class="btn btn-primary float-none" type="submit" onclick="">테스트용 Question 데이터 생성</button>
-        </form>
-    </div>
-    <div style="display:inline-block">
-        <form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=chat)}">
-            <button class="btn btn-primary float-none" type="submit" onclick="">테스트용 Chat 데이터 생성</button>
-        </form>
-    </div>
-</div>
 <h2 th:text="${user.username} + '님의 정보입니다.'"></h2>
 <div>
     <table class="table">
@@ -44,6 +27,5 @@
         </tbody>
     </table>
 </div>
-
 </body>
 </html>

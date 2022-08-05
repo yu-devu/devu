@@ -15,11 +15,14 @@
     <tr>
         <th>UserID</th>
         <th>username</th>
-        <th>Email</th>
-        <th>Email Confirm 여부</th>
-        <th>현재 Study 갯수</th>
-        <th>현재 Question 갯수</th>
-        <th>현재 Chat 갯수</th>
+        <th>이메일</th>
+        <th>인증 여부</th>
+        <th>Study 갯수</th>
+        <th>Question 갯수</th>
+        <th>Chat 갯수</th>
+        <th>스터디 생성</th>
+        <th>질문 생성</th>
+        <th>채팅 생성</th>
         <th>탈퇴</th>
     </tr>
     </thead>
@@ -36,11 +39,27 @@
         <td th:text="${user.studiesSize}">0</td>
         <td th:text="${user.questionsSize}">0</td>
         <td th:text="${user.chatSize}">0</td>
+        <td>
+            <form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=study)}">
+                <button class="btn btn-primary" type="submit" onclick="">Study 생성</button>
+            </form>
+        </td>
+        <td>
+            <form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=question)}">
+                <button class="btn btn-primary" type="submit" onclick="">Question 생성</button>
+            </form>
+        </td>
+        <td>
+            <form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=chat)}">
+                <button class="btn btn-primary" type="submit" onclick="">Chat 생성</button>
+            </form>
+        </td>
         <td th:with="userId=${user.userId}">
             <form th:action="@{'/admin/{userId}'(userId=${userId})}" th:method="delete">
                 <button type="submit" class="btn btn-danger">회원 탈퇴</button>
             </form>
         </td>
+
     </tr>
     </tbody>
 </table>

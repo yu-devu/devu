@@ -159,7 +159,7 @@ public class AdminController {
                     log.info("Mock chat is created, id = {}",chat.getId());
                     break;
             }
-            return "redirect:/admin/userInfo";
+            return "redirect:/admin";
         } catch (Exception e) {
             e.printStackTrace();
             ResponseErrorDto errorDto = ResponseErrorDto.builder()
