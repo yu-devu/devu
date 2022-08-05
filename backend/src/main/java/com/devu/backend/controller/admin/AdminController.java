@@ -4,6 +4,7 @@ import com.devu.backend.controller.ResponseErrorDto;
 import com.devu.backend.controller.post.PostRequestCreateDto;
 import com.devu.backend.controller.post.PostResponseDto;
 import com.devu.backend.entity.User;
+import com.devu.backend.entity.post.Post;
 import com.devu.backend.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -97,14 +98,27 @@ public class AdminController {
     private String getUserInfo(@RequestParam Long userId, Model model) {
         log.info("Query parameter = {}", userId);
         User user = userService.getUserById(userId);
+        List<Post> allPosts = postService.findAllPosts(user);
+        int receiveLikes = 0;
+        int receiveComments = 0;
+        calculateReceiveValue(allPosts, receiveLikes, receiveComments);
         UserDTO userDTO = UserDTO.builder()
                 .username(user.getUsername())
                 .userId(user.getId())
                 .email(user.getEmail())
+                .receivedComments(receiveComments)
+                .receivedLikes(receiveLikes)
                 .build();
         model.addAttribute("user", userDTO);
         addStudyAttribute(model, user);
         return "user-info";
+    }
+
+    private void calculateReceiveValue(List<Post> allPosts, int receiveLikes, int receiveComments) {
+        for (Post post : allPosts) {
+            receiveLikes += post.getLikes().size();
+            receiveComments += post.getComments().size();
+        }
     }
 
     private void addStudyAttribute(Model model, User user) {

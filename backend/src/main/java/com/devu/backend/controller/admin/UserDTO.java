@@ -19,5 +19,6 @@ public class UserDTO {
     private int chatSize;
     private int studiesSize;
     private int questionsSize;
-
+    private int receivedLikes;
+    private int receivedComments;
 }

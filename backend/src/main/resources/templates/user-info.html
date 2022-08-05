@@ -27,12 +27,20 @@
 <div>
     <table class="table">
         <thead>
-            <tr>작성한 댓글 갯수</tr>
-            <tr>누른 좋아요 갯수</tr>
-            <tr>작성된 댓글 갯수</tr>
-            <tr>좋아요 받은 개수</tr>
+        <tr>
+            <th>작성한 댓글 갯수</th>
+            <th>누른 좋아요 갯수</th>
+            <th>작성된 댓글 갯수</th>
+            <th>좋아요 받은 개수</th>
+        </tr>
         </thead>
         <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td th:text="${user.receivedComments}"></td>
+            <td th:text="${user.receivedLikes}"></td>
+        </tr>
         </tbody>
     </table>
 </div>
