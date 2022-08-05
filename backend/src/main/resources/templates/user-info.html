@@ -24,8 +24,18 @@
     </div>
 </div>
 <h2 th:text="${user.username} + '님의 정보입니다.'"></h2>
-<h3>스터디 현황</h3>
-<h3>질문 현황</h3>
-<h3>채팅 현황</h3>
+<div>
+    <table class="table">
+        <thead>
+            <tr>작성한 댓글 갯수</tr>
+            <tr>누른 좋아요 갯수</tr>
+            <tr>작성된 댓글 갯수</tr>
+            <tr>좋아요 받은 개수</tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
 </body>
 </html>

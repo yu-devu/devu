@@ -342,6 +342,18 @@ class PostRepositoryTest {
 
     }
 
+    @Test
+    void findAllPostsByUser() {
+        //given
+        User user = createUser("test");
+        Chat chat1 = createChat(user);
+        Chat chat2 = createChat(user);
+        //when
+        List<Post> posts = postRepository.findAllByUserId(user.getId()).get();
+        //then
+        assertThat(posts.size()).isEqualTo(2);
+    }
+
     private Tag createTag(String name) {
         Tag tag = Tag.builder()
                 .name(name)
