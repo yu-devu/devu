@@ -158,6 +158,10 @@ class PostControllerTest {
     }
 
     private Tag getTag() {
+        Tag java = Tag.builder()
+                .name("JAVA")
+                .build();
+        tagRepository.save(java);
         return tagRepository.findTagByName("JAVA").get();
     }
 
