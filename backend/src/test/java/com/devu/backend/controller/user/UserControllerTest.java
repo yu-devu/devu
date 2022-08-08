@@ -77,7 +77,7 @@ class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> {
                     MockHttpServletResponse response = result.getResponse();
-                    assertTrue(response.getContentAsString().equals("{\"error\":\"이미 가입 완료된 이메일입니다.\"}"));
+                    assertEquals("{\"error\":\"이미 가입 완료된 이메일입니다.\"}", response.getContentAsString());
                 });
     }
 
@@ -96,11 +96,11 @@ class UserControllerTest {
                 .andExpect(result -> {
                     MockHttpServletResponse response = result.getResponse();
                     System.out.println(response.getContentAsString());
-                    assertTrue(response.getContentAsString().equals("{\"error\":\"이메일 재전송 완료\"}"));
+                    assertEquals("{\"error\":\"이메일 재전송 완료\"}", response.getContentAsString());
                 });
         User user = userRepository.findByEmail(email).orElseThrow();
 
-        assertFalse("test-key".equals(user.getEmailAuthKey()));
+        assertNotEquals("test-key", user.getEmailAuthKey());
     }
 
     @Test
@@ -131,7 +131,7 @@ class UserControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> {
                     MockHttpServletResponse response = result.getResponse();
-                    assertTrue(response.getContentAsString().equals("{\"error\":\"입력한 인증키가 일치하지 않습니다.\"}"));
+                    assertEquals("{\"error\":\"입력한 인증키가 일치하지 않습니다.\"}", response.getContentAsString());
                 });
         assertFalse(savedUser.isEmailConfirm());
     }
@@ -162,7 +162,7 @@ class UserControllerTest {
 
         actions.andExpect(status().isOk());
         User user = userRepository.findByEmail(email).orElseThrow();
-        assertTrue(user.getUsername().equals("testUser"));
+        assertEquals("testUser", user.getUsername());
         assertTrue(passwordEncoder.matches("1234", user.getPassword()));
     }
 
@@ -192,7 +192,7 @@ class UserControllerTest {
         actions.andExpect(status().isBadRequest())
                 .andExpect(result -> {
                     MockHttpServletResponse response = result.getResponse();
-                    assertTrue(response.getContentAsString().equals("{\"error\":\"이메일 인증이 완료되지 않은 사용자입니다.\"}"));
+                    assertEquals("{\"error\":\"이메일 인증이 완료되지 않은 사용자입니다.\"}", response.getContentAsString());
                 });
         User user = userRepository.findByEmail(email).orElseThrow();
         assertNull(user.getUsername());
@@ -244,7 +244,7 @@ class UserControllerTest {
         actions.andExpect(status().isBadRequest())
                 .andExpect(result -> {
                     MockHttpServletResponse response = result.getResponse();
-                    assertTrue(response.getContentAsString().equals("{\"error\":\"비밀번호가 일치하지 않습니다.\"}"));
+                    assertEquals("{\"error\":\"비밀번호가 일치하지 않습니다.\"}", response.getContentAsString());
                 });
     }
 
