@@ -82,4 +82,6 @@ public interface PostRepository extends JpaRepository<Post, Long> ,PostRepositor
 
     @Query("select q from Question q join Like l on q.id = l.post.id where l.user.id = :id")
     Optional<List<Question>> findAllLikeQuestionsByUserId(@Param("id")Long id);
+
+    Optional<List<Post>> findAllByUserId(Long id);
 }

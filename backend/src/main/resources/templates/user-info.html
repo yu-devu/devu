@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <title>User-Info Page</title>
+</head>
+<body>
+<h2 th:text="${user.username} + '님의 정보입니다.'"></h2>
+<div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>작성한 댓글 갯수</th>
+            <th>누른 좋아요 갯수</th>
+            <th>작성된 댓글 갯수</th>
+            <th>좋아요 받은 개수</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td th:text="${user.receivedComments}"></td>
+            <td th:text="${user.receivedLikes}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

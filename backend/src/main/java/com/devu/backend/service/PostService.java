@@ -67,13 +67,14 @@ public class PostService {
                 .images(new ArrayList<>())
                 .build();
         createPostImages(requestPostDto,chat);
-        postRepository.save(chat);
-        log.info("Create Chat {} By {}",chat.getTitle(),chat.getUser().getUsername());
-        user.addPost(chat);
+        Chat save = postRepository.save(chat);
+        log.info("Create Chat {} By {}",save.getTitle(),save.getUser().getUsername());
+        user.addPost(save);
         return PostResponseDto.builder()
-                .title(chat.getTitle())
-                .url(getImageUrl(chat))
-                .username(chat.getUser().getUsername())
+                .id(save.getId())
+                .title(save.getTitle())
+                .url(getImageUrl(save))
+                .username(save.getUser().getUsername())
                 .build();
     }
 
@@ -94,13 +95,14 @@ public class PostService {
                 .build();
         createPostImages(requestPostDto,study);
         setPostOnPostTag(postTags,study);
-        postRepository.save(study);
-        log.info("Create Study {} By {}",study.getTitle(),study.getUser().getUsername());
-        user.addPost(study);
+        Study save = postRepository.save(study);
+        log.info("Create Study {} By {}",save.getTitle(),save.getUser().getUsername());
+        user.addPost(save);
         return PostResponseDto.builder()
-                .title(study.getTitle())
-                .url(getImageUrl(study))
-                .username(study.getUser().getUsername())
+                .id(save.getId())
+                .title(save.getTitle())
+                .url(getImageUrl(save))
+                .username(save.getUser().getUsername())
                 .tags(tags.stream().map(Tag::getName).collect(Collectors.toList()))
                 .build();
     }
@@ -122,13 +124,14 @@ public class PostService {
                 .build();
         createPostImages(requestPostDto,question);
         setPostOnPostTag(postTags,question);
-        postRepository.save(question);
-        log.info("Create Question {} By {}",question.getTitle(),question.getUser().getUsername());
-        user.addPost(question);
+        Question save = postRepository.save(question);
+        log.info("Create Question {} By {}",save.getTitle(),save.getUser().getUsername());
+        user.addPost(save);
         return PostResponseDto.builder()
-                .title(question.getTitle())
-                .url(getImageUrl(question))
-                .username(question.getUser().getUsername())
+                .id(save.getId())
+                .title(save.getTitle())
+                .url(getImageUrl(save))
+                .username(save.getUser().getUsername())
                 .tags(tags.stream().map(Tag::getName).collect(Collectors.toList()))
                 .build();
     }
@@ -167,6 +170,14 @@ public class PostService {
         return tagService.findTagName(postTag);
     }
 
+
+    public List<Post> findAllPosts(User user) {
+        List<Post> posts = postRepository.findAllByUserId(user.getId()).orElseThrow(UserNotFoundException::new);
+        if (posts.size() == 0) {
+            throw new PostNotFoundException();
+        }
+        return posts;
+    }
 
     public Page<PostResponseDto> findAllChats(Pageable pageable,String order,String s) {
         PostSearch postSearch = PostSearch.builder()

@@ -14,6 +14,7 @@ public class PostRequestCreateDto {
     private String username;
     private String title;
     private String content;
+
     private List<MultipartFile> images;
     private List<String> tags;
 }
