@@ -1,4 +1,4 @@
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) { */
   .footer {
     width: auto;
     position: relative;
@@ -83,4 +83,4 @@
     right: 20%;
     bottom: 25%;
   }
-}
+/* } */

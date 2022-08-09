@@ -1,4 +1,4 @@
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) { */
   .container-register {
     z-index: 12;
     padding: 20px 0 20px;
@@ -156,4 +156,4 @@
     right: 38.4%;
     bottom: 10px;
   }
-}
+/* } */

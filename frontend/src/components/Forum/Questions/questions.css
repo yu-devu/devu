@@ -1,4 +1,4 @@
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) { */
   .all-questions {
     /* height: max-content; */
     height: 100%;
@@ -425,4 +425,4 @@
     margin-bottom: -7%;
     position: relative;
   }
-}
+/* } */

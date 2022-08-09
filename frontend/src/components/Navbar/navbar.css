@@ -1,4 +1,4 @@
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) { */
   .nav {
     display: flex;
     width: 100%;
@@ -76,4 +76,4 @@
     position: absolute;
     right: 19%;
   }
-}
+/* } */

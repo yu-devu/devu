@@ -1,4 +1,4 @@
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) { */
   .main-all {
     display: relative;
     flex-direction: column;
@@ -41,4 +41,4 @@
   .top-word {
     margin-bottom: -10px;
   }
-}
+/* } */

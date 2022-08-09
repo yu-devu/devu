@@ -1,4 +1,4 @@
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) { */
   .questions-view {
     position: relative;
     width: 100%;
@@ -342,4 +342,4 @@
     left: 30%;
     top: 20px;
   }
-}
+/* } */

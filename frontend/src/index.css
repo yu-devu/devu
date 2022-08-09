@@ -13,7 +13,7 @@
   --transition: all 400ms ease;
 }
 
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) { */
   * {
     margin: 0;
     padding: 0;
@@ -121,7 +121,7 @@
   .main-all {
     width: auto;
   }
-}
+/* } */
 
 /* ================= MEDIA QUERIES (SMALL DEVICES) =================*/
 /* @media screen and (max-width: 600){

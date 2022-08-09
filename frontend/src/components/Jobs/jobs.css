@@ -1,4 +1,4 @@
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) { */
   .text-jobs {
     position: relative;
     margin-left: 20%;
@@ -158,4 +158,4 @@
     background: var(--color-hover);
     padding: 4px 10px;
   }
-}
+/* } */

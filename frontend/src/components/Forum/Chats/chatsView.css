@@ -1,4 +1,4 @@
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) { */
   .chats-view {
     position: relative;
     width: 100%;
@@ -372,4 +372,4 @@
   .comment {
     width: 80%;
   }
-}
+/* } */
