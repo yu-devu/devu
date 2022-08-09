@@ -1,7 +1,7 @@
 @media (min-width: 1024px) {
   .text-jobs {
     position: relative;
-    left: 20%;
+    margin-left: 20%;
     font-size: 17px;
     margin-top: 1%;
     margin-bottom: 1%;
@@ -9,7 +9,7 @@
 
   .top-jobs {
     position: relative;
-    left: 20%;
+    margin-left: 20%;
     display: flex;
   }
 
@@ -27,7 +27,7 @@
     width: 15%;
     padding: 0 8px;
     border: 1px solid rgba(241, 241, 241, 1);
-    margin-left: 35.7%;
+    margin-left: 48.7%;
   }
 
   .search-jobs-input {
@@ -116,7 +116,7 @@
   }
 
   .btn-pagination-jobs {
-    left: 38%;
+    margin-left: 50%;
     position: relative;
     display: flex;
     cursor: pointer;

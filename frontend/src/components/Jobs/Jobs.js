@@ -5,7 +5,6 @@ import ReactPaginate from "react-paginate";
 import "./jobs.css";
 import magnify from "../../img/magnify.png";
 import FooterGray from "../Home/FooterGray";
-// import logo from '../../img/logo_gray.png'
 import Naver from "../../img/NaverLogo.png";
 import Kakao from "../../img/KakaoLogo.png";
 import Line from "../../img/LineLogo.png";
@@ -170,7 +169,7 @@ const Jobs = () => {
               type="text"
               placeholder="채용 관련 정보를 찾아보세요."
               className="search-jobs-input"
-              onChange={(e) => {}}
+              onChange={(e) => { }}
             />
             <button className="btn-search-jobs">
               <img className="img-mag-jobs" src={magnify} alt="" />
