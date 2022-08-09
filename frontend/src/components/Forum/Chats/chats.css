@@ -1,4 +1,4 @@
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) { */
   .all-chats {
     height: max-content;
   }
@@ -283,4 +283,4 @@
   a:hover {
     color: var(--color-white);
   }
-}
+/* } */

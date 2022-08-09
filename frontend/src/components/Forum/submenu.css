@@ -1,4 +1,4 @@
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) { */
   .sub-menu {
     position: relative;
     box-shadow: 1px 6px 8px 1px rgb(0 0 0 / 12%) inset;
@@ -31,4 +31,4 @@
   .sub-item:hover {
     color: var(--color-primary);
   }
-}
+/* } */

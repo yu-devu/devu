@@ -1,4 +1,4 @@
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) { */
   .registerover-all {
     position: relative;
     left: 38%;
@@ -48,4 +48,4 @@
     left: 5%;
     color: var(--color-primary);
   }
-}
+/* } */

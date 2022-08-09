@@ -1,4 +1,4 @@
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) { */
   .studies-view {
     position: relative;
     width: 100%;
@@ -391,4 +391,4 @@
     color: var(--color-gray);
     padding-bottom: 1ch;
   }
-}
+/* } */

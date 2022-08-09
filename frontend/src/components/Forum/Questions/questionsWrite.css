@@ -1,4 +1,4 @@
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) { */
   .container-questions-write {
     height: max-content;
     display: flex;
@@ -103,4 +103,4 @@
   .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
     min-height: 500px;
   }
-}
+/* } */

@@ -1,4 +1,4 @@
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) { */
   .chatbot-all {
     position: fixed;
     top: 43%;
@@ -309,4 +309,4 @@
     margin-top: 15px;
     background-color: rgba(219, 219, 219, 1);
   }
-}
+/* } */
