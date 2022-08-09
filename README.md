@@ -1,3 +1,3 @@
 # devu
 ## 개발 서버 IP
-- http://15.165.205.119/
+- https://devu.site
