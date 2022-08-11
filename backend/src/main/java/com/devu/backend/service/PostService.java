@@ -172,11 +172,7 @@ public class PostService {
 
 
     public List<Post> findAllPosts(User user) {
-        List<Post> posts = postRepository.findAllByUserId(user.getId()).orElseThrow(UserNotFoundException::new);
-        if (posts.size() == 0) {
-            throw new PostNotFoundException();
-        }
-        return posts;
+        return postRepository.findAllByUserId(user.getId()).orElseThrow(UserNotFoundException::new);
     }
 
     public Page<PostResponseDto> findAllChats(Pageable pageable,String order,String s) {
