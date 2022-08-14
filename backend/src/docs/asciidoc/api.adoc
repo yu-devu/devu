@@ -10,6 +10,103 @@ endif::[]
 :toclevels: 4
 :sectlinks:
 
+## User
+
+=== Email 전송
+
+==== REQUEST
+
+include::{snippets}/send-email_success/httpie-request.adoc[]
+
+include::{snippets}/send-email_success/request-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/send-email_success/http-response.adoc[]
+
+=== Email 중복 에러
+(이미 Email이 가입된 경우)
+
+==== REQUEST
+
+include::{snippets}/send-email_fail/httpie-request.adoc[]
+
+include::{snippets}/send-email_fail/request-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/send-email_fail/http-response.adoc[]
+
+=== Email 재전송
+가입은 안 되었지만 전에 mail 보낸 적 있는 경우
+
+==== REQUEST
+
+include::{snippets}/resend-email/httpie-request.adoc[]
+
+include::{snippets}/resend-email/request-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/resend-email/http-response.adoc[]
+
+=== Email 인증 성공
+
+==== REQUEST
+
+include::{snippets}/check-email_success/httpie-request.adoc[]
+
+include::{snippets}/check-email_success/request-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/check-email_success/http-response.adoc[]
+
+=== Email 인증 실패
+
+==== REQUEST
+
+include::{snippets}/check-email_fail/httpie-request.adoc[]
+
+include::{snippets}/check-email_fail/request-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/check-email_fail/http-response.adoc[]
+
+=== 회원가입 성공
+
+==== REQUEST
+
+include::{snippets}/register_success/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/register_success/http-response.adoc[]
+
+=== 회원가입 실패
+이메일 인증이 되지 않은 경우
+
+==== REQUEST
+
+include::{snippets}/register_fail/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/register_fail/http-response.adoc[]
+
+=== 로그인 성공
+
+==== REQUEST
+
+include::{snippets}/login_success/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/login_success/http-response.adoc[]
+
+=== 로그인 실패
+비밀번호 일치하지 않은 경우
+
+==== REQUEST
+
+include::{snippets}/login_fail/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/login_fail/http-response.adoc[]
+
 ## Post
 
 === Chat 수정
