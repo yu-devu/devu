@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,8 +30,13 @@ public class UserController {
 
     // 1st Logic in User create
     @PostMapping("/email")
-    private ResponseEntity<?> sendEmail(@RequestParam String email) {
+    private ResponseEntity<?> sendEmail(@RequestBody @Validated UserEmailRequestDto dto,
+                                        BindingResult bindingResult) {
         try {
+            if (bindingResult.hasErrors()) {
+                return ResponseEntity.badRequest().body(bindingResult.getFieldError());
+            }
+            String email = dto.getEmail();
             if (userService.isEmailExists(email)) {
                 if (userService.getByEmail(email).isEmailConfirm()) {
                     ResponseErrorDto errorDto = ResponseErrorDto.builder()

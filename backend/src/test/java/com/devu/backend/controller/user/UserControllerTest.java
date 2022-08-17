@@ -59,16 +59,20 @@ class UserControllerTest {
     @DisplayName("이메일 전송 - 성공")
     void sendEmail_success() throws Exception {
         String url = "/email";
-        String email = "test@yu.ac.kr";
+        UserEmailRequestDto dto = UserEmailRequestDto.builder()
+                .email("test@yu.ac.kr").build();
+        String content = objectMapper.writeValueAsString(dto);
 
         ResultActions actions = mockMvc.perform(post(url)
-                .param("email", email));
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
 
-        User user = userRepository.findByEmail(email).orElseThrow();
+        User user = userRepository.findByEmail(dto.getEmail()).orElseThrow();
         actions
-                .andExpect(status().isOk())
-                .andDo(document("{method-name}",
-                        requestParameters(parameterWithName("email").description("이메일"))));
+                .andExpect(status().isOk());
+                /*.andDo(document("{method-name}",
+                        requestParameters(parameterWithName("email").description("이메일"))));*/
 
         assertNotNull(user);
         assertNotNull(user.getEmailAuthKey());
@@ -79,14 +83,19 @@ class UserControllerTest {
     @DisplayName("이메일 전송 - 실패")
     void sendEmail_fail() throws Exception {
         String url = "/email";
-        String email = "test@yu.ac.kr";
+        UserEmailRequestDto dto = UserEmailRequestDto
+                .builder()
+                .email("test@yu.ac.kr").build();
+        String content = objectMapper.writeValueAsString(dto);
 
-        User user = userService.createUserBeforeEmailValidation(email);
+        User user = userService.createUserBeforeEmailValidation(dto.getEmail());
         user.updateEmailConfirm(true);
         ResultActions actions = mockMvc.perform(post(url)
-                .param("email", email))
-                .andDo(document("{method-name}",
-                        requestParameters(parameterWithName("email").description("이메일"))));
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+                /*.andDo(document("{method-name}",
+                        requestParameters(parameterWithName("email").description("이메일"))));*/
 
         actions
                 .andExpect(status().isBadRequest())
@@ -100,21 +109,25 @@ class UserControllerTest {
     @DisplayName("이메일 재 전송")
     void resendEmail() throws Exception {
         String url = "/email";
-        String email = "test@yu.ac.kr";
+        UserEmailRequestDto dto = UserEmailRequestDto.builder()
+                .email("test@yu.ac.kr").build();
+        String content = objectMapper.writeValueAsString(dto);
 
-        userService.createUserBeforeEmailValidation(email);
+        userService.createUserBeforeEmailValidation(dto.getEmail());
         ResultActions actions = mockMvc.perform(post(url)
-                .param("email", email));
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
 
         actions
                 .andExpect(status().isOk())
                 .andExpect(result -> {
                     MockHttpServletResponse response = result.getResponse();
-                    assertEquals("{\"error\":\"이메일 재전송 완료\"}", response.getContentAsString()); })
-                .andDo(document("{method-name}",
-                    requestParameters(parameterWithName("email").description("이메일"))));
+                    assertEquals("{\"error\":\"이메일 재전송 완료\"}", response.getContentAsString()); });
+                /*.andDo(document("{method-name}",
+                    requestParameters(parameterWithName("dto").description("이메일용 dto"))));*/
 
-        User user = userRepository.findByEmail(email).orElseThrow();
+        User user = userRepository.findByEmail(dto.getEmail()).orElseThrow();
 
         assertNotEquals("test-key", user.getEmailAuthKey());
     }
