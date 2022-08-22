@@ -56,12 +56,12 @@ class PostControllerTest {
                 .build();
     }
 
-    /*@Test
+    @Test
     @DisplayName("Chat 게시물을 수정한다.")
     void updateChat() throws Exception {
         Chat chat = createChat();
         Chat saveChat = postRepository.save(chat);
-        MockMultipartFile image = new MockMultipartFile("images", "imagefile.jpeg", "image/jpeg", "<<jpeg data>>".getBytes());
+        //MockMultipartFile image = new MockMultipartFile("images", "imagefile.jpeg", "image/jpeg", "<<jpeg data>>".getBytes());
         MockMultipartHttpServletRequestBuilder builder =
                 MockMvcRequestBuilders.multipart("/community/chat/"+ saveChat.getId());
         builder.with(new RequestPostProcessor() {
@@ -73,7 +73,7 @@ class PostControllerTest {
         });
 
         mockMvc.perform(builder
-                .file(image)
+                //.file(image)
                 .param("title", "change title")
                 .param("content", "change content"))
                 .andExpect(status().isOk())
@@ -81,14 +81,11 @@ class PostControllerTest {
                 requestParameters(
                         parameterWithName("title").description("제목")
                         ,parameterWithName("content").description("내용")
-                )
-                , requestParts(
-                        partWithName("images").description("첨부 이미지")
                 )));
 
         assertEquals("change title", saveChat.getTitle());
         assertEquals( "change content", saveChat.getContent());
-    }*/
+    }
 
     private Chat createChat() {
         Chat chat = Chat.builder()
@@ -99,7 +96,7 @@ class PostControllerTest {
         return chat;
     }
 
-    /*@Test
+    @Test
     @DisplayName("Study 게시물을 수정한다.")
     void updateStudy() throws Exception {
         Tag tag = getTag();
@@ -109,7 +106,7 @@ class PostControllerTest {
 
         postTag.changePost(study);
         Study saveStudy = postRepository.save(study);
-        MockMultipartFile image = new MockMultipartFile("images", "imagefile.jpeg", "image/jpeg", "<<jpeg data>>".getBytes());
+        //MockMultipartFile image = new MockMultipartFile("images", "imagefile.jpeg", "image/jpeg", "<<jpeg data>>".getBytes());
         MockMultipartHttpServletRequestBuilder builder =
                 MockMvcRequestBuilders.multipart("/community/study/"+ saveStudy.getId());
         builder.with(new RequestPostProcessor() {
@@ -121,7 +118,7 @@ class PostControllerTest {
         });
 
         mockMvc.perform(builder
-                .file(image)
+                //.file(image)
                 .param("title", "change title")
                 .param("content", "change content")
                 .param("tags", "JAVA"))
@@ -131,15 +128,12 @@ class PostControllerTest {
                                 parameterWithName("title").description("제목")
                                 ,parameterWithName("content").description("내용")
                                 ,parameterWithName("tags").description("태그")
-                        )
-                        , requestParts(
-                                partWithName("images").description("첨부 이미지")
                         )));
 
         assertEquals("change title", saveStudy.getTitle());
         assertEquals( "change content", saveStudy.getContent());
         assertEquals("JAVA", saveStudy.getPostTags().get(0).getTag().getName());
-    }*/
+    }
 
     private Study createStudy(List<PostTag> tags) {
         Study study = Study.builder()
@@ -165,7 +159,7 @@ class PostControllerTest {
         return tagRepository.findTagByName("JAVA").get();
     }
 
-    /*@Test
+    @Test
     @DisplayName("Question 게시물을 수정한다.")
     void updateQuestion() throws Exception {
         Tag tag = getTag();
@@ -176,7 +170,7 @@ class PostControllerTest {
         postTag.changePost(question);
         Question saveQuestion = postRepository.save(question);
 
-        MockMultipartFile image = new MockMultipartFile("images", "imagefile.jpeg", "image/jpeg", "<<jpeg data>>".getBytes());
+        //MockMultipartFile image = new MockMultipartFile("images", "imagefile.jpeg", "image/jpeg", "<<jpeg data>>".getBytes());
         MockMultipartHttpServletRequestBuilder builder =
                 MockMvcRequestBuilders.multipart("/community/question/"+ saveQuestion.getId());
         builder.with(new RequestPostProcessor() {
@@ -188,7 +182,7 @@ class PostControllerTest {
         });
 
         mockMvc.perform(builder
-                .file(image)
+                //.file(image)
                 .param("title", "change title")
                 .param("content", "change content")
                 .param("tags", "JAVA"))
@@ -198,15 +192,12 @@ class PostControllerTest {
                                 parameterWithName("title").description("제목")
                                 ,parameterWithName("content").description("내용")
                                 ,parameterWithName("tags").description("태그")
-                        )
-                        , requestParts(
-                                partWithName("images").description("첨부 이미지")
                         )));
 
         assertEquals("change title", saveQuestion.getTitle());
         assertEquals( "change content", saveQuestion.getContent());
         assertEquals("JAVA", saveQuestion.getPostTags().get(0).getTag().getName());
-    }*/
+    }
 
     private Question createQuestion(List<PostTag> tags) {
         Question question = Question.builder()
