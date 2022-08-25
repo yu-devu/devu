@@ -32,8 +32,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -141,13 +139,20 @@ class UserControllerTest {
         String email = "test@yu.ac.kr";
         User savedUser = createUser(email);
 
+        UserKeyRequestDto dto = UserKeyRequestDto.builder()
+                .userKey(savedUser.getEmailAuthKey()).build();
+        String content = objectMapper.writeValueAsString(dto);
+
         ResultActions actions = mockMvc.perform(post(url)
-                .param("postKey", savedUser.getEmailAuthKey()));
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
         actions
                 .andExpect(status().isOk())
                 .andDo(document("{method-name}",
-                        requestParameters(parameterWithName("postKey").description("인증 키"))));;
-
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));;
         assertTrue(savedUser.isEmailConfirm());
     }
 
@@ -156,10 +161,17 @@ class UserControllerTest {
     void checkEmail_fail() throws Exception {
         String url = "/key";
         String email = "test@yu.ac.kr";
+        String wrongKey = "abcdefgh";
         User savedUser = createUser(email);
 
+        UserKeyRequestDto dto = UserKeyRequestDto.builder()
+                .userKey(wrongKey).build();
+        String content = objectMapper.writeValueAsString(dto);
+
         ResultActions actions = mockMvc.perform(post(url)
-                .param("postKey", "asdasd"));
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
 
         actions
                 .andExpect(status().isBadRequest())
@@ -168,7 +180,8 @@ class UserControllerTest {
                     assertEquals("{\"error\":\"입력한 인증키가 일치하지 않습니다.\"}", response.getContentAsString());
                 })
                 .andDo(document("{method-name}",
-                        requestParameters(parameterWithName("postKey").description("인증 키"))));
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));;
         assertFalse(savedUser.isEmailConfirm());
     }
 
@@ -177,8 +190,7 @@ class UserControllerTest {
                 .email(email)
                 .emailConfirm(false)
                 .build();
-        User savedUser = userService.createUserBeforeEmailValidation(user.getEmail());
-        return savedUser;
+        return userService.createUserBeforeEmailValidation(user.getEmail());
     }
 
     @Test

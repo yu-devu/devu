@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = EmailCheckValidator.class)
+@Constraint(validatedBy = UserKeyValidator.class)
 public @interface UserKeyCheck {
     String ERROR_MESSAGE = "잘못된 인증 키 양식입니다.";
 

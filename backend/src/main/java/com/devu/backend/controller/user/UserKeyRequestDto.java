@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserKeyRequestDto {
     @UserKeyCheck
+
     private String userKey;
 }
