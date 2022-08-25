@@ -1,6 +1,7 @@
 package com.devu.backend.controller.user;
 
 import com.devu.backend.controller.validation.EmailCheck;
+import com.devu.backend.controller.validation.UserKeyCheck;
 import com.devu.backend.entity.User;
 import com.devu.backend.repository.UserRepository;
 import com.devu.backend.service.UserService;
@@ -60,7 +61,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("이메일 입력 Form - 실패")
+    @DisplayName("이메일 입력 검증 - 실패")
     void emailValidationFail() throws Exception {
         String url = "/email";
         UserEmailRequestDto dto = UserEmailRequestDto.builder()
@@ -84,7 +85,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("이메일 입력 Form - 성공")
+    @DisplayName("이메일 입력 검증 - 성공")
     void emailValidationSuccess() throws Exception {
         JSONParser parser = new JSONParser();
         String url = "/email";
@@ -187,6 +188,30 @@ class UserControllerTest {
         User user = userRepository.findByEmail(dto.getEmail()).orElseThrow();
 
         assertNotEquals("test-key", user.getEmailAuthKey());
+    }
+
+    @Test
+    @DisplayName("이메일 검증키 검증 - 실패")
+    void userKeyValidationFail() throws Exception {
+        String url = "/key";
+        UserKeyRequestDto dto = UserKeyRequestDto.builder()
+                .userKey("").build();
+        String content = objectMapper.writeValueAsString(dto);
+
+        ResultActions actions = mockMvc.perform(post(url)
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        actions.andExpect(status().isBadRequest())
+                .andExpect(result -> {
+                    MockHttpServletResponse response = result.getResponse();
+                    String contentAsString = response.getContentAsString();
+                    assertThat(contentAsString).isEqualTo(UserKeyCheck.ERROR_MESSAGE);
+                })
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));;
     }
 
     @Test
