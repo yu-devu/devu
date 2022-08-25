@@ -33,10 +33,15 @@ const Register = () => {
   const showInformationInput = () => setShowInformation(true);
   const handleAuthorize = async () => {
     if (email.includes("@ynu.ac.kr") || email.includes("@yu.ac.kr")) {
-      const formData = new FormData();
-      formData.append("email", email);
+      const data = {
+        email: email,
+      };
       await axios
-        .post(process.env.REACT_APP_DB_HOST + `/email`, formData)
+        .post(process.env.REACT_APP_DB_HOST + `/email`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
         .then((res) => {
           if (res.data.error) alert(res.data.error);
           setClickAuthkey(true);
