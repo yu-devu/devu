@@ -192,7 +192,7 @@ const Register = () => {
               <p className="register-text">비밀번호가 일치하지 않습니다.</p>
             ) : null}
           </div>
-          <h7 className="text-name">이름</h7>
+          <h7 className="text-name">닉네임</h7>
           <div className="register-info">
             <input
               className="register-input-name"
@@ -200,7 +200,7 @@ const Register = () => {
               name="username"
               value={username}
               onChange={(e) => handleUsername(e)}
-              placeholder="이름"
+              placeholder="닉네임"
             />
           </div>
           <button onClick={() => handleSignUp()} className="btn-register">
