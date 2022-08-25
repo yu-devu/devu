@@ -29,7 +29,7 @@ public class AdminController {
     private final EmailService emailService;
 
     @GetMapping
-    private String adminHome(Model model) {
+    public String adminHome(Model model) {
         List<User> users = userService.getUsers();
         List<UserDTO> userDTOS = new ArrayList<>();
         int sumOfPosts = 0;
@@ -71,7 +71,7 @@ public class AdminController {
     }
 
     @PostMapping("/user")
-    private String createMockUser(Model model) {
+    public String createMockUser(Model model) {
         String username = emailService.createKey();
         String email = username + "@test.com";
         String password = "test";
@@ -88,37 +88,37 @@ public class AdminController {
 
 
     @PostMapping("/{userId}")
-    private String deleteUser(@PathVariable Long userId, Model model) {
+    public String deleteUser(@PathVariable Long userId, Model model) {
         log.info("userId = {}", userId);
         userService.deleteUser(userId);
         return "redirect:/admin";
     }
 
     @GetMapping("/userInfo")
-    private String getUserInfo(@RequestParam Long userId, Model model) {
+    public String getUserInfo(@RequestParam Long userId, Model model) {
         log.info("Query parameter = {}", userId);
         User user = userService.getUserById(userId);
         List<Post> allPosts = postService.findAllPosts(user);
-        int receiveLikes = 0;
-        int receiveComments = 0;
-        calculateReceiveValue(allPosts, receiveLikes, receiveComments);
         UserDTO userDTO = UserDTO.builder()
                 .username(user.getUsername())
                 .userId(user.getId())
                 .email(user.getEmail())
-                .receivedComments(receiveComments)
-                .receivedLikes(receiveLikes)
                 .build();
+        calculateReceiveValue(allPosts, userDTO);
         model.addAttribute("user", userDTO);
         addStudyAttribute(model, user);
         return "user-info";
     }
 
-    private void calculateReceiveValue(List<Post> allPosts, int receiveLikes, int receiveComments) {
+    private void calculateReceiveValue(List<Post> allPosts,UserDTO userDTO) {
+        int receiveLikes = 0;
+        int receiveComments = 0;
         for (Post post : allPosts) {
             receiveLikes += post.getLikes().size();
             receiveComments += post.getComments().size();
         }
+        userDTO.setReceivedLikes(receiveLikes);
+        userDTO.setReceivedComments(receiveLikes);
     }
 
     private void addStudyAttribute(Model model, User user) {
@@ -129,7 +129,7 @@ public class AdminController {
     }
 
     @PostMapping("/post/{userId}")
-    private String createMockPost(@RequestParam String type,
+    public String createMockPost(@RequestParam String type,
                                   @PathVariable Long userId ,
                                   RedirectAttributes redirectAttributes) {
         try {
