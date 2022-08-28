@@ -1,10 +1,14 @@
 package com.devu.backend.controller.user;
 
+import com.devu.backend.controller.validation.EmailCheck;
+import com.devu.backend.controller.validation.UserKeyCheck;
 import com.devu.backend.entity.User;
 import com.devu.backend.repository.UserRepository;
 import com.devu.backend.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,13 +29,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,6 +45,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(RestDocumentationExtension.class)
 class UserControllerTest {
 
+    public static final String SUCCESS_EMAIL = "test@yu.ac.kr";
+    public static final String FAIL_EMAIL = "test@naver.com";
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
     @Autowired private UserService userService;
@@ -56,11 +61,61 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("이메일 입력 검증 - 실패")
+    void emailValidationFail() throws Exception {
+        String url = "/email";
+        UserEmailRequestDto dto = UserEmailRequestDto.builder()
+                .email(FAIL_EMAIL).build();
+        String content = objectMapper.writeValueAsString(dto);
+
+        ResultActions actions = mockMvc.perform(post(url)
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        actions.andExpect(status().isBadRequest())
+                .andExpect(result -> {
+                    MockHttpServletResponse response = result.getResponse();
+                    String contentAsString = response.getContentAsString();
+                    assertThat(contentAsString).isEqualTo(EmailCheck.ERROR_MESSAGE);
+                })
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));;
+    }
+
+    @Test
+    @DisplayName("이메일 입력 검증 - 성공")
+    void emailValidationSuccess() throws Exception {
+        JSONParser parser = new JSONParser();
+        String url = "/email";
+        UserEmailRequestDto dto = UserEmailRequestDto.builder()
+                .email(SUCCESS_EMAIL).build();
+        String content = objectMapper.writeValueAsString(dto);
+
+        ResultActions actions = mockMvc.perform(post(url)
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        actions.andExpect(status().isOk())
+                .andExpect(result -> {
+                    MockHttpServletResponse response = result.getResponse();
+                    String contentAsString = response.getContentAsString();
+                    JSONObject jsonObject = (JSONObject) parser.parse(contentAsString);
+                    assertThat(jsonObject.get("email")).isEqualTo(SUCCESS_EMAIL);
+                })
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));;
+    }
+
+    @Test
     @DisplayName("이메일 전송 - 성공")
     void sendEmail_success() throws Exception {
         String url = "/email";
         UserEmailRequestDto dto = UserEmailRequestDto.builder()
-                .email("test@yu.ac.kr").build();
+                .email(SUCCESS_EMAIL).build();
         String content = objectMapper.writeValueAsString(dto);
 
         ResultActions actions = mockMvc.perform(post(url)
@@ -70,9 +125,10 @@ class UserControllerTest {
 
         User user = userRepository.findByEmail(dto.getEmail()).orElseThrow();
         actions
-                .andExpect(status().isOk());
-                /*.andDo(document("{method-name}",
-                        requestParameters(parameterWithName("email").description("이메일"))));*/
+                .andExpect(status().isOk())
+                .andDo(document("{method-name}",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint())));;
 
         assertNotNull(user);
         assertNotNull(user.getEmailAuthKey());
@@ -85,7 +141,7 @@ class UserControllerTest {
         String url = "/email";
         UserEmailRequestDto dto = UserEmailRequestDto
                 .builder()
-                .email("test@yu.ac.kr").build();
+                .email(SUCCESS_EMAIL).build();
         String content = objectMapper.writeValueAsString(dto);
 
         User user = userService.createUserBeforeEmailValidation(dto.getEmail());
@@ -94,15 +150,15 @@ class UserControllerTest {
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
-                /*.andDo(document("{method-name}",
-                        requestParameters(parameterWithName("email").description("이메일"))));*/
-
         actions
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> {
                     MockHttpServletResponse response = result.getResponse();
                     assertEquals("{\"error\":\"이미 가입 완료된 이메일입니다.\"}", response.getContentAsString());
-                });
+                })
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));;
     }
 
     @Test
@@ -110,7 +166,7 @@ class UserControllerTest {
     void resendEmail() throws Exception {
         String url = "/email";
         UserEmailRequestDto dto = UserEmailRequestDto.builder()
-                .email("test@yu.ac.kr").build();
+                .email(SUCCESS_EMAIL).build();
         String content = objectMapper.writeValueAsString(dto);
 
         userService.createUserBeforeEmailValidation(dto.getEmail());
@@ -123,9 +179,11 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(result -> {
                     MockHttpServletResponse response = result.getResponse();
-                    assertEquals("{\"error\":\"이메일 재전송 완료\"}", response.getContentAsString()); });
-                /*.andDo(document("{method-name}",
-                    requestParameters(parameterWithName("dto").description("이메일용 dto"))));*/
+                    assertEquals("{\"error\":\"이메일 재전송 완료\"}", response.getContentAsString()); })
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));;
+
 
         User user = userRepository.findByEmail(dto.getEmail()).orElseThrow();
 
@@ -133,19 +191,49 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("이메일 검증키 검증 - 실패")
+    void userKeyValidationFail() throws Exception {
+        String url = "/key";
+        UserKeyRequestDto dto = UserKeyRequestDto.builder()
+                .userKey("").build();
+        String content = objectMapper.writeValueAsString(dto);
+
+        ResultActions actions = mockMvc.perform(post(url)
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
+        actions.andExpect(status().isBadRequest())
+                .andExpect(result -> {
+                    MockHttpServletResponse response = result.getResponse();
+                    String contentAsString = response.getContentAsString();
+                    assertThat(contentAsString).isEqualTo(UserKeyCheck.ERROR_MESSAGE);
+                })
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));;
+    }
+
+    @Test
     @DisplayName("이메일 인증 - 성공")
     void checkEmail_success() throws Exception {
         String url = "/key";
-        String email = "test@yu.ac.kr";
-        User savedUser = createUser(email);
+        User savedUser = createUser(SUCCESS_EMAIL);
+
+        UserKeyRequestDto dto = UserKeyRequestDto.builder()
+                .userKey(savedUser.getEmailAuthKey()).build();
+        String content = objectMapper.writeValueAsString(dto);
 
         ResultActions actions = mockMvc.perform(post(url)
-                .param("postKey", savedUser.getEmailAuthKey()));
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
+
         actions
                 .andExpect(status().isOk())
                 .andDo(document("{method-name}",
-                        requestParameters(parameterWithName("postKey").description("인증 키"))));;
-
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));;
         assertTrue(savedUser.isEmailConfirm());
     }
 
@@ -153,11 +241,17 @@ class UserControllerTest {
     @DisplayName("이메일 인증 - 실패")
     void checkEmail_fail() throws Exception {
         String url = "/key";
-        String email = "test@yu.ac.kr";
-        User savedUser = createUser(email);
+        String wrongKey = "abcdefgh";
+        User savedUser = createUser(SUCCESS_EMAIL);
+
+        UserKeyRequestDto dto = UserKeyRequestDto.builder()
+                .userKey(wrongKey).build();
+        String content = objectMapper.writeValueAsString(dto);
 
         ResultActions actions = mockMvc.perform(post(url)
-                .param("postKey", "asdasd"));
+                .content(content)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON));
 
         actions
                 .andExpect(status().isBadRequest())
@@ -166,7 +260,8 @@ class UserControllerTest {
                     assertEquals("{\"error\":\"입력한 인증키가 일치하지 않습니다.\"}", response.getContentAsString());
                 })
                 .andDo(document("{method-name}",
-                        requestParameters(parameterWithName("postKey").description("인증 키"))));
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));;
         assertFalse(savedUser.isEmailConfirm());
     }
 
@@ -175,8 +270,7 @@ class UserControllerTest {
                 .email(email)
                 .emailConfirm(false)
                 .build();
-        User savedUser = userService.createUserBeforeEmailValidation(user.getEmail());
-        return savedUser;
+        return userService.createUserBeforeEmailValidation(user.getEmail());
     }
 
     @Test
