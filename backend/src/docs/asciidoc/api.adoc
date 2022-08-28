@@ -107,6 +107,15 @@ include::{snippets}/login_fail/http-request.adoc[]
 ==== RESPONSE
 include::{snippets}/login_fail/http-response.adoc[]
 
+=== 로그아웃
+
+==== REQUEST
+
+include::{snippets}/logout/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/logout/http-response.adoc[]
+
 ## Post
 
 === Chat 수정
