@@ -91,7 +91,7 @@ class UserControllerTest {
                 })
                 .andDo(document("{method-name}",
                         preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())));;
+                        preprocessResponse(prettyPrint())));
     }
 
     @Test
@@ -117,7 +117,7 @@ class UserControllerTest {
                 })
                 .andDo(document("{method-name}",
                         preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())));;
+                        preprocessResponse(prettyPrint())));
     }
 
     @Test
@@ -138,7 +138,7 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document("{method-name}",
                 preprocessRequest(prettyPrint()),
-                preprocessResponse(prettyPrint())));;
+                preprocessResponse(prettyPrint())));
 
         assertNotNull(user);
         assertNotNull(user.getEmailAuthKey());
@@ -168,7 +168,7 @@ class UserControllerTest {
                 })
                 .andDo(document("{method-name}",
                         preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())));;
+                        preprocessResponse(prettyPrint())));
     }
 
     @Test
@@ -192,7 +192,7 @@ class UserControllerTest {
                     assertEquals("{\"error\":\"이메일 재전송 완료\"}", response.getContentAsString()); })
                 .andDo(document("{method-name}",
                         preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())));;
+                        preprocessResponse(prettyPrint())));
 
 
         User user = userRepository.findByEmail(dto.getEmail()).orElseThrow();
@@ -221,7 +221,7 @@ class UserControllerTest {
                 })
                 .andDo(document("{method-name}",
                         preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())));;
+                        preprocessResponse(prettyPrint())));
     }
 
     @Test
@@ -243,7 +243,7 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document("{method-name}",
                         preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())));;
+                        preprocessResponse(prettyPrint())));
         assertTrue(savedUser.isEmailConfirm());
     }
 
@@ -271,7 +271,7 @@ class UserControllerTest {
                 })
                 .andDo(document("{method-name}",
                         preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())));;
+                        preprocessResponse(prettyPrint())));
         assertFalse(savedUser.isEmailConfirm());
     }
 
@@ -302,7 +302,7 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document("{method-name}",
                         preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())));;
+                        preprocessResponse(prettyPrint())));
 
         User user = userRepository.findByEmail(email).orElseThrow();
         assertEquals("testUser", user.getUsername());
@@ -397,7 +397,7 @@ class UserControllerTest {
                 })
                 .andDo(document("{method-name}",
                         preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint())));;
+                        preprocessResponse(prettyPrint())));
     }
 
     @Test
