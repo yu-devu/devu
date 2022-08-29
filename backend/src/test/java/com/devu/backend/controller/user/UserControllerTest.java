@@ -1,9 +1,13 @@
 package com.devu.backend.controller.user;
 
+import com.devu.backend.config.auth.token.RefreshToken;
+import com.devu.backend.config.auth.token.TokenService;
 import com.devu.backend.controller.validation.EmailCheck;
 import com.devu.backend.controller.validation.UserKeyCheck;
 import com.devu.backend.entity.User;
+import com.devu.backend.repository.RefreshTokenRepository;
 import com.devu.backend.repository.UserRepository;
+import com.devu.backend.service.CookieService;
 import com.devu.backend.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseCookie;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -28,6 +33,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+
+import javax.servlet.http.Cookie;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,6 +58,9 @@ class UserControllerTest {
     @Autowired private ObjectMapper objectMapper;
     @Autowired private UserService userService;
     @Autowired private UserRepository userRepository;
+    @Autowired private TokenService tokenService;
+    @Autowired private CookieService cookieService;
+    @Autowired private RefreshTokenRepository refreshTokenRepository;
     @Autowired PasswordEncoder passwordEncoder;
 
     @BeforeEach public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
@@ -390,4 +400,30 @@ class UserControllerTest {
                         preprocessResponse(prettyPrint())));;
     }
 
+    @Test
+    @DisplayName("로그아웃")
+    void logout() throws Exception {
+        String url = "/logout";
+        String accessToken = tokenService.createAccessToken("test@yu.ac.kr");
+        String refreshToken = tokenService.createRefreshToken("test@yu.ac.kr");
+        RefreshToken token = RefreshToken.builder().refreshToken(refreshToken).build();
+        refreshTokenRepository.save(token);
+        ResponseCookie cookie = cookieService.createCookie("X-AUTH-REFRESH-TOKEN", refreshToken);
+
+        assertNotNull(refreshTokenRepository.findByRefreshToken(refreshToken));
+        mockMvc.perform(
+                post(url)
+                    .cookie(new Cookie(cookie.getName(), cookie.getValue()))
+                    .header("X-AUTH-ACCESS-TOKEN", accessToken))
+                .andExpect(status().isOk())
+                .andExpect(result -> {
+                    MockHttpServletResponse response = result.getResponse();
+                    assertEquals(0, response.getCookie("X-AUTH-REFRESH-TOKEN").getMaxAge());
+                })
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
+
+        assertNull(refreshTokenRepository.findByRefreshToken(refreshToken));
+    }
 }
