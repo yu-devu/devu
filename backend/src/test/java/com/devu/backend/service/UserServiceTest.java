@@ -133,14 +133,15 @@ class UserServiceTest {
         MockHttpServletResponse response = new MockHttpServletResponse();
         given(cookieService.getCookie(request, "X-AUTH-REFRESH-TOKEN"))
                 .willReturn(new Cookie("testName", "testKey"));
+        RefreshToken refreshToken = new RefreshToken(5L, "testToken");
         given(refreshTokenRepository.findByRefreshToken("testKey"))
-                .willReturn(new RefreshToken(5L, "testToken"));
+                .willReturn(refreshToken);
         given(cookieService.deleteCookie("X-AUTH-REFRESH-TOKEN"))
                 .willReturn(ResponseCookie.from("testName", "testValue").build());
 
         userService.logoutProcess(request, response);
 
-        verify(refreshTokenRepository).delete(any());
+        verify(refreshTokenRepository).delete(refreshToken);
         verify(cookieService).deleteCookie("X-AUTH-REFRESH-TOKEN");
     }
 }
