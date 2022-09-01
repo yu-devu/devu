@@ -61,9 +61,9 @@ class PostControllerTest {
     void updateChat() throws Exception {
         Chat chat = createChat();
         Chat saveChat = postRepository.save(chat);
-        //MockMultipartFile image = new MockMultipartFile("images", "imagefile.jpeg", "image/jpeg", "<<jpeg data>>".getBytes());
+        MockMultipartFile image = new MockMultipartFile("images", "imagefile.jpeg", "image/jpeg", "<<jpeg data>>".getBytes());
         MockMultipartHttpServletRequestBuilder builder =
-                MockMvcRequestBuilders.multipart("/community/chat/"+ saveChat.getId());
+                MockMvcRequestBuilders.multipart("/community/chat/"+ saveChat.getId()).file(image);
         builder.with(new RequestPostProcessor() {
             @Override
             public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
@@ -106,9 +106,9 @@ class PostControllerTest {
 
         postTag.changePost(study);
         Study saveStudy = postRepository.save(study);
-        //MockMultipartFile image = new MockMultipartFile("images", "imagefile.jpeg", "image/jpeg", "<<jpeg data>>".getBytes());
+        MockMultipartFile image = new MockMultipartFile("images", "imagefile.jpeg", "image/jpeg", "<<jpeg data>>".getBytes());
         MockMultipartHttpServletRequestBuilder builder =
-                MockMvcRequestBuilders.multipart("/community/study/"+ saveStudy.getId());
+                MockMvcRequestBuilders.multipart("/community/study/"+ saveStudy.getId()).file(image);
         builder.with(new RequestPostProcessor() {
             @Override
             public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
@@ -127,7 +127,7 @@ class PostControllerTest {
                         requestParameters(
                                 parameterWithName("title").description("제목")
                                 ,parameterWithName("content").description("내용")
-                                ,parameterWithName("tags").description("태그")
+                                ,parameterWithName("tags").description("태그(List)")
                         )));
 
         assertEquals("change title", saveStudy.getTitle());
@@ -170,9 +170,9 @@ class PostControllerTest {
         postTag.changePost(question);
         Question saveQuestion = postRepository.save(question);
 
-        //MockMultipartFile image = new MockMultipartFile("images", "imagefile.jpeg", "image/jpeg", "<<jpeg data>>".getBytes());
+        MockMultipartFile image = new MockMultipartFile("images", "imagefile.jpeg", "image/jpeg", "<<jpeg data>>".getBytes());
         MockMultipartHttpServletRequestBuilder builder =
-                MockMvcRequestBuilders.multipart("/community/question/"+ saveQuestion.getId());
+                MockMvcRequestBuilders.multipart("/community/question/"+ saveQuestion.getId()).file(image);
         builder.with(new RequestPostProcessor() {
             @Override
             public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
@@ -191,7 +191,7 @@ class PostControllerTest {
                         requestParameters(
                                 parameterWithName("title").description("제목")
                                 ,parameterWithName("content").description("내용")
-                                ,parameterWithName("tags").description("태그")
+                                ,parameterWithName("tags").description("태그(List)")
                         )));
 
         assertEquals("change title", saveQuestion.getTitle());
