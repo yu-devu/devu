@@ -16,9 +16,7 @@ endif::[]
 
 ==== REQUEST
 
-include::{snippets}/send-email_success/httpie-request.adoc[]
-
-include::{snippets}/send-email_success/request-parameters.adoc[]
+include::{snippets}/send-email_success/http-request.adoc[]
 
 ==== RESPONSE
 include::{snippets}/send-email_success/http-response.adoc[]
@@ -28,9 +26,7 @@ include::{snippets}/send-email_success/http-response.adoc[]
 
 ==== REQUEST
 
-include::{snippets}/send-email_fail/httpie-request.adoc[]
-
-include::{snippets}/send-email_fail/request-parameters.adoc[]
+include::{snippets}/send-email_fail/http-request.adoc[]
 
 ==== RESPONSE
 include::{snippets}/send-email_fail/http-response.adoc[]
@@ -40,9 +36,7 @@ include::{snippets}/send-email_fail/http-response.adoc[]
 
 ==== REQUEST
 
-include::{snippets}/resend-email/httpie-request.adoc[]
-
-include::{snippets}/resend-email/request-parameters.adoc[]
+include::{snippets}/resend-email/http-request.adoc[]
 
 ==== RESPONSE
 include::{snippets}/resend-email/http-response.adoc[]
@@ -51,9 +45,7 @@ include::{snippets}/resend-email/http-response.adoc[]
 
 ==== REQUEST
 
-include::{snippets}/check-email_success/httpie-request.adoc[]
-
-include::{snippets}/check-email_success/request-parameters.adoc[]
+include::{snippets}/check-email_success/http-request.adoc[]
 
 ==== RESPONSE
 include::{snippets}/check-email_success/http-response.adoc[]
@@ -62,9 +54,7 @@ include::{snippets}/check-email_success/http-response.adoc[]
 
 ==== REQUEST
 
-include::{snippets}/check-email_fail/httpie-request.adoc[]
-
-include::{snippets}/check-email_fail/request-parameters.adoc[]
+include::{snippets}/check-email_fail/http-request.adoc[]
 
 ==== RESPONSE
 include::{snippets}/check-email_fail/http-response.adoc[]
@@ -126,8 +116,6 @@ include::{snippets}/update-chat/httpie-request.adoc[]
 
 include::{snippets}/update-chat/request-parameters.adoc[]
 
-include::{snippets}/update-chat/request-parts.adoc[]
-
 ==== RESPONSE
 include::{snippets}/update-chat/http-response.adoc[]
 
@@ -139,8 +127,6 @@ include::{snippets}/update-study/httpie-request.adoc[]
 
 include::{snippets}/update-study/request-parameters.adoc[]
 
-include::{snippets}/update-study/request-parts.adoc[]
-
 ==== RESPONSE
 include::{snippets}/update-study/http-response.adoc[]
 
@@ -151,8 +137,6 @@ include::{snippets}/update-study/http-response.adoc[]
 include::{snippets}/update-question/httpie-request.adoc[]
 
 include::{snippets}/update-question/request-parameters.adoc[]
-
-include::{snippets}/update-question/request-parts.adoc[]
 
 ==== RESPONSE
 include::{snippets}/update-question/http-response.adoc[]
