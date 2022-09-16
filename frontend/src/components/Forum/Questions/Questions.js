@@ -29,6 +29,7 @@ import hit from "../../../img/hit.png";
 import like from "../../../img/like.png";
 import like_color from "../../../img/like_color.png";
 import { Link } from "react-router-dom";
+import { useMediaQuery } from 'react-responsive'
 
 const Questions = () => {
   let now = new Date();
@@ -50,6 +51,7 @@ const Questions = () => {
   const [sentence, setSentence] = useState("");
   const [status, setStatus] = useState("");
   const [order, setOrder] = useState("");
+  const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 })
   const [likePosts, setLikePosts] = useState([]);
   const onChangeSentence = (e) => {
     setSentence(e.target.value);
@@ -165,7 +167,51 @@ const Questions = () => {
           <h3 className="top-msg">쉽게 질문하고, 쉽게 대답하고</h3>
           <h4 className="top-msg-gray">지식을 주고받아보세요!</h4>
           {/* 상위 3개 게시물 */}
-          <div className="list-topcards">
+          {isTabletOrMobile ? (<div className="list-topcards">
+            {postData.slice(0, 1).map((top) => (
+              <li key={top.id} className="top-cards">
+                <div className="top-card">
+                  <div className="top-circle">
+                    <div className="top-profile">
+                      <img className="top-photo" src={a} alt="" />
+                    </div>
+                    <div className="top-detail">
+                      <div className="top-title">
+                        <Link to={`/questionsDetail/${top.id}`}>
+                          {top.title.length > 10
+                            ? top.title.substr(0, 10) + "..."
+                            : top.title}
+                        </Link>
+                      </div>
+                      <div className="top-content">
+                        {top.content.length > 20
+                          ? top.title.substr(0, 20) + "..."
+                          : top.content}
+                      </div>
+                      <div className="top-date">
+                        {top.postYear == year
+                          ? top.postMonth == month && top.postDay == date
+                            ? top.postHour == hours
+                              ? top.postMinute == minutes
+                                ? seconds - top.postSecond + "초 전"
+                                : minutes - top.postMinute == 1 &&
+                                  seconds < top.postSecond
+                                  ? 60 - top.postSecond + seconds + "초 전"
+                                  : minutes - top.postMinute + "분 전"
+                              : hours - top.postHour + "시간 전"
+                            : top.postMonth + "." + top.postDay
+                          : top.postYear.slice(2, 4) +
+                          "." +
+                          top.postMonth +
+                          "." +
+                          top.postDay}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </div>) : (<div className="list-topcards">
             {postData.slice(0, 3).map((top) => (
               <li key={top.id} className="top-cards">
                 <div className="top-card">
@@ -194,24 +240,231 @@ const Questions = () => {
                                 ? seconds - top.postSecond + "초 전"
                                 : minutes - top.postMinute == 1 &&
                                   seconds < top.postSecond
-                                ? 60 - top.postSecond + seconds + "초 전"
-                                : minutes - top.postMinute + "분 전"
+                                  ? 60 - top.postSecond + seconds + "초 전"
+                                  : minutes - top.postMinute + "분 전"
                               : hours - top.postHour + "시간 전"
                             : top.postMonth + "." + top.postDay
                           : top.postYear.slice(2, 4) +
-                            "." +
-                            top.postMonth +
-                            "." +
-                            top.postDay}
+                          "." +
+                          top.postMonth +
+                          "." +
+                          top.postDay}
                       </div>
                     </div>
                   </div>
                 </div>
               </li>
             ))}
-          </div>
+          </div>)}
         </div>
-        <div className="body-questions">
+        {isTabletOrMobile ? (<div className="body-questions">
+          <div className="cat-menu">
+            {status === "" ? (
+              <div className="cat-menu-items">
+                <p
+                  className="cat-item-selected"
+                  onClick={() => {
+                    setStatus("");
+                  }}
+                >
+                  전체
+                </p>
+                <p
+                  className="cat-item"
+                  onClick={() => {
+                    setStatus("SOLVED");
+                  }}
+                >
+                  해결
+                </p>
+                <p
+                  className="cat-item"
+                  onClick={() => {
+                    setStatus("UNSOLVED");
+                  }}
+                >
+                  미해결
+                </p>
+              </div>
+            ) : status === "SOLVED" ? (
+              <div className="cat-menu-items">
+                <p
+                  className="cat-item"
+                  onClick={() => {
+                    setStatus("");
+                  }}
+                >
+                  전체
+                </p>
+                <p
+                  className="cat-item-selected"
+                  onClick={() => {
+                    setStatus("SOLVED");
+                  }}
+                >
+                  해결
+                </p>
+                <p
+                  className="cat-item"
+                  onClick={() => {
+                    setStatus("UNSOLVED");
+                  }}
+                >
+                  미해결
+                </p>
+              </div>
+            ) : (
+              <div className="cat-menu-items">
+                <p
+                  className="cat-item"
+                  onClick={() => {
+                    setStatus("");
+                  }}
+                >
+                  전체
+                </p>
+                <p
+                  className="cat-item"
+                  onClick={() => {
+                    setStatus("SOLVED");
+                  }}
+                >
+                  해결
+                </p>
+                <p
+                  className="cat-item-selected"
+                  onClick={() => {
+                    setStatus("UNSOLVED");
+                  }}
+                >
+                  미해결
+                </p>
+              </div>
+            )}
+          </div>
+          <div className="search-and-write">
+            <div className="questions-search">
+              <input
+                type="text"
+                placeholder="맞춤 스터디그룹을 찾아보세요"
+                className="search-input"
+                onChange={(e) => {
+                  onChangeSentence(e);
+                }}
+                onKeyPress={handleKeyPress}
+              />
+              <button
+                className="btn-mag"
+                onClick={() => {
+                  fetchData();
+                }}
+              >
+                <img className="img-mag" src={magnify} alt="" />
+              </button>
+            </div>
+            {username ? ( // 로그인 했을 때 글쓰기 버튼 활성화
+              <Link to="write">
+                <button className="btn-questions-write">글쓰기</button>
+              </Link>
+            ) : null}
+          </div>
+          <div className="body-content">
+            <select
+              className="select-questions"
+              onChange={(e) => {
+                setOrder(e.target.value);
+              }}
+            >
+              <option value="">최신순</option>
+              <option value="likes">인기순</option>
+              <option value="comments">댓글순</option>
+            </select>
+            {/* 게시물 미리보기 */}
+            {postData.slice(0, postsPerPage).map((post) => (
+              <li key={post.id} className="list-questions">
+                <div className="post-questions">
+                  <div className="post-header">
+                    <div className="post-status">
+                      {post.questionsStatus === "UNSOLVED"
+                        ? "미해결"
+                        : "해결"}
+                    </div>
+                    <div className="post-title">
+                      <Link to={`/questionsDetail/${post.id}`}>
+                        {post.title}
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="post-body">
+                    <div className="post-content">{post.content}</div>
+                  </div>
+                  <div className="tags">
+                    {post.tags.map((tag) => (
+                      <div className="post-tag">{tag}</div>
+                    ))}
+                  </div>
+                  <div className="post-tail">
+                    <div className="post-owner">{post.username}</div>
+                    <div className="post-date">
+                      {post.postYear == year
+                        ? post.postMonth == month && post.postDay == date
+                          ? post.postHour == hours
+                            ? post.postMinute == minutes
+                              ? seconds - post.postSecond + "초 전"
+                              : minutes - post.postMinute == 1 &&
+                                seconds < post.postSecond
+                                ? 60 - post.postSecond + seconds + "초 전"
+                                : minutes - post.postMinute + "분 전"
+                            : hours - post.postHour + "시간 전"
+                          : post.postMonth + "." + post.postDay
+                        : post.postYear.slice(2, 4) +
+                        "." +
+                        post.postMonth +
+                        "." +
+                        post.postDay}
+                    </div>
+                    <div className="post-options">
+                      <div className="post-comment">
+                        <div className="text-comment">
+                          {post.commentsSize}
+                        </div>
+                        <img className="img-comment" src={comment} alt="" />
+                      </div>
+                      <div className="post-hit">
+                        <div className="text-hit">{post.hit}</div>
+                        <img className="img-hit" src={hit} alt="" />
+                      </div>
+                      <div
+                        className="post-like"
+                        onClick={() => handleLike(post.id)}
+                      >
+                        <div className="text-like">{post.like}</div>
+                        {likePosts.includes(post.id) ? (
+                          <img className="img-like" src={like_color} alt="" />
+                        ) : (
+                          <img className="img-like" src={like} alt="" />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="questions-line2"></div>
+                </div>
+              </li>
+            ))}
+            <ReactPaginate
+              previousLabel={"<"}
+              nextLabel={">"}
+              pageCount={Math.ceil(postSize / postsPerPage)} // 페이지 버튼 개수 출력하는 부분 -> 글 전체 개수 넘겨받아서 사용해야함
+              onPageChange={changePage}
+              containerClassName={"btn-pagination"}
+              previousLinkClassName={"btn-pagination-previous"}
+              nextLinkClassName={"btn-pagination-next"}
+              disabledClassName={"btn-pagination-disabled"}
+              activeClassName={"btn-pagination-active"}
+            />
+          </div>
+          {/* <Footer /> */}
+        </div>) : (<div className="body-questions">
           <div className="cat-menu">
             {status === "" ? (
               <div className="cat-menu-items">
@@ -598,15 +851,15 @@ const Questions = () => {
                                 ? seconds - post.postSecond + "초 전"
                                 : minutes - post.postMinute == 1 &&
                                   seconds < post.postSecond
-                                ? 60 - post.postSecond + seconds + "초 전"
-                                : minutes - post.postMinute + "분 전"
+                                  ? 60 - post.postSecond + seconds + "초 전"
+                                  : minutes - post.postMinute + "분 전"
                               : hours - post.postHour + "시간 전"
                             : post.postMonth + "." + post.postDay
                           : post.postYear.slice(2, 4) +
-                            "." +
-                            post.postMonth +
-                            "." +
-                            post.postDay}
+                          "." +
+                          post.postMonth +
+                          "." +
+                          post.postDay}
                       </div>
                     </div>
                     <div className="questions-line2"></div>
@@ -627,7 +880,7 @@ const Questions = () => {
             </div>
           </div>
           <Footer />
-        </div>
+        </div>)}
       </div>
     </div>
   );

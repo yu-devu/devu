@@ -160,9 +160,12 @@
 
 @media screen and (max-width: 390px) {
   h1 {
-    margin-left: 43px;
     margin-top: 10px;
     font-weight: 400;
+  }
+
+  .register {
+    margin-left: 43px;
   }
 
   .container-register {

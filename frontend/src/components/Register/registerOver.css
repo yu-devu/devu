@@ -1,4 +1,4 @@
-/* @media (min-width: 1024px) { */
+@media (min-width: 1024px) {
   .registerover-all {
     position: relative;
     left: 38%;
@@ -48,4 +48,56 @@
     left: 5%;
     color: var(--color-primary);
   }
-/* } */
+}
+
+@media screen and (max-width: 390px) {
+  .registerover-all {
+    position: relative;
+  }
+
+  .registerover-btns {
+    display: flex;
+    height: max-content;
+  }
+
+  .btn-to-main {
+    width: 50%;
+    text-align: center;
+    background-color: rgb(242, 242, 242);
+    color: black;
+    border: 3px solid var(--color-light);
+    border-radius: 5px;
+    margin-top: 15%;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 50px;
+    margin-left: 25%;
+  }
+
+  .btn-to-main:hover {
+    background: var(--color-hover);
+  }
+
+  .registerovers {
+    transform: translateX(0%);
+    text-align: center;
+    margin-top: 20%;
+  }
+
+  .img-puzzle {
+    position: relative;
+    width: 180px;
+  }
+
+  .text-main {
+    position: relative;
+  }
+
+  .text-sub {
+    position: relative;
+    margin-top: 10px;
+    color: var(--color-primary);
+    font-weight: 400;
+  }
+}
