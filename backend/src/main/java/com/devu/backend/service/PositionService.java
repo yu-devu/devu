@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -310,22 +309,33 @@ public class PositionService {
                 .build();
     }
 
-    public PositionDto getNaver(Pageable pageable) {
-        return getPositionDto(pageable, CompanyType.NAVER);
+    public PositionDto getNaver(String keyword, Pageable pageable) {
+        return getPositionDto(getPositionResponseDtoByCompany(keyword, pageable, CompanyType.NAVER));
     }
 
-    private PositionDto getPositionDto(Pageable pageable, CompanyType company) {
-        long size = positionRepository.countByCompany(company);
-        return PositionDto.builder().size(size)
-                .positions(getPositionByCompany(pageable, company))
-                .build();
+    private Page<PositionResponseDto> getPositionResponseDtoByCompany(String keyword, Pageable pageable, CompanyType company) {
+        return getPositionByCompany(keyword, pageable, company).map(PositionResponseDto::new);
     }
 
-    private List<PositionResponseDto> getPositionByCompany(Pageable pageable, CompanyType company) {
-        Page<PositionResponseDto> positionsByCompany = positionRepository.findByCompany(company, pageable).map(PositionResponseDto::new);
-        return positionsByCompany.getContent();
+    private Page<Position> getPositionByCompany(String keyword, Pageable pageable, CompanyType company) {
+        return positionRepository.findByTitleContainingIgnoreCaseAndCompany(keyword, company, pageable);
     }
 
+    public PositionDto getKakao(String keyword, Pageable pageable) {
+        return getPositionDto(getPositionResponseDtoByCompany(keyword, pageable, CompanyType.KAKAO));
+    }
+
+    public PositionDto getLine(String keyword, Pageable pageable) {
+        return getPositionDto(getPositionResponseDtoByCompany(keyword, pageable, CompanyType.LINE));
+    }
+
+    public PositionDto getCoupang(String keyword, Pageable pageable) {
+        return getPositionDto(getPositionResponseDtoByCompany(keyword, pageable, CompanyType.COUPANG));
+    }
+
+    public PositionDto getBaemin(String keyword, Pageable pageable) {
+        return getPositionDto(getPositionResponseDtoByCompany(keyword, pageable, CompanyType.BAEMIN));
+    }
 
     public static String removeEmoji(String input){
         if(input == null)return null;
@@ -341,21 +351,5 @@ public class PositionService {
             sb.append(input.charAt(i));
         }
         return sb.toString();
-    }
-
-    public PositionDto getKakao(Pageable pageable) {
-        return getPositionDto(pageable, CompanyType.KAKAO);
-    }
-
-    public PositionDto getLine(Pageable pageable) {
-        return getPositionDto(pageable, CompanyType.LINE);
-    }
-
-    public PositionDto getCoupang(Pageable pageable) {
-        return getPositionDto(pageable, CompanyType.COUPANG);
-    }
-
-    public PositionDto getBaemin(Pageable pageable) {
-        return getPositionDto(pageable, CompanyType.BAEMIN);
     }
 }

@@ -7,9 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PositionRepository extends JpaRepository<Position, Long> {
-    Page<Position> findByCompany(CompanyType company, Pageable pageable);
-
-    long countByCompany(CompanyType company);
-
     Page<Position> findByTitleContainingIgnoreCase(String keyword, Pageable pageable);
+
+    Page<Position> findByTitleContainingIgnoreCaseAndCompany(String keyword, CompanyType company, Pageable pageable);
 }

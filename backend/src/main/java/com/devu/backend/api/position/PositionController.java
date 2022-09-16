@@ -31,9 +31,9 @@ public class PositionController {
     }
 
     @GetMapping("/naver")
-    public ResponseEntity<?> getNaver(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<?> getNaver(String keyword, @PageableDefault(size = 20) Pageable pageable) {
         try {
-            return ResponseEntity.ok(positionService.getNaver(pageable));
+            return ResponseEntity.ok(positionService.getNaver(keyword, pageable));
         } catch (Exception e) {
             e.printStackTrace();
             ResponseErrorDto errorDto = ResponseErrorDto.builder()
@@ -44,9 +44,9 @@ public class PositionController {
     }
 
     @GetMapping("/kakao")
-    public ResponseEntity<?> getKakao(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<?> getKakao(String keyword, @PageableDefault(size = 20) Pageable pageable) {
         try {
-            return ResponseEntity.ok(positionService.getKakao(pageable));
+            return ResponseEntity.ok(positionService.getKakao(keyword, pageable));
         } catch (Exception e) {
             e.printStackTrace();
             ResponseErrorDto errorDto = ResponseErrorDto.builder()
@@ -57,9 +57,9 @@ public class PositionController {
     }
 
     @GetMapping("/line")
-    public ResponseEntity<?> getLine(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<?> getLine(String keyword, @PageableDefault(size = 20) Pageable pageable) {
         try {
-            return ResponseEntity.ok(positionService.getLine(pageable));
+            return ResponseEntity.ok(positionService.getLine(keyword, pageable));
         } catch (Exception e) {
             e.printStackTrace();
             ResponseErrorDto errorDto = ResponseErrorDto.builder()
@@ -70,9 +70,9 @@ public class PositionController {
     }
 
     @GetMapping("/coupang")
-    public ResponseEntity<?> getCoupang(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<?> getCoupang(String keyword, @PageableDefault(size = 20) Pageable pageable) {
         try {
-            return ResponseEntity.ok(positionService.getCoupang(pageable));
+            return ResponseEntity.ok(positionService.getCoupang(keyword, pageable));
         } catch (Exception e) {
             e.printStackTrace();
             ResponseErrorDto errorDto = ResponseErrorDto.builder()
@@ -83,9 +83,9 @@ public class PositionController {
     }
 
     @GetMapping("/baemin")
-    public ResponseEntity<?> getBaemin(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<?> getBaemin(String keyword, @PageableDefault(size = 20) Pageable pageable) {
         try {
-            return ResponseEntity.ok(positionService.getBaemin(pageable));
+            return ResponseEntity.ok(positionService.getBaemin(keyword, pageable));
         } catch (Exception e) {
             e.printStackTrace();
             ResponseErrorDto errorDto = ResponseErrorDto.builder()
