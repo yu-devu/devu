@@ -1,7 +1,11 @@
-/* @media (min-width: 1024px) { */
+@media (min-width: 1024px) {
   .nav {
     display: flex;
     width: 100%;
+  }
+
+  .nav-menu {
+    display: flex;
   }
 
   .navbar {
@@ -32,7 +36,7 @@
     list-style: none;
     text-align: center;
     width: 70vw;
-    left: -16%;
+    margin-right: 45%;
     justify-content: center;
   }
 
@@ -75,5 +79,114 @@
   .nav-right {
     position: absolute;
     right: 19%;
+    top: 1.4%;
   }
-/* } */
+}
+
+@media screen and (max-width: 390px) {
+  .navbar {
+    box-shadow: 1px 1px 8px 1px rgb(0 0 0 / 12%) inset;
+    height: 80px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
+
+  .menu-bars {
+    margin-left: 13.5rem;
+    margin-top: 1rem;
+    font-size: 2rem;
+    background: none;
+  }
+
+  .menu-out {
+    margin-left: 13rem;
+    font-size: 2rem;
+    color: white;
+  }
+
+  .nav-menu {
+    background-color: var(--color-primary);
+    width: 260px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    transition: 850ms;
+    z-index: 1000;
+  }
+
+  .nav-menu.active {
+    right: 0;
+    transition: 350ms;
+  }
+
+  .navbar-logo {
+    color: black;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    width: 7rem;
+    position: relative;
+    left: 8.38%;
+  }
+
+
+  .nav-item {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 8px 0px 8px 16px;
+    list-style: none;
+    height: 60px;
+  }
+
+  .nav-item a {
+    text-decoration: none;
+    color: #f5f5f5;
+    font-size: 18px;
+    width: 95%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    border-radius: 4px;
+  }
+
+  .submenu-item {
+    text-decoration: none;
+    color: #f5f5f5;
+    font-size: 18px;
+    width: 95%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    border-radius: 4px;
+  }
+
+  .nav-item .submenu-item:hover {
+    color: black;
+  }
+
+  .nav-main {
+    z-index: 100;
+    object-fit: cover;
+    width: 100px;
+    height: 22px;
+    position: absolute;
+    filter: brightness(100%);
+  }
+
+  .nav-right {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 8px 0px 8px 16px;
+    list-style: none;
+    height: 60px;
+    margin-top: 230%;
+  }
+}
