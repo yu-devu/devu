@@ -18,9 +18,9 @@ public class PositionController {
     private final PositionService positionService;
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllPosition(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<?> getAllPosition(String keyword, @PageableDefault(size = 20) Pageable pageable) {
         try {
-            return ResponseEntity.ok(positionService.getAllPosition(pageable));
+            return ResponseEntity.ok(positionService.getAllPosition(keyword, pageable));
         } catch (Exception e) {
             e.printStackTrace();
             ResponseErrorDto errorDto = ResponseErrorDto.builder()

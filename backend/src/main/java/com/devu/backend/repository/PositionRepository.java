@@ -10,4 +10,6 @@ public interface PositionRepository extends JpaRepository<Position, Long> {
     Page<Position> findByCompany(CompanyType company, Pageable pageable);
 
     long countByCompany(CompanyType company);
+
+    Page<Position> findByTitleContainingIgnoreCase(String keyword, Pageable pageable);
 }

@@ -291,10 +291,21 @@ public class PositionService {
             collectCoupang(i);
     }
 
-    public PositionDto getAllPosition(Pageable pageable) {
-        Page<PositionResponseDto> allPosition = positionRepository.findAll(pageable).map(PositionResponseDto::new);
-        long size = positionRepository.count();
-        return PositionDto.builder().size(size)
+    public PositionDto getAllPosition(String keyword, Pageable pageable) {
+        return getPositionDto(getPositionResponseDto(keyword, pageable));
+    }
+
+    private Page<PositionResponseDto> getPositionResponseDto(String keyword, Pageable pageable) {
+        return getPosition(keyword, pageable)
+                .map(PositionResponseDto::new);
+    }
+
+    private Page<Position> getPosition(String keyword, Pageable pageable) {
+        return positionRepository.findByTitleContainingIgnoreCase(keyword, pageable);
+    }
+
+    private PositionDto getPositionDto(Page<PositionResponseDto> allPosition) {
+        return PositionDto.builder().size(allPosition.getTotalElements())
                 .positions(allPosition.getContent())
                 .build();
     }
