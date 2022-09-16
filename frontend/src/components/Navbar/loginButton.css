@@ -10,3 +10,14 @@
 .btn-login-nav:hover {
   color: var(--color-primary);
 }
+
+@media screen and (max-width: 390px) {
+  .btn-login-nav {
+    border: none;
+    background: transparent;
+    padding: 6px 16px;
+    font-size: 15px;
+    color: black;
+    cursor: pointer;
+  }
+}
