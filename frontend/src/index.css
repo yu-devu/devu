@@ -107,15 +107,6 @@
     color: var(--color-light);
   }
 
-  /* a {
-      color: var(--color-primary);
-      transition: var(--transition);
-  }
-
-  a:hover {
-      color: var(--color-white);
-  } */
-
   /* ================= MEDIA QUERIES (MEDIUM DEVICES) ================= */
 
   .main-all {

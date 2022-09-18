@@ -1,5 +1,6 @@
 package com.devu.backend.service;
 
+import com.devu.backend.config.auth.token.RefreshToken;
 import com.devu.backend.repository.RefreshTokenRepository;
 import com.devu.backend.config.auth.token.TokenService;
 import com.devu.backend.controller.user.UserDTO;
@@ -10,15 +11,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseCookie;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.servlet.http.Cookie;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
@@ -41,6 +47,9 @@ class UserServiceTest {
 
     @Mock
     private RefreshTokenRepository tokenRepository;
+
+    @Mock
+    private RefreshTokenRepository refreshTokenRepository;
 
     @Spy
     private BCryptPasswordEncoder passwordEncoder;
@@ -115,5 +124,24 @@ class UserServiceTest {
         User findUser = userRepository.findByEmail(user.getEmail()).get();
         assertEquals(updateDto.getUsername(), findUser.getUsername());
         assertNotEquals(updateDto.getUsername(),findUser.getPassword());
+    }
+
+    @Test
+    @DisplayName("logout")
+    void logoutProcess() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        given(cookieService.getCookie(request, "X-AUTH-REFRESH-TOKEN"))
+                .willReturn(new Cookie("testName", "testKey"));
+        RefreshToken refreshToken = new RefreshToken(5L, "testToken");
+        given(refreshTokenRepository.findByRefreshToken("testKey"))
+                .willReturn(refreshToken);
+        given(cookieService.deleteCookie("X-AUTH-REFRESH-TOKEN"))
+                .willReturn(ResponseCookie.from("testName", "testValue").build());
+
+        userService.logoutProcess(request, response);
+
+        verify(refreshTokenRepository).delete(refreshToken);
+        verify(cookieService).deleteCookie("X-AUTH-REFRESH-TOKEN");
     }
 }

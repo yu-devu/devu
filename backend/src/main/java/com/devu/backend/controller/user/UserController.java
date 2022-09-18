@@ -34,7 +34,7 @@ public class UserController {
                                         BindingResult bindingResult) {
         try {
             if (bindingResult.hasErrors()) {
-                return ResponseEntity.badRequest().body(bindingResult.getFieldError());
+                return ResponseEntity.badRequest().body(bindingResult.getFieldError().getDefaultMessage());
             }
             String email = dto.getEmail();
             if (userService.isEmailExists(email)) {
@@ -70,7 +70,13 @@ public class UserController {
     // 2nd logic in create User
     // 회원가입 Form에서 이메일 검증 api => Form Data로 넘어와야함
     @PostMapping("/key")
-    private ResponseEntity<?> getKeyFromUser(@RequestParam String postKey) {
+    private ResponseEntity<?> getKeyFromUser(
+            @RequestBody @Validated UserKeyRequestDto dto,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getFieldError().getDefaultMessage());
+        }
+        String postKey = dto.getUserKey();
         try {
             userService.updateUserConfirm(postKey);
             return ResponseEntity.ok(HttpStatus.OK);
