@@ -33,10 +33,10 @@
   .nav-items {
     position: relative;
     display: flex;
-    list-style: none;
+    /* list-style: none; */
     text-align: center;
     width: 70vw;
-    margin-right: 45%;
+    margin-right: 50%;
     justify-content: center;
   }
 
@@ -78,8 +78,9 @@
 
   .nav-right {
     position: absolute;
+    display: flex;
     right: 19%;
-    top: 1.4%;
+    top: 2.2%;
   }
 }
 
@@ -184,9 +185,10 @@
     display: flex;
     justify-content: start;
     align-items: center;
-    padding: 8px 0px 8px 16px;
+    justify-content: center;
+    margin-right: 20px;
     list-style: none;
     height: 60px;
-    margin-top: 230%;
+    margin-top: 250%;
   }
 }

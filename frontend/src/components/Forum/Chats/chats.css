@@ -70,7 +70,7 @@
   .chats-line {
     border: solid 1px lightgray;
     margin-top: 10px;
-    width: 52%;
+    width: 50.8%;
     position: relative;
     left: 25%;
     justify-content: center;
@@ -79,7 +79,7 @@
   .chats-line2 {
     border: solid 1px lightgray;
     margin-top: 10px;
-    width: 87%;
+    width: 84.7%;
     position: relative;
     justify-content: center;
   }
@@ -110,6 +110,7 @@
 
   .post-options-chats {
     display: flex;
+    margin-left: 34px;
   }
 
   .text-hit {
@@ -282,6 +283,42 @@
 
   a:hover {
     color: var(--color-white);
+  }
+
+  .chat-pagination {
+    margin-top: 90px;
+    margin-left: 25px;
+    justify-content: center;
+    margin-right: auto;
+    position: relative;
+    display: flex;
+    cursor: pointer;
+    margin-bottom: -10%;
+  }
+
+  .chat-pagination .btn-pagination-active a {
+    color: white;
+    border: 1px solid rgba(241, 241, 245, 1);
+    border-radius: 100%;
+    background: var(--color-primary);
+    padding: 4px 10px;
+    margin-right: -3px;
+  }
+
+  .chat-pagination li {
+    height: 10px;
+    margin-right: 30px;
+  }
+
+  .chat-pagination li a {
+    color: black;
+  }
+
+  .chat-pagination li a:hover {
+    border: 1px solid rgba(241, 241, 245, 1);
+    border-radius: 100%;
+    background: var(--color-hover);
+    padding: 4px 10px;
   }
 }
 

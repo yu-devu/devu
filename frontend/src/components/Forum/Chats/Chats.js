@@ -22,7 +22,7 @@ const Chats = () => {
   let month = now.getMonth() + 1;
   let date = now.getDate();
 
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [postSize, setPostSize] = useState(0);
   const [postsPerPage] = useState(10);
   const [postData, setPostData] = useState([]);
@@ -342,7 +342,7 @@ const Chats = () => {
               nextLabel={">"}
               pageCount={Math.ceil(postSize / postsPerPage)} // 페이지 버튼 개수 출력하는 부분 -> 글 전체 개수 넘겨받아서 사용해야함
               onPageChange={changePage}
-              containerClassName={"btn-pagination"}
+              containerClassName={"chat-pagination"}
               previousLinkClassName={"btn-pagination-previous"}
               nextLinkClassName={"btn-pagination-next"}
               disabledClassName={"btn-pagination-disabled"}
@@ -351,7 +351,7 @@ const Chats = () => {
           </div>
         </div>)}
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 };

@@ -222,6 +222,7 @@
   .post-options {
     display: flex;
     position: relative;
+    margin-left: 45px;
   }
 
   .text-hit {

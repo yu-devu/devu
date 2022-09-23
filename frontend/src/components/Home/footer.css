@@ -6,14 +6,13 @@
     max-height: 100%;
     height: auto;
     /* margin-left: 10; */
-    padding-left: 20%;
+    margin-left: 20%;
     transform: translate(0%, 100%);
   }
 
   .footer-gray {
     width: 100%;
     position: absolute;
-    /* bottom: %; */
     transform: translate(0%, 100%);
     background-color: rgb(242, 242, 242);
   }
@@ -64,10 +63,6 @@
     margin-bottom: 66px;
   }
 
-  .footer-intro {
-    /* margin-left: 43px; */
-  }
-
   .img-footer {
     z-index: 100;
     object-fit: cover;
@@ -80,7 +75,7 @@
 
   .copyright {
     position: absolute;
-    right: 20%;
+    right: 25%;
     bottom: 25%;
   }
 /* } */
