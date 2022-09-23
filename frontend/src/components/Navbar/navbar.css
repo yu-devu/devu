@@ -186,8 +186,7 @@
     justify-content: start;
     align-items: center;
     justify-content: center;
-    margin-right: 20px;
-    list-style: none;
+    /* list-style: none; */
     height: 60px;
     margin-top: 250%;
   }

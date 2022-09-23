@@ -18,12 +18,9 @@
   .btn-logout-nav {
     border: none;
     background: transparent;
-    padding: 6px 50px;
+    padding: 6px 35px;
     font-size: 15px;
     color: black;
-    background: white;
-    border-radius: 5px;
-    transition: 0.3s all ease-out;
     cursor: pointer;
   }
 }

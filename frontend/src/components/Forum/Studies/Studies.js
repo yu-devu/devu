@@ -340,6 +340,11 @@ const Studies = () => {
                 </p>
               </div>
             )}
+            {username ? ( // 로그인 했을 때 글쓰기 버튼 활성화
+              <Link to="write">
+                <button className="btn-studies-write">글쓰기</button>
+              </Link>
+            ) : null}
           </div>
           <div className="search-and-write">
             <div className="studies-search">
@@ -361,11 +366,6 @@ const Studies = () => {
                 <img className="img-mag" src={magnify} alt="" />
               </button>
             </div>
-            {username ? ( // 로그인 했을 때 글쓰기 버튼 활성화
-              <Link to="write">
-                <button className="btn-studies-write">글쓰기</button>
-              </Link>
-            ) : null}
           </div>
           <div className="body-content">
             <select

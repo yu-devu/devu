@@ -358,9 +358,10 @@
     border-radius: 100px;
     color: white;
     background-color: #303030;
-    width: 200%;
-    position: relative;
-    left: 200%;
+    width: 24%;
+    position: absolute;
+    left: 71%;
+    bottom: 2%;
     height: 40px;
     cursor: pointer;
     font-size: 18px;
@@ -392,9 +393,15 @@
   .chats-line2 {
     border: solid 1px lightgray;
     margin-top: 10px;
-    width: 87%;
+    width: 148%;
     position: relative;
     justify-content: center;
+  }
+
+  .post-chats {
+    position: relative;
+    margin-left: 23px;
+    max-width: 60%;
   }
 
   .post-header-chats {
@@ -416,12 +423,13 @@
   }
 
   .post-comment-chats {
+    display: flex;
     margin-right: 18px;
-    margin-left: 170px;
     font-size: 16px;
   }
 
   .post-options-chats {
+    margin-left: 90px;
     display: flex;
   }
 

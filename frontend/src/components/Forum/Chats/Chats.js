@@ -181,27 +181,6 @@ const Chats = () => {
                   </div>
                   <div className="post-body-chats">
                     <div className="post-content-chats">{post.content}</div>
-                    <div className="post-options-chats">
-                      <div className="post-comment-chats">
-                        <div className="text-comment">{post.commentsSize}</div>
-                        <img className="img-comment" src={comment} alt="" />
-                      </div>
-                      <div className="post-hit">
-                        <div className="text-hit">{post.hit}</div>
-                        <img className="img-hit" src={hit} alt="" />
-                      </div>
-                      <div
-                        className="post-like"
-                        onClick={() => handleLike(post.id)}
-                      >
-                        <div className="text-like">{post.like}</div>
-                        {likePosts.includes(post.id) ? (
-                          <img className="img-like" src={like_color} alt="" />
-                        ) : (
-                          <img className="img-like" src={like} alt="" />
-                        )}
-                      </div>
-                    </div>
                   </div>
                   <div className="post-tail-chats">
                     <div className="post-owner">{post.username}</div>
@@ -222,6 +201,27 @@ const Chats = () => {
                         post.postMonth +
                         "." +
                         post.postDay}
+                    </div>
+                    <div className="post-options-chats">
+                      <div className="post-comment-chats">
+                        <div className="text-comment">{post.commentsSize}</div>
+                        <img className="img-comment" src={comment} alt="" />
+                      </div>
+                      <div className="post-hit">
+                        <div className="text-hit">{post.hit}</div>
+                        <img className="img-hit" src={hit} alt="" />
+                      </div>
+                      <div
+                        className="post-like"
+                        onClick={() => handleLike(post.id)}
+                      >
+                        <div className="text-like">{post.like}</div>
+                        {likePosts.includes(post.id) ? (
+                          <img className="img-like" src={like_color} alt="" />
+                        ) : (
+                          <img className="img-like" src={like} alt="" />
+                        )}
+                      </div>
                     </div>
                   </div>
                   <div className="chats-line2"></div>
@@ -351,7 +351,7 @@ const Chats = () => {
           </div>
         </div>)}
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

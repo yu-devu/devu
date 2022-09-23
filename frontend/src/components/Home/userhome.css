@@ -24,10 +24,10 @@
     max-height: 100%;
   }
 
-  .img-main {
+  .img-main-user {
     z-index: 100;
     object-fit: cover;
-    width: 420px;
+    width: 480px;
     height: 300px;
     position: absolute;
     left: 52%;
@@ -53,6 +53,14 @@
 }
 
 @media screen and (max-width: 390px) {
+  h1 {
+    font-size: 25px;
+  }
+  
+  h2 {
+    font-weight: 300;
+  }
+  
   .main-all {
     display: relative;
     flex-direction: column;
@@ -72,18 +80,25 @@
     justify-content: center;
   }
 
-  .intro-content {
+  .intro-content-user {
     display: block;
+    position: absolute;
+    top: 60%;
+    left: 17%;
     color: black;
+    text-align: center;
     max-width: 100%;
     max-height: 100%;
   }
 
-  .img-main {
+  .img-main-user {
     z-index: 100;
     object-fit: cover;
-    width: 254px;
+    width: 320px;
     height: 230px;
+    position: absolute;
+    left: 8%;
+    top: 25%;
   }
 
   .top-word {

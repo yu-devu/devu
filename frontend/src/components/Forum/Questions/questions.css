@@ -534,8 +534,9 @@
     background-color: #303030;
     width: 200%;
     position: relative;
-    left: 200%;
+    left: 209%;
     height: 40px;
+    bottom: 20%;
     cursor: pointer;
     font-size: 18px;
     font-weight: 500;
@@ -720,6 +721,7 @@
   }
 
   .cat-menu {
+    display: flex;
     position: relative;
     height: 40px;
     top: 30px;

@@ -597,11 +597,12 @@
     background-color: #303030;
     width: 200%;
     position: relative;
-    left: 200%;
+    left: 150%;
     height: 40px;
     cursor: pointer;
     font-size: 18px;
     font-weight: 500;
+    bottom: 20%;
   }
 
   .btn-studies-write:hover {
