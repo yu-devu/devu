@@ -7,7 +7,6 @@ import LoginButton from "./LoginButton";
 import RegisterButton from "./RegisterButton";
 import LogoutButton from "./LogoutButton";
 import MyPageButton from "./MyPageButton";
-import Service from "./Service";
 import MainLogo from "../../img/logo_main.png";
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
@@ -84,11 +83,11 @@ function Navbar() {
 
               {isToken && username ? (
                 <div className="nav-right">
-                  <MyPageButton /> <LogoutButton /> <Service />
+                  <MyPageButton /> <LogoutButton />
                 </div>
               ) : (
                 <div className="nav-right">
-                  <LoginButton /> <RegisterButton /> <Service />
+                  <LoginButton /> <RegisterButton />
                 </div>
               )}
             </ul>
@@ -117,11 +116,11 @@ function Navbar() {
             </ul>
             {isToken && username ? (
               <div className="nav-right">
-                <MyPageButton /> <LogoutButton /> <Service />
+                <MyPageButton /> <LogoutButton />
               </div>
             ) : (
               <div className="nav-right">
-                <LoginButton /> <RegisterButton /> <Service />
+                <LoginButton /> <RegisterButton />
               </div>
             )}
           </nav>)}

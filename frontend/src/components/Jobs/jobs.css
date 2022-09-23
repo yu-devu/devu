@@ -24,7 +24,7 @@
   .search-jobs {
     background-color: transparent;
     border-radius: 50px;
-    width: 15%;
+    width: 17%;
     padding: 0 8px;
     border: 1px solid rgba(241, 241, 241, 1);
     margin-left: 48.7%;
@@ -116,7 +116,9 @@
   }
 
   .btn-pagination-jobs {
-    margin-left: 50%;
+    margin-top: 10px;
+    justify-content: center;
+    margin-right: auto;
     position: relative;
     display: flex;
     cursor: pointer;
