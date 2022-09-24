@@ -154,9 +154,9 @@ const MyPage = () => {
             </button>
           </div>
         </div>
-        <div className="tag-mypage">
+        {isPost ? (<div className="tag-mypage">
           <button
-            className="btn-mypage-tag"
+            className="btn-mypage-tag-clicked"
             onClick={() => {
               {
                 setIsPost(true);
@@ -177,7 +177,30 @@ const MyPage = () => {
           >
             좋아요
           </button>
-        </div>
+        </div>) : (<div className="tag-mypage">
+          <button
+            className="btn-mypage-tag"
+            onClick={() => {
+              {
+                setIsPost(true);
+                setIsPostStatus("isStudy");
+              }
+            }}
+          >
+            작성한글
+          </button>
+          <button
+            className="btn-mypage-tag-clicked"
+            onClick={() => {
+              {
+                setIsPost(false);
+                setIsPostStatus("isStudy");
+              }
+            }}
+          >
+            좋아요
+          </button>
+        </div>)}
         <div className="submenu-mypage">
           {isPostStatus === "isStudy" ? (
             <button
@@ -481,9 +504,9 @@ const MyPage = () => {
             </button>
           </div>
         </div>
-        <div className="tag-mypage">
+        {isPost ? (<div className="tag-mypage">
           <button
-            className="btn-mypage-tag"
+            className="btn-mypage-tag-clicked"
             onClick={() => {
               {
                 setIsPost(true);
@@ -504,7 +527,30 @@ const MyPage = () => {
           >
             좋아요
           </button>
-        </div>
+        </div>) : (<div className="tag-mypage">
+          <button
+            className="btn-mypage-tag"
+            onClick={() => {
+              {
+                setIsPost(true);
+                setIsPostStatus("isStudy");
+              }
+            }}
+          >
+            작성한글
+          </button>
+          <button
+            className="btn-mypage-tag-clicked"
+            onClick={() => {
+              {
+                setIsPost(false);
+                setIsPostStatus("isStudy");
+              }
+            }}
+          >
+            좋아요
+          </button>
+        </div>)}
         <div className="submenu-mypage">
           {isPostStatus === "isStudy" ? (
             <button

@@ -340,7 +340,7 @@
 
   .chats-search {
     width: 100%;
-    margin-left: 23px;
+    margin-left: 20px;
     height: 100px;
     stroke: rgba(219, 219, 219, 1);
   }
@@ -364,7 +364,7 @@
     bottom: 2%;
     height: 40px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 500;
   }
 
@@ -378,7 +378,8 @@
 
   .select-chats {
     position: relative;
-    margin-left: 23px;
+    margin-left: 20px;
+    font-size: 16px;
   }
 
   .chats-line {

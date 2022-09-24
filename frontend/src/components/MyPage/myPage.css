@@ -73,6 +73,15 @@
     cursor: pointer;
   }
 
+  .btn-mypage-tag-clicked {
+    margin-right: 3%;
+    color: var(--color-primary);
+    font-size: 18px;
+    font-weight: 600;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
   .btn-mypage-tag:hover {
     color: var(--color-primary);
   }
@@ -203,15 +212,14 @@
   }
 
   .btn-delete-info {
-    margin-top: 1%;
+    margin-top: 10%;
     background-color: transparent;
     width: 80%;
     height: 30px;
     border-radius: 10px;
-    border: 1px solid var(--color-primary);
-    color: var(--color-primary);
+    border: 1px solid #797979;
+    color: #797979;
     cursor: pointer;
-    /* margin-left: 325px; */
   }
 
   .btn-delete-info:hover {
@@ -232,10 +240,21 @@
     font-weight: 600;
     background-color: transparent;
     cursor: pointer;
+    margin-right: 5%;
+  }
+
+  .btn-mypage-tag-clicked {
+    margin-right: 3%;
+    color: black;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: transparent;
+    cursor: pointer;
+    margin-right: 5%;
   }
 
   .btn-mypage-tag:hover {
-    color: var(--color-primary);
+    color: black;
   }
 
   .submenu-mypage {
