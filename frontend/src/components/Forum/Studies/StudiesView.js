@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useLocation, Link, useNavigate } from "react-router-dom";
-import "./studiesView.css";
-import Submenu from "../Submenu";
-import ab from "../../../img/a.png";
-import share from "../../../img/share.png";
-import warning from "../../../img/warning.png";
-import hit from "../../../img/hit.png";
-import like from "../../../img/like.png";
-import like_color from "../../../img/like_color.png";
-import imgComment from "../../../img/comment.png";
-import more from "../../../img/more.png";
-import FooterGray from "../../Home/FooterGray";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
+import './studiesView.css';
+import Submenu from '../Submenu';
+import ab from '../../../img/a.png';
+import share from '../../../img/share.png';
+import warning from '../../../img/warning.png';
+import hit from '../../../img/hit.png';
+import like from '../../../img/like.png';
+import like_color from '../../../img/like_color.png';
+import imgComment from '../../../img/comment.png';
+import more from '../../../img/more.png';
+import FooterGray from '../../Home/FooterGray';
 
 const StudiesView = () => {
   let now = new Date();
@@ -26,9 +26,9 @@ const StudiesView = () => {
   const location = useLocation();
   const [postData, setPostData] = useState([]);
   const [isLike, setLike] = useState(1);
-  const username = localStorage.getItem("username");
-  const [comment, setComment] = useState("");
-  const [modifycomment, setModifyComment] = useState("");
+  const username = localStorage.getItem('username');
+  const [comment, setComment] = useState('');
+  const [modifycomment, setModifyComment] = useState('');
   const [likePosts, setLikePosts] = useState([]);
 
   const [showDropdownContent, setShowDropdownContent] = useState(0);
@@ -48,18 +48,18 @@ const StudiesView = () => {
   // });
 
   let pathname = location.pathname;
-  let [a, b, postId] = pathname.split("/");
+  let [a, b, postId] = pathname.split('/');
   var comment_num;
   // useLocation으로 pathname을 추출한 후, '/'를 기준으로 parameter를 분리함
 
   useEffect(() => {
-    console.log("useEffect2");
+    console.log('useEffect2');
     fetchLikeData();
     handleGetLike();
   }, [isLike]);
 
   useEffect(() => {
-    console.log("useEffect1");
+    console.log('useEffect1');
     fetchData();
     window.scrollTo(0, 0);
     fetchLikeData();
@@ -85,7 +85,7 @@ const StudiesView = () => {
           comments: res.data.comments,
         };
         setPostData(_postData);
-        comment_num = res.data.comments.length;
+        comment_num = _postData.comments.length;
       })
       .catch((e) => console.log(e));
   };
@@ -108,7 +108,7 @@ const StudiesView = () => {
     await axios
       .post(process.env.REACT_APP_DB_HOST + `/api/like`, JSON.stringify(data), {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       })
       .then((res) => {
@@ -135,21 +135,21 @@ const StudiesView = () => {
   };
 
   const handlePostDelete = async () => {
-    if (window.confirm("정말 삭제하시겠습니까?")) {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
       await axios
         .delete(process.env.REACT_APP_DB_HOST + `/community/study/${postId}`)
         .then(() => navigate(-1))
         .catch((e) => console.log(e));
-    } else alert("취소하였습니다!");
+    } else alert('취소하였습니다!');
   };
 
   const handleCommentDelete = async (id) => {
-    if (window.confirm("정말 삭제하시겠습니까?")) {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
       await axios
         .delete(process.env.REACT_APP_DB_HOST + `/api/comments/${id}`)
         .then(() => navigate(0))
         .catch((e) => console.log(e));
-    } else alert("취소하였습니다!");
+    } else alert('취소하였습니다!');
   };
 
   const handleStatus = async () => {
@@ -163,7 +163,7 @@ const StudiesView = () => {
         JSON.stringify(data),
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
       )
@@ -172,7 +172,7 @@ const StudiesView = () => {
   };
 
   const handleCommentModify = async (id) => {
-    if (modifycomment !== "") {
+    if (modifycomment !== '') {
       const data = {
         contents: modifycomment,
       };
@@ -182,21 +182,21 @@ const StudiesView = () => {
           JSON.stringify(data),
           {
             headers: {
-              "Content-Type": "application/json",
-              Authorization: `${localStorage.getItem("accessToken")}`,
+              'Content-Type': 'application/json',
+              Authorization: `${localStorage.getItem('accessToken')}`,
               // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
             },
           }
         )
         .then(() => navigate(0))
         .catch((e) => console.log(e));
-    } else alert("댓글을 작성해주세요!");
+    } else alert('댓글을 작성해주세요!');
   };
 
   //   console.log(postData.hours + ':' + postData.minutes + ':' + postData.seconds);
 
   const handleComment = async () => {
-    if (comment !== "") {
+    if (comment !== '') {
       const data = {
         username: username,
         postId: postId,
@@ -210,13 +210,13 @@ const StudiesView = () => {
           JSON.stringify(data),
           {
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
           }
         )
         .then(() => navigate(0))
         .catch((e) => console.log(e));
-    } else alert("댓글을 작성해주세요!");
+    } else alert('댓글을 작성해주세요!');
   };
 
   return (
@@ -239,7 +239,7 @@ const StudiesView = () => {
                 </div>
                 <div className="studies-top">
                   <div className="studies-status">
-                    {postData.studyStatus === "ACTIVE" ? "모집중" : "모집완료"}
+                    {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
                   </div>
                   <div className="studies-title">{postData.title}</div>
                 </div>
@@ -251,11 +251,11 @@ const StudiesView = () => {
                     className="studies-sidebar-status"
                     onClick={() => handleStatus()}
                   >
-                    {postData.studyStatus === "ACTIVE" ? "모집중" : "모집완료"}
+                    {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
                   </button>
                 ) : (
                   <div className="studies-sidebar-status">
-                    {postData.studyStatus === "ACTIVE" ? "모집중" : "모집완료"}
+                    {postData.studyStatus === 'ACTIVE' ? '모집중' : '모집완료'}
                   </div>
                 )}
                 <div className="studies-sidebar-item">
@@ -337,7 +337,9 @@ const StudiesView = () => {
               {postData.comments ? (
                 <div className="studies-comments-all">
                   <div className="number-comments">
-                    {/* <h6 className="number-comments-text">개의 답글</h6> */}
+                    <h6 className="number-comments-text">
+                      {postData.comments.length}개의 답글
+                    </h6>
                   </div>
                   <div div className="studies-comments">
                     {postData.comments &&
@@ -443,7 +445,7 @@ const StudiesView = () => {
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
                                         comment.createAt.slice(17, 19) +
-                                        "초 전"
+                                        '초 전'
                                       : minutes -
                                           comment.createAt.slice(14, 16) ==
                                           1 &&
@@ -451,20 +453,20 @@ const StudiesView = () => {
                                       ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
-                                        "초 전"
+                                        '초 전'
                                       : minutes -
                                         comment.createAt.slice(14, 16) +
-                                        "분 전"
+                                        '분 전'
                                     : hours -
                                       comment.createAt.slice(11, 13) +
-                                      "시간 전"
+                                      '시간 전'
                                   : comment.createAt.slice(5, 7) +
-                                    "." +
+                                    '.' +
                                     comment.createAt.slice(8, 10)
                                 : comment.createAt.slice(2, 4) +
-                                  "." +
+                                  '.' +
                                   comment.createAt.slice(5, 7) +
-                                  "." +
+                                  '.' +
                                   comment.createAt.slice(8, 10)}
                             </div>
                           </div>
@@ -477,7 +479,7 @@ const StudiesView = () => {
             </div>
           </div>
         ) : (
-          "해당 게시글을 찾을 수 없습니다."
+          '해당 게시글을 찾을 수 없습니다.'
         )}
       </div>
     </div>
