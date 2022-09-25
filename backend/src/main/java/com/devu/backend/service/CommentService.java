@@ -46,10 +46,6 @@ public class CommentService {
     public Comment saveReComment(CommentCreateRequestDto requestDto) {
         User user = userRepository.findByUsername(requestDto.getUsername()).orElseThrow(UserNotFoundException::new);
         Post post = postRepository.findById(requestDto.getPostId()).orElseThrow(PostNotFoundException::new);
-        commentRepository
-                .findByUserId(userRepository.findByUsername(requestDto.getParent())
-                        .orElseThrow(UserNotFoundException::new).getId())
-                        .orElseThrow(ReCommentNotFoundException::new);
         if (requestDto.getContents() == null) {
             throw new CommentContentNullException();
         }
