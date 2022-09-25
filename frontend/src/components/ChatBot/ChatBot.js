@@ -22,19 +22,6 @@ const ChatBot = () => {
     botMessage.innerHTML = "무엇을 도와드릴까요?";
   };
 
-  const handleFood = () => {
-    const botMessage = document.querySelector("#message1");
-    const userMessage = document.querySelector("#message2");
-    botMessage.innerHTML = "입력 중...";
-    setTimeout(() => {
-      restaurantChange(true);
-      document.getElementById("restaurant").style.removeProperty("display");
-      botMessage.innerHTML = "어떤 식당의 메뉴가 궁금하신가요?";
-      document.querySelector("#input").value = "";
-    }, 2000);
-    userMessage.innerHTML = document.querySelector("#food").value;
-  };
-
   const handleHumanities = () => {
     const botMessage = document.querySelector("#message1");
     const userMessage = document.querySelector("#message2");
@@ -90,18 +77,18 @@ const ChatBot = () => {
       bt < 500
         ? 200
         : bt < 800
-        ? 500
-        : bt < 1100
-        ? 800
-        : bt < 1400
-        ? 1100
-        : bt < 1700
-        ? 1400
-        : bt < 2000
-        ? 1700
-        : bt < 2300
-        ? 2000
-        : 2300;
+          ? 500
+          : bt < 1100
+            ? 800
+            : bt < 1400
+              ? 1100
+              : bt < 1700
+                ? 1400
+                : bt < 2000
+                  ? 1700
+                  : bt < 2300
+                    ? 2000
+                    : 2300;
 
     const baseTime = b2 < 1000 ? "0" + String(b2) : b2;
 
@@ -135,8 +122,8 @@ const ChatBot = () => {
         (_weatherData.sky == 4
           ? "흐림"
           : _weatherData.sky == 3
-          ? "구름 많음"
-          : "맑음") +
+            ? "구름 많음"
+            : "맑음") +
         "입니다! \n기온은 " +
         _weatherData.tmp +
         "°C이며 습도는 " +
@@ -275,14 +262,6 @@ const ChatBot = () => {
                   </div>
                 </div>
                 <div className="bottom-chatbot">
-                  <button
-                    className="food"
-                    id="food"
-                    onClick={handleFood}
-                    value="오늘 학식은 뭐야?"
-                  >
-                    오늘의 학식
-                  </button>
                   <button
                     className="weather"
                     id="weather"

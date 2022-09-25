@@ -11,6 +11,7 @@ import hit from "../../../img/hit.png";
 import like from "../../../img/like.png";
 import like_color from "../../../img/like_color.png";
 import { Link } from "react-router-dom";
+import { useMediaQuery } from 'react-responsive'
 
 const Chats = () => {
   let now = new Date();
@@ -21,7 +22,7 @@ const Chats = () => {
   let month = now.getMonth() + 1;
   let date = now.getDate();
 
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [postSize, setPostSize] = useState(0);
   const [postsPerPage] = useState(10);
   const [postData, setPostData] = useState([]);
@@ -31,6 +32,7 @@ const Chats = () => {
   const [sentence, setSentence] = useState("");
   const [status, setStatus] = useState("");
   const [order, setOrder] = useState("");
+  const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 })
   const [likePosts, setLikePosts] = useState([]);
   const onChangeSentence = (e) => {
     setSentence(e.target.value);
@@ -130,7 +132,115 @@ const Chats = () => {
     <div>
       <Submenu />
       <div className="all-chats">
-        <div className="body-chats">
+        {isTabletOrMobile ? (<div className="body-chats">
+          <div className="search-and-write">
+            <div className="chats-search">
+              <input
+                type="text"
+                placeholder="궁금한 질문을 검색해보세요"
+                className="search-input"
+                onChange={(e) => {
+                  onChangeSentence(e);
+                }}
+                onKeyPress={handleKeyPress}
+              />
+              <button
+                className="btn-mag"
+                onClick={() => {
+                  fetchData();
+                }}
+              >
+                <img className="img-mag" src={magnify} alt="" />
+              </button>
+            </div>
+            {username ? ( // 로그인 했을 때 글쓰기 버튼 활성화
+              <Link to="write">
+                <button className="btn-chats-write">글쓰기</button>
+              </Link>
+            ) : null}
+          </div>
+          <div className="body-content-chats">
+            <select
+              className="select-chats"
+              onChange={(e) => {
+                setOrder(e.target.value);
+              }}
+            >
+              <option value="">최신순</option>
+              <option value="likes">인기순</option>
+              <option value="comments">댓글순</option>
+            </select>
+            {/* 게시물 미리보기 */}
+            {postData.slice(0, postsPerPage).map((post) => (
+              <li key={post.id} className="list-chats">
+                <div className="post-chats">
+                  <div className="post-header-chats">
+                    <div className="post-title-chats">
+                      <Link to={`/chatsDetail/${post.id}`}>{post.title}</Link>
+                    </div>
+                  </div>
+                  <div className="post-body-chats">
+                    <div className="post-content-chats">{post.content}</div>
+                  </div>
+                  <div className="post-tail-chats">
+                    <div className="post-owner">{post.username}</div>
+                    <div className="post-date">
+                      {post.postYear == year
+                        ? post.postMonth == month && post.postDay == date
+                          ? post.postHour == hours
+                            ? post.postMinute == minutes
+                              ? seconds - post.postSecond + "초 전"
+                              : minutes - post.postMinute == 1 &&
+                                seconds < post.postSecond
+                                ? 60 - post.postSecond + seconds + "초 전"
+                                : minutes - post.postMinute + "분 전"
+                            : hours - post.postHour + "시간 전"
+                          : post.postMonth + "." + post.postDay
+                        : post.postYear.slice(2, 4) +
+                        "." +
+                        post.postMonth +
+                        "." +
+                        post.postDay}
+                    </div>
+                    <div className="post-options-chats">
+                      <div className="post-comment-chats">
+                        <div className="text-comment">{post.commentsSize}</div>
+                        <img className="img-comment" src={comment} alt="" />
+                      </div>
+                      <div className="post-hit">
+                        <div className="text-hit">{post.hit}</div>
+                        <img className="img-hit" src={hit} alt="" />
+                      </div>
+                      <div
+                        className="post-like"
+                        onClick={() => handleLike(post.id)}
+                      >
+                        <div className="text-like">{post.like}</div>
+                        {likePosts.includes(post.id) ? (
+                          <img className="img-like" src={like_color} alt="" />
+                        ) : (
+                          <img className="img-like" src={like} alt="" />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="chats-line2"></div>
+                </div>
+              </li>
+            ))}
+            <ReactPaginate
+              previousLabel={"<"}
+              nextLabel={">"}
+              pageCount={Math.ceil(postSize / postsPerPage)} // 페이지 버튼 개수 출력하는 부분 -> 글 전체 개수 넘겨받아서 사용해야함
+              onPageChange={changePage}
+              containerClassName={"btn-pagination"}
+              previousLinkClassName={"btn-pagination-previous"}
+              nextLinkClassName={"btn-pagination-next"}
+              disabledClassName={"btn-pagination-disabled"}
+              activeClassName={"btn-pagination-active"}
+            />
+          </div>
+        </div>) : (<div className="body-chats">
           <div className="search-and-write">
             <div className="chats-search">
               <input
@@ -212,15 +322,15 @@ const Chats = () => {
                               ? seconds - post.postSecond + "초 전"
                               : minutes - post.postMinute == 1 &&
                                 seconds < post.postSecond
-                              ? 60 - post.postSecond + seconds + "초 전"
-                              : minutes - post.postMinute + "분 전"
+                                ? 60 - post.postSecond + seconds + "초 전"
+                                : minutes - post.postMinute + "분 전"
                             : hours - post.postHour + "시간 전"
                           : post.postMonth + "." + post.postDay
                         : post.postYear.slice(2, 4) +
-                          "." +
-                          post.postMonth +
-                          "." +
-                          post.postDay}
+                        "." +
+                        post.postMonth +
+                        "." +
+                        post.postDay}
                     </div>
                   </div>
                   <div className="chats-line2"></div>
@@ -232,16 +342,16 @@ const Chats = () => {
               nextLabel={">"}
               pageCount={Math.ceil(postSize / postsPerPage)} // 페이지 버튼 개수 출력하는 부분 -> 글 전체 개수 넘겨받아서 사용해야함
               onPageChange={changePage}
-              containerClassName={"btn-pagination"}
+              containerClassName={"chat-pagination"}
               previousLinkClassName={"btn-pagination-previous"}
               nextLinkClassName={"btn-pagination-next"}
               disabledClassName={"btn-pagination-disabled"}
               activeClassName={"btn-pagination-active"}
             />
           </div>
-        </div>
+        </div>)}
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

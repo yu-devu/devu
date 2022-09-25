@@ -1,6 +1,5 @@
-/* @media (min-width: 1024px) { */
+@media (min-width: 1024px) {
   .all-studies {
-    /* height: max-content; */
     height: 100%;
   }
 
@@ -220,8 +219,6 @@
 
   .post-options {
     display: flex;
-    /* position: absolute; */
-    /* left: 62%; */
   }
 
   .text-hit {
@@ -318,7 +315,6 @@
     width: 30px;
     height: 30px;
     filter: brightness(70%);
-    /* filter: opacity(0.5) drop-shadow(0 0 0 ); */
   }
 
   .img-choiced {
@@ -327,7 +323,6 @@
     width: 30px;
     height: 30px;
     filter: brightness(100%);
-    /* filter: opacity(0.5) drop-shadow(0 0 0 ); */
   }
 
   .btn-choice:hover .img-choice {
@@ -419,7 +414,9 @@
   }
 
   .btn-pagination {
-    left: 38%;
+    margin-top: 90px;
+    margin-left: 50%;
+    margin-right: auto;
     position: relative;
     display: flex;
     cursor: pointer;
@@ -461,4 +458,453 @@
     background: var(--color-hover);
     padding: 4px 10px;
   }
-/* } */
+}
+
+@media screen and (max-width: 390px) {
+  .all-studies {
+    height: 100%;
+  }
+
+  .top-studies {
+    position: relative;
+    background-color: rgb(242, 242, 242);
+    width: 100%;
+    padding-bottom: 1px;
+  }
+
+  .top-msg {
+    font-weight: bold;
+    position: relative;
+    margin-left: 23px;
+    top: 37px;
+    font-size: 20px;
+  }
+
+  .top-msg-gray {
+    position: relative;
+    margin-left: 23px;
+    font-weight: 400;
+    top: 37px;
+    font-size: 15px;
+  }
+
+  .top-cards {
+    position: relative;
+    margin-left: 23px;
+    margin-top: 65px;
+    margin-bottom: 70px;
+    display: flex;
+    width: 92%;
+    height: 100px;
+  }
+
+  .top-card {
+    filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.102));
+    border-radius: 0.5rem;
+    background: #fff;
+    position: relative;
+    display: flex;
+    width: 100%;
+    margin-right: 20px;
+    height: 130%;
+  }
+
+  .top-photo {
+    display: none;
+    width: 70px;
+    height: 70px;
+    filter: brightness(80%);
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-left: 20px;
+  }
+
+  .top-title {
+    font-style: normal;
+    font-weight: normal;
+    margin-top: 10px;
+    max-width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+    height: 20%;
+  }
+
+  .top-content {
+    position: relative;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: normal;
+    color: rgba(80, 80, 80, 1);
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-right: 30px;
+    width: 80%;
+    height: 35%;
+  }
+
+  .top-date {
+    position: fixed;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    color: rgba(80, 80, 80, 1);
+    bottom: 0;
+    margin-bottom: 10px;
+  }
+
+  .top-circle {
+    margin-left: 30px;
+    display: flex;
+    border-radius: 10rem;
+  }
+
+  .top-detail {
+    display: block;
+    max-width: 100%;
+    height: 100%;
+  }
+
+  .body-studies {
+    display: block;
+    margin-bottom: 10%;
+  }
+
+  .search-and-write {
+    display: flex;
+    position: relative;
+    top: 40px;
+  }
+
+  .studies-search {
+    width: 100%;
+    margin-left: 23px;
+    height: 100px;
+    stroke: rgba(219, 219, 219, 1);
+  }
+
+  .search-input {
+    width: 95%;
+    border-radius: 100px;
+    border: 1px solid rgba(219, 219, 219, 1);
+    height: 2.75rem;
+    font-size: 16px;
+    padding-left: 2ch;
+  }
+
+  .btn-studies-write {
+    border-radius: 100px;
+    color: white;
+    background-color: #303030;
+    width: 200%;
+    position: relative;
+    left: 150%;
+    height: 40px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 500;
+    bottom: 20%;
+  }
+
+  .btn-studies-write:hover {
+    filter: brightness(60%);
+  }
+
+  .select-studies {
+    position: relative;
+    margin-left: 23px;
+  }
+
+  .img-mag {
+    z-index: 100;
+    object-fit: cover;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 10%;
+    top: 11px;
+  }
+
+  .btn-mag {
+    cursor: pointer;
+  }
+
+  .studies-line {
+    border: solid 1px lightgray;
+    margin-top: 10px;
+    width: 100%;
+    position: relative;
+    margin-left: 23px;
+    justify-content: center;
+  }
+
+  .studies-line2 {
+    border: solid 1px lightgray;
+    margin-top: 10px;
+    position: relative;
+    width: 148%;
+    justify-content: center;
+  }
+
+  .post-header {
+    display: flex;
+    position: relative;
+    margin-top: 30px;
+  }
+
+  .post-status {
+    color: white;
+    background-color: var(--color-primary);
+    padding: 2px 5px 0;
+    font-size: 14px;
+  }
+
+  .post-title {
+    margin-left: 10px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .post-body {
+    display: flex;
+    position: relative;
+    margin-top: 10px;
+    width: 60%;
+  }
+
+  .post-comment {
+    display: flex;
+    margin-right: 18px;
+    font-size: 16px;
+  }
+
+  .post-options {
+    margin-left: 90px;
+    display: flex;
+  }
+
+  .text-hit {
+    text-align: center;
+  }
+
+  .text-like {
+    text-align: center;
+  }
+
+  .text-comment {
+    text-align: center;
+  }
+
+  .post-hit {
+    display: flex;
+    margin-right: 18px;
+  }
+
+  .post-like {
+    display: flex;
+    margin-right: 18px;
+  }
+
+  .post-tag {
+    margin-top: 10px;
+    text-align: center;
+    position: relative;
+    border-radius: 100px;
+    border: 1px solid rgba(219, 219, 219, 1);
+    width: 80px;
+    background-color: rgba(241, 241, 245, 1);
+    font-size: 14px;
+    margin-right: 10px;
+  }
+
+  .tags {
+    display: flex;
+  }
+
+  .post-tail {
+    display: flex;
+    position: relative;
+    margin-top: 20px;
+  }
+
+  .post-owner {
+    position: absolute;
+    font-size: 12px;
+    margin-top: 2px;
+    font-weight: bold;
+  }
+
+  .post-date {
+    margin-left: 50px;
+    color: rgba(128, 128, 128, 1);
+    font-size: 14px;
+  }
+
+  .post-content {
+    max-width: 70%;
+  }
+
+  .post-studies {
+    position: relative;
+    margin-left: 23px;
+    max-width: 60%;
+  }
+
+  .choice-tag {
+    position: relative;
+    filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.102));
+    border-radius: 0.5rem;
+    width: 14%;
+    height: max-content;
+    left: 8%;
+    margin-top: 30px;
+    display: flex;
+    flex-flow: row wrap;
+    background: #fff;
+    padding: 1%;
+    z-index: 100;
+  }
+
+  .btn-choice {
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.102);
+    background-color: transparent;
+    width: 50px;
+    height: 50px;
+    margin-top: 20px;
+    cursor: pointer;
+    margin-left: 6%;
+  }
+
+  .img-choice {
+    z-index: 100;
+    object-fit: cover;
+    width: 30px;
+    height: 30px;
+    filter: brightness(70%);
+  }
+
+  .img-choiced {
+    z-index: 100;
+    object-fit: cover;
+    width: 30px;
+    height: 30px;
+    filter: brightness(100%);
+  }
+
+  .btn-choice:hover .img-choice {
+    filter: brightness(100%);
+  }
+
+  .img-comment {
+    z-index: 100;
+    object-fit: cover;
+    width: 35px;
+    height: 25px;
+    position: relative;
+  }
+
+  .img-hit {
+    z-index: 100;
+    object-fit: cover;
+    width: 35px;
+    height: 25px;
+    position: relative;
+  }
+
+  .img-like {
+    z-index: 100;
+    object-fit: cover;
+    width: 35px;
+    height: 25px;
+    position: relative;
+  }
+
+  .body-content {
+    position: relative;
+    display: block;
+    width: 100%;
+  }
+
+  .choicing {
+    display: flex;
+  }
+
+  .list-topcards {
+    display: flex;
+  }
+
+  .cat-menu {
+    position: relative;
+    height: 40px;
+    top: 30px;
+  }
+
+  .cat-menu-items {
+    margin-left: 23px;
+  }
+
+  .cat-item {
+    display: inline;
+    margin-right: 20px;
+    color: var(--color-gray);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .cat-item:hover {
+    transition: var(--transition);
+    color: black;
+  }
+
+  .cat-item-selected {
+    display: inline;
+    margin-right: 20px;
+    color: var(--color-primary);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 2px solid var(--color-primary);
+  }
+
+  a {
+    color: var(--color-primary);
+    transition: var(--transition);
+  }
+
+  a:hover {
+    color: var(--color-white);
+  }
+
+  .btn-pagination {
+    margin-top: 90px;
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+  }
+
+  .btn-pagination .btn-pagination-active a {
+    color: white;
+    border: 1px solid rgba(241, 241, 245, 1);
+    border-radius: 100%;
+    background: var(--color-primary);
+    padding: 4px 10px;
+    margin-right: -3px;
+  }
+
+  .btn-pagination li {
+    height: 10px;
+    margin-right: 25px;
+  }
+
+  .btn-pagination li a {
+    color: black;
+  }
+
+  .btn-pagination li a:hover {
+    border: 1px solid rgba(241, 241, 245, 1);
+    border-radius: 100%;
+    background: var(--color-hover);
+    padding: 4px 10px;
+  }
+}

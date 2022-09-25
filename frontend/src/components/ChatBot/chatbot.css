@@ -1,4 +1,4 @@
-/* @media (min-width: 1024px) { */
+@media (min-width: 1024px) {
   .chatbot-all {
     position: fixed;
     top: 43%;
@@ -163,7 +163,7 @@
 
   .bottom-chatbot {
     margin-top: 240px;
-    width: 145%;
+    width: 35rem;
   }
 
   .food {
@@ -227,11 +227,6 @@
 
   .subway:hover {
     background: var(--color-hover);
-  }
-
-  .bottom-chatbot-food {
-    margin-top: 240px;
-    width: 145%;
   }
 
   .humanities {
@@ -309,4 +304,10 @@
     margin-top: 15px;
     background-color: rgba(219, 219, 219, 1);
   }
-/* } */
+}
+
+@media screen and (max-width: 390px) {
+  .img-mini-chatbot {
+    display: none;
+  }
+}
