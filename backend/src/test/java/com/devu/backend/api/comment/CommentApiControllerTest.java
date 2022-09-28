@@ -196,7 +196,7 @@ class CommentApiControllerTest {
         String url = "/api/reComments";
         User user = getUser();
         Chat chat = getChat(user);
-        CommentCreateRequestDto requestDto = getCommentCreateRequestDto(user, chat, 1L, "test");
+        CommentCreateRequestDto requestDto = getCommentCreateRequestDto(user, chat, 1L, "noUsername");
         String content = objectMapper.writeValueAsString(requestDto);
 
         mockMvc.perform(
