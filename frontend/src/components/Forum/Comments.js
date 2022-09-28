@@ -123,6 +123,18 @@ const Comments = (props) => {
     } else alert('대댓글을 작성해주세요!');
   };
 
+  const handleKeyPressComment = (e) => {
+    if (e.key === 'Enter') {
+      handleComment();
+    }
+  };
+
+  const handleKeyPressRecomment = (e, commentId, username) => {
+    if (e.key === 'Enter') {
+      handleRecomment(commentId, username);
+    }
+  };
+
   return (
     <div>
       <div className="studies-write-comments">
@@ -132,6 +144,7 @@ const Comments = (props) => {
           name="comment"
           value={comment}
           onChange={(e) => onChangeComment(e)}
+          onKeyPress={handleKeyPressComment}
           placeholder="댓글을 입력해주세요."
         />
         <button
@@ -497,6 +510,13 @@ const Comments = (props) => {
                               name="recomment"
                               value={recomment}
                               onChange={(e) => onChangeRecomment(e)}
+                              onKeyPress={(e) =>
+                                handleKeyPressRecomment(
+                                  e,
+                                  comment.commentId,
+                                  comment.username
+                                )
+                              }
                               placeholder="대댓글을 입력해주세요."
                             />
                             <button
