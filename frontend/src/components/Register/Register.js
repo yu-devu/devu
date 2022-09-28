@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import "./register.css";
-import FooterGray from "../Home/FooterGray";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import './register.css';
+import FooterGray from '../Home/FooterGray';
 
 const Register = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [authkey, setAuthkey] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [checkPassword, setCheckPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [authkey, setAuthkey] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [checkPassword, setCheckPassword] = useState('');
   const [passwordAvailability, setPasswordAvailability] = useState(false);
   const [showValidate, setShowValidate] = useState(false);
   const [showInformation, setShowInformation] = useState(false);
@@ -32,14 +32,14 @@ const Register = () => {
   const showValidateInput = () => setShowValidate(true);
   const showInformationInput = () => setShowInformation(true);
   const handleAuthorize = async () => {
-    if (email.includes("@ynu.ac.kr") || email.includes("@yu.ac.kr")) {
+    if (email.includes('@ynu.ac.kr') || email.includes('@yu.ac.kr')) {
       const data = {
         email: email,
       };
       await axios
         .post(process.env.REACT_APP_DB_HOST + `/email`, data, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         })
         .then((res) => {
@@ -48,23 +48,23 @@ const Register = () => {
           showValidateInput();
         })
         .catch((e) => alert(JSON.parse(e.request.response).error));
-    } else alert("이메일 형식을 확인해주세요!");
+    } else alert('이메일 형식을 확인해주세요!');
   };
 
   const checkAuthkey = async () => {
     const formData = new FormData();
-    formData.append("postKey", authkey);
+    formData.append('postKey', authkey);
     await axios
       .post(process.env.REACT_APP_DB_HOST + `/key`, formData)
       .then(() => {
-        alert("인증확인 완료!");
+        alert('인증확인 완료!');
         showInformationInput();
       })
-      .catch(() => alert("인증확인 실패.."));
+      .catch(() => alert('인증확인 실패..'));
   };
 
   const handleSignUp = async () => {
-    if (username !== "") {
+    if (username !== '') {
       if (password === checkPassword) {
         if (passwordAvailability === true) {
           const data = {
@@ -73,20 +73,20 @@ const Register = () => {
             password: password,
           };
           await axios
-            .post(process.env.REACT_APP_DB_HOST + "/signup", data, {
+            .post(process.env.REACT_APP_DB_HOST + '/signup', data, {
               headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
               },
             })
             .then(() => {
-              alert("회원가입에 성공했습니다!");
-              navigate("/registered");
+              alert('회원가입에 성공했습니다!');
+              navigate('/registered');
               handleLogin();
             })
-            .catch(() => console.log("회원가입 실패.."));
-        } else alert("비밀번호를 양식에 맞게 입력해주세요");
-      } else alert("비밀번호를 확인해주세요.");
-    } else alert("사용자 이름을 입력해주세요.");
+            .catch(() => console.log('회원가입 실패..'));
+        } else alert('비밀번호를 양식에 맞게 입력해주세요');
+      } else alert('비밀번호를 확인해주세요.');
+    } else alert('사용자 이름을 입력해주세요.');
   };
 
   const handleLogin = async () => {
@@ -96,15 +96,15 @@ const Register = () => {
     };
 
     await axios
-      .post(process.env.REACT_APP_DB_HOST + "/signin", JSON.stringify(data), {
+      .post(process.env.REACT_APP_DB_HOST + '/signin', JSON.stringify(data), {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
         },
       })
       .then((res) => {
-        localStorage.setItem("username", res.data.username);
-        localStorage.setItem("accessToken", res.data.accessToken);
+        localStorage.setItem('username', res.data.username);
+        localStorage.setItem('accessToken', res.data.accessToken);
         window.location.reload(false);
       })
       .catch(

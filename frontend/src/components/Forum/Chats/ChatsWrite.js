@@ -1,21 +1,21 @@
-import axios from "axios";
-import React, { useState, useEffect } from "react";
-import Select from "react-select";
-import { useNavigate } from "react-router-dom";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import "./chatsWrite.css";
-import { options } from "../data";
-import Submenu from "../Submenu";
-import FooterGray from "../../Home/FooterGray";
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import Select from 'react-select';
+import { useNavigate } from 'react-router-dom';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import './chatsWrite.css';
+import { options } from '../data';
+import Submenu from '../Submenu';
+import FooterGray from '../../Home/FooterGray';
 
 const ChatsWrite = () => {
   const navigate = useNavigate();
   const [postContent, setPostContent] = useState({
-    title: "",
-    content: "",
+    title: '',
+    content: '',
   });
-  const username = localStorage.getItem("username");
+  const username = localStorage.getItem('username');
 
   const handleTitle = (e) => {
     const { name, value } = e.target;
@@ -26,27 +26,27 @@ const ChatsWrite = () => {
   };
 
   const handleWrite = async () => {
-    if (postContent.title !== "" && postContent.content !== "") {
+    if (postContent.title !== '' && postContent.content !== '') {
       const formData = new FormData();
-      formData.append("title", postContent.title);
-      formData.append("username", username);
-      formData.append("content", postContent.content);
+      formData.append('title', postContent.title);
+      formData.append('username', username);
+      formData.append('content', postContent.content);
 
       await axios
         .post(process.env.REACT_APP_DB_HOST + `/community/chat`, formData, {
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `${localStorage.getItem("accessToken")}`,
+            'Content-Type': 'application/json',
+            Authorization: `${localStorage.getItem('accessToken')}`,
             // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
           },
         })
         .then(() => {
-          alert("글이 성공적으로 등록되었습니다!");
+          alert('글이 성공적으로 등록되었습니다!');
           navigate(-1);
         })
-        .catch(() => alert("글 등록 실패.."));
+        .catch(() => alert('글 등록 실패..'));
     } else {
-      alert("글을 작성해주세요!");
+      alert('글을 작성해주세요!');
     }
   };
 
@@ -71,7 +71,7 @@ const ChatsWrite = () => {
           <CKEditor
             editor={ClassicEditor}
             config={{
-              placeholder: "- 자유롭게 수다를 떨어보세요!",
+              placeholder: '- 자유롭게 수다를 떨어보세요!',
             }}
             data=""
             onChange={(event, editor) => {
@@ -79,10 +79,10 @@ const ChatsWrite = () => {
               setPostContent({
                 ...postContent,
                 content: data
-                  .replace("<p>", "")
-                  .replace("</p>", "")
-                  .replace("</strong>", "")
-                  .replace("<strong>", ""),
+                  .replace('<p>', '')
+                  .replace('</p>', '')
+                  .replace('</strong>', '')
+                  .replace('<strong>', ''),
               });
             }}
             onBlur={(event, editor) => {}}

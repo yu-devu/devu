@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import ReactPaginate from "react-paginate";
-import "./jobs.css";
-import magnify from "../../img/magnify.png";
-import FooterGray from "../Home/FooterGray";
-import Naver from "../../img/NaverLogo.png";
-import Kakao from "../../img/KakaoLogo.png";
-import Line from "../../img/LineLogo.png";
-import Coupang from "../../img/CoupangLogo.png";
-import Baemin from "../../img/BaeminLogo.png";
-import { useMediaQuery } from "react-responsive";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
+import './jobs.css';
+import magnify from '../../img/magnify.png';
+import FooterGray from '../Home/FooterGray';
+import Naver from '../../img/NaverLogo.png';
+import Kakao from '../../img/KakaoLogo.png';
+import Line from '../../img/LineLogo.png';
+import Coupang from '../../img/CoupangLogo.png';
+import Baemin from '../../img/BaeminLogo.png';
+import { useMediaQuery } from 'react-responsive';
 
 const Jobs = () => {
   const navigate = useNavigate();
@@ -18,8 +18,8 @@ const Jobs = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [postSize, setPostSize] = useState(0);
   const [postsPerPage] = useState(20);
-  const [company, setCompany] = useState("all");
-  const [searchKeyword, setSearchKeyword] = useState(""); // 검색 키워드
+  const [company, setCompany] = useState('all');
+  const [searchKeyword, setSearchKeyword] = useState(''); // 검색 키워드
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const Jobs = () => {
   const changePage = ({ selected }) => setCurrentPage(selected);
 
   const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       fetchData();
     }
   };
@@ -138,15 +138,15 @@ const Jobs = () => {
             </div>
           </div>
           <ReactPaginate
-            previousLabel={"<"}
-            nextLabel={">"}
+            previousLabel={'<'}
+            nextLabel={'>'}
             pageCount={Math.ceil(postSize / postsPerPage)} // 페이지 버튼 개수 출력하는 부분 -> 글 전체 개수 넘겨받아서 사용해야함
             onPageChange={changePage}
-            containerClassName={"btn-pagination-jobs"}
-            previousLinkClassName={"btn-pagination-jobs-previous"}
-            nextLinkClassName={"btn-pagination-jobs-next"}
-            disabledClassName={"btn-pagination-jobs-disabled"}
-            activeClassName={"btn-pagination-jobs-active"}
+            containerClassName={'btn-pagination-jobs'}
+            previousLinkClassName={'btn-pagination-jobs-previous'}
+            nextLinkClassName={'btn-pagination-jobs-next'}
+            disabledClassName={'btn-pagination-jobs-disabled'}
+            activeClassName={'btn-pagination-jobs-active'}
           />
           {/* <FooterGray /> */}
         </div>
@@ -224,15 +224,15 @@ const Jobs = () => {
             </div>
           </div>
           <ReactPaginate
-            previousLabel={"<"}
-            nextLabel={">"}
+            previousLabel={'<'}
+            nextLabel={'>'}
             pageCount={Math.ceil(postSize / postsPerPage)} // 페이지 버튼 개수 출력하는 부분 -> 글 전체 개수 넘겨받아서 사용해야함
             onPageChange={changePage}
-            containerClassName={"btn-pagination-jobs"}
-            previousLinkClassName={"btn-pagination-jobs-previous"}
-            nextLinkClassName={"btn-pagination-jobs-next"}
-            disabledClassName={"btn-pagination-jobs-disabled"}
-            activeClassName={"btn-pagination-jobs-active"}
+            containerClassName={'btn-pagination-jobs'}
+            previousLinkClassName={'btn-pagination-jobs-previous'}
+            nextLinkClassName={'btn-pagination-jobs-next'}
+            disabledClassName={'btn-pagination-jobs-disabled'}
+            activeClassName={'btn-pagination-jobs-active'}
           />
           <FooterGray />
         </div>

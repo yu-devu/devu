@@ -1,23 +1,23 @@
-import axios from "axios";
-import React, { useState, useEffect } from "react";
-import Select from "react-select";
-import { useNavigate } from "react-router-dom";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import "./studiesWrite.css";
-import { options } from "../data";
-import Submenu from "../Submenu";
-import FooterGray from "../../Home/FooterGray";
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import Select from 'react-select';
+import { useNavigate } from 'react-router-dom';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import './studiesWrite.css';
+import { options } from '../data';
+import Submenu from '../Submenu';
+import FooterGray from '../../Home/FooterGray';
 
 const StudiesWrite = () => {
   const navigate = useNavigate();
   const [tags, setTags] = useState([]); // Select에서 담은 tags
   const [postTags, setPostTags] = useState([]); // tags를 가공한 것 => axios.post할 때 쓸 수 있도록 한 것임.
   const [postContent, setPostContent] = useState({
-    title: "",
-    content: "",
+    title: '',
+    content: '',
   });
-  const username = localStorage.getItem("username");
+  const username = localStorage.getItem('username');
 
   useEffect(() => {
     organizeTags();
@@ -47,30 +47,30 @@ const StudiesWrite = () => {
 
   const handleWrite = async () => {
     if (
-      postContent.title !== "" &&
-      postContent.content !== "" &&
-      postTags[0] !== ""
+      postContent.title !== '' &&
+      postContent.content !== '' &&
+      postTags[0] !== ''
     ) {
       const formData = new FormData();
-      formData.append("title", postContent.title);
-      formData.append("username", username);
-      formData.append("content", postContent.content);
-      formData.append("tags", postTags);
+      formData.append('title', postContent.title);
+      formData.append('username', username);
+      formData.append('content', postContent.content);
+      formData.append('tags', postTags);
 
       await axios
         .post(process.env.REACT_APP_DB_HOST + `/community/study`, formData, {
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `${localStorage.getItem("accessToken")}`,
+            'Content-Type': 'application/json',
+            Authorization: `${localStorage.getItem('accessToken')}`,
             // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
           },
         })
         .then(() => {
-          alert("글이 성공적으로 등록되었습니다!");
+          alert('글이 성공적으로 등록되었습니다!');
           navigate(-1);
         })
-        .catch(() => alert("글 등록 실패.."));
-    } else alert("글을 작성해주세요!");
+        .catch(() => alert('글 등록 실패..'));
+    } else alert('글을 작성해주세요!');
   };
 
   return (
@@ -108,7 +108,7 @@ const StudiesWrite = () => {
           <CKEditor
             editor={ClassicEditor}
             config={{
-              placeholder: "- 궁금한 내용을 질문해주세요.",
+              placeholder: '- 궁금한 내용을 질문해주세요.',
             }}
             data=""
             onChange={(event, editor) => {
@@ -116,10 +116,10 @@ const StudiesWrite = () => {
               setPostContent({
                 ...postContent,
                 content: data
-                  .replace("<p>", "")
-                  .replace("</p>", "")
-                  .replace("</strong>", "")
-                  .replace("<strong>", ""),
+                  .replace('<p>', '')
+                  .replace('</p>', '')
+                  .replace('</strong>', '')
+                  .replace('<strong>', ''),
               });
             }}
             onBlur={(event, editor) => {}}

@@ -9,47 +9,19 @@ import warning from '../../../img/warning.png';
 import hit from '../../../img/hit.png';
 import like from '../../../img/like.png';
 import like_color from '../../../img/like_color.png';
-import imgComment from '../../../img/comment.png';
-import more from '../../../img/more.png';
 import FooterGray from '../../Home/FooterGray';
+import Comments from '../Comments';
 
 const StudiesView = () => {
-  let now = new Date();
-  let hours = now.getHours() - 9;
-  let minutes = now.getMinutes();
-  let seconds = now.getSeconds();
-  let year = now.getFullYear();
-  let month = now.getMonth() + 1;
-  let date = now.getDate();
-
   const navigate = useNavigate();
   const location = useLocation();
   const [postData, setPostData] = useState([]);
   const [isLike, setLike] = useState(1);
   const username = localStorage.getItem('username');
-  const [comment, setComment] = useState('');
-  const [modifycomment, setModifyComment] = useState('');
   const [likePosts, setLikePosts] = useState([]);
-
-  const [showDropdownContent, setShowDropdownContent] = useState(0);
-  const [showModifyContent, setShowModifyContent] = useState(0);
-  const onChangeComment = (e) => {
-    setComment(e.target.value);
-  };
-  const onChangeModifyComment = (e) => {
-    setModifyComment(e.target.value);
-  };
-
-  // const moreButton = document.getElementById('btn-more');
-
-  // moreButton.addEventListener('click', () => {
-  //   const dropdown = document.querySelector('more-submenu');
-  //   dropdown.style.display = 'block';
-  // });
 
   let pathname = location.pathname;
   let [a, b, postId] = pathname.split('/');
-  var comment_num;
   // useLocation으로 pathname을 추출한 후, '/'를 기준으로 parameter를 분리함
 
   useEffect(() => {
@@ -85,7 +57,7 @@ const StudiesView = () => {
           comments: res.data.comments,
         };
         setPostData(_postData);
-        comment_num = _postData.comments.length;
+        console.log(_postData.comments);
       })
       .catch((e) => console.log(e));
   };
@@ -143,15 +115,6 @@ const StudiesView = () => {
     } else alert('취소하였습니다!');
   };
 
-  const handleCommentDelete = async (id) => {
-    if (window.confirm('정말 삭제하시겠습니까?')) {
-      await axios
-        .delete(process.env.REACT_APP_DB_HOST + `/api/comments/${id}`)
-        .then(() => navigate(0))
-        .catch((e) => console.log(e));
-    } else alert('취소하였습니다!');
-  };
-
   const handleStatus = async () => {
     const data = {
       postId: postData.id,
@@ -169,54 +132,6 @@ const StudiesView = () => {
       )
       .then(() => navigate(0))
       .catch((e) => console.log(e));
-  };
-
-  const handleCommentModify = async (id) => {
-    if (modifycomment !== '') {
-      const data = {
-        contents: modifycomment,
-      };
-      await axios
-        .patch(
-          process.env.REACT_APP_DB_HOST + `/api/comments/${id}`,
-          JSON.stringify(data),
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `${localStorage.getItem('accessToken')}`,
-              // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
-            },
-          }
-        )
-        .then(() => navigate(0))
-        .catch((e) => console.log(e));
-    } else alert('댓글을 작성해주세요!');
-  };
-
-  //   console.log(postData.hours + ':' + postData.minutes + ':' + postData.seconds);
-
-  const handleComment = async () => {
-    if (comment !== '') {
-      const data = {
-        username: username,
-        postId: postId,
-        contents: comment,
-        // parent: parent,
-        // group: group,
-      };
-      await axios
-        .post(
-          process.env.REACT_APP_DB_HOST + `/api/comments`,
-          JSON.stringify(data),
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        )
-        .then(() => navigate(0))
-        .catch((e) => console.log(e));
-    } else alert('댓글을 작성해주세요!');
   };
 
   return (
@@ -316,165 +231,7 @@ const StudiesView = () => {
               ) : null}
             </div>
             <div className="studies-detail-bottom">
-              <div className="studies-write-comments">
-                <input
-                  className="comment"
-                  id="comment"
-                  name="comment"
-                  value={comment}
-                  onChange={(e) => onChangeComment(e)}
-                  placeholder="댓글을 달아주세요."
-                />
-                <button
-                  className="btn-comment"
-                  onClick={() => {
-                    handleComment();
-                  }}
-                >
-                  댓글달기
-                </button>
-              </div>
-              {postData.comments ? (
-                <div className="studies-comments-all">
-                  <div className="number-comments">
-                    <h6 className="number-comments-text">
-                      {postData.comments.length}개의 답글
-                    </h6>
-                  </div>
-                  <div div className="studies-comments">
-                    {postData.comments &&
-                      postData.comments.map((comment) => (
-                        <div className="container-comments">
-                          <div className="comment-detail">
-                            <div className="comments-top">
-                              <div>
-                                <img
-                                  className="comment-photo"
-                                  src={ab}
-                                  alt=""
-                                />
-                              </div>
-                              <div className="comment-top">
-                                <div className="comment-owner">
-                                  {comment.username}
-                                </div>
-                                {comment.username === username &&
-                                comment.commentId !== showModifyContent ? (
-                                  <button className="btn-more">
-                                    <img
-                                      className="img-more"
-                                      alt=""
-                                      src={more}
-                                      onClick={() => {
-                                        console.log(comment.commentId);
-                                        if (
-                                          showDropdownContent ===
-                                          comment.commentId
-                                        )
-                                          setShowDropdownContent(0);
-                                        else
-                                          setShowDropdownContent(
-                                            comment.commentId
-                                          );
-                                      }}
-                                    />
-                                    {comment.commentId ===
-                                    showDropdownContent ? (
-                                      <div>
-                                        <button
-                                          onClick={() => {
-                                            setShowModifyContent(
-                                              comment.commentId
-                                            );
-                                            setShowDropdownContent(0);
-                                          }}
-                                        >
-                                          수정
-                                        </button>
-                                        <button
-                                          onClick={() => {
-                                            handleCommentDelete(
-                                              comment.commentId
-                                            );
-                                          }}
-                                        >
-                                          삭제
-                                        </button>
-                                      </div>
-                                    ) : null}
-                                  </button>
-                                ) : null}
-                              </div>
-                            </div>
-                            {comment.commentId === showModifyContent ? (
-                              <div className="questions-write-comments">
-                                <input
-                                  id="comment"
-                                  name="comment"
-                                  defaultValue={comment.contents}
-                                  onChange={(e) => onChangeModifyComment(e)}
-                                />
-                                <button
-                                  className="btn-comment"
-                                  onClick={() => {
-                                    handleCommentModify(comment.commentId);
-                                  }}
-                                >
-                                  수정하기
-                                </button>
-                                <button
-                                  className="btn-comment"
-                                  onClick={() => {
-                                    setShowModifyContent(0);
-                                  }}
-                                >
-                                  취소
-                                </button>
-                              </div>
-                            ) : (
-                              <div className="comment-content">
-                                {comment.contents}
-                              </div>
-                            )}
-
-                            <div className="comment-date">
-                              {comment.createAt.slice(0, 4) == year
-                                ? comment.createAt.slice(5, 7) == month &&
-                                  comment.createAt.slice(8, 10) == date
-                                  ? comment.createAt.slice(11, 13) == hours
-                                    ? comment.createAt.slice(14, 16) == minutes
-                                      ? seconds -
-                                        comment.createAt.slice(17, 19) +
-                                        '초 전'
-                                      : minutes -
-                                          comment.createAt.slice(14, 16) ==
-                                          1 &&
-                                        seconds < comment.createAt.slice(17, 19)
-                                      ? 60 -
-                                        comment.createAt.slice(17, 19) +
-                                        seconds +
-                                        '초 전'
-                                      : minutes -
-                                        comment.createAt.slice(14, 16) +
-                                        '분 전'
-                                    : hours -
-                                      comment.createAt.slice(11, 13) +
-                                      '시간 전'
-                                  : comment.createAt.slice(5, 7) +
-                                    '.' +
-                                    comment.createAt.slice(8, 10)
-                                : comment.createAt.slice(2, 4) +
-                                  '.' +
-                                  comment.createAt.slice(5, 7) +
-                                  '.' +
-                                  comment.createAt.slice(8, 10)}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              ) : null}
+              <Comments comments={postData.comments} />
               <FooterGray />
             </div>
           </div>

@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function ChangePassword() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [password, setPassword] = useState("");
-  const [checkPassword, setCheckPassword] = useState("");
+  const [password, setPassword] = useState('');
+  const [checkPassword, setCheckPassword] = useState('');
   const [passwordAvailability, setPasswordAvailability] = useState(false);
   let pathname = location.pathname;
-  let [a, b, email] = pathname.split("/"); // 추후에 바꿔야 함
+  let [a, b, c, email] = pathname.split('/'); // 추후에 바꿔야 함
   // console.log(email)
 
   // const [email, setEmail] = useState('');
@@ -48,17 +48,17 @@ function ChangePassword() {
             JSON.stringify(data),
             {
               headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
               },
             }
           )
           .then((res) => {
-            alert("비밀번호 변경 완료");
-            navigate("/");
+            alert('비밀번호 변경 완료');
+            navigate('/');
           })
           .catch((e) => console.log(e));
-      } else alert("비밀번호를 양식에 맞게 입력해주세요.");
-    } else alert("비밀번호가 일치하지 않습니다.");
+      } else alert('비밀번호를 양식에 맞게 입력해주세요.');
+    } else alert('비밀번호가 일치하지 않습니다.');
   };
 
   return (
