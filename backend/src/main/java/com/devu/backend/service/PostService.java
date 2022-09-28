@@ -9,10 +9,7 @@ import com.devu.backend.config.s3.S3Uploader;
 import com.devu.backend.controller.post.PostRequestCreateDto;
 import com.devu.backend.controller.post.PostRequestUpdateDto;
 import com.devu.backend.controller.post.PostResponseDto;
-import com.devu.backend.entity.Image;
-import com.devu.backend.entity.PostTag;
-import com.devu.backend.entity.Tag;
-import com.devu.backend.entity.User;
+import com.devu.backend.entity.*;
 import com.devu.backend.entity.post.*;
 import com.devu.backend.repository.ImageRepository;
 import com.devu.backend.repository.post.PostRepository;
@@ -264,6 +261,8 @@ public class PostService {
                 .like(chat.getLikes().size())
                 .comments(
                         chat.getComments().stream()
+                                .sorted(Comparator.comparing(Comment::getGroupNum)
+                                        .thenComparing(Comment::getId))
                                 .map(comment -> CommentResponseDto.builder()
                                         .username(comment.getUser().getUsername())
                                         .contents(comment.getContents())
@@ -274,7 +273,8 @@ public class PostService {
                                         .lastModifiedAt(comment.getLastModifiedAt())
                                         .createAt(comment.getCreateAt())
                                         .build()
-                                ).collect(Collectors.toList())
+                                )
+                                .collect(Collectors.toList())
                 )
                 .tags(chat.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                 .createAt(chat.getCreateAt())
@@ -300,6 +300,8 @@ public class PostService {
                 .like(study.getLikes().size())
                 .comments(
                         study.getComments().stream()
+                                .sorted(Comparator.comparing(Comment::getGroupNum)
+                                        .thenComparing(Comment::getId))
                                 .map(comment -> CommentResponseDto.builder()
                                         .username(comment.getUser().getUsername())
                                         .contents(comment.getContents())
@@ -336,6 +338,8 @@ public class PostService {
                 .like(question.getLikes().size())
                 .comments(
                         question.getComments().stream()
+                                .sorted(Comparator.comparing(Comment::getGroupNum)
+                                        .thenComparing(Comment::getId))
                                 .map(comment -> CommentResponseDto.builder()
                                         .username(comment.getUser().getUsername())
                                         .contents(comment.getContents())
