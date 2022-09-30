@@ -11,6 +11,7 @@ import like from "../../../img/like.png";
 import like_color from "../../../img/like_color.png";
 import more from "../../../img/more.png";
 import FooterGray from "../../Home/FooterGray";
+import { useMediaQuery } from 'react-responsive'
 
 const ChatsView = () => {
   let now = new Date();
@@ -29,6 +30,7 @@ const ChatsView = () => {
   const [comment, setComment] = useState("");
   const [modifycomment, setModifyComment] = useState("");
   const [likePosts, setLikePosts] = useState([]);
+  const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 })
 
   const [showDropdownContent, setShowDropdownContent] = useState(0);
   const [showModifyContent, setShowModifyContent] = useState(0);
@@ -199,7 +201,271 @@ const ChatsView = () => {
   return (
     <div>
       <Submenu />
-      <div>
+      {isTabletOrMobile ? (<div>
+        {postData ? (
+          <div className="chats-view">
+            <div className="questions-detail-top">
+              <div className="questions-contents-all">
+                <div className="questions-sidebar">
+                  <div className="questions-sidebar-item">
+                    <img className="img-detail-hit" src={hit} alt="" />
+                    <h8 className="detail-sidebar-text">{postData.hit}</h8>
+                  </div>
+                  <div
+                    className="questions-sidebar-btn"
+                    onClick={() => handlePostLike()}
+                  >
+                    {likePosts.includes(postData.id) ? (
+                      <img
+                        className="img-detail-like"
+                        src={like_color}
+                        alt=""
+                      />
+                    ) : (
+                      <img className="img-detail-like" src={like} alt="" />
+                    )}
+                    <button className="detail-sidebar-btn">
+                      {postData.like}
+                    </button>
+                  </div>
+                  <div className="questions-sidebar-btn">
+                    <img className="img-detail-like" src={share} alt="" />
+                    <button className="detail-sidebar-btn">공유</button>
+                  </div>
+                  <div className="questions-sidebar-btn">
+                    <img className="img-detail-like" src={warning} alt="" />
+                    <button className="detail-sidebar-btn">신고</button>
+                  </div>
+                </div>
+                <div className="question-detail-top">
+                  <div className="questions-profile">
+                    <img className="questions-photo" src={ab} alt="" />
+                  </div>
+                  <div className="questions-owner">{postData.username}</div>
+                  <div className="questions-date">
+                    {postData.date} {postData.hours}:{postData.minutes}:
+                    {postData.seconds}
+                  </div>
+                  {postData.username === username ? (
+                    <div className="questions-btns">
+                      <Link
+                        className="btn-modify"
+                        to={`/questionsDetail/${postId}/modify`}
+                      >
+                        수정
+                      </Link>
+                      <button
+                        className="btn-delete-post"
+                        onClick={() => {
+                          handlePostDelete();
+                        }}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  ) : null}
+                </div>
+                <div className="questions-top">
+                  <div className="questions-status">
+                    {postData.questionStatus === "SOLVED" ? "해결" : "미해결"}
+                  </div>
+                  <div className="questions-title">{postData.title}</div>
+                </div>
+                <div className="questions-content">{postData.content}</div>
+              </div>
+            </div>
+            <div className="chats-content-bottom">
+              <div className="chats-tags">
+                {postData.tags &&
+                  postData.tags.map((tag) => (
+                    <div className="chats-tag">{tag}</div>
+                  ))}
+              </div>
+              {postData.username === username ? (
+                <div className="chats-btns">
+                  <Link
+                    className="btn-modify"
+                    to={`/chatsDetail/${postId}/modify`}
+                  >
+                    수정
+                  </Link>
+                  <button
+                    className="btn-delete-post"
+                    onClick={() => {
+                      handlePostDelete();
+                    }}
+                  >
+                    삭제
+                  </button>
+                </div>
+              ) : null}
+            </div>
+            <div className="chats-detail-bottom">
+              <div className="chats-write-comments">
+                <input
+                  className="comment"
+                  id="comment"
+                  name="comment"
+                  value={comment}
+                  onChange={(e) => onChangeComment(e)}
+                  placeholder="댓글을 달아주세요."
+                />
+                <button
+                  className="btn-comment"
+                  onClick={() => {
+                    handleComment();
+                  }}
+                >
+                  댓글달기
+                </button>
+              </div>
+              {postData.comments ? (
+                <div className="chats-comments-all">
+                  <div className="number-comments"></div>
+                  <div className="chats-comments">
+                    {postData.comments &&
+                      postData.comments.map((comment) => (
+                        <div className="container-comments">
+                          <div className="comment-detail">
+                            <div className="comments-top">
+                              <div>
+                                <img
+                                  className="comment-photo"
+                                  src={ab}
+                                  alt=""
+                                />
+                              </div>
+                              <div className="comment-top">
+                                <div className="comment-owner">
+                                  {comment.username}
+                                </div>
+                                {comment.username === username &&
+                                  comment.commentId !== showModifyContent ? (
+                                  <button className="btn-more">
+                                    <img
+                                      className="img-more"
+                                      alt=""
+                                      src={more}
+                                      onClick={() => {
+                                        console.log(comment.commentId);
+                                        if (
+                                          showDropdownContent ===
+                                          comment.commentId
+                                        )
+                                          setShowDropdownContent(0);
+                                        else
+                                          setShowDropdownContent(
+                                            comment.commentId
+                                          );
+                                      }}
+                                    />
+                                    {comment.commentId ===
+                                      showDropdownContent ? (
+                                      <ul className="more-submenu">
+                                        <button
+                                          onClick={() => {
+                                            setShowModifyContent(
+                                              comment.commentId
+                                            );
+                                            setShowDropdownContent(0);
+                                          }}
+                                        >
+                                          수정
+                                        </button>
+                                        <button
+                                          onClick={() => {
+                                            handleCommentDelete(
+                                              comment.commentId
+                                            );
+                                          }}
+                                        >
+                                          삭제
+                                        </button>
+                                      </ul>
+                                    ) : null}
+                                  </button>
+                                ) : null}
+                              </div>
+                            </div>
+                            {comment.commentId === showModifyContent ? (
+                              <div className="container-modify-comments">
+                                <input
+                                  className="comment"
+                                  id="comment"
+                                  name="comment"
+                                  defaultValue={comment.contents}
+                                  onChange={(e) => onChangeModifyComment(e)}
+                                />
+                                <div className="btn-comments">
+                                  <button
+                                    className="btn-comment-sub"
+                                    onClick={() => {
+                                      handleCommentModify(comment.commentId);
+                                    }}
+                                  >
+                                    수정하기
+                                  </button>
+                                  <button
+                                    className="btn-comment-sub"
+                                    onClick={() => {
+                                      setShowModifyContent(0);
+                                    }}
+                                  >
+                                    취소
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="comment-content">
+                                {comment.contents}
+                              </div>
+                            )}
+
+                            <div className="comment-date">
+                              {comment.createAt.slice(0, 4) == year
+                                ? comment.createAt.slice(5, 7) == month &&
+                                  comment.createAt.slice(8, 10) == date
+                                  ? comment.createAt.slice(11, 13) == hours
+                                    ? comment.createAt.slice(14, 16) == minutes
+                                      ? seconds -
+                                      comment.createAt.slice(17, 19) +
+                                      "초 전"
+                                      : minutes -
+                                        comment.createAt.slice(14, 16) ==
+                                        1 &&
+                                        seconds < comment.createAt.slice(17, 19)
+                                        ? 60 -
+                                        comment.createAt.slice(17, 19) +
+                                        seconds +
+                                        "초 전"
+                                        : minutes -
+                                        comment.createAt.slice(14, 16) +
+                                        "분 전"
+                                    : hours -
+                                    comment.createAt.slice(11, 13) +
+                                    "시간 전"
+                                  : comment.createAt.slice(5, 7) +
+                                  "." +
+                                  comment.createAt.slice(8, 10)
+                                : comment.createAt.slice(2, 4) +
+                                "." +
+                                comment.createAt.slice(5, 7) +
+                                "." +
+                                comment.createAt.slice(8, 10)}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              ) : null}
+              {/* <FooterGray /> */}
+            </div>
+          </div>
+        ) : (
+          "해당 게시글을 찾을 수 없습니다."
+        )}
+      </div>) : (<div>
         {postData ? (
           <div className="chats-view">
             <div className="chats-detail-top">
@@ -317,7 +583,7 @@ const ChatsView = () => {
                                   {comment.username}
                                 </div>
                                 {comment.username === username &&
-                                comment.commentId !== showModifyContent ? (
+                                  comment.commentId !== showModifyContent ? (
                                   <button className="btn-more">
                                     <img
                                       className="img-more"
@@ -337,7 +603,7 @@ const ChatsView = () => {
                                       }}
                                     />
                                     {comment.commentId ===
-                                    showDropdownContent ? (
+                                      showDropdownContent ? (
                                       <ul className="more-submenu">
                                         <button
                                           onClick={() => {
@@ -405,30 +671,30 @@ const ChatsView = () => {
                                   ? comment.createAt.slice(11, 13) == hours
                                     ? comment.createAt.slice(14, 16) == minutes
                                       ? seconds -
-                                        comment.createAt.slice(17, 19) +
-                                        "초 전"
+                                      comment.createAt.slice(17, 19) +
+                                      "초 전"
                                       : minutes -
-                                          comment.createAt.slice(14, 16) ==
-                                          1 &&
+                                        comment.createAt.slice(14, 16) ==
+                                        1 &&
                                         seconds < comment.createAt.slice(17, 19)
-                                      ? 60 -
+                                        ? 60 -
                                         comment.createAt.slice(17, 19) +
                                         seconds +
                                         "초 전"
-                                      : minutes -
+                                        : minutes -
                                         comment.createAt.slice(14, 16) +
                                         "분 전"
                                     : hours -
-                                      comment.createAt.slice(11, 13) +
-                                      "시간 전"
+                                    comment.createAt.slice(11, 13) +
+                                    "시간 전"
                                   : comment.createAt.slice(5, 7) +
-                                    "." +
-                                    comment.createAt.slice(8, 10)
+                                  "." +
+                                  comment.createAt.slice(8, 10)
                                 : comment.createAt.slice(2, 4) +
-                                  "." +
-                                  comment.createAt.slice(5, 7) +
-                                  "." +
-                                  comment.createAt.slice(8, 10)}
+                                "." +
+                                comment.createAt.slice(5, 7) +
+                                "." +
+                                comment.createAt.slice(8, 10)}
                             </div>
                           </div>
                         </div>
@@ -442,7 +708,7 @@ const ChatsView = () => {
         ) : (
           "해당 게시글을 찾을 수 없습니다."
         )}
-      </div>
+      </div>)}
     </div>
   );
 };
