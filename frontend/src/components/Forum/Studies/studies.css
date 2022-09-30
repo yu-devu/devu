@@ -737,6 +737,7 @@
     margin-left: 50px;
     color: rgba(128, 128, 128, 1);
     font-size: 14px;
+    min-width: 40px;
   }
 
   .post-content {
