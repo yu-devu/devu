@@ -1,13 +1,7 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './changePassword.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-=======
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import "./changePassword.css";
-import { useLocation, useNavigate } from "react-router-dom";
->>>>>>> 6db64c6f4a4c945f7b1841bccc85416f62ed4e28
 
 function ChangePassword() {
   const navigate = useNavigate();
