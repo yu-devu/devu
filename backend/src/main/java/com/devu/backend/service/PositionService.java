@@ -16,6 +16,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -269,7 +270,7 @@ public class PositionService {
     }
 
     @Transactional
-//    @Scheduled(cron = "0 0 4 * * *")  매일 새벽4시마다 실행(혹시몰라 잠시중단)
+    @Scheduled(cron = "0 0 4 * * *")
     public void collectAllPosition() {
         positionRepository.deleteAll();
         //Naver 크롤링
