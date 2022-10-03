@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from "react";
-import axios from "axios";
-import "./loginButton.css";
-import "./loginModal.css";
-import ChangePasswordModal from "./ChangePasswordModal.js";
-import logo from "../../img/logo_main.png";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import axios from 'axios';
+import './loginButton.css';
+import './loginModal.css';
+import ChangePasswordModal from './ChangePasswordModal.js';
+import logo from '../../img/logo_main.png';
+import { useNavigate } from 'react-router-dom';
 
 function LoginButton() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const JWT_EXPIRY_TIME = 30 * 60 * 1000; // 만료 시간 (30분)
 
   const handleEmail = (e) => setEmail(e.target.value);
@@ -20,14 +20,14 @@ function LoginButton() {
   const openModal = () => setShowModal(true);
 
   const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       handleLogin();
     }
   };
 
   const handleLogin = async () => {
-    if (email === "" || password === "") {
-      alert("이메일과 비밀번호를 입력해주세요.");
+    if (email === '' || password === '') {
+      alert('이메일과 비밀번호를 입력해주세요.');
       return;
     }
     const data = {
@@ -36,18 +36,18 @@ function LoginButton() {
     };
 
     await axios
-      .post(process.env.REACT_APP_DB_HOST + "/signin", JSON.stringify(data), {
+      .post(process.env.REACT_APP_DB_HOST + '/signin', JSON.stringify(data), {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       })
       .then((response) => {
-        alert("로그인에 성공했습니다!");
-        navigate("/main");
-        localStorage.setItem("username", response.data.username);
+        alert('로그인에 성공했습니다!');
+        navigate('/main');
+        localStorage.setItem('username', response.data.username);
         localStorage.setItem(
-          "accessToken",
-          response.headers["x-auth-access-token"]
+          'accessToken',
+          response.headers['x-auth-access-token']
         );
         onSilentRefresh();
       })
@@ -58,17 +58,17 @@ function LoginButton() {
 
   const onSilentRefresh = async () => {
     await axios
-      .post(process.env.REACT_APP_DB_HOST + "/silent-refresh")
+      .post(process.env.REACT_APP_DB_HOST + '/silent-refresh')
       .then((res) => {
         console.log(res);
-        if (res.headers["x-auth-access-token"]) {
+        if (res.headers['x-auth-access-token']) {
           localStorage.setItem(
-            "accessToken",
-            res.headers["x-auth-access-token"]
+            'accessToken',
+            res.headers['x-auth-access-token']
           );
         }
         setTimeout(onSilentRefresh, JWT_EXPIRY_TIME - 60000); // accessToken 만료하기 1분 전에 로그인 연장
-        console.log("setInterval-loginButton.js");
+        console.log('setInterval-loginButton.js');
       })
       .catch((e) => console.log(e));
   };
@@ -122,7 +122,7 @@ function LoginButton() {
               <button
                 className="btn-login-register"
                 onClick={() => {
-                  navigate("/register");
+                  navigate('/register');
                   closeModal();
                 }}
               >

@@ -1,13 +1,13 @@
-import axios from "axios";
-import React, { useState, useEffect } from "react";
-import Select from "react-select";
-import { useNavigate, useLocation } from "react-router-dom";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import "./chatsModify.css";
-import { options } from "../data";
-import Submenu from "../Submenu";
-import FooterGray from "../../Home/FooterGray";
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import Select from 'react-select';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import './chatsModify.css';
+import { options } from '../data';
+import Submenu from '../Submenu';
+import FooterGray from '../../Home/FooterGray';
 
 const ChatsModify = () => {
   const navigate = useNavigate();
@@ -15,13 +15,13 @@ const ChatsModify = () => {
   const [postData, setPostData] = useState([]);
   const [tags, setTags] = useState([]); // Select에서 담은 tags
   let pathname = location.pathname;
-  let [a, b, postId] = pathname.split("/");
+  let [a, b, postId] = pathname.split('/');
   const [postTags, setPostTags] = useState([]); // tags를 가공한 것 => axios.post할 때 쓸 수 있도록 한 것임.
   const [postContent, setPostContent] = useState({
-    title: "",
-    content: "",
+    title: '',
+    content: '',
   });
-  const username = localStorage.getItem("username");
+  const username = localStorage.getItem('username');
 
   useEffect(() => {
     organizeTags();
@@ -62,11 +62,11 @@ const ChatsModify = () => {
   };
 
   const handleModify = async () => {
-    if (postContent.title !== "" && postContent.content !== "") {
+    if (postContent.title !== '' && postContent.content !== '') {
       const formData = new FormData();
-      formData.append("title", postContent.title);
-      formData.append("username", username);
-      formData.append("content", postContent.content);
+      formData.append('title', postContent.title);
+      formData.append('username', username);
+      formData.append('content', postContent.content);
 
       await axios
         .patch(
@@ -74,21 +74,21 @@ const ChatsModify = () => {
           formData,
           {
             headers: {
-              "Content-Type": "application/json",
-              Authorization: `${localStorage.getItem("accessToken")}`,
+              'Content-Type': 'application/json',
+              Authorization: `${localStorage.getItem('accessToken')}`,
               // 'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
             },
           }
         )
         .then(() => {
-          alert("글이 성공적으로 수정되었습니다!");
+          alert('글이 성공적으로 수정되었습니다!');
           navigate(-1);
         })
         .catch(() => {
-          alert("글 수정 실패..");
+          alert('글 수정 실패..');
         });
     } else {
-      alert("수정할 글을 작성해주세요!");
+      alert('수정할 글을 작성해주세요!');
     }
   };
 
@@ -113,14 +113,14 @@ const ChatsModify = () => {
           <CKEditor
             editor={ClassicEditor}
             config={{
-              placeholder: "- 궁금한 내용을 질문해주세요.",
+              placeholder: '- 궁금한 내용을 질문해주세요.',
             }}
             data={postData.content}
             onChange={(event, editor) => {
               const data = editor.getData();
               setPostContent({
                 ...postContent,
-                content: data.replace("<p>", "").replace("</p>", ""),
+                content: data.replace('<p>', '').replace('</p>', ''),
               });
             }}
             onBlur={(event, editor) => {}}
