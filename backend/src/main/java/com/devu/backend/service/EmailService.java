@@ -79,7 +79,7 @@ public class EmailService{
     * => 비밀번호 변경 진행
     * */
     private MimeMessage createPasswordChangeMail(String to)throws Exception{
-        String api = "https://api.devu.site:9090/api/change_password/";
+        String api = "https://devu.site:9090/api/change_password/";
         log.info("Password Change Mail Send To = {}",to);
         MimeMessage message = emailSender.createMimeMessage();
 
