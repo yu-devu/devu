@@ -146,7 +146,7 @@ public class PositionService {
             Elements titles = document.select(".list_jobs li .tit_jobs");
             Elements durations = document.select(".list_jobs li .list_info > dd:first-of-type");
             for (int i =0; i < titles.size(); i++) {
-                String link = links.get(i).attr("href");
+                String link = "https://careers.kakao.com" + links.get(i).attr("href");
                 String title = titles.get(i).text();
                 String duration = durations.get(i).text();
                 log.info("link: {}, title: {}, duration: {}", link, title, duration);
