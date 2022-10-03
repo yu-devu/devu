@@ -6,7 +6,6 @@ import com.devu.backend.entity.CompanyType;
 import com.devu.backend.entity.Position;
 import com.devu.backend.repository.PositionRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Connection;
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PositionService {
@@ -46,7 +44,6 @@ public class PositionService {
                         .data("endNum", Integer.toString(endNum))
                         .ignoreContentType(true)
                         .post();
-                log.info(doc.toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -62,7 +59,6 @@ public class PositionService {
                 String link = "https://recruit.navercorp.com/naver/job/detail/developer?annoId=" + annoId +
                         "&classId=&jobId=&entTypeCd=&searchTxt=&searchSysComCd=";
                 String duration = start + " ~ " + end;
-                log.info("link: {}, date: {}, title: {}", link, duration, title);
 
                 Position position = Position.builder()
                         .link(link)
@@ -96,7 +92,6 @@ public class PositionService {
                 String recruitNumber = lists.getJSONObject(i).getString("recruitNumber");
                 String openDate = lists.getJSONObject(i).getString("recruitOpenDate").substring(0, 10);
                 String title = lists.getJSONObject(i).getString("recruitName");
-                log.info("link: {}, date: {}, title: {}", recruitNumber, openDate, title);
 
                 String link = "https://career.woowahan.com/recruitment/"+ recruitNumber +
                         "/detail?category=jobGroupCodes%3ABA005001&keyword=&jobCodes=&employmentTypeCodes=";
@@ -128,7 +123,6 @@ public class PositionService {
             JSONObject jsonObject = new JSONObject(doc.text());
             JSONObject dataObject = jsonObject.getJSONObject("data");
             int cnt = dataObject.getInt("totalSize") / dataObject.getInt("pageSize");
-            log.info("cnt: {}", cnt);
             return cnt;
         } catch (IOException e) {
             e.printStackTrace();
@@ -150,7 +144,6 @@ public class PositionService {
                 String link = "https://careers.kakao.com" + links.get(i).attr("href");
                 String title = titles.get(i).text();
                 String duration = durations.get(i).text();
-                log.info("link: {}, title: {}, duration: {}", link, title, duration);
 
                 Position position = Position.builder()
                         .link(link)
@@ -175,7 +168,6 @@ public class PositionService {
             Elements num = document.select(".link_job1 .emph_num");
             int limit = 15;
             int cnt = Integer.parseInt(num.text()) / limit;
-            log.info("cnt: {}", cnt);
             return cnt+1;
         } catch (IOException e) {
             e.printStackTrace();
@@ -199,7 +191,6 @@ public class PositionService {
                 if(title.endsWith(" NEW"))
                     title = title.substring(0, title.length()-4);
                 String duration = durations.get(i).text();
-                log.info("link: {}, title: {}, duration: {}", link, title, duration);
 
                 Position position = Position.builder()
                         .link(link)
@@ -232,7 +223,6 @@ public class PositionService {
                 String link = "https://www.coupang.jobs" + links.get(i).attr("href");
                 String title = titles.get(i).text();
                 String duration = "공고 확인";
-                log.info("link: {}, title: {}, duration: {}", link, title, duration);
 
                 Position position = Position.builder()
                         .link(link)
@@ -261,7 +251,6 @@ public class PositionService {
             Element num = document.select(".job-count strong").get(2);
             int limit = 20;
             int cnt = Integer.parseInt(num.text()) / limit;
-            log.info("cnt: {}", cnt);
             return cnt+1;
         } catch (IOException e) {
             e.printStackTrace();
