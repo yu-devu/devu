@@ -36,11 +36,11 @@ const Chats = () => {
   const [order, setOrder] = useState('');
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
   const [likePosts, setLikePosts] = useState([]);
-  const [loading, setLoading] = useState(false);
   const onChangeSentence = (e) => {
     setSentence(e.target.value);
   };
   const username = localStorage.getItem('username');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -55,10 +55,10 @@ const Chats = () => {
       .get(process.env.REACT_APP_DB_HOST + `/community/chats`, {
         params: {
           page: currentPage,
-          status: status,
-          order: order,
           tags: selectedTag.join(','), // join(",")으로 해야 ?tags=REACT,SPRING으로 parameter 전송할 수 있음.
           s: sentence,
+          status: status,
+          order: order,
         },
       })
       .then((res) => {
@@ -82,8 +82,8 @@ const Chats = () => {
             }
           )
         );
-        setLoading(false);
         setPostData(_postData);
+        setLoading(false);
         CKEditor.instances.textarea_id.setData(postData.content);
         CKEditor.instances.textarea_id.getData();
       })

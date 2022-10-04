@@ -548,7 +548,7 @@ const QuestionsView = () => {
                         ))}
                     </div>
                     {postData.username === username ? (
-                      <div className="studies-btns">
+                      <div className="questions-btns">
                         <Link
                           className="btn-modify"
                           to={`/questionsDetail/${postId}/modify`}

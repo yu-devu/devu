@@ -16,7 +16,6 @@ const StudiesModify = () => {
   const location = useLocation();
   const [postData, setPostData] = useState([]);
   const [tags, setTags] = useState([]); // Select에서 담은 tags
-  const [loading, setLoading] = useState(true);
   let pathname = location.pathname;
   let [a, b, postId] = pathname.split('/');
   const [postTags, setPostTags] = useState([]); // tags를 가공한 것 => axios.post할 때 쓸 수 있도록 한 것임.
@@ -25,6 +24,7 @@ const StudiesModify = () => {
     content: '',
   });
   const username = localStorage.getItem('username');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     organizeTags();

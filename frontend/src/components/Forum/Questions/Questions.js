@@ -55,11 +55,11 @@ const Questions = () => {
   const [order, setOrder] = useState('');
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
   const [likePosts, setLikePosts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const onChangeSentence = (e) => {
     setSentence(e.target.value);
   };
   const username = localStorage.getItem('username');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchData();
