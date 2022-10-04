@@ -8,12 +8,15 @@ import './studiesModify.css';
 import { options } from '../data';
 import Submenu from '../Submenu';
 import FooterGray from '../../Home/FooterGray';
+import LoadingSpinner from '../LoadingSpinner';
+import '../loadingSpinner.css';
 
 const StudiesModify = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [postData, setPostData] = useState([]);
   const [tags, setTags] = useState([]); // Select에서 담은 tags
+  const [loading, setLoading] = useState(true);
   let pathname = location.pathname;
   let [a, b, postId] = pathname.split('/');
   const [postTags, setPostTags] = useState([]); // tags를 가공한 것 => axios.post할 때 쓸 수 있도록 한 것임.
@@ -60,6 +63,7 @@ const StudiesModify = () => {
           tags: res.data.tags,
         };
         setPostData(_postData);
+        setLoading(false);
       })
       .catch((e) => console.log(e));
   };
@@ -99,73 +103,81 @@ const StudiesModify = () => {
   return (
     <div>
       <Submenu />
-      <div className="container-studies-write">
-        <div className="write-area">
-          <div className="in-title">
-            <h8 className="in-title-text">제목</h8>
-            <textarea
-              name="title"
-              id="title"
-              rows="1"
-              cols="55"
-              defaultValue={postData.title}
-              maxLength="100"
-              required
-              onChange={(e) => handleTitle(e)}
-            ></textarea>
-          </div>
-          <div className="in-tag">
-            <h8 className="in-tag-text">태그</h8>
-            <Select
-              className="tag-selecter"
-              isMulti
-              options={options}
-              defaultValue={tags['C']}
-              value={tags}
-              name="tags"
-              placeholder="#태그를 선택해주세요"
-              onChange={(e) => {
-                onChangeTags(e);
-              }}
-            />
-          </div>
-          <CKEditor
-            editor={ClassicEditor}
-            config={{
-              placeholder: '- 궁금한 내용을 질문해주세요.',
-            }}
-            data={postData.content}
-            onChange={(event, editor) => {
-              const data = editor.getData();
-              setPostContent({
-                ...postContent,
-                content: data.replace('<p>', '').replace('</p>', ''),
-              });
-            }}
-            onBlur={(event, editor) => {}}
-            onFocus={(event, editor) => {}}
-          />
-          <div className="bt-se">
-            <button
-              className="btn-cancel"
-              onClick={() => {
-                navigate(-1);
-              }}
-            >
-              취소
-            </button>
-            <button
-              className="btn-post"
-              onClick={() => {
-                handleModify();
-              }}
-            >
-              저장
-            </button>
-          </div>
+      {loading ? (
+        <div>
+          <LoadingSpinner />
         </div>
-      </div>
-      <FooterGray />
+      ) : (
+        <>
+          <div className="container-studies-write">
+            <div className="write-area">
+              <div className="in-title">
+                <h8 className="in-title-text">제목</h8>
+                <textarea
+                  name="title"
+                  id="title"
+                  rows="1"
+                  cols="55"
+                  defaultValue={postData.title}
+                  maxLength="100"
+                  required
+                  onChange={(e) => handleTitle(e)}
+                ></textarea>
+              </div>
+              <div className="in-tag">
+                <h8 className="in-tag-text">태그</h8>
+                <Select
+                  className="tag-selecter"
+                  isMulti
+                  options={options}
+                  defaultValue={tags['C']}
+                  value={tags}
+                  name="tags"
+                  placeholder="#태그를 선택해주세요"
+                  onChange={(e) => {
+                    onChangeTags(e);
+                  }}
+                />
+              </div>
+              <CKEditor
+                editor={ClassicEditor}
+                config={{
+                  placeholder: '- 궁금한 내용을 질문해주세요.',
+                }}
+                data={postData.content}
+                onChange={(event, editor) => {
+                  const data = editor.getData();
+                  setPostContent({
+                    ...postContent,
+                    content: data.replace('<p>', '').replace('</p>', ''),
+                  });
+                }}
+                onBlur={(event, editor) => {}}
+                onFocus={(event, editor) => {}}
+              />
+              <div className="bt-se">
+                <button
+                  className="btn-cancel"
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                >
+                  취소
+                </button>
+                <button
+                  className="btn-post"
+                  onClick={() => {
+                    handleModify();
+                  }}
+                >
+                  저장
+                </button>
+              </div>
+            </div>
+          </div>
+          <FooterGray />
+        </>
+      )}
     </div>
   );
 };
