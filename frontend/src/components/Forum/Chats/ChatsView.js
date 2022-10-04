@@ -12,8 +12,6 @@ import like from '../../../img/like.png';
 import like_color from '../../../img/like_color.png';
 import FooterGray from '../../Home/FooterGray';
 import { useMediaQuery } from 'react-responsive';
-import LoadingSpinner from '../LoadingSpinner';
-import '../loadingSpinner.css';
 
 const ChatsView = () => {
   const navigate = useNavigate();
@@ -23,7 +21,6 @@ const ChatsView = () => {
   const username = localStorage.getItem('username');
   const [likePosts, setLikePosts] = useState([]);
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
-  const [loading, setLoading] = useState(true);
 
   let pathname = location.pathname;
   let [a, b, postId] = pathname.split('/');
@@ -63,7 +60,6 @@ const ChatsView = () => {
     };
     setPostData(_postData);
     console.log(_postData.comments);
-    setLoading(false);
   };
 
   const fetchLikeData = async () => {
@@ -122,114 +118,57 @@ const ChatsView = () => {
   return (
     <div>
       <Submenu />
-      {loading ? (
+      {isTabletOrMobile ? (
         <div>
-          <LoadingSpinner />
-        </div>
-      ) : (
-        <>
-          {isTabletOrMobile ? (
-            <div>
-              {postData ? (
-                <div className="chats-view">
-                  <div className="questions-detail-top">
-                    <div className="questions-contents-all">
-                      <div className="questions-sidebar">
-                        <div className="questions-sidebar-item">
-                          <img className="img-detail-hit" src={hit} alt="" />
-                          <h8 className="detail-sidebar-text">
-                            {postData.hit}
-                          </h8>
-                        </div>
-                        <div
-                          className="questions-sidebar-btn"
-                          onClick={() => handlePostLike()}
-                        >
-                          {likePosts.includes(postData.id) ? (
-                            <img
-                              className="img-detail-like"
-                              src={like_color}
-                              alt=""
-                            />
-                          ) : (
-                            <img
-                              className="img-detail-like"
-                              src={like}
-                              alt=""
-                            />
-                          )}
-                          <button className="detail-sidebar-btn">
-                            {postData.like}
-                          </button>
-                        </div>
-                        <div className="questions-sidebar-btn">
-                          <img className="img-detail-like" src={share} alt="" />
-                          <button className="detail-sidebar-btn">공유</button>
-                        </div>
-                        <div className="questions-sidebar-btn">
-                          <img
-                            className="img-detail-like"
-                            src={warning}
-                            alt=""
-                          />
-                          <button className="detail-sidebar-btn">신고</button>
-                        </div>
-                      </div>
-                      <div className="question-detail-top">
-                        <div className="questions-profile">
-                          <img className="questions-photo" src={ab} alt="" />
-                        </div>
-                        <div className="questions-owner">
-                          {postData.username}
-                        </div>
-                        <div className="questions-date">
-                          {postData.date} {postData.hours}:{postData.minutes}:
-                          {postData.seconds}
-                        </div>
-                        {postData.username === username ? (
-                          <div className="questions-btns">
-                            <Link
-                              className="btn-modify"
-                              to={`/questionsDetail/${postId}/modify`}
-                            >
-                              수정
-                            </Link>
-                            <button
-                              className="btn-delete-post"
-                              onClick={() => {
-                                handlePostDelete();
-                              }}
-                            >
-                              삭제
-                            </button>
-                          </div>
-                        ) : null}
-                      </div>
-                      <div className="questions-top">
-                        <div className="questions-status">
-                          {postData.questionStatus === 'SOLVED'
-                            ? '해결'
-                            : '미해결'}
-                        </div>
-                        <div className="questions-title">{postData.title}</div>
-                      </div>
-                      <div className="questions-content">
-                        {postData.content}
-                      </div>
+          {postData ? (
+            <div className="chats-view">
+              <div className="questions-detail-top">
+                <div className="questions-contents-all">
+                  <div className="questions-sidebar">
+                    <div className="questions-sidebar-item">
+                      <img className="img-detail-hit" src={hit} alt="" />
+                      <h8 className="detail-sidebar-text">{postData.hit}</h8>
+                    </div>
+                    <div
+                      className="questions-sidebar-btn"
+                      onClick={() => handlePostLike()}
+                    >
+                      {likePosts.includes(postData.id) ? (
+                        <img
+                          className="img-detail-like"
+                          src={like_color}
+                          alt=""
+                        />
+                      ) : (
+                        <img className="img-detail-like" src={like} alt="" />
+                      )}
+                      <button className="detail-sidebar-btn">
+                        {postData.like}
+                      </button>
+                    </div>
+                    <div className="questions-sidebar-btn">
+                      <img className="img-detail-like" src={share} alt="" />
+                      <button className="detail-sidebar-btn">공유</button>
+                    </div>
+                    <div className="questions-sidebar-btn">
+                      <img className="img-detail-like" src={warning} alt="" />
+                      <button className="detail-sidebar-btn">신고</button>
                     </div>
                   </div>
-                  <div className="chats-content-bottom">
-                    <div className="chats-tags">
-                      {postData.tags &&
-                        postData.tags.map((tag) => (
-                          <div className="chats-tag">{tag}</div>
-                        ))}
+                  <div className="question-detail-top">
+                    <div className="questions-profile">
+                      <img className="questions-photo" src={ab} alt="" />
+                    </div>
+                    <div className="questions-owner">{postData.username}</div>
+                    <div className="questions-date">
+                      {postData.date} {postData.hours}:{postData.minutes}:
+                      {postData.seconds}
                     </div>
                     {postData.username === username ? (
-                      <div className="chats-btns">
+                      <div className="questions-btns">
                         <Link
                           className="btn-modify"
-                          to={`/chatsDetail/${postId}/modify`}
+                          to={`/questionsDetail/${postId}/modify`}
                         >
                           수정
                         </Link>
@@ -244,109 +183,138 @@ const ChatsView = () => {
                       </div>
                     ) : null}
                   </div>
-                  <div className="chats-detail-bottom">
-                    <Comments comments={postData.comments} />
-                    {/* <FooterGray /> */}
+                  <div className="questions-top">
+                    <div className="questions-status">
+                      {postData.questionStatus === 'SOLVED' ? '해결' : '미해결'}
+                    </div>
+                    <div className="questions-title">{postData.title}</div>
                   </div>
+                  <div className="questions-content">{postData.content}</div>
                 </div>
-              ) : (
-                '해당 게시글을 찾을 수 없습니다.'
-              )}
+              </div>
+              <div className="chats-content-bottom">
+                <div className="chats-tags">
+                  {postData.tags &&
+                    postData.tags.map((tag) => (
+                      <div className="chats-tag">{tag}</div>
+                    ))}
+                </div>
+                {postData.username === username ? (
+                  <div className="chats-btns">
+                    <Link
+                      className="btn-modify"
+                      to={`/chatsDetail/${postId}/modify`}
+                    >
+                      수정
+                    </Link>
+                    <button
+                      className="btn-delete-post"
+                      onClick={() => {
+                        handlePostDelete();
+                      }}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+              <div className="chats-detail-bottom">
+                <Comments comments={postData.comments} />
+                {/* <FooterGray /> */}
+              </div>
             </div>
           ) : (
-            <div>
-              {postData ? (
-                <div className="chats-view">
+            '해당 게시글을 찾을 수 없습니다.'
+          )}
+        </div>
+      ) : (
+        <div>
+          {postData ? (
+            <div className="chats-view">
+              <div className="chats-detail-top">
+                <div className="chats-contents-all">
                   <div className="chats-detail-top">
-                    <div className="chats-contents-all">
-                      <div className="chats-detail-top">
-                        <div className="chats-profile">
-                          <img className="chats-photo" src={ab} alt="" />
-                        </div>
-                        <div className="chats-owner">{postData.username}</div>
-                        <div className="chats-date">
-                          {postData.date} {postData.hours}:{postData.minutes}:
-                          {postData.seconds}
-                        </div>
-                      </div>
-                      <div className="chats-top">
-                        <div className="chats-title">{postData.title}</div>
-                      </div>
-                      <div className="chats-content">{postData.content}</div>
+                    <div className="chats-profile">
+                      <img className="chats-photo" src={ab} alt="" />
                     </div>
-                    <div className="chats-sidebar">
-                      <div className="chats-sidebar-item">
-                        <img className="img-detail-hit" src={hit} alt="" />
-                        <h8 className="detail-sidebar-text">{postData.hit}</h8>
-                      </div>
-                      <div
-                        className="chats-sidebar-btn"
-                        onClick={() => handlePostLike()}
-                      >
-                        <button className="detail-sidebar-btn">
-                          {likePosts.includes(postData.id) ? (
-                            <img
-                              className="img-detail-like"
-                              src={like_color}
-                              alt=""
-                            />
-                          ) : (
-                            <img
-                              className="img-detail-like"
-                              src={like}
-                              alt=""
-                            />
-                          )}
-                          {postData.like}
-                        </button>
-                      </div>
-                      <div className="chats-sidebar-btn">
-                        <img className="img-detail-like" src={share} alt="" />
-                        <button className="detail-sidebar-btn">공유</button>
-                      </div>
-                      <div className="chats-sidebar-btn">
-                        <img className="img-detail-like" src={warning} alt="" />
-                        <button className="detail-sidebar-btn">신고</button>
-                      </div>
+                    <div className="chats-owner">{postData.username}</div>
+                    <div className="chats-date">
+                      {postData.date} {postData.hours}:{postData.minutes}:
+                      {postData.seconds}
                     </div>
                   </div>
-                  <div className="chats-content-bottom">
-                    <div className="chats-tags">
-                      {postData.tags &&
-                        postData.tags.map((tag) => (
-                          <div className="chats-tag">{tag}</div>
-                        ))}
-                    </div>
-                    {postData.username === username ? (
-                      <div className="chats-btns">
-                        <Link
-                          className="btn-modify"
-                          to={`/chatsDetail/${postId}/modify`}
-                        >
-                          수정
-                        </Link>
-                        <button
-                          className="btn-delete-post"
-                          onClick={() => {
-                            handlePostDelete();
-                          }}
-                        >
-                          삭제
-                        </button>
-                      </div>
-                    ) : null}
+                  <div className="chats-top">
+                    <div className="chats-title">{postData.title}</div>
                   </div>
-                  <div className="chats-detail-bottom">
-                    <Comments comments={postData.comments} />
-                    <FooterGray />
+                  <div className="chats-content">{postData.content}</div>
+                </div>
+                <div className="chats-sidebar">
+                  <div className="chats-sidebar-item">
+                    <img className="img-detail-hit" src={hit} alt="" />
+                    <h8 className="detail-sidebar-text">{postData.hit}</h8>
+                  </div>
+                  <div
+                    className="chats-sidebar-btn"
+                    onClick={() => handlePostLike()}
+                  >
+                    <button className="detail-sidebar-btn">
+                      {likePosts.includes(postData.id) ? (
+                        <img
+                          className="img-detail-like"
+                          src={like_color}
+                          alt=""
+                        />
+                      ) : (
+                        <img className="img-detail-like" src={like} alt="" />
+                      )}
+                      {postData.like}
+                    </button>
+                  </div>
+                  <div className="chats-sidebar-btn">
+                    <img className="img-detail-like" src={share} alt="" />
+                    <button className="detail-sidebar-btn">공유</button>
+                  </div>
+                  <div className="chats-sidebar-btn">
+                    <img className="img-detail-like" src={warning} alt="" />
+                    <button className="detail-sidebar-btn">신고</button>
                   </div>
                 </div>
-              ) : (
-                '해당 게시글을 찾을 수 없습니다.'
-              )}
+              </div>
+              <div className="chats-content-bottom">
+                <div className="chats-tags">
+                  {postData.tags &&
+                    postData.tags.map((tag) => (
+                      <div className="chats-tag">{tag}</div>
+                    ))}
+                </div>
+                {postData.username === username ? (
+                  <div className="chats-btns">
+                    <Link
+                      className="btn-modify"
+                      to={`/chatsDetail/${postId}/modify`}
+                    >
+                      수정
+                    </Link>
+                    <button
+                      className="btn-delete-post"
+                      onClick={() => {
+                        handlePostDelete();
+                      }}
+                    >
+                      삭제
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+              <div className="chats-detail-bottom">
+                <Comments comments={postData.comments} />
+                <FooterGray />
+              </div>
             </div>
+          ) : (
+            '해당 게시글을 찾을 수 없습니다.'
           )}
-        </>
+        </div>
       )}
     </div>
   );
