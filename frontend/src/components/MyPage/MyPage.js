@@ -5,11 +5,12 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import a from '../../img/a.png';
 import FooterGray from '../Home/FooterGray';
 import { useMediaQuery } from 'react-responsive';
+import LoadingSpinner from '../Forum/LoadingSpinner';
+import '../Forum/loadingSpinner.css';
 
 const MyPage = () => {
   useEffect(() => {
-    fetchPostData();
-    fetchLikeData();
+    fetchData();
   }, []);
 
   let now = new Date();
@@ -34,6 +35,7 @@ const MyPage = () => {
   const [isPostStatus, setIsPostStatus] = useState('isStudy');
   const username = localStorage.getItem('username');
   const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
+  const [loading, setLoading] = useState(true);
 
   //StduyFilter
   function filterStudy(element) {
@@ -54,7 +56,7 @@ const MyPage = () => {
     }
   }
 
-  const fetchPostData = async () => {
+  const fetchData = async () => {
     await axios
       .get(process.env.REACT_APP_DB_HOST + `/api/myPosts`)
       .then((res) => {
@@ -84,9 +86,6 @@ const MyPage = () => {
         setMyPostChat(_postData.filter(filterChat));
       })
       .catch((e) => console.log(e));
-  };
-
-  const fetchLikeData = async () => {
     await axios
       .get(process.env.REACT_APP_DB_HOST + `/api/myLikes`)
       .then((res) => {
@@ -116,6 +115,7 @@ const MyPage = () => {
         setMyLikeChat(_likeData.filter(filterChat));
       })
       .catch((e) => console.log(e));
+    setLoading(false);
   };
 
   const deleteAccount = async () => {
@@ -278,219 +278,237 @@ const MyPage = () => {
                 }[isPostStatus]
               }
             </tr>
-            {isPost // 작성한 글 / 좋아요한 글 구분
-              ? {
-                  // 작성한 글에서 각 게시판 별로 구분
-                  isStudy: myPostStudy
-                    .slice(0, myPostStudy.length)
-                    .map((post) => (
-                      <tr className="cate-mypage-detail">
-                        <td
-                          className="cate-mypage-detail-title"
-                          width="130"
-                          onClick={() => {
-                            navigate('/studiesDetail/' + post.id);
-                          }}
-                        >
-                          {post.title}
-                        </td>
-                        <td width="90">
-                          {post.postYear == year
-                            ? post.postMonth == month && post.postDay == date
-                              ? post.postHour == hours
-                                ? post.postMinute == minutes
-                                  ? seconds - post.postSecond + '초 전'
-                                  : minutes - post.postMinute == 1 &&
-                                    seconds < post.postSecond
-                                  ? 60 - post.postSecond + seconds + '초 전'
-                                  : minutes - post.postMinute + '분 전'
-                                : hours - post.postHour + '시간 전'
-                              : post.postMonth + '.' + post.postDay
-                            : post.postYear.slice(2, 4) +
-                              '.' +
-                              post.postMonth +
-                              '.' +
-                              post.postDay}
-                        </td>
-                        <td width="70">{post.commentsSize}</td>
-                        <td width="79">{post.studyStatus}</td>
-                      </tr>
-                    )),
-                  isQuestion: myPostQuestion
-                    .slice(0, myPostQuestion.length)
-                    .map((post) => (
-                      <tr className="cate-mypage-detail">
-                        <td
-                          className="cate-mypage-detail-title"
-                          width="130"
-                          onClick={() => {
-                            navigate('/questionsDetail/' + post.id);
-                          }}
-                        >
-                          {post.title}
-                        </td>
-                        <td width="90">
-                          {post.postYear == year
-                            ? post.postMonth == month && post.postDay == date
-                              ? post.postHour == hours
-                                ? post.postMinute == minutes
-                                  ? seconds - post.postSecond + '초 전'
-                                  : minutes - post.postMinute == 1 &&
-                                    seconds < post.postSecond
-                                  ? 60 - post.postSecond + seconds + '초 전'
-                                  : minutes - post.postMinute + '분 전'
-                                : hours - post.postHour + '시간 전'
-                              : post.postMonth + '.' + post.postDay
-                            : post.postYear.slice(2, 4) +
-                              '.' +
-                              post.postMonth +
-                              '.' +
-                              post.postDay}
-                        </td>
-                        <td width="70">{post.commentsSize}</td>
-                        <td width="79">{post.questionStatus}</td>
-                      </tr>
-                    )),
-                  isChat: myPostChat.slice(0, myPostChat.length).map((post) => (
-                    <tr className="cate-mypage-detail">
-                      <td
-                        className="cate-mypage-detail-title"
-                        width="130"
-                        onClick={() => {
-                          navigate('/chatsDetail/' + post.id);
-                        }}
-                      >
-                        {post.title}
-                      </td>
-                      <td width="90">
-                        {post.postYear == year
-                          ? post.postMonth == month && post.postDay == date
-                            ? post.postHour == hours
-                              ? post.postMinute == minutes
-                                ? seconds - post.postSecond + '초 전'
-                                : minutes - post.postMinute == 1 &&
-                                  seconds < post.postSecond
-                                ? 60 - post.postSecond + seconds + '초 전'
-                                : minutes - post.postMinute + '분 전'
-                              : hours - post.postHour + '시간 전'
-                            : post.postMonth + '.' + post.postDay
-                          : post.postYear.slice(2, 4) +
-                            '.' +
-                            post.postMonth +
-                            '.' +
-                            post.postDay}
-                      </td>
-                      <td width="70">{post.commentsSize}</td>
-                      <td width="79">{post.studyStatus}</td>
-                    </tr>
-                  )),
-                }[isPostStatus]
-              : {
-                  // 좋아요한 글에서 각 게시판 별로 구분
-                  isStudy: myLikeStudy
-                    .slice(0, myLikeStudy.length)
-                    .map((post) => (
-                      <tr className="cate-mypage-detail">
-                        <td
-                          className="cate-mypage-detail-title"
-                          width="130"
-                          onClick={() => {
-                            navigate('/studiesDetail/' + post.id);
-                          }}
-                        >
-                          {post.title}
-                        </td>
-                        <td width="90">
-                          {post.postYear == year
-                            ? post.postMonth == month && post.postDay == date
-                              ? post.postHour == hours
-                                ? post.postMinute == minutes
-                                  ? seconds - post.postSecond + '초 전'
-                                  : minutes - post.postMinute == 1 &&
-                                    seconds < post.postSecond
-                                  ? 60 - post.postSecond + seconds + '초 전'
-                                  : minutes - post.postMinute + '분 전'
-                                : hours - post.postHour + '시간 전'
-                              : post.postMonth + '.' + post.postDay
-                            : post.postYear.slice(2, 4) +
-                              '.' +
-                              post.postMonth +
-                              '.' +
-                              post.postDay}
-                        </td>
-                        <td width="70">{post.commentsSize}</td>
-                        <td width="79">{post.studyStatus}</td>
-                      </tr>
-                    )),
-                  isQuestion: myLikeQuestion
-                    .slice(0, myLikeQuestion.length)
-                    .map((post) => (
-                      <tr className="cate-mypage-detail">
-                        <td
-                          className="cate-mypage-detail-title"
-                          width="130"
-                          onClick={() => {
-                            navigate('/questionsDetail/' + post.id);
-                          }}
-                        >
-                          {post.title}
-                        </td>
-                        <td width="90">
-                          {post.postYear == year
-                            ? post.postMonth == month && post.postDay == date
-                              ? post.postHour == hours
-                                ? post.postMinute == minutes
-                                  ? seconds - post.postSecond + '초 전'
-                                  : minutes - post.postMinute == 1 &&
-                                    seconds < post.postSecond
-                                  ? 60 - post.postSecond + seconds + '초 전'
-                                  : minutes - post.postMinute + '분 전'
-                                : hours - post.postHour + '시간 전'
-                              : post.postMonth + '.' + post.postDay
-                            : post.postYear.slice(2, 4) +
-                              '.' +
-                              post.postMonth +
-                              '.' +
-                              post.postDay}
-                        </td>
-                        <td width="70">{post.commentsSize}</td>
-                        <td width="79">{post.questionStatus}</td>
-                      </tr>
-                    )),
-                  isChat: myLikeChat.slice(0, myLikeChat.length).map((post) => (
-                    <tr className="cate-mypage-detail">
-                      <td
-                        className="cate-mypage-detail-title"
-                        width="130"
-                        onClick={() => {
-                          navigate('/chatsDetail/' + post.id);
-                        }}
-                      >
-                        {post.title}
-                      </td>
-                      <td width="90">
-                        {post.postYear == year
-                          ? post.postMonth == month && post.postDay == date
-                            ? post.postHour == hours
-                              ? post.postMinute == minutes
-                                ? seconds - post.postSecond + '초 전'
-                                : minutes - post.postMinute == 1 &&
-                                  seconds < post.postSecond
-                                ? 60 - post.postSecond + seconds + '초 전'
-                                : minutes - post.postMinute + '분 전'
-                              : hours - post.postHour + '시간 전'
-                            : post.postMonth + '.' + post.postDay
-                          : post.postYear.slice(2, 4) +
-                            '.' +
-                            post.postMonth +
-                            '.' +
-                            post.postDay}
-                      </td>
-                      <td width="70">{post.commentsSize}</td>
-                      <td width="79">{post.studyStatus}</td>
-                    </tr>
-                  )),
-                }[isPostStatus]}
+            {loading ? (
+              <div>
+                <LoadingSpinner />
+              </div>
+            ) : (
+              <>
+                {isPost // 작성한 글 / 좋아요한 글 구분
+                  ? {
+                      // 작성한 글에서 각 게시판 별로 구분
+                      isStudy: myPostStudy
+                        .slice(0, myPostStudy.length)
+                        .map((post) => (
+                          <tr className="cate-mypage-detail">
+                            <td
+                              className="cate-mypage-detail-title"
+                              width="130"
+                              onClick={() => {
+                                navigate('/studiesDetail/' + post.id);
+                              }}
+                            >
+                              {post.title}
+                            </td>
+                            <td width="90">
+                              {post.postYear == year
+                                ? post.postMonth == month &&
+                                  post.postDay == date
+                                  ? post.postHour == hours
+                                    ? post.postMinute == minutes
+                                      ? seconds - post.postSecond + '초 전'
+                                      : minutes - post.postMinute == 1 &&
+                                        seconds < post.postSecond
+                                      ? 60 - post.postSecond + seconds + '초 전'
+                                      : minutes - post.postMinute + '분 전'
+                                    : hours - post.postHour + '시간 전'
+                                  : post.postMonth + '.' + post.postDay
+                                : post.postYear.slice(2, 4) +
+                                  '.' +
+                                  post.postMonth +
+                                  '.' +
+                                  post.postDay}
+                            </td>
+                            <td width="70">{post.commentsSize}</td>
+                            <td width="79">{post.studyStatus}</td>
+                          </tr>
+                        )),
+                      isQuestion: myPostQuestion
+                        .slice(0, myPostQuestion.length)
+                        .map((post) => (
+                          <tr className="cate-mypage-detail">
+                            <td
+                              className="cate-mypage-detail-title"
+                              width="130"
+                              onClick={() => {
+                                navigate('/questionsDetail/' + post.id);
+                              }}
+                            >
+                              {post.title}
+                            </td>
+                            <td width="90">
+                              {post.postYear == year
+                                ? post.postMonth == month &&
+                                  post.postDay == date
+                                  ? post.postHour == hours
+                                    ? post.postMinute == minutes
+                                      ? seconds - post.postSecond + '초 전'
+                                      : minutes - post.postMinute == 1 &&
+                                        seconds < post.postSecond
+                                      ? 60 - post.postSecond + seconds + '초 전'
+                                      : minutes - post.postMinute + '분 전'
+                                    : hours - post.postHour + '시간 전'
+                                  : post.postMonth + '.' + post.postDay
+                                : post.postYear.slice(2, 4) +
+                                  '.' +
+                                  post.postMonth +
+                                  '.' +
+                                  post.postDay}
+                            </td>
+                            <td width="70">{post.commentsSize}</td>
+                            <td width="79">{post.questionStatus}</td>
+                          </tr>
+                        )),
+                      isChat: myPostChat
+                        .slice(0, myPostChat.length)
+                        .map((post) => (
+                          <tr className="cate-mypage-detail">
+                            <td
+                              className="cate-mypage-detail-title"
+                              width="130"
+                              onClick={() => {
+                                navigate('/chatsDetail/' + post.id);
+                              }}
+                            >
+                              {post.title}
+                            </td>
+                            <td width="90">
+                              {post.postYear == year
+                                ? post.postMonth == month &&
+                                  post.postDay == date
+                                  ? post.postHour == hours
+                                    ? post.postMinute == minutes
+                                      ? seconds - post.postSecond + '초 전'
+                                      : minutes - post.postMinute == 1 &&
+                                        seconds < post.postSecond
+                                      ? 60 - post.postSecond + seconds + '초 전'
+                                      : minutes - post.postMinute + '분 전'
+                                    : hours - post.postHour + '시간 전'
+                                  : post.postMonth + '.' + post.postDay
+                                : post.postYear.slice(2, 4) +
+                                  '.' +
+                                  post.postMonth +
+                                  '.' +
+                                  post.postDay}
+                            </td>
+                            <td width="70">{post.commentsSize}</td>
+                            <td width="79">{post.studyStatus}</td>
+                          </tr>
+                        )),
+                    }[isPostStatus]
+                  : {
+                      // 좋아요한 글에서 각 게시판 별로 구분
+                      isStudy: myLikeStudy
+                        .slice(0, myLikeStudy.length)
+                        .map((post) => (
+                          <tr className="cate-mypage-detail">
+                            <td
+                              className="cate-mypage-detail-title"
+                              width="130"
+                              onClick={() => {
+                                navigate('/studiesDetail/' + post.id);
+                              }}
+                            >
+                              {post.title}
+                            </td>
+                            <td width="90">
+                              {post.postYear == year
+                                ? post.postMonth == month &&
+                                  post.postDay == date
+                                  ? post.postHour == hours
+                                    ? post.postMinute == minutes
+                                      ? seconds - post.postSecond + '초 전'
+                                      : minutes - post.postMinute == 1 &&
+                                        seconds < post.postSecond
+                                      ? 60 - post.postSecond + seconds + '초 전'
+                                      : minutes - post.postMinute + '분 전'
+                                    : hours - post.postHour + '시간 전'
+                                  : post.postMonth + '.' + post.postDay
+                                : post.postYear.slice(2, 4) +
+                                  '.' +
+                                  post.postMonth +
+                                  '.' +
+                                  post.postDay}
+                            </td>
+                            <td width="70">{post.commentsSize}</td>
+                            <td width="79">{post.studyStatus}</td>
+                          </tr>
+                        )),
+                      isQuestion: myLikeQuestion
+                        .slice(0, myLikeQuestion.length)
+                        .map((post) => (
+                          <tr className="cate-mypage-detail">
+                            <td
+                              className="cate-mypage-detail-title"
+                              width="130"
+                              onClick={() => {
+                                navigate('/questionsDetail/' + post.id);
+                              }}
+                            >
+                              {post.title}
+                            </td>
+                            <td width="90">
+                              {post.postYear == year
+                                ? post.postMonth == month &&
+                                  post.postDay == date
+                                  ? post.postHour == hours
+                                    ? post.postMinute == minutes
+                                      ? seconds - post.postSecond + '초 전'
+                                      : minutes - post.postMinute == 1 &&
+                                        seconds < post.postSecond
+                                      ? 60 - post.postSecond + seconds + '초 전'
+                                      : minutes - post.postMinute + '분 전'
+                                    : hours - post.postHour + '시간 전'
+                                  : post.postMonth + '.' + post.postDay
+                                : post.postYear.slice(2, 4) +
+                                  '.' +
+                                  post.postMonth +
+                                  '.' +
+                                  post.postDay}
+                            </td>
+                            <td width="70">{post.commentsSize}</td>
+                            <td width="79">{post.questionStatus}</td>
+                          </tr>
+                        )),
+                      isChat: myLikeChat
+                        .slice(0, myLikeChat.length)
+                        .map((post) => (
+                          <tr className="cate-mypage-detail">
+                            <td
+                              className="cate-mypage-detail-title"
+                              width="130"
+                              onClick={() => {
+                                navigate('/chatsDetail/' + post.id);
+                              }}
+                            >
+                              {post.title}
+                            </td>
+                            <td width="90">
+                              {post.postYear == year
+                                ? post.postMonth == month &&
+                                  post.postDay == date
+                                  ? post.postHour == hours
+                                    ? post.postMinute == minutes
+                                      ? seconds - post.postSecond + '초 전'
+                                      : minutes - post.postMinute == 1 &&
+                                        seconds < post.postSecond
+                                      ? 60 - post.postSecond + seconds + '초 전'
+                                      : minutes - post.postMinute + '분 전'
+                                    : hours - post.postHour + '시간 전'
+                                  : post.postMonth + '.' + post.postDay
+                                : post.postYear.slice(2, 4) +
+                                  '.' +
+                                  post.postMonth +
+                                  '.' +
+                                  post.postDay}
+                            </td>
+                            <td width="70">{post.commentsSize}</td>
+                            <td width="79">{post.studyStatus}</td>
+                          </tr>
+                        )),
+                    }[isPostStatus]}
+              </>
+            )}
           </table>
           {/* <FooterGray /> */}
         </div>
@@ -639,219 +657,237 @@ const MyPage = () => {
                 }[isPostStatus]
               }
             </tr>
-            {isPost // 작성한 글 / 좋아요한 글 구분
-              ? {
-                  // 작성한 글에서 각 게시판 별로 구분
-                  isStudy: myPostStudy
-                    .slice(0, myPostStudy.length)
-                    .map((post) => (
-                      <tr className="cate-mypage-detail">
-                        <td
-                          className="cate-mypage-detail-title"
-                          width="250"
-                          onClick={() => {
-                            navigate('/studiesDetail/' + post.id);
-                          }}
-                        >
-                          {post.title}
-                        </td>
-                        <td width="150">
-                          {post.postYear == year
-                            ? post.postMonth == month && post.postDay == date
-                              ? post.postHour == hours
-                                ? post.postMinute == minutes
-                                  ? seconds - post.postSecond + '초 전'
-                                  : minutes - post.postMinute == 1 &&
-                                    seconds < post.postSecond
-                                  ? 60 - post.postSecond + seconds + '초 전'
-                                  : minutes - post.postMinute + '분 전'
-                                : hours - post.postHour + '시간 전'
-                              : post.postMonth + '.' + post.postDay
-                            : post.postYear.slice(2, 4) +
-                              '.' +
-                              post.postMonth +
-                              '.' +
-                              post.postDay}
-                        </td>
-                        <td width="150">{post.commentsSize}</td>
-                        <td width="150">{post.studyStatus}</td>
-                      </tr>
-                    )),
-                  isQuestion: myPostQuestion
-                    .slice(0, myPostQuestion.length)
-                    .map((post) => (
-                      <tr className="cate-mypage-detail">
-                        <td
-                          className="cate-mypage-detail-title"
-                          width="250"
-                          onClick={() => {
-                            navigate('/questionsDetail/' + post.id);
-                          }}
-                        >
-                          {post.title}
-                        </td>
-                        <td width="150">
-                          {post.postYear == year
-                            ? post.postMonth == month && post.postDay == date
-                              ? post.postHour == hours
-                                ? post.postMinute == minutes
-                                  ? seconds - post.postSecond + '초 전'
-                                  : minutes - post.postMinute == 1 &&
-                                    seconds < post.postSecond
-                                  ? 60 - post.postSecond + seconds + '초 전'
-                                  : minutes - post.postMinute + '분 전'
-                                : hours - post.postHour + '시간 전'
-                              : post.postMonth + '.' + post.postDay
-                            : post.postYear.slice(2, 4) +
-                              '.' +
-                              post.postMonth +
-                              '.' +
-                              post.postDay}
-                        </td>
-                        <td width="150">{post.commentsSize}</td>
-                        <td width="150">{post.questionStatus}</td>
-                      </tr>
-                    )),
-                  isChat: myPostChat.slice(0, myPostChat.length).map((post) => (
-                    <tr className="cate-mypage-detail">
-                      <td
-                        className="cate-mypage-detail-title"
-                        width="250"
-                        onClick={() => {
-                          navigate('/chatsDetail/' + post.id);
-                        }}
-                      >
-                        {post.title}
-                      </td>
-                      <td width="150">
-                        {post.postYear == year
-                          ? post.postMonth == month && post.postDay == date
-                            ? post.postHour == hours
-                              ? post.postMinute == minutes
-                                ? seconds - post.postSecond + '초 전'
-                                : minutes - post.postMinute == 1 &&
-                                  seconds < post.postSecond
-                                ? 60 - post.postSecond + seconds + '초 전'
-                                : minutes - post.postMinute + '분 전'
-                              : hours - post.postHour + '시간 전'
-                            : post.postMonth + '.' + post.postDay
-                          : post.postYear.slice(2, 4) +
-                            '.' +
-                            post.postMonth +
-                            '.' +
-                            post.postDay}
-                      </td>
-                      <td width="150">{post.commentsSize}</td>
-                      <td width="150">{post.studyStatus}</td>
-                    </tr>
-                  )),
-                }[isPostStatus]
-              : {
-                  // 좋아요한 글에서 각 게시판 별로 구분
-                  isStudy: myLikeStudy
-                    .slice(0, myLikeStudy.length)
-                    .map((post) => (
-                      <tr className="cate-mypage-detail">
-                        <td
-                          className="cate-mypage-detail-title"
-                          width="250"
-                          onClick={() => {
-                            navigate('/studiesDetail/' + post.id);
-                          }}
-                        >
-                          {post.title}
-                        </td>
-                        <td width="150">
-                          {post.postYear == year
-                            ? post.postMonth == month && post.postDay == date
-                              ? post.postHour == hours
-                                ? post.postMinute == minutes
-                                  ? seconds - post.postSecond + '초 전'
-                                  : minutes - post.postMinute == 1 &&
-                                    seconds < post.postSecond
-                                  ? 60 - post.postSecond + seconds + '초 전'
-                                  : minutes - post.postMinute + '분 전'
-                                : hours - post.postHour + '시간 전'
-                              : post.postMonth + '.' + post.postDay
-                            : post.postYear.slice(2, 4) +
-                              '.' +
-                              post.postMonth +
-                              '.' +
-                              post.postDay}
-                        </td>
-                        <td width="150">{post.commentsSize}</td>
-                        <td width="150">{post.studyStatus}</td>
-                      </tr>
-                    )),
-                  isQuestion: myLikeQuestion
-                    .slice(0, myLikeQuestion.length)
-                    .map((post) => (
-                      <tr className="cate-mypage-detail">
-                        <td
-                          className="cate-mypage-detail-title"
-                          width="250"
-                          onClick={() => {
-                            navigate('/questionsDetail/' + post.id);
-                          }}
-                        >
-                          {post.title}
-                        </td>
-                        <td width="150">
-                          {post.postYear == year
-                            ? post.postMonth == month && post.postDay == date
-                              ? post.postHour == hours
-                                ? post.postMinute == minutes
-                                  ? seconds - post.postSecond + '초 전'
-                                  : minutes - post.postMinute == 1 &&
-                                    seconds < post.postSecond
-                                  ? 60 - post.postSecond + seconds + '초 전'
-                                  : minutes - post.postMinute + '분 전'
-                                : hours - post.postHour + '시간 전'
-                              : post.postMonth + '.' + post.postDay
-                            : post.postYear.slice(2, 4) +
-                              '.' +
-                              post.postMonth +
-                              '.' +
-                              post.postDay}
-                        </td>
-                        <td width="150">{post.commentsSize}</td>
-                        <td width="150">{post.questionStatus}</td>
-                      </tr>
-                    )),
-                  isChat: myLikeChat.slice(0, myLikeChat.length).map((post) => (
-                    <tr className="cate-mypage-detail">
-                      <td
-                        className="cate-mypage-detail-title"
-                        width="250"
-                        onClick={() => {
-                          navigate('/chatsDetail/' + post.id);
-                        }}
-                      >
-                        {post.title}
-                      </td>
-                      <td width="150">
-                        {post.postYear == year
-                          ? post.postMonth == month && post.postDay == date
-                            ? post.postHour == hours
-                              ? post.postMinute == minutes
-                                ? seconds - post.postSecond + '초 전'
-                                : minutes - post.postMinute == 1 &&
-                                  seconds < post.postSecond
-                                ? 60 - post.postSecond + seconds + '초 전'
-                                : minutes - post.postMinute + '분 전'
-                              : hours - post.postHour + '시간 전'
-                            : post.postMonth + '.' + post.postDay
-                          : post.postYear.slice(2, 4) +
-                            '.' +
-                            post.postMonth +
-                            '.' +
-                            post.postDay}
-                      </td>
-                      <td width="150">{post.commentsSize}</td>
-                      <td width="150">{post.studyStatus}</td>
-                    </tr>
-                  )),
-                }[isPostStatus]}
+            {loading ? (
+              <div>
+                <LoadingSpinner />
+              </div>
+            ) : (
+              <>
+                {isPost // 작성한 글 / 좋아요한 글 구분
+                  ? {
+                      // 작성한 글에서 각 게시판 별로 구분
+                      isStudy: myPostStudy
+                        .slice(0, myPostStudy.length)
+                        .map((post) => (
+                          <tr className="cate-mypage-detail">
+                            <td
+                              className="cate-mypage-detail-title"
+                              width="250"
+                              onClick={() => {
+                                navigate('/studiesDetail/' + post.id);
+                              }}
+                            >
+                              {post.title}
+                            </td>
+                            <td width="150">
+                              {post.postYear == year
+                                ? post.postMonth == month &&
+                                  post.postDay == date
+                                  ? post.postHour == hours
+                                    ? post.postMinute == minutes
+                                      ? seconds - post.postSecond + '초 전'
+                                      : minutes - post.postMinute == 1 &&
+                                        seconds < post.postSecond
+                                      ? 60 - post.postSecond + seconds + '초 전'
+                                      : minutes - post.postMinute + '분 전'
+                                    : hours - post.postHour + '시간 전'
+                                  : post.postMonth + '.' + post.postDay
+                                : post.postYear.slice(2, 4) +
+                                  '.' +
+                                  post.postMonth +
+                                  '.' +
+                                  post.postDay}
+                            </td>
+                            <td width="150">{post.commentsSize}</td>
+                            <td width="150">{post.studyStatus}</td>
+                          </tr>
+                        )),
+                      isQuestion: myPostQuestion
+                        .slice(0, myPostQuestion.length)
+                        .map((post) => (
+                          <tr className="cate-mypage-detail">
+                            <td
+                              className="cate-mypage-detail-title"
+                              width="250"
+                              onClick={() => {
+                                navigate('/questionsDetail/' + post.id);
+                              }}
+                            >
+                              {post.title}
+                            </td>
+                            <td width="150">
+                              {post.postYear == year
+                                ? post.postMonth == month &&
+                                  post.postDay == date
+                                  ? post.postHour == hours
+                                    ? post.postMinute == minutes
+                                      ? seconds - post.postSecond + '초 전'
+                                      : minutes - post.postMinute == 1 &&
+                                        seconds < post.postSecond
+                                      ? 60 - post.postSecond + seconds + '초 전'
+                                      : minutes - post.postMinute + '분 전'
+                                    : hours - post.postHour + '시간 전'
+                                  : post.postMonth + '.' + post.postDay
+                                : post.postYear.slice(2, 4) +
+                                  '.' +
+                                  post.postMonth +
+                                  '.' +
+                                  post.postDay}
+                            </td>
+                            <td width="150">{post.commentsSize}</td>
+                            <td width="150">{post.questionStatus}</td>
+                          </tr>
+                        )),
+                      isChat: myPostChat
+                        .slice(0, myPostChat.length)
+                        .map((post) => (
+                          <tr className="cate-mypage-detail">
+                            <td
+                              className="cate-mypage-detail-title"
+                              width="250"
+                              onClick={() => {
+                                navigate('/chatsDetail/' + post.id);
+                              }}
+                            >
+                              {post.title}
+                            </td>
+                            <td width="150">
+                              {post.postYear == year
+                                ? post.postMonth == month &&
+                                  post.postDay == date
+                                  ? post.postHour == hours
+                                    ? post.postMinute == minutes
+                                      ? seconds - post.postSecond + '초 전'
+                                      : minutes - post.postMinute == 1 &&
+                                        seconds < post.postSecond
+                                      ? 60 - post.postSecond + seconds + '초 전'
+                                      : minutes - post.postMinute + '분 전'
+                                    : hours - post.postHour + '시간 전'
+                                  : post.postMonth + '.' + post.postDay
+                                : post.postYear.slice(2, 4) +
+                                  '.' +
+                                  post.postMonth +
+                                  '.' +
+                                  post.postDay}
+                            </td>
+                            <td width="150">{post.commentsSize}</td>
+                            <td width="150">{post.studyStatus}</td>
+                          </tr>
+                        )),
+                    }[isPostStatus]
+                  : {
+                      // 좋아요한 글에서 각 게시판 별로 구분
+                      isStudy: myLikeStudy
+                        .slice(0, myLikeStudy.length)
+                        .map((post) => (
+                          <tr className="cate-mypage-detail">
+                            <td
+                              className="cate-mypage-detail-title"
+                              width="250"
+                              onClick={() => {
+                                navigate('/studiesDetail/' + post.id);
+                              }}
+                            >
+                              {post.title}
+                            </td>
+                            <td width="150">
+                              {post.postYear == year
+                                ? post.postMonth == month &&
+                                  post.postDay == date
+                                  ? post.postHour == hours
+                                    ? post.postMinute == minutes
+                                      ? seconds - post.postSecond + '초 전'
+                                      : minutes - post.postMinute == 1 &&
+                                        seconds < post.postSecond
+                                      ? 60 - post.postSecond + seconds + '초 전'
+                                      : minutes - post.postMinute + '분 전'
+                                    : hours - post.postHour + '시간 전'
+                                  : post.postMonth + '.' + post.postDay
+                                : post.postYear.slice(2, 4) +
+                                  '.' +
+                                  post.postMonth +
+                                  '.' +
+                                  post.postDay}
+                            </td>
+                            <td width="150">{post.commentsSize}</td>
+                            <td width="150">{post.studyStatus}</td>
+                          </tr>
+                        )),
+                      isQuestion: myLikeQuestion
+                        .slice(0, myLikeQuestion.length)
+                        .map((post) => (
+                          <tr className="cate-mypage-detail">
+                            <td
+                              className="cate-mypage-detail-title"
+                              width="250"
+                              onClick={() => {
+                                navigate('/questionsDetail/' + post.id);
+                              }}
+                            >
+                              {post.title}
+                            </td>
+                            <td width="150">
+                              {post.postYear == year
+                                ? post.postMonth == month &&
+                                  post.postDay == date
+                                  ? post.postHour == hours
+                                    ? post.postMinute == minutes
+                                      ? seconds - post.postSecond + '초 전'
+                                      : minutes - post.postMinute == 1 &&
+                                        seconds < post.postSecond
+                                      ? 60 - post.postSecond + seconds + '초 전'
+                                      : minutes - post.postMinute + '분 전'
+                                    : hours - post.postHour + '시간 전'
+                                  : post.postMonth + '.' + post.postDay
+                                : post.postYear.slice(2, 4) +
+                                  '.' +
+                                  post.postMonth +
+                                  '.' +
+                                  post.postDay}
+                            </td>
+                            <td width="150">{post.commentsSize}</td>
+                            <td width="150">{post.questionStatus}</td>
+                          </tr>
+                        )),
+                      isChat: myLikeChat
+                        .slice(0, myLikeChat.length)
+                        .map((post) => (
+                          <tr className="cate-mypage-detail">
+                            <td
+                              className="cate-mypage-detail-title"
+                              width="250"
+                              onClick={() => {
+                                navigate('/chatsDetail/' + post.id);
+                              }}
+                            >
+                              {post.title}
+                            </td>
+                            <td width="150">
+                              {post.postYear == year
+                                ? post.postMonth == month &&
+                                  post.postDay == date
+                                  ? post.postHour == hours
+                                    ? post.postMinute == minutes
+                                      ? seconds - post.postSecond + '초 전'
+                                      : minutes - post.postMinute == 1 &&
+                                        seconds < post.postSecond
+                                      ? 60 - post.postSecond + seconds + '초 전'
+                                      : minutes - post.postMinute + '분 전'
+                                    : hours - post.postHour + '시간 전'
+                                  : post.postMonth + '.' + post.postDay
+                                : post.postYear.slice(2, 4) +
+                                  '.' +
+                                  post.postMonth +
+                                  '.' +
+                                  post.postDay}
+                            </td>
+                            <td width="150">{post.commentsSize}</td>
+                            <td width="150">{post.studyStatus}</td>
+                          </tr>
+                        )),
+                    }[isPostStatus]}
+              </>
+            )}
           </table>
           <FooterGray />
         </div>
