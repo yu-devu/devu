@@ -170,7 +170,7 @@ const Comments = (props) => {
                   <div className="container-comments">
                     {comment.deleted === true ? (
                       <div>
-                        <div>삭제된 댓글입니다</div>
+                        <div className='deleted-comment'>삭제된 댓글입니다</div>
                         {props.comments &&
                           props.comments.map((recomment) =>
                             comment.group === recomment.group &&
@@ -217,7 +217,7 @@ const Comments = (props) => {
                                         showDropdownContent ? (
                                         recomment.commentId ===
                                           recomment.group ? (
-                                          <div>
+                                          <ul className='more-submenu'>
                                             <button
                                               onClick={() => {
                                                 setShowModifyContent(
@@ -237,7 +237,7 @@ const Comments = (props) => {
                                             >
                                               삭제
                                             </button>
-                                          </div>
+                                          </ul>
                                         ) : (
                                           <div>
                                             <button
@@ -611,24 +611,26 @@ const Comments = (props) => {
                                           onChangeModifyComment(e)
                                         }
                                       />
-                                      <button
-                                        className="btn-comment"
-                                        onClick={() => {
-                                          handleCommentModify(
-                                            recomment.commentId
-                                          );
-                                        }}
-                                      >
-                                        수정하기
-                                      </button>
-                                      <button
-                                        className="btn-comment"
-                                        onClick={() => {
-                                          setShowModifyContent(0);
-                                        }}
-                                      >
-                                        취소
-                                      </button>
+                                      <div className='btn-comments-sub'>
+                                        <button
+                                          className="btn-comment-motion"
+                                          onClick={() => {
+                                            handleCommentModify(
+                                              recomment.commentId
+                                            );
+                                          }}
+                                        >
+                                          수정하기
+                                        </button>
+                                        <button
+                                          className="btn-comment-motion"
+                                          onClick={() => {
+                                            setShowModifyContent(0);
+                                          }}
+                                        >
+                                          취소
+                                        </button>
+                                      </div>
                                     </div>
                                   ) : (
                                     <div className="comment-content">
@@ -697,7 +699,7 @@ const Comments = (props) => {
                               placeholder="대댓글을 입력해주세요."
                             />
                             <button
-                              className="btn-comment"
+                              className="btn-sub-comment"
                               onClick={() => {
                                 handleRecomment(
                                   comment.commentId,

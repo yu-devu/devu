@@ -456,6 +456,37 @@
     background: rgb(242, 242, 242);
     line-height: 50px;
   }
+
+  .btn-sub-comment {
+    border-radius: 50px;
+    position: relative;
+    left: 6%;
+    width: 10%;
+    padding: 1%;
+    background-color: black;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .deleted-comment {
+    margin-left: 15px;
+    padding-top: 10px;
+    margin-bottom: 5px;
+  }
+
+  .btn-comment-motion {
+    border-radius: 50px;
+    position: relative;
+    left: 100%;
+    width: 100%;
+    height: 40%;
+    padding: 1%;
+    background-color: black;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+  }
 }
 
 @media screen and (max-width: 390px) {
@@ -744,28 +775,8 @@
     margin-right: 5px;
   }
 
-  .btn-modify {
-    /* background-color: transparent;
-    border: 1px solid rgba(241, 241, 241, 1);
-    border-radius: 10%;
-    padding: 5% 5%;
-    padding-top: 7%;
-    cursor: pointer;
-    color: black;
-    font-size: 13px;
-    margin-right: 10px; */
-  }
-
   .btn-modify:hover {
     background-color: var(--color-hover);
-  }
-
-  .btn-delete-post {
-    /* background-color: transparent;
-    border: 1px solid rgba(241, 241, 241, 1);
-    border-radius: 10%;
-    padding: 5% 5%;
-    cursor: pointer; */
   }
 
   .btn-delete-post:hover {
@@ -842,5 +853,64 @@
     padding-top: 1ch;
     color: var(--color-gray);
     padding-bottom: 1ch;
+  }
+
+  .container-comments-sub {
+    background: rgb(242, 242, 242);
+    position: relative;
+    max-width: 90%;
+    left: 5%;
+    height: 100%;
+    border-bottom: 0.1px solid var(--color-gray);
+  }
+
+  .write-sub-comment {
+    top: 8px;
+    cursor: pointer;
+    right: 0;
+    margin-right: 35px;
+    position: absolute;
+    font-size: 14px;
+  }
+
+  .write-sub-comments {
+    filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.102));
+    border-radius: 0.5rem;
+    position: relative;
+    width: 90%;
+    left: 5%;
+    min-height: 45px;
+    margin-top: 5px;
+    padding-left: 2ch;
+    background: #fff;
+  }
+
+  .recomment {
+    width: 75%;
+    line-height: 50px;
+  }
+
+  .btn-sub-comment {
+    border-radius: 50px;
+    position: relative;
+    width: 20%;
+    height: 30px;
+    background-color: black;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .btn-comment-motion {
+    border-radius: 50px;
+    position: relative;
+    /* left: 66%; */
+    width: 100%;
+    height: 40%;
+    padding: 1%;
+    background-color: black;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
   }
 }

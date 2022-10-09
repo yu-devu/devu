@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./navbar.css";
-import { navItems } from "./NavItems";
+import { navItems, communityDropdown } from "./NavItems";
 import Dropdown from "./Dropdown";
 import LoginButton from "./LoginButton";
 import RegisterButton from "./RegisterButton";
@@ -54,33 +54,52 @@ function Navbar() {
 
         <div>
           {isTabletOrMobile ? (<nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
-            <ul className="nav-items" onClick={showSidebar}>
+            <ul className="nav-items">
               <li className='navbar-toggle'>
-                <Link to='#' className='menu-out'>
+                <Link to='#' className='menu-out' onClick={showSidebar}>
                   <AiIcons.AiOutlineClose />
                 </Link>
               </li>
               {navItems.map((item) => {
+                // if (item.title === "커뮤니티") {
+                //   return (
+                //     <li
+                //       key={item.id}
+                //       className={item.cName}
+                //       onMouseEnter={() => setDropdown(true)}
+                //       onMouseLeave={() => setDropdown(false)}
+                //     >
+                //       <Link to={item.path}>{item.title}</Link>
+                //       {}
+                //     </li>
+                //   );
+                // }
                 if (item.title === "커뮤니티") {
                   return (
-                    <li
-                      key={item.id}
-                      className={item.cName}
-                      onMouseEnter={() => setDropdown(true)}
-                      onMouseLeave={() => setDropdown(false)}
-                    >
-                      <Link to={item.path}>{item.title}</Link>
-                      {dropdown && <Dropdown />}
-                    </li>
+                    <ul>
+                      <li key="1" className="nav-item">
+                        <Link to="./studies" onClick={showSidebar}>커뮤니티</Link>
+                      </li>
+                      <div className="nav-sub">
+                        <li key="1" className="submenu-item-m">
+                          <Link to="./studies" onClick={showSidebar}>스터디구인란</Link>
+                        </li>
+                        <li key="2" className="submenu-item-m">
+                          <Link to="./questions" onClick={showSidebar}>Q&A</Link>
+                        </li>
+                        <li key="3" className="submenu-item-m">
+                          <Link to="./chats" onClick={showSidebar}>자유게시판</Link>
+                        </li>
+                      </div>
+                    </ul>
                   );
                 }
                 return (
                   <li key={item.id} className={item.cName}>
-                    <Link to={item.path}>{item.title}</Link>
+                    <Link to={item.path} onClick={showSidebar}>{item.title}</Link>
                   </li>
                 );
               })}
-
               {isToken && username ? (
                 <div className="nav-right">
                   <MyPageButton /> <LogoutButton />
@@ -125,8 +144,8 @@ function Navbar() {
             )}
           </nav>)}
         </div>
-      </nav>
-    </div>
+      </nav >
+    </div >
   );
 }
 
