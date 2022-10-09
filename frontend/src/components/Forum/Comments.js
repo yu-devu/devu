@@ -159,9 +159,9 @@ const Comments = (props) => {
       {props.comments ? (
         <div className="studies-comments-all">
           <div className="number-comments">
-            <h6 className="number-comments-text">
+            {/* <h6 className="number-comments-text">
               {props.comments.length}개의 답글
-            </h6>
+            </h6> */}
           </div>
           <div div className="studies-comments">
             {props.comments &&
@@ -174,9 +174,345 @@ const Comments = (props) => {
                         {props.comments &&
                           props.comments.map((recomment) =>
                             comment.group === recomment.group &&
-                            comment.group !== recomment.commentId ? (
-                              <div className="container-comments">
-                                <div className="comment-detail">
+                              comment.group !== recomment.commentId ? (
+                              <div className="container-comments-sub">
+                                <div className="comment-sub">
+                                  <div className="comments-top">
+                                    <div>
+                                      <img
+                                        className="comment-photo"
+                                        src={ab}
+                                        alt=""
+                                      />
+                                    </div>
+                                    <div className="comment-top">
+                                      <div className="comment-owner">
+                                        {recomment.username}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {recomment.username === username &&
+                                    recomment.commentId !==
+                                    showModifyContent ? (
+                                    <button className="btn-more">
+                                      <img
+                                        className="img-more"
+                                        alt=""
+                                        src={more}
+                                        onClick={() => {
+                                          console.log(recomment.commentId);
+                                          if (
+                                            showDropdownContent ===
+                                            recomment.commentId
+                                          )
+                                            setShowDropdownContent(0);
+                                          else
+                                            setShowDropdownContent(
+                                              recomment.commentId
+                                            );
+                                        }}
+                                      />
+
+                                      {recomment.commentId ===
+                                        showDropdownContent ? (
+                                        recomment.commentId ===
+                                          recomment.group ? (
+                                          <div>
+                                            <button
+                                              onClick={() => {
+                                                setShowModifyContent(
+                                                  recomment.commentId
+                                                );
+                                                setShowDropdownContent(0);
+                                              }}
+                                            >
+                                              수정
+                                            </button>
+                                            <button
+                                              onClick={() => {
+                                                handleCommentDelete(
+                                                  recomment.commentId
+                                                );
+                                              }}
+                                            >
+                                              삭제
+                                            </button>
+                                          </div>
+                                        ) : (
+                                          <div>
+                                            <button
+                                              onClick={() => {
+                                                setShowModifyContent(
+                                                  recomment.commentId
+                                                );
+                                                setShowDropdownContent(0);
+                                              }}
+                                            >
+                                              수정
+                                            </button>
+                                            <button
+                                              onClick={() => {
+                                                handleRecommentDelete(
+                                                  recomment.commentId
+                                                );
+                                              }}
+                                            >
+                                              삭제
+                                            </button>
+                                          </div>
+                                        )
+                                      ) : null}
+                                    </button>
+                                  ) : null}
+                                  {recomment.commentId === showModifyContent ? (
+                                    <div className="questions-write-comments">
+                                      <input
+                                        id="comment"
+                                        name="comment"
+                                        defaultValue={recomment.contents}
+                                        onChange={(e) =>
+                                          onChangeModifyComment(e)
+                                        }
+                                      />
+                                      <button
+                                        className="btn-comment"
+                                        onClick={() => {
+                                          handleCommentModify(
+                                            recomment.commentId
+                                          );
+                                        }}
+                                      >
+                                        수정하기
+                                      </button>
+                                      <button
+                                        className="btn-comment"
+                                        onClick={() => {
+                                          setShowModifyContent(0);
+                                        }}
+                                      >
+                                        취소
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <div className="comment-content">
+                                      {recomment.contents}
+                                    </div>
+                                  )}
+                                  <div className="comment-date">
+                                    {recomment.createAt.slice(0, 4) == year
+                                      ? recomment.createAt.slice(5, 7) ==
+                                        month &&
+                                        recomment.createAt.slice(8, 10) == date
+                                        ? recomment.createAt.slice(11, 13) ==
+                                          hours
+                                          ? recomment.createAt.slice(14, 16) ==
+                                            minutes
+                                            ? seconds -
+                                            recomment.createAt.slice(17, 19) +
+                                            '초 전'
+                                            : minutes -
+                                              recomment.createAt.slice(
+                                                14,
+                                                16
+                                              ) ==
+                                              1 &&
+                                              seconds <
+                                              recomment.createAt.slice(17, 19)
+                                              ? 60 -
+                                              recomment.createAt.slice(17, 19) +
+                                              seconds +
+                                              '초 전'
+                                              : minutes -
+                                              recomment.createAt.slice(14, 16) +
+                                              '분 전'
+                                          : hours -
+                                          recomment.createAt.slice(11, 13) +
+                                          '시간 전'
+                                        : recomment.createAt.slice(5, 7) +
+                                        '.' +
+                                        recomment.createAt.slice(8, 10)
+                                      : recomment.createAt.slice(2, 4) +
+                                      '.' +
+                                      recomment.createAt.slice(5, 7) +
+                                      '.' +
+                                      recomment.createAt.slice(8, 10)}
+                                  </div>
+                                </div>
+                              </div>
+                            ) : null
+                          )}
+                      </div>
+                    ) : (
+                      <div className="comment-detail">
+                        <div className='comments-header'>
+                          <div className="comments-top">
+                            <div>
+                              <img className="comment-photo" src={ab} alt="" />
+                            </div>
+                            <div className="comment-top">
+                              <div className="comment-owner">
+                                {comment.username}
+                              </div>
+                              {comment.commentId === comment.group ? (
+                                <div className='write-sub-comment'
+                                  onClick={() => {
+                                    console.log(
+                                      comment.commentId +
+                                      ', ' +
+                                      comment.username +
+                                      ', ' +
+                                      comment.group
+                                    );
+                                    if (clickedComment === comment.commentId)
+                                      setClickedComment(0);
+                                    else setClickedComment(comment.commentId);
+                                  }}
+                                >
+                                  대댓글
+                                </div>
+                              ) : null}
+
+                            </div>
+                          </div>
+                          {comment.username === username &&
+                            comment.commentId !== showModifyContent ? (
+                            <button className="btn-more">
+                              <img
+                                className="img-more"
+                                alt=""
+                                src={more}
+                                onClick={() => {
+                                  console.log(comment.commentId);
+                                  if (
+                                    showDropdownContent === comment.commentId
+                                  )
+                                    setShowDropdownContent(0);
+                                  else
+                                    setShowDropdownContent(comment.commentId);
+                                }}
+                              />
+
+                              {comment.commentId === showDropdownContent ? (
+                                comment.commentId === comment.group ? (
+                                  <ul className='more-submenu'>
+                                    <button
+                                      onClick={() => {
+                                        setShowModifyContent(
+                                          comment.commentId
+                                        );
+                                        setShowDropdownContent(0);
+                                      }}
+                                    >
+                                      수정
+                                    </button>
+                                    <button
+                                      onClick={() => {
+                                        handleCommentDelete(
+                                          comment.commentId
+                                        );
+                                      }}
+                                    >
+                                      삭제
+                                    </button>
+                                  </ul>
+                                ) : (
+                                  <ul className='more-submenu'>
+                                    <button
+                                      onClick={() => {
+                                        setShowModifyContent(
+                                          comment.commentId
+                                        );
+                                        setShowDropdownContent(0);
+                                      }}
+                                    >
+                                      수정
+                                    </button>
+                                    <button
+                                      onClick={() => {
+                                        handleRecommentDelete(
+                                          comment.commentId
+                                        );
+                                      }}
+                                    >
+                                      삭제
+                                    </button>
+                                  </ul>
+                                )
+                              ) : null}
+                            </button>
+                          ) : null}
+                        </div>
+
+                        {comment.commentId === showModifyContent ? (
+                          <div className="container-modify-comments">
+                            <input
+                              id="comment"
+                              name="comment"
+                              className='comment'
+                              defaultValue={comment.contents}
+                              onChange={(e) => onChangeModifyComment(e)}
+                            />
+                            <div className='btn-comments'>
+                              <button
+                                className="btn-comment-sub"
+                                onClick={() => {
+                                  handleCommentModify(comment.commentId);
+                                }}
+                              >
+                                수정하기
+                              </button>
+                              <button
+                                className="btn-comment-sub"
+                                onClick={() => {
+                                  setShowModifyContent(0);
+                                }}
+                              >
+                                취소
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="comment-content">
+                            {comment.contents}
+                          </div>
+                        )}
+                        <div className="comment-date">
+                          {comment.createAt.slice(0, 4) == year
+                            ? comment.createAt.slice(5, 7) == month &&
+                              comment.createAt.slice(8, 10) == date
+                              ? comment.createAt.slice(11, 13) == hours
+                                ? comment.createAt.slice(14, 16) == minutes
+                                  ? seconds -
+                                  comment.createAt.slice(17, 19) +
+                                  '초 전'
+                                  : minutes - comment.createAt.slice(14, 16) ==
+                                    1 &&
+                                    seconds < comment.createAt.slice(17, 19)
+                                    ? 60 -
+                                    comment.createAt.slice(17, 19) +
+                                    seconds +
+                                    '초 전'
+                                    : minutes -
+                                    comment.createAt.slice(14, 16) +
+                                    '분 전'
+                                : hours -
+                                comment.createAt.slice(11, 13) +
+                                '시간 전'
+                              : comment.createAt.slice(5, 7) +
+                              '.' +
+                              comment.createAt.slice(8, 10)
+                            : comment.createAt.slice(2, 4) +
+                            '.' +
+                            comment.createAt.slice(5, 7) +
+                            '.' +
+                            comment.createAt.slice(8, 10)}
+                        </div>
+                        {props.comments &&
+                          props.comments.map((recomment) =>
+                            comment.group === recomment.group &&
+                              comment.group !== recomment.commentId ? (
+                              <div className="container-comments-sub">
+                                <div className="comment-sub">
                                   <div className="comments-top">
                                     <div>
                                       <img
@@ -191,7 +527,7 @@ const Comments = (props) => {
                                       </div>
 
                                       {recomment.username === username &&
-                                      recomment.commentId !==
+                                        recomment.commentId !==
                                         showModifyContent ? (
                                         <button className="btn-more">
                                           <img
@@ -213,10 +549,10 @@ const Comments = (props) => {
                                           />
 
                                           {recomment.commentId ===
-                                          showDropdownContent ? (
+                                            showDropdownContent ? (
                                             recomment.commentId ===
-                                            recomment.group ? (
-                                              <div>
+                                              recomment.group ? (
+                                              <ul className='more-submenu'>
                                                 <button
                                                   onClick={() => {
                                                     setShowModifyContent(
@@ -236,9 +572,9 @@ const Comments = (props) => {
                                                 >
                                                   삭제
                                                 </button>
-                                              </div>
+                                              </ul>
                                             ) : (
-                                              <div>
+                                              <ul className='more-submenu'>
                                                 <button
                                                   onClick={() => {
                                                     setShowModifyContent(
@@ -258,7 +594,7 @@ const Comments = (props) => {
                                                 >
                                                   삭제
                                                 </button>
-                                              </div>
+                                              </ul>
                                             )
                                           ) : null}
                                         </button>
@@ -302,210 +638,51 @@ const Comments = (props) => {
                                   <div className="comment-date">
                                     {recomment.createAt.slice(0, 4) == year
                                       ? recomment.createAt.slice(5, 7) ==
-                                          month &&
+                                        month &&
                                         recomment.createAt.slice(8, 10) == date
                                         ? recomment.createAt.slice(11, 13) ==
                                           hours
                                           ? recomment.createAt.slice(14, 16) ==
                                             minutes
                                             ? seconds -
-                                              recomment.createAt.slice(17, 19) +
-                                              '초 전'
+                                            recomment.createAt.slice(17, 19) +
+                                            '초 전'
                                             : minutes -
-                                                recomment.createAt.slice(
-                                                  14,
-                                                  16
-                                                ) ==
-                                                1 &&
+                                              recomment.createAt.slice(
+                                                14,
+                                                16
+                                              ) ==
+                                              1 &&
                                               seconds <
-                                                recomment.createAt.slice(17, 19)
-                                            ? 60 -
+                                              recomment.createAt.slice(17, 19)
+                                              ? 60 -
                                               recomment.createAt.slice(17, 19) +
                                               seconds +
                                               '초 전'
-                                            : minutes -
+                                              : minutes -
                                               recomment.createAt.slice(14, 16) +
                                               '분 전'
                                           : hours -
-                                            recomment.createAt.slice(11, 13) +
-                                            '시간 전'
+                                          recomment.createAt.slice(11, 13) +
+                                          '시간 전'
                                         : recomment.createAt.slice(5, 7) +
-                                          '.' +
-                                          recomment.createAt.slice(8, 10)
+                                        '.' +
+                                        recomment.createAt.slice(8, 10)
                                       : recomment.createAt.slice(2, 4) +
-                                        '.' +
-                                        recomment.createAt.slice(5, 7) +
-                                        '.' +
-                                        recomment.createAt.slice(8, 10)}
+                                      '.' +
+                                      recomment.createAt.slice(5, 7) +
+                                      '.' +
+                                      recomment.createAt.slice(8, 10)}
                                   </div>
                                 </div>
                               </div>
                             ) : null
                           )}
-                      </div>
-                    ) : (
-                      <div className="comment-detail">
-                        <div className="comments-top">
-                          <div>
-                            <img className="comment-photo" src={ab} alt="" />
-                          </div>
-                          <div className="comment-top">
-                            <div className="comment-owner">
-                              {comment.username}
-                            </div>
-                            {comment.commentId === comment.group ? (
-                              <div
-                                onClick={() => {
-                                  console.log(
-                                    comment.commentId +
-                                      ', ' +
-                                      comment.username +
-                                      ', ' +
-                                      comment.group
-                                  );
-                                  if (clickedComment === comment.commentId)
-                                    setClickedComment(0);
-                                  else setClickedComment(comment.commentId);
-                                }}
-                              >
-                                대댓글
-                              </div>
-                            ) : null}
-
-                            {comment.username === username &&
-                            comment.commentId !== showModifyContent ? (
-                              <button className="btn-more">
-                                <img
-                                  className="img-more"
-                                  alt=""
-                                  src={more}
-                                  onClick={() => {
-                                    console.log(comment.commentId);
-                                    if (
-                                      showDropdownContent === comment.commentId
-                                    )
-                                      setShowDropdownContent(0);
-                                    else
-                                      setShowDropdownContent(comment.commentId);
-                                  }}
-                                />
-
-                                {comment.commentId === showDropdownContent ? (
-                                  comment.commentId === comment.group ? (
-                                    <div>
-                                      <button
-                                        onClick={() => {
-                                          setShowModifyContent(
-                                            comment.commentId
-                                          );
-                                          setShowDropdownContent(0);
-                                        }}
-                                      >
-                                        수정
-                                      </button>
-                                      <button
-                                        onClick={() => {
-                                          handleCommentDelete(
-                                            comment.commentId
-                                          );
-                                        }}
-                                      >
-                                        삭제
-                                      </button>
-                                    </div>
-                                  ) : (
-                                    <div>
-                                      <button
-                                        onClick={() => {
-                                          setShowModifyContent(
-                                            comment.commentId
-                                          );
-                                          setShowDropdownContent(0);
-                                        }}
-                                      >
-                                        수정
-                                      </button>
-                                      <button
-                                        onClick={() => {
-                                          handleRecommentDelete(
-                                            comment.commentId
-                                          );
-                                        }}
-                                      >
-                                        삭제
-                                      </button>
-                                    </div>
-                                  )
-                                ) : null}
-                              </button>
-                            ) : null}
-                          </div>
-                        </div>
-                        {comment.commentId === showModifyContent ? (
-                          <div className="questions-write-comments">
-                            <input
-                              id="comment"
-                              name="comment"
-                              defaultValue={comment.contents}
-                              onChange={(e) => onChangeModifyComment(e)}
-                            />
-                            <button
-                              className="btn-comment"
-                              onClick={() => {
-                                handleCommentModify(comment.commentId);
-                              }}
-                            >
-                              수정하기
-                            </button>
-                            <button
-                              className="btn-comment"
-                              onClick={() => {
-                                setShowModifyContent(0);
-                              }}
-                            >
-                              취소
-                            </button>
-                          </div>
-                        ) : (
-                          <div className="comment-content">
-                            {comment.contents}
-                          </div>
-                        )}
-                        <div className="comment-date">
-                          {comment.createAt.slice(0, 4) == year
-                            ? comment.createAt.slice(5, 7) == month &&
-                              comment.createAt.slice(8, 10) == date
-                              ? comment.createAt.slice(11, 13) == hours
-                                ? comment.createAt.slice(14, 16) == minutes
-                                  ? seconds -
-                                    comment.createAt.slice(17, 19) +
-                                    '초 전'
-                                  : minutes - comment.createAt.slice(14, 16) ==
-                                      1 &&
-                                    seconds < comment.createAt.slice(17, 19)
-                                  ? 60 -
-                                    comment.createAt.slice(17, 19) +
-                                    seconds +
-                                    '초 전'
-                                  : minutes -
-                                    comment.createAt.slice(14, 16) +
-                                    '분 전'
-                                : hours -
-                                  comment.createAt.slice(11, 13) +
-                                  '시간 전'
-                              : comment.createAt.slice(5, 7) +
-                                '.' +
-                                comment.createAt.slice(8, 10)
-                            : comment.createAt.slice(2, 4) +
-                              '.' +
-                              comment.createAt.slice(5, 7) +
-                              '.' +
-                              comment.createAt.slice(8, 10)}
-                        </div>
                         {comment.commentId === clickedComment ? (
-                          <div style={{ backgroundColor: '#F2F2F2' }}>
+                          <div
+                            className='write-sub-comments'>
                             <input
-                              className="comment"
+                              className="recomment"
                               id="recomment"
                               name="recomment"
                               value={recomment}
@@ -532,178 +709,6 @@ const Comments = (props) => {
                             </button>
                           </div>
                         ) : null}
-
-                        {props.comments &&
-                          props.comments.map((recomment) =>
-                            comment.group === recomment.group &&
-                            comment.group !== recomment.commentId ? (
-                              <div className="container-comments">
-                                <div className="comment-detail">
-                                  <div className="comments-top">
-                                    <div>
-                                      <img
-                                        className="comment-photo"
-                                        src={ab}
-                                        alt=""
-                                      />
-                                    </div>
-                                    <div className="comment-top">
-                                      <div className="comment-owner">
-                                        {recomment.username}
-                                      </div>
-
-                                      {recomment.username === username &&
-                                      recomment.commentId !==
-                                        showModifyContent ? (
-                                        <button className="btn-more">
-                                          <img
-                                            className="img-more"
-                                            alt=""
-                                            src={more}
-                                            onClick={() => {
-                                              console.log(recomment.commentId);
-                                              if (
-                                                showDropdownContent ===
-                                                recomment.commentId
-                                              )
-                                                setShowDropdownContent(0);
-                                              else
-                                                setShowDropdownContent(
-                                                  recomment.commentId
-                                                );
-                                            }}
-                                          />
-
-                                          {recomment.commentId ===
-                                          showDropdownContent ? (
-                                            recomment.commentId ===
-                                            recomment.group ? (
-                                              <div>
-                                                <button
-                                                  onClick={() => {
-                                                    setShowModifyContent(
-                                                      recomment.commentId
-                                                    );
-                                                    setShowDropdownContent(0);
-                                                  }}
-                                                >
-                                                  수정
-                                                </button>
-                                                <button
-                                                  onClick={() => {
-                                                    handleCommentDelete(
-                                                      recomment.commentId
-                                                    );
-                                                  }}
-                                                >
-                                                  삭제
-                                                </button>
-                                              </div>
-                                            ) : (
-                                              <div>
-                                                <button
-                                                  onClick={() => {
-                                                    setShowModifyContent(
-                                                      recomment.commentId
-                                                    );
-                                                    setShowDropdownContent(0);
-                                                  }}
-                                                >
-                                                  수정
-                                                </button>
-                                                <button
-                                                  onClick={() => {
-                                                    handleRecommentDelete(
-                                                      recomment.commentId
-                                                    );
-                                                  }}
-                                                >
-                                                  삭제
-                                                </button>
-                                              </div>
-                                            )
-                                          ) : null}
-                                        </button>
-                                      ) : null}
-                                    </div>
-                                  </div>
-                                  {recomment.commentId === showModifyContent ? (
-                                    <div className="questions-write-comments">
-                                      <input
-                                        id="comment"
-                                        name="comment"
-                                        defaultValue={recomment.contents}
-                                        onChange={(e) =>
-                                          onChangeModifyComment(e)
-                                        }
-                                      />
-                                      <button
-                                        className="btn-comment"
-                                        onClick={() => {
-                                          handleCommentModify(
-                                            recomment.commentId
-                                          );
-                                        }}
-                                      >
-                                        수정하기
-                                      </button>
-                                      <button
-                                        className="btn-comment"
-                                        onClick={() => {
-                                          setShowModifyContent(0);
-                                        }}
-                                      >
-                                        취소
-                                      </button>
-                                    </div>
-                                  ) : (
-                                    <div className="comment-content">
-                                      {recomment.contents}
-                                    </div>
-                                  )}
-                                  <div className="comment-date">
-                                    {recomment.createAt.slice(0, 4) == year
-                                      ? recomment.createAt.slice(5, 7) ==
-                                          month &&
-                                        recomment.createAt.slice(8, 10) == date
-                                        ? recomment.createAt.slice(11, 13) ==
-                                          hours
-                                          ? recomment.createAt.slice(14, 16) ==
-                                            minutes
-                                            ? seconds -
-                                              recomment.createAt.slice(17, 19) +
-                                              '초 전'
-                                            : minutes -
-                                                recomment.createAt.slice(
-                                                  14,
-                                                  16
-                                                ) ==
-                                                1 &&
-                                              seconds <
-                                                recomment.createAt.slice(17, 19)
-                                            ? 60 -
-                                              recomment.createAt.slice(17, 19) +
-                                              seconds +
-                                              '초 전'
-                                            : minutes -
-                                              recomment.createAt.slice(14, 16) +
-                                              '분 전'
-                                          : hours -
-                                            recomment.createAt.slice(11, 13) +
-                                            '시간 전'
-                                        : recomment.createAt.slice(5, 7) +
-                                          '.' +
-                                          recomment.createAt.slice(8, 10)
-                                      : recomment.createAt.slice(2, 4) +
-                                        '.' +
-                                        recomment.createAt.slice(5, 7) +
-                                        '.' +
-                                        recomment.createAt.slice(8, 10)}
-                                  </div>
-                                </div>
-                              </div>
-                            ) : null
-                          )}
                       </div>
                     )}
                   </div>
