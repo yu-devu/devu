@@ -111,8 +111,6 @@
     margin-right: 15px;
     border: 1px solid rgba(241, 241, 241, 1);
     border-radius: 10px;
-    padding-top: 7px;
-    /* padding-bottom: 7px; */
     padding-right: 15px;
     padding-left: 15px;
     margin-bottom: 10%;
@@ -123,8 +121,6 @@
     margin-right: 15px;
     border: 1px solid rgba(241, 241, 241, 1);
     border-radius: 10px;
-    padding-top: 7px;
-    /* padding-bottom: 7px; */
     padding-right: 15px;
     padding-left: 15px;
     margin-bottom: 10%;
@@ -183,7 +179,7 @@
     background: #fff;
     position: relative;
     display: flex;
-    width: 40%;
+    width: 65%;
     height: 100%;
     left: 30%;
     top: 20px;
@@ -195,6 +191,11 @@
 
   .btn-comments {
     position: relative;
+  }
+
+  .btn-comments-sub {
+    position: relative;
+    left: 100px;
   }
 
   .btn-comment-sub {
@@ -541,7 +542,7 @@
 
   .btn-comments {
     position: relative;
-    margin-right: 10px;
+    left: 50px;
   }
 
   .btn-comment-sub {

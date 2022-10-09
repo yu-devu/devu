@@ -13,7 +13,6 @@
   --transition: all 400ms ease;
 }
 
-/* @media (min-width: 1024px) { */
   * {
     margin: 0;
     padding: 0;
@@ -107,20 +106,6 @@
     color: var(--color-light);
   }
 
-  /* ================= MEDIA QUERIES (MEDIUM DEVICES) ================= */
-
   .main-all {
     width: auto;
   }
-/* } */
-
-/* ================= MEDIA QUERIES (SMALL DEVICES) =================*/
-/* @media screen and (max-width: 600){
-    .container {
-        width: var(--container-width-sm);
-    }
-
-    section > h2 {
-        margin-bottom: 2rem;
-    }
-} */
