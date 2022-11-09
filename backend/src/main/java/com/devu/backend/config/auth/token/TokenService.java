@@ -4,6 +4,7 @@ import com.devu.backend.config.auth.UserDetailsImpl;
 import com.devu.backend.config.auth.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,9 +19,15 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class TokenService {
 
-    private String secretKey = "Devu";
-    private long accessTokenValidTime = 1000L * 60 * 30; // 30분
-    private long refreshTokenValidTime = 1000L * 60 * 30 * (2 * 24 * 14); // 14일
+    @Value("${jwt.secret}")
+    private String secretKey;
+
+    @Value("${app.auth.accessTokenExpiry}")
+    private long accessTokenValidTime;
+
+    @Value("${app.auth.refreshTokenExpiry}")
+    private long refreshTokenValidTime;
+
     private final UserDetailsServiceImpl userDetailsService;
 
     @PostConstruct
@@ -40,6 +47,18 @@ public class TokenService {
                 .compact();
     }
 
+    public String createTestToken(String key, String email, long time) {
+        Claims claims = Jwts.claims().setSubject(email);
+        Date now = new Date();
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + time))
+                .signWith(SignatureAlgorithm.HS256, key)
+                .compact();
+    }
+
     public String createAccessToken(String email) {
         return createToken(email, accessTokenValidTime);
     }
@@ -53,9 +72,22 @@ public class TokenService {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
+    public Authentication getTestAuthentication(String token, String key) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(getTestUserEmail(token, key));
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
     public String getUserEmail(String token) {
         try {
             return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        } catch(ExpiredJwtException e) {
+            return e.getClaims().getSubject();
+        }
+    }
+
+    public String getTestUserEmail(String token, String key) {
+        try {
+            return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody().getSubject();
         } catch(ExpiredJwtException e) {
             return e.getClaims().getSubject();
         }
@@ -70,11 +102,26 @@ public class TokenService {
         return !claims.getBody().getExpiration().before(new Date());
     }
 
-    public boolean validateTokenExceptExpiration(String token, UserDetailsImpl userDetailsimpl) {
+    public Boolean isTestTokenExpired(String token, String key) {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+        return !claims.getBody().getExpiration().before(new Date());
+    }
+
+    public boolean validateToken(String token, UserDetailsImpl userDetailsimpl) {
         try {
             String email = getUserEmail(token);
 
             return email.equals(userDetailsimpl.getUsername())&& isTokenExpired(token);
+        } catch(Exception e) {
+            return false;
+        }
+    }
+
+    public boolean validateTestToken(String token, UserDetailsImpl userDetailsimpl, String key) {
+        try {
+            String email = getTestUserEmail(token, key);
+
+            return email.equals(userDetailsimpl.getUsername())&& isTestTokenExpired(token, key);
         } catch(Exception e) {
             return false;
         }

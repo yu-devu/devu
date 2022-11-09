@@ -33,10 +33,15 @@ const Register = () => {
   const showInformationInput = () => setShowInformation(true);
   const handleAuthorize = async () => {
     if (email.includes('@ynu.ac.kr') || email.includes('@yu.ac.kr')) {
-      const formData = new FormData();
-      formData.append('email', email);
+      const data = {
+        email: email,
+      };
       await axios
-        .post(process.env.REACT_APP_DB_HOST + `/email`, formData)
+        .post(process.env.REACT_APP_DB_HOST + `/email`, data, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
         .then((res) => {
           if (res.data.error) alert(res.data.error);
           setClickAuthkey(true);
@@ -192,7 +197,7 @@ const Register = () => {
               <p className="register-text">비밀번호가 일치하지 않습니다.</p>
             ) : null}
           </div>
-          <h7 className="text-name">이름</h7>
+          <h7 className="text-name">닉네임</h7>
           <div className="register-info">
             <input
               className="register-input-name"
@@ -200,7 +205,7 @@ const Register = () => {
               name="username"
               value={username}
               onChange={(e) => handleUsername(e)}
-              placeholder="이름"
+              placeholder="닉네임"
             />
           </div>
           <button onClick={() => handleSignUp()} className="btn-register">

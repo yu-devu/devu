@@ -6,7 +6,6 @@ import com.devu.backend.entity.CompanyType;
 import com.devu.backend.entity.Position;
 import com.devu.backend.repository.PositionRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Connection;
@@ -16,13 +15,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.List;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PositionService {
@@ -46,7 +44,6 @@ public class PositionService {
                         .data("endNum", Integer.toString(endNum))
                         .ignoreContentType(true)
                         .post();
-                log.info(doc.toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -62,7 +59,6 @@ public class PositionService {
                 String link = "https://recruit.navercorp.com/naver/job/detail/developer?annoId=" + annoId +
                         "&classId=&jobId=&entTypeCd=&searchTxt=&searchSysComCd=";
                 String duration = start + " ~ " + end;
-                log.info("link: {}, date: {}, title: {}", link, duration, title);
 
                 Position position = Position.builder()
                         .link(link)
@@ -96,7 +92,6 @@ public class PositionService {
                 String recruitNumber = lists.getJSONObject(i).getString("recruitNumber");
                 String openDate = lists.getJSONObject(i).getString("recruitOpenDate").substring(0, 10);
                 String title = lists.getJSONObject(i).getString("recruitName");
-                log.info("link: {}, date: {}, title: {}", recruitNumber, openDate, title);
 
                 String link = "https://career.woowahan.com/recruitment/"+ recruitNumber +
                         "/detail?category=jobGroupCodes%3ABA005001&keyword=&jobCodes=&employmentTypeCodes=";
@@ -128,7 +123,6 @@ public class PositionService {
             JSONObject jsonObject = new JSONObject(doc.text());
             JSONObject dataObject = jsonObject.getJSONObject("data");
             int cnt = dataObject.getInt("totalSize") / dataObject.getInt("pageSize");
-            log.info("cnt: {}", cnt);
             return cnt;
         } catch (IOException e) {
             e.printStackTrace();
@@ -147,10 +141,9 @@ public class PositionService {
             Elements titles = document.select(".list_jobs li .tit_jobs");
             Elements durations = document.select(".list_jobs li .list_info > dd:first-of-type");
             for (int i =0; i < titles.size(); i++) {
-                String link = links.get(i).attr("href");
+                String link = "https://careers.kakao.com" + links.get(i).attr("href");
                 String title = titles.get(i).text();
                 String duration = durations.get(i).text();
-                log.info("link: {}, title: {}, duration: {}", link, title, duration);
 
                 Position position = Position.builder()
                         .link(link)
@@ -175,7 +168,6 @@ public class PositionService {
             Elements num = document.select(".link_job1 .emph_num");
             int limit = 15;
             int cnt = Integer.parseInt(num.text()) / limit;
-            log.info("cnt: {}", cnt);
             return cnt+1;
         } catch (IOException e) {
             e.printStackTrace();
@@ -199,7 +191,6 @@ public class PositionService {
                 if(title.endsWith(" NEW"))
                     title = title.substring(0, title.length()-4);
                 String duration = durations.get(i).text();
-                log.info("link: {}, title: {}, duration: {}", link, title, duration);
 
                 Position position = Position.builder()
                         .link(link)
@@ -232,7 +223,6 @@ public class PositionService {
                 String link = "https://www.coupang.jobs" + links.get(i).attr("href");
                 String title = titles.get(i).text();
                 String duration = "공고 확인";
-                log.info("link: {}, title: {}, duration: {}", link, title, duration);
 
                 Position position = Position.builder()
                         .link(link)
@@ -261,7 +251,6 @@ public class PositionService {
             Element num = document.select(".job-count strong").get(2);
             int limit = 20;
             int cnt = Integer.parseInt(num.text()) / limit;
-            log.info("cnt: {}", cnt);
             return cnt+1;
         } catch (IOException e) {
             e.printStackTrace();
@@ -270,7 +259,7 @@ public class PositionService {
     }
 
     @Transactional
-//    @Scheduled(cron = "0 0 4 * * *")  매일 새벽4시마다 실행(혹시몰라 잠시중단)
+    @Scheduled(cron = "0 0 4 * * *")
     public void collectAllPosition() {
         positionRepository.deleteAll();
         //Naver 크롤링
@@ -291,30 +280,52 @@ public class PositionService {
             collectCoupang(i);
     }
 
-    public PositionDto getAllPosition(Pageable pageable) {
-        Page<PositionResponseDto> allPosition = positionRepository.findAll(pageable).map(PositionResponseDto::new);
-        long size = positionRepository.count();
-        return PositionDto.builder().size(size)
+    public PositionDto getAllPosition(String keyword, Pageable pageable) {
+        return getPositionDto(getPositionResponseDto(keyword, pageable));
+    }
+
+    private Page<PositionResponseDto> getPositionResponseDto(String keyword, Pageable pageable) {
+        return getPosition(keyword, pageable)
+                .map(PositionResponseDto::new);
+    }
+
+    private Page<Position> getPosition(String keyword, Pageable pageable) {
+        return positionRepository.findByTitleContainingIgnoreCase(keyword, pageable);
+    }
+
+    private PositionDto getPositionDto(Page<PositionResponseDto> allPosition) {
+        return PositionDto.builder().size(allPosition.getTotalElements())
                 .positions(allPosition.getContent())
                 .build();
     }
 
-    public PositionDto getNaver(Pageable pageable) {
-        return getPositionDto(pageable, CompanyType.NAVER);
+    public PositionDto getNaver(String keyword, Pageable pageable) {
+        return getPositionDto(getPositionResponseDtoByCompany(keyword, pageable, CompanyType.NAVER));
     }
 
-    private PositionDto getPositionDto(Pageable pageable, CompanyType company) {
-        long size = positionRepository.countByCompany(company);
-        return PositionDto.builder().size(size)
-                .positions(getPositionByCompany(pageable, company))
-                .build();
+    private Page<PositionResponseDto> getPositionResponseDtoByCompany(String keyword, Pageable pageable, CompanyType company) {
+        return getPositionByCompany(keyword, pageable, company).map(PositionResponseDto::new);
     }
 
-    private List<PositionResponseDto> getPositionByCompany(Pageable pageable, CompanyType company) {
-        Page<PositionResponseDto> positionsByCompany = positionRepository.findByCompany(company, pageable).map(PositionResponseDto::new);
-        return positionsByCompany.getContent();
+    private Page<Position> getPositionByCompany(String keyword, Pageable pageable, CompanyType company) {
+        return positionRepository.findByTitleContainingIgnoreCaseAndCompany(keyword, company, pageable);
     }
 
+    public PositionDto getKakao(String keyword, Pageable pageable) {
+        return getPositionDto(getPositionResponseDtoByCompany(keyword, pageable, CompanyType.KAKAO));
+    }
+
+    public PositionDto getLine(String keyword, Pageable pageable) {
+        return getPositionDto(getPositionResponseDtoByCompany(keyword, pageable, CompanyType.LINE));
+    }
+
+    public PositionDto getCoupang(String keyword, Pageable pageable) {
+        return getPositionDto(getPositionResponseDtoByCompany(keyword, pageable, CompanyType.COUPANG));
+    }
+
+    public PositionDto getBaemin(String keyword, Pageable pageable) {
+        return getPositionDto(getPositionResponseDtoByCompany(keyword, pageable, CompanyType.BAEMIN));
+    }
 
     public static String removeEmoji(String input){
         if(input == null)return null;
@@ -330,21 +341,5 @@ public class PositionService {
             sb.append(input.charAt(i));
         }
         return sb.toString();
-    }
-
-    public PositionDto getKakao(Pageable pageable) {
-        return getPositionDto(pageable, CompanyType.KAKAO);
-    }
-
-    public PositionDto getLine(Pageable pageable) {
-        return getPositionDto(pageable, CompanyType.LINE);
-    }
-
-    public PositionDto getCoupang(Pageable pageable) {
-        return getPositionDto(pageable, CompanyType.COUPANG);
-    }
-
-    public PositionDto getBaemin(Pageable pageable) {
-        return getPositionDto(pageable, CompanyType.BAEMIN);
     }
 }

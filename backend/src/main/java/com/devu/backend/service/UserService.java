@@ -37,7 +37,7 @@ public class UserService {
     private final EmailService emailService;
 
     @Transactional
-    public User createUser(final String email) throws Exception {
+    public User createUserBeforeEmailValidation(final String email) throws Exception {
         String authKey = emailService.createKey();
         log.info("Email authKey = {}", authKey);
         emailService.sendValidationMail(email, authKey);
@@ -85,7 +85,7 @@ public class UserService {
     // 회원가입 마지막 절차 username,password 정보 기입
     // Dirty Checking으로 변경
     @Transactional
-    public User updateUser(final UserDTO userDto) {
+    public User createUserAfterEmailValidation(final UserDTO userDto) {
         User user = getByEmail(userDto.getEmail());
         if (!user.isEmailConfirm()) {
             throw new EmailConfirmNotCompleteException();
@@ -183,6 +183,16 @@ public class UserService {
         deleteRefreshCookie(request, response);
     }
 
+    /*
+     * Admin 페이지에서 사용
+     * */
+    @Transactional
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        userRepository.delete(user);
+        user.getPosts().clear();
+    }
+
     @Transactional
     public UserDTO updateUsername(String before,String username) {
         User user = userRepository.findByUsername(before).orElseThrow(UserNotFoundException::new);
@@ -192,6 +202,27 @@ public class UserService {
                 .username(username)
                 .email(user.getEmail())
                 .build();
+    }
+
+    /*
+     * Admin 페이지에서 사용
+     * */
+    @Transactional
+    public User createUserByAdmin(com.devu.backend.controller.admin.UserDTO userDTO) {
+        User user = User.builder()
+                .username(userDTO.getUsername())
+                .password(userDTO.getPassword())
+                .emailConfirm(userDTO.isEmailValidation())
+                .email(userDTO.getEmail())
+                .build();
+        return userRepository.save(user);
+    }
+
+    /*
+     * Admin 페이지에서 사용
+     * */
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 
 }

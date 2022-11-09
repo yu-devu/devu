@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <title>Title</title>
+</head>
+<body>
+<form th:method="post" th:action="@{/admin/user}">
+    <button class="btn btn-primary form-select" type="submit">테스트용 유저 데이터 생성</button>
+</form>
+<div>
+<table border="1" class="table">
+    <thead>
+    <tr>
+        <th>UserID</th>
+        <th>username</th>
+        <th>이메일</th>
+        <th>인증 여부</th>
+        <th>Study 갯수</th>
+        <th>Question 갯수</th>
+        <th>Chat 갯수</th>
+        <th>스터디 생성</th>
+        <th>질문 생성</th>
+        <th>채팅 생성</th>
+        <th>탈퇴</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.userId}">username</td>
+        <td th:text="${user.username}">username</td>
+        <td th:with="userId=${user.userId}"
+            th:text="${user.email}"
+            th:onclick="|location.href='@{'/admin/userInfo'(userId=${userId})}'|"
+            style="cursor: pointer">
+        </td>
+        <td th:text="${user.emailValidation}">0</td>
+        <td th:text="${user.studiesSize}">0</td>
+        <td th:text="${user.questionsSize}">0</td>
+        <td th:text="${user.chatSize}">0</td>
+        <td>
+            <form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=study)}">
+                <button class="btn btn-primary" type="submit" onclick="">Study 생성</button>
+            </form>
+        </td>
+        <td>
+            <form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=question)}">
+                <button class="btn btn-primary" type="submit" onclick="">Question 생성</button>
+            </form>
+        </td>
+        <td>
+            <form th:method="post" th:action="@{'/admin/post/{userId}'(userId=${user.userId},type=chat)}">
+                <button class="btn btn-primary" type="submit" onclick="">Chat 생성</button>
+            </form>
+        </td>
+        <td th:with="userId=${user.userId}">
+            <form th:action="@{'/admin/{userId}'(userId=${userId})}" th:method="delete">
+                <button type="submit" class="btn btn-danger">회원 탈퇴</button>
+            </form>
+        </td>
+
+    </tr>
+    </tbody>
+</table>
+</div>
+<div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>현재 총 User 수</th>
+            <th>현재 총 게시글 갯수</th>
+            <th>현재 총 스터디 게시글 갯수</th>
+            <th>현재 총 질문 게시글 갯수</th>
+            <th>현재 총 채팅 게시글 갯수</th>
+        </tr>
+        <tr>
+            <td th:text="${sums.sumOfUsers} + '명'"></td>
+            <td th:text="${sums.sumOfPosts} + '개'"></td>
+            <td th:text="${sums.sumOfStudies} + '개'"></td>
+            <td th:text="${sums.sumOfQuestions} + '개'"></td>
+            <td th:text="${sums.sumOfChats} + '개'"></td>
+        </tr>
+        </thead>
+    </table>
+</div>
+</body>
+</html>

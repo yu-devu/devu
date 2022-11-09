@@ -1,5 +1,6 @@
 package com.devu.backend.service;
 
+import com.devu.backend.config.auth.token.RefreshToken;
 import com.devu.backend.repository.RefreshTokenRepository;
 import com.devu.backend.config.auth.token.TokenService;
 import com.devu.backend.controller.user.UserDTO;
@@ -10,15 +11,22 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseCookie;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.servlet.http.Cookie;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
+@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
@@ -39,6 +47,9 @@ class UserServiceTest {
 
     @Mock
     private RefreshTokenRepository tokenRepository;
+
+    @Mock
+    private RefreshTokenRepository refreshTokenRepository;
 
     @Spy
     private BCryptPasswordEncoder passwordEncoder;
@@ -67,7 +78,7 @@ class UserServiceTest {
         given(userRepository.findById(user.getId())).willReturn(Optional.of(user));
 
         //when
-        User save = userService.createUser(user.getEmail());
+        User save = userService.createUserBeforeEmailValidation(user.getEmail());
 
         //then
         User findUser = userRepository.findById(user.getId()).get();
@@ -108,7 +119,7 @@ class UserServiceTest {
         //Mocking
         given(userRepository.findByEmail(user.getEmail())).willReturn(Optional.of(user));
         //when
-        userService.updateUser(updateDto);
+        userService.createUserAfterEmailValidation(updateDto);
         //then
         User findUser = userRepository.findByEmail(user.getEmail()).get();
         assertEquals(updateDto.getUsername(), findUser.getUsername());

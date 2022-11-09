@@ -9,6 +9,7 @@ spring:
     include:
       - aws
       - email
+      - auth
 
 logging:
   level:

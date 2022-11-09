@@ -22,19 +22,6 @@ const ChatBot = () => {
     botMessage.innerHTML = '무엇을 도와드릴까요?';
   };
 
-  const handleFood = () => {
-    const botMessage = document.querySelector('#message1');
-    const userMessage = document.querySelector('#message2');
-    botMessage.innerHTML = '입력 중...';
-    setTimeout(() => {
-      restaurantChange(true);
-      document.getElementById('restaurant').style.removeProperty('display');
-      botMessage.innerHTML = '어떤 식당의 메뉴가 궁금하신가요?';
-      document.querySelector('#input').value = '';
-    }, 2000);
-    userMessage.innerHTML = document.querySelector('#food').value;
-  };
-
   const handleHumanities = () => {
     const botMessage = document.querySelector('#message1');
     const userMessage = document.querySelector('#message2');
@@ -275,14 +262,6 @@ const ChatBot = () => {
                   </div>
                 </div>
                 <div className="bottom-chatbot">
-                  <button
-                    className="food"
-                    id="food"
-                    onClick={handleFood}
-                    value="오늘 학식은 뭐야?"
-                  >
-                    오늘의 학식
-                  </button>
                   <button
                     className="weather"
                     id="weather"

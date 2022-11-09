@@ -11,9 +11,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +24,9 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ActiveProfiles("test")
 @DataJpaTest
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 @Import(TestConfig.class)
 class PostRepositoryTest {
     @Autowired
@@ -340,6 +345,18 @@ class PostRepositoryTest {
         assertThat(chats.get(1).getLikes().size()).isEqualTo(1);
         assertThat(chats.get(2).getLikes().size()).isEqualTo(0);
 
+    }
+
+    @Test
+    void findAllPostsByUser() {
+        //given
+        User user = createUser("test");
+        Chat chat1 = createChat(user);
+        Chat chat2 = createChat(user);
+        //when
+        List<Post> posts = postRepository.findAllByUserId(user.getId()).get();
+        //then
+        assertThat(posts.size()).isEqualTo(2);
     }
 
     private Tag createTag(String name) {

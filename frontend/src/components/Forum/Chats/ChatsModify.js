@@ -8,6 +8,8 @@ import './chatsModify.css';
 import { options } from '../data';
 import Submenu from '../Submenu';
 import FooterGray from '../../Home/FooterGray';
+import LoadingSpinner from '../LoadingSpinner';
+import '../loadingSpinner.css';
 
 const ChatsModify = () => {
   const navigate = useNavigate();
@@ -22,6 +24,7 @@ const ChatsModify = () => {
     content: '',
   });
   const username = localStorage.getItem('username');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     organizeTags();
@@ -57,6 +60,7 @@ const ChatsModify = () => {
           content: res.data.content,
         };
         setPostData(_postData);
+        setLoading(false);
       })
       .catch((e) => console.log(e));
   };
@@ -95,58 +99,66 @@ const ChatsModify = () => {
   return (
     <div>
       <Submenu />
-      <div className="container-studies-write">
-        <div className="write-area">
-          <div className="in-title">
-            <h8 className="in-title-text">제목</h8>
-            <textarea
-              name="title"
-              id="title"
-              rows="1"
-              cols="55"
-              defaultValue={postData.title}
-              maxLength="100"
-              required
-              onChange={(e) => handleTitle(e)}
-            ></textarea>
-          </div>
-          <CKEditor
-            editor={ClassicEditor}
-            config={{
-              placeholder: '- 궁금한 내용을 질문해주세요.',
-            }}
-            data={postData.content}
-            onChange={(event, editor) => {
-              const data = editor.getData();
-              setPostContent({
-                ...postContent,
-                content: data.replace('<p>', '').replace('</p>', ''),
-              });
-            }}
-            onBlur={(event, editor) => {}}
-            onFocus={(event, editor) => {}}
-          />
-          <div className="bt-se">
-            <button
-              className="btn-cancel"
-              onClick={() => {
-                navigate(-1);
-              }}
-            >
-              취소
-            </button>
-            <button
-              className="btn-post"
-              onClick={() => {
-                handleModify();
-              }}
-            >
-              저장
-            </button>
-          </div>
+      {loading ? (
+        <div>
+          <LoadingSpinner />
         </div>
-      </div>
-      <FooterGray />
+      ) : (
+        <>
+          <div className="container-studies-write">
+            <div className="write-area">
+              <div className="in-title">
+                <h8 className="in-title-text">제목</h8>
+                <textarea
+                  name="title"
+                  id="title"
+                  rows="1"
+                  cols="55"
+                  defaultValue={postData.title}
+                  maxLength="100"
+                  required
+                  onChange={(e) => handleTitle(e)}
+                ></textarea>
+              </div>
+              <CKEditor
+                editor={ClassicEditor}
+                config={{
+                  placeholder: '- 궁금한 내용을 질문해주세요.',
+                }}
+                data={postData.content}
+                onChange={(event, editor) => {
+                  const data = editor.getData();
+                  setPostContent({
+                    ...postContent,
+                    content: data.replace('<p>', '').replace('</p>', ''),
+                  });
+                }}
+                onBlur={(event, editor) => {}}
+                onFocus={(event, editor) => {}}
+              />
+              <div className="bt-se">
+                <button
+                  className="btn-cancel"
+                  onClick={() => {
+                    navigate(-1);
+                  }}
+                >
+                  취소
+                </button>
+                <button
+                  className="btn-post"
+                  onClick={() => {
+                    handleModify();
+                  }}
+                >
+                  저장
+                </button>
+              </div>
+            </div>
+          </div>
+          <FooterGray />
+        </>
+      )}
     </div>
   );
 };

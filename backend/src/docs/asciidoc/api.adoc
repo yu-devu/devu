@@ -1,0 +1,274 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+= Rest Docs API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+## User
+
+=== Email 전송
+
+==== REQUEST
+
+include::{snippets}/send-email_success/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/send-email_success/http-response.adoc[]
+
+=== Email 중복 에러
+(이미 Email이 가입된 경우)
+
+==== REQUEST
+
+include::{snippets}/send-email_fail/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/send-email_fail/http-response.adoc[]
+
+=== Email 재전송
+가입은 안 되었지만 전에 mail 보낸 적 있는 경우
+
+==== REQUEST
+
+include::{snippets}/resend-email/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/resend-email/http-response.adoc[]
+
+=== Email 인증 성공
+
+==== REQUEST
+
+include::{snippets}/check-email_success/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/check-email_success/http-response.adoc[]
+
+=== Email 인증 실패
+
+==== REQUEST
+
+include::{snippets}/check-email_fail/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/check-email_fail/http-response.adoc[]
+
+=== 회원가입 성공
+
+==== REQUEST
+
+include::{snippets}/register_success/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/register_success/http-response.adoc[]
+
+=== 회원가입 실패
+이메일 인증이 되지 않은 경우
+
+==== REQUEST
+
+include::{snippets}/register_fail/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/register_fail/http-response.adoc[]
+
+=== 로그인 성공
+
+==== REQUEST
+
+include::{snippets}/login_success/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/login_success/http-response.adoc[]
+
+=== 로그인 실패
+비밀번호 일치하지 않은 경우
+
+==== REQUEST
+
+include::{snippets}/login_fail/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/login_fail/http-response.adoc[]
+
+=== 로그아웃
+
+==== REQUEST
+
+include::{snippets}/logout/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/logout/http-response.adoc[]
+
+## Post
+
+=== Chat 수정
+
+==== REQUEST
+
+include::{snippets}/update-chat/httpie-request.adoc[]
+
+include::{snippets}/update-chat/request-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/update-chat/http-response.adoc[]
+
+=== Study 수정
+
+==== REQUEST
+
+include::{snippets}/update-study/httpie-request.adoc[]
+
+include::{snippets}/update-study/request-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/update-study/http-response.adoc[]
+
+=== Question 수정
+
+==== REQUEST
+
+include::{snippets}/update-question/httpie-request.adoc[]
+
+include::{snippets}/update-question/request-parameters.adoc[]
+
+==== RESPONSE
+include::{snippets}/update-question/http-response.adoc[]
+
+=== Chat 삭제
+
+==== REQUEST
+
+include::{snippets}/delete-chat/httpie-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/delete-chat/http-response.adoc[]
+
+=== Study 삭제
+
+==== REQUEST
+
+include::{snippets}/delete-study/httpie-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/delete-study/http-response.adoc[]
+
+=== Question 삭제
+
+==== REQUEST
+
+include::{snippets}/delete-question/httpie-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/delete-question/http-response.adoc[]
+
+## Comment
+
+=== Comment 생성(성공)
+
+==== REQUEST
+
+include::{snippets}/create-comment_success/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/create-comment_success/http-response.adoc[]
+
+=== Comment 생성(실패)
+존재하지 않는 게시글에서 생성시
+
+==== REQUEST
+
+include::{snippets}/create-comment_fail/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/create-comment_fail/http-response.adoc[]
+
+=== ReComment 생성(성공)
+
+==== REQUEST
+
+include::{snippets}/create-re-comment_success/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/create-re-comment_success/http-response.adoc[]
+
+=== ReComment 생성(실패)
+부모댓글이 없는 경우
+
+==== REQUEST
+
+include::{snippets}/create-re-comment_fail/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/create-re-comment_fail/http-response.adoc[]
+
+=== Comment 수정(성공)
+
+==== REQUEST
+
+include::{snippets}/update-comment_success/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/update-comment_success/http-response.adoc[]
+
+=== Comment 수정(실패)
+해당 댓글 존재하지 않을 때
+
+==== REQUEST
+
+include::{snippets}/update-comment_fail/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/update-comment_fail/http-response.adoc[]
+
+=== Comment 삭제(성공, 대댓글 있는 경우)
+
+==== REQUEST
+
+include::{snippets}/delete-comment-with-re-comment_success/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/delete-comment-with-re-comment_success/http-response.adoc[]
+
+=== Comment 삭제(성공, 대댓글 없을 때)
+
+==== REQUEST
+
+include::{snippets}/delete-comment_success/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/delete-comment_success/http-response.adoc[]
+
+=== Comment 삭제(실패, 대댓글 없을 때)
+해당 댓글 존재하지 않을 때
+
+==== REQUEST
+
+include::{snippets}/delete-comment_fail/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/delete-comment_fail/http-response.adoc[]
+
+=== ReComment 삭제(성공, 부모댓글 삭제되고 대댓글은 자기자신만 있는 경우)
+
+==== REQUEST
+
+include::{snippets}/delete-re-comment-with-parent-comment_success/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/delete-re-comment-with-parent-comment_success/http-response.adoc[]
+
+=== ReComment 삭제(성공, 부모댓글 삭제되지 않은 경우)
+
+==== REQUEST
+
+include::{snippets}/delete-re-comment_success/http-request.adoc[]
+
+==== RESPONSE
+include::{snippets}/delete-re-comment_success/http-response.adoc[]

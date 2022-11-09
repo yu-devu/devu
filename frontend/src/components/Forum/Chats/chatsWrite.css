@@ -1,4 +1,4 @@
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) { */
   .container-chats-write {
     height: max-content;
     display: flex;
@@ -7,18 +7,18 @@
     justify-content: center;
     margin-top: 2%;
   }
-  
+
   .in-title-text {
     margin-right: 1%;
     width: 5%;
     margin-top: 1%;
   }
-  
+
   .in-title {
     display: flex;
     margin-top: 1%;
   }
-  
+
   .in-title textarea {
     display: block;
     padding: 10px 16px;
@@ -29,18 +29,18 @@
     resize: none;
     color: #333;
   }
-  
+
   .in-tag-text {
     margin-right: 1%;
     width: 5%;
     margin-top: 1.8%;
   }
-  
+
   .in-tag {
     display: flex;
     margin-bottom: 1%;
   }
-  
+
   .tag-selecter {
     margin-bottom: 1%;
     margin-top: 1%;
@@ -48,7 +48,7 @@
     font-size: 17px;
     text-align: justify;
   }
-  
+
   .in-content textarea {
     display: block;
     margin: 5px 10px 10px 30px;
@@ -61,17 +61,17 @@
     resize: none;
     color: #333;
   }
-  
+
   .wi-line {
     border: solid 1px lightgray;
     margin-top: 10px;
   }
-  
+
   .bt-se {
     margin-top: 20px;
     text-align: center;
   }
-  
+
   .btn-cancel {
     position: relative;
     right: 28%;
@@ -86,11 +86,11 @@
     width: 22%;
     margin-top: 2%;
   }
-  
+
   .btn-cancel:hover {
     background-color: var(--color-hover);
   }
-  
+
   .btn-post {
     position: relative;
     left: 28%;
@@ -105,13 +105,12 @@
     width: 22%;
     margin-top: 2%;
   }
-  
+
   .btn-post:hover {
     background-color: var(--color-hover);
   }
-  
+
   .ck.ck-editor__editable:not(.ck-editor__nested-editable) {
     min-height: 500px;
   }
-  
-}
+/* } */

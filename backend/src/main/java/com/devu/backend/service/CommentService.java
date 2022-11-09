@@ -1,6 +1,5 @@
 package com.devu.backend.service;
 
-import com.devu.backend.api.comment.CommentResponseDto;
 import com.devu.backend.common.exception.*;
 import com.devu.backend.api.comment.CommentCreateRequestDto;
 import com.devu.backend.api.comment.CommentUpdateRequestDto;
@@ -11,8 +10,7 @@ import com.devu.backend.repository.comment.CommentRepository;
 import com.devu.backend.repository.post.PostRepository;
 import com.devu.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,10 +44,7 @@ public class CommentService {
     public Comment saveReComment(CommentCreateRequestDto requestDto) {
         User user = userRepository.findByUsername(requestDto.getUsername()).orElseThrow(UserNotFoundException::new);
         Post post = postRepository.findById(requestDto.getPostId()).orElseThrow(PostNotFoundException::new);
-        commentRepository
-                .findByUserId(userRepository.findByUsername(requestDto.getParent())
-                        .orElseThrow(UserNotFoundException::new).getId())
-                        .orElseThrow(ReCommentNotFoundException::new);
+        userRepository.findByUsername(requestDto.getParent()).orElseThrow(ReCommentNotFoundException::new);
         if (requestDto.getContents() == null) {
             throw new CommentContentNullException();
         }

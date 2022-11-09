@@ -6,53 +6,52 @@ import com.devu.backend.entity.post.Chat;
 import com.devu.backend.repository.comment.CommentRepository;
 import com.devu.backend.repository.post.PostRepository;
 import com.devu.backend.repository.UserRepository;
-import com.devu.backend.service.CommentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONArray;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
+@ExtendWith(RestDocumentationExtension.class)
 class CommentApiControllerTest {
 
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
     @Autowired private UserRepository userRepository;
-    @Autowired private CommentService commentService;
     @Autowired private PostRepository postRepository;
     @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private CommentRepository commentRepository;
-    @Autowired private CommentApiController commentApiController;
-
-    @BeforeEach
-    public void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(new CommentApiController(commentService, commentRepository))
-                .addFilters(new CharacterEncodingFilter("UTF-8", true))
-                .build();
-    }
 
     @Test
+    @Transactional
     @DisplayName("댓글 생성 - 성공")
     void createComment_success() throws Exception {
         String url = "/api/comments";
@@ -61,21 +60,33 @@ class CommentApiControllerTest {
         CommentCreateRequestDto requestDto = getCommentCreateRequestDto(user, chat.getId());
         String content = objectMapper.writeValueAsString(requestDto);
 
-        mockMvc.perform(post(url)
-                .content(content)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+        mockMvc.perform(
+                post(url)
+                        .content(content)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
 
         List<Comment> all = commentRepository.findAll();
-        assertTrue(all.size() == 1);
+        assertEquals(1, all.size());
         Comment comment = all.get(0);
-        assertTrue(comment.getContents().equals("테스트 댓글"));
+        assertEquals("테스트 댓글", comment.getContents());
+    }
+
+    @BeforeEach
+    public void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
+                .addFilters(new CharacterEncodingFilter("UTF-8", true))
+                .apply(documentationConfiguration(restDocumentation))
+                .build();
     }
 
     private CommentCreateRequestDto getCommentCreateRequestDto(User user, Long id) {
         return CommentCreateRequestDto.builder()
-                .userId(user.getId())
+                .username(user.getUsername())
                 .postId(id)
                 .contents("테스트 댓글")
                 .build();
@@ -109,18 +120,23 @@ class CommentApiControllerTest {
         CommentCreateRequestDto requestDto = getCommentCreateRequestDto(user, 5L);
         String content = objectMapper.writeValueAsString(requestDto);
 
-        mockMvc.perform(post(url)
-                .content(content)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                post(url)
+                    .content(content)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> {
                     MockHttpServletResponse response = result.getResponse();
                     assertTrue(response.getContentAsString().equals("{\"error\":\"존재하지 않는 게시글입니다.\"}"));
-                });;
+                })
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
+
 
         List<Comment> all = commentRepository.findAll();
-        assertTrue(all.size() == 0);
+        assertEquals(0, all.size());
     }
 
     @Test
@@ -133,24 +149,28 @@ class CommentApiControllerTest {
         CommentCreateRequestDto requestDto = getCommentCreateRequestDto(user, chat, comment.getGroupNum(), comment.getUser().getUsername());
         String content = objectMapper.writeValueAsString(requestDto);
 
-        mockMvc.perform(post(url)
-                .content(content)
-                .contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(
+                post(url)
+                    .content(content)
+                    .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
 
         List<Comment> all = commentRepository.findAll();
-        assertTrue(all.size() == 2);
+        assertEquals(2, all.size());
         Comment parentComment = all.get(0);
         Comment reComment = all.get(1);
-        assertTrue(reComment.getContents().equals("테스트 대댓글"));
-        assertTrue(reComment.getGroupNum().equals(parentComment.getGroupNum()));
-        assertTrue(reComment.getParent().equals(parentComment.getUser().getUsername()));
+        assertEquals("테스트 대댓글", reComment.getContents());
+        assertEquals(reComment.getGroupNum(), parentComment.getGroupNum());
+        assertEquals(reComment.getParent(), parentComment.getUser().getUsername());
     }
 
     private CommentCreateRequestDto getCommentCreateRequestDto(User user, Chat chat, Long groupNum, String username) {
         return CommentCreateRequestDto.builder()
-                .userId(user.getId())
+                .username(user.getUsername())
                 .postId(chat.getId())
                 .contents("테스트 대댓글")
                 .group(groupNum)
@@ -176,43 +196,25 @@ class CommentApiControllerTest {
         String url = "/api/reComments";
         User user = getUser();
         Chat chat = getChat(user);
-        CommentCreateRequestDto requestDto = getCommentCreateRequestDto(user, chat, 1L, "test");
+        CommentCreateRequestDto requestDto = getCommentCreateRequestDto(user, chat, 1L, "noUsername");
         String content = objectMapper.writeValueAsString(requestDto);
 
-        mockMvc.perform(post(url)
-                .content(content)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                post(url)
+                    .content(content)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> {
                     MockHttpServletResponse response = result.getResponse();
-                    assertTrue(response.getContentAsString().equals("{\"error\":\"부모 댓글이 존재하지 않습니다.\"}"));
-                });;
+                    assertEquals("{\"error\":\"부모 댓글이 존재하지 않습니다.\"}", response.getContentAsString());
+                })
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
 
         List<Comment> all = commentRepository.findAll();
-        assertTrue(all.size() == 0);
-    }
-
-    @Test
-    @DisplayName("댓글 조회")
-    void viewComment() throws Exception {
-        User user = getUser();
-        Chat chat = getChat(user);
-        String url = "/api/comments/" + chat.getId() + "?page=0&size=20";
-        for (int i = 0; i< 30; i++)
-            getComment(user, chat);
-        mockMvc = MockMvcBuilders
-                .standaloneSetup(commentApiController)
-                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
-                .build();
-        MvcResult mvcResult = mockMvc.perform(get(url))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        JSONArray objects = new JSONArray(mvcResult.getResponse().getContentAsString());
-        assertTrue(objects.length() == 20);
-        List<Comment> all = commentRepository.findAll();
-        assertTrue(all.size() == 30);
+        assertEquals(0, all.size());
     }
 
     @Test
@@ -225,14 +227,18 @@ class CommentApiControllerTest {
         String url = "/api/comments/" + comment.getId();
         String content = objectMapper.writeValueAsString(requestDto);
 
-        mockMvc.perform(patch(url)
-                .content(content)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+        mockMvc.perform(
+                patch(url)
+                    .content(content)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
 
         Comment updatedComment = commentRepository.findById(comment.getId()).get();
-        assertTrue(updatedComment.getContents().equals("댓글 수정"));
+        assertEquals("댓글 수정", updatedComment.getContents());
     }
 
     private CommentUpdateRequestDto getCommentUpdateRequestDto(Long id) {
@@ -248,22 +254,26 @@ class CommentApiControllerTest {
         User user = getUser();
         Chat chat = getChat(user);
         Comment comment = getComment(user, chat);
-        CommentUpdateRequestDto requestDto = getCommentUpdateRequestDto(5L);
+        CommentUpdateRequestDto requestDto = getCommentUpdateRequestDto(8L);
         String url = "/api/comments/" + requestDto.getCommentId();
         String content = objectMapper.writeValueAsString(requestDto);
 
-        mockMvc.perform(patch(url)
-                .content(content)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                patch(url)
+                    .content(content)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> {
                     MockHttpServletResponse response = result.getResponse();
-                    assertTrue(response.getContentAsString().equals("{\"error\":\"해당 댓글은 존재하지 않습니다.\"}"));
-                });;
+                    assertEquals("{\"error\":\"해당 댓글은 존재하지 않습니다.\"}", response.getContentAsString());
+                })
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
 
         Comment updatedComment = commentRepository.findById(comment.getId()).get();
-        assertFalse(updatedComment.getContents().equals("댓글 수정"));
+        assertNotEquals("댓글 수정", updatedComment.getContents());
     }
 
     @Test
@@ -280,11 +290,14 @@ class CommentApiControllerTest {
         commentRepository.save(reComment);
 
         mockMvc.perform(delete(url))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));;
 
         assertTrue(comment.isDeleted());
         List<Comment> all = commentRepository.findAll();
-        assertTrue(all.size() == 2);
+        assertEquals(2, all.size());
     }
 
     @Test
@@ -296,10 +309,13 @@ class CommentApiControllerTest {
         String url = "/api/comments/" + comment.getId();
 
         mockMvc.perform(delete(url))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
 
         List<Comment> all = commentRepository.findAll();
-        assertTrue(all.size() == 0);
+        assertEquals(0, all.size());
     }
 
     @Test
@@ -314,8 +330,11 @@ class CommentApiControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(result -> {
                     MockHttpServletResponse response = result.getResponse();
-                    assertTrue(response.getContentAsString().equals("{\"error\":\"해당 댓글은 존재하지 않습니다.\"}"));
-                });;
+                    assertEquals("{\"error\":\"해당 댓글은 존재하지 않습니다.\"}", response.getContentAsString());
+                })
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
 
         assertNotNull(comment);
     }
@@ -334,10 +353,13 @@ class CommentApiControllerTest {
         commentRepository.save(reComment);
         String url = "/api/reComments/" + reComment.getId();
         mockMvc.perform(delete(url))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
 
         List<Comment> all = commentRepository.findAll();
-        assertTrue(all.size() == 0);
+        assertEquals(0, all.size());
     }
 
     @Test
@@ -353,11 +375,14 @@ class CommentApiControllerTest {
         commentRepository.save(reComment);
         String url = "/api/reComments/" + reComment.getId();
         mockMvc.perform(delete(url))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(document("{method-name}",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())));
 
         List<Comment> all = commentRepository.findAll();
-        assertTrue(all.size() == 1);
+        assertEquals(1, all.size());
         Comment dbComment = all.get(0);
-        assertTrue(dbComment.getId() == comment.getId());
+        assertSame(dbComment.getId(), comment.getId());
     }
 }

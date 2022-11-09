@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             "/email", "/signup", "/signin", "/logout", "/silent-refresh",
                             "/community/**", "/users","/like",
                             "/password_url_email","/change_password/**",
-                            "/comments/**", "/reComments/**","/api/**")
+                            "/comments/**", "/reComments/**","/api/**","/admin/**")
                     .permitAll()
                     .anyRequest().authenticated()
                         .and()
@@ -67,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("http://54.180.29.69"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("https://devu.site"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setExposedHeaders(Arrays.asList("X-AUTH-ACCESS-TOKEN"));

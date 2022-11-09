@@ -1,5 +1,5 @@
 import React from 'react';
-// import axios from 'axios';
+import axios from 'axios';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
@@ -27,26 +27,30 @@ import ChatsModify from './components/Forum/Chats/ChatsModify';
 
 function App() {
   const JWT_EXPIRY_TIME = 30 * 60 * 1000; // 만료 시간 (30분)
-  // const onSilentRefresh = async () => {
-  //   await axios
-  //     .post(process.env.REACT_APP_DB_HOST + '/silent-refresh')
-  //     .then((response) => {
-  //       console.log(response);
-  //       if (response.headers['x-auth-access-token']) {
-  //         localStorage.setItem('accessToken', response.headers['x-auth-access-token']);
-  //       }
-  //       setInterval(onSilentRefresh, JWT_EXPIRY_TIME - 60000); // accessToken 만료하기 1분 전에 로그인 연장
-  //       console.log("Timeout-App.js");
-  //     })
-  //     .catch((res) => {
-  //       console.log(res);
-  //       alert(JSON.parse(res.request.response).error); // 이메일, 비밀번호 오류 출력
-  //     });
-  // };
+  const onSilentRefresh = async () => {
+    await axios
+      .post(process.env.REACT_APP_DB_HOST + '/silent-refresh')
+      .then((response) => {
+        console.log(response);
+        if (response.headers['x-auth-access-token']) {
+          localStorage.setItem(
+            'accessToken',
+            response.headers['x-auth-access-token']
+          );
+        }
+        setTimeout(onSilentRefresh, JWT_EXPIRY_TIME - 60000); // accessToken 만료하기 1분 전에 로그인 연장
+        console.log('setInterval-App.js');
+      })
+      .catch((res) => console.log(res));
+  };
 
-  // if (performance.navigation.type === 1) { //새로고침하면 바로 로그인 연장(토큰 갱신)
-  //   onSilentRefresh();
-  // }
+  if (localStorage.getItem('username')) {
+    // 로그인 했을 때만 silentRefresh 실행할 수 있도록 함.
+    if (performance.navigation.type === 1) {
+      //새로고침하면 바로 로그인 연장(토큰 갱신)
+      onSilentRefresh();
+    }
+  }
 
   return (
     <>

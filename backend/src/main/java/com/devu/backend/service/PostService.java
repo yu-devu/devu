@@ -9,10 +9,7 @@ import com.devu.backend.config.s3.S3Uploader;
 import com.devu.backend.controller.post.PostRequestCreateDto;
 import com.devu.backend.controller.post.PostRequestUpdateDto;
 import com.devu.backend.controller.post.PostResponseDto;
-import com.devu.backend.entity.Image;
-import com.devu.backend.entity.PostTag;
-import com.devu.backend.entity.Tag;
-import com.devu.backend.entity.User;
+import com.devu.backend.entity.*;
 import com.devu.backend.entity.post.*;
 import com.devu.backend.repository.ImageRepository;
 import com.devu.backend.repository.post.PostRepository;
@@ -66,14 +63,15 @@ public class PostService {
                 .hit(0L)
                 .images(new ArrayList<>())
                 .build();
-        addImage(requestPostDto, chat);
-        log.info("Create Chat {} By {}",chat.getTitle(),chat.getUser().getUsername());
-        postRepository.save(chat);
-        user.addPost(chat);
+        createPostImages(requestPostDto,chat);
+        Chat save = postRepository.save(chat);
+        log.info("Create Chat {} By {}",save.getTitle(),save.getUser().getUsername());
+        user.addPost(save);
         return PostResponseDto.builder()
-                .title(chat.getTitle())
-                .url(getImageUrl(chat))
-                .username(chat.getUser().getUsername())
+                .id(save.getId())
+                .title(save.getTitle())
+                .url(getImageUrl(save))
+                .username(save.getUser().getUsername())
                 .build();
     }
 
@@ -92,15 +90,16 @@ public class PostService {
                 .images(new ArrayList<>())
                 .tags(postTags)
                 .build();
-        addImage(requestPostDto, study);
+        createPostImages(requestPostDto,study);
         setPostOnPostTag(postTags,study);
-        log.info("Create Study {} By {}",study.getTitle(),study.getUser().getUsername());
-        postRepository.save(study);
-        user.addPost(study);
+        Study save = postRepository.save(study);
+        log.info("Create Study {} By {}",save.getTitle(),save.getUser().getUsername());
+        user.addPost(save);
         return PostResponseDto.builder()
-                .title(study.getTitle())
-                .url(getImageUrl(study))
-                .username(study.getUser().getUsername())
+                .id(save.getId())
+                .title(save.getTitle())
+                .url(getImageUrl(save))
+                .username(save.getUser().getUsername())
                 .tags(tags.stream().map(Tag::getName).collect(Collectors.toList()))
                 .build();
     }
@@ -120,15 +119,16 @@ public class PostService {
                 .images(new ArrayList<>())
                 .tags(postTags)
                 .build();
-        addImage(requestPostDto, question);
+        createPostImages(requestPostDto,question);
         setPostOnPostTag(postTags,question);
-        log.info("Create Question {} By {}",question.getTitle(),question.getUser().getUsername());
-        postRepository.save(question);
-        user.addPost(question);
+        Question save = postRepository.save(question);
+        log.info("Create Question {} By {}",save.getTitle(),save.getUser().getUsername());
+        user.addPost(save);
         return PostResponseDto.builder()
-                .title(question.getTitle())
-                .url(getImageUrl(question))
-                .username(question.getUser().getUsername())
+                .id(save.getId())
+                .title(save.getTitle())
+                .url(getImageUrl(save))
+                .username(save.getUser().getUsername())
                 .tags(tags.stream().map(Tag::getName).collect(Collectors.toList()))
                 .build();
     }
@@ -151,11 +151,14 @@ public class PostService {
     }
 
     @Transactional
-    public void addImage(PostRequestCreateDto requestPostDto, Post post) throws IOException {
+    public void createPostImages(PostRequestCreateDto requestPostDto,Post post) throws IOException {
         if (!CollectionUtils.isEmpty(requestPostDto.getImages())) {
             for (MultipartFile file : requestPostDto.getImages()) {
-                String url = s3Uploader.upload(file, "static", post);
-                log.info("s3 생성 {}", url);
+                Image image = s3Uploader.upload(file, "static");
+                log.info("Created AWS S3 {}", image.getPath());
+                imageRepository.save(image);
+                log.info("Save Image Entity {}",image.getPath());
+                post.addImage(image);
             }
         }
     }
@@ -164,6 +167,10 @@ public class PostService {
         return tagService.findTagName(postTag);
     }
 
+
+    public List<Post> findAllPosts(User user) {
+        return postRepository.findAllByUserId(user.getId()).orElseThrow(UserNotFoundException::new);
+    }
 
     public Page<PostResponseDto> findAllChats(Pageable pageable,String order,String s) {
         PostSearch postSearch = PostSearch.builder()
@@ -254,6 +261,8 @@ public class PostService {
                 .like(chat.getLikes().size())
                 .comments(
                         chat.getComments().stream()
+                                .sorted(Comparator.comparing(Comment::getGroupNum)
+                                        .thenComparing(Comment::getId))
                                 .map(comment -> CommentResponseDto.builder()
                                         .username(comment.getUser().getUsername())
                                         .contents(comment.getContents())
@@ -264,7 +273,8 @@ public class PostService {
                                         .lastModifiedAt(comment.getLastModifiedAt())
                                         .createAt(comment.getCreateAt())
                                         .build()
-                                ).collect(Collectors.toList())
+                                )
+                                .collect(Collectors.toList())
                 )
                 .tags(chat.getPostTags().stream().map(this::getTagNameFromPostTags).collect(Collectors.toList()))
                 .createAt(chat.getCreateAt())
@@ -290,6 +300,8 @@ public class PostService {
                 .like(study.getLikes().size())
                 .comments(
                         study.getComments().stream()
+                                .sorted(Comparator.comparing(Comment::getGroupNum)
+                                        .thenComparing(Comment::getId))
                                 .map(comment -> CommentResponseDto.builder()
                                         .username(comment.getUser().getUsername())
                                         .contents(comment.getContents())
@@ -326,6 +338,8 @@ public class PostService {
                 .like(question.getLikes().size())
                 .comments(
                         question.getComments().stream()
+                                .sorted(Comparator.comparing(Comment::getGroupNum)
+                                        .thenComparing(Comment::getId))
                                 .map(comment -> CommentResponseDto.builder()
                                         .username(comment.getUser().getUsername())
                                         .contents(comment.getContents())
@@ -354,7 +368,7 @@ public class PostService {
             log.info("업데이트 삭제");
         }
         for (MultipartFile multipartFile : updateDto.getImages()) {
-            s3Uploader.upload(multipartFile, "static", post);
+            s3Uploader.upload(multipartFile, "static");
             log.info("업데이트 추가");
         }
     }
@@ -365,16 +379,15 @@ public class PostService {
         if (!updateDto.getImages().isEmpty()) {
             updateImage(chat, updateDto);
         }
-        if (!isSameTags(chat.getPostTags(), updateDto.getTags().stream().map(String::toUpperCase).collect(Collectors.toList()))) {
-            updateTags(updateDto, chat);
-        }
         chat.updatePost(updateDto);
     }
 
     @Transactional
     public void updateStudy(Long studyId, PostRequestUpdateDto updateDto) throws IOException {
         Study study = postRepository.findStudyById(studyId).orElseThrow(PostNotFoundException::new);
-        updateImage(study, updateDto);
+        if (!updateDto.getImages().isEmpty()) {
+            updateImage(study, updateDto);
+        }
         if (!isSameTags(study.getPostTags(), updateDto.getTags().stream().map(String::toUpperCase).collect(Collectors.toList()))) {
             updateTags(updateDto, study);
         }
@@ -384,7 +397,9 @@ public class PostService {
     @Transactional
     public void updateQuestion(Long questionId, PostRequestUpdateDto updateDto) throws IOException {
         Question question = postRepository.findQuestionById(questionId).orElseThrow(PostNotFoundException::new);
-        updateImage(question, updateDto);
+        if (!updateDto.getImages().isEmpty()) {
+            updateImage(question, updateDto);
+        }
         if (!isSameTags(question.getPostTags(), updateDto.getTags().stream().map(String::toUpperCase).collect(Collectors.toList()))) {
             updateTags(updateDto, question);
         }
@@ -416,7 +431,8 @@ public class PostService {
 
     @Transactional
     public void deleteChat(Chat chat) {
-        deleteImage(chat);
+        if (!chat.getImages().isEmpty())
+            deleteImage(chat);
         postRepository.delete(chat);
     }
 
@@ -432,13 +448,15 @@ public class PostService {
 
     @Transactional
     public void deleteStudy(Study study) {
-        deleteImage(study);
+        if (!study.getImages().isEmpty())
+            deleteImage(study);
         postRepository.delete(study);
     }
 
     @Transactional
     public void deleteQuestion(Question question) {
-        deleteImage(question);
+        if (!question.getImages().isEmpty())
+            deleteImage(question);
         postRepository.delete(question);
     }
 

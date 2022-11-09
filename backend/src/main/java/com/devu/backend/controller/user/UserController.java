@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,8 +30,13 @@ public class UserController {
 
     // 1st Logic in User create
     @PostMapping("/email")
-    private ResponseEntity<?> sendEmail(@RequestParam String email) {
+    private ResponseEntity<?> sendEmail(@RequestBody @Validated UserEmailRequestDto dto,
+                                        BindingResult bindingResult) {
         try {
+            if (bindingResult.hasErrors()) {
+                return ResponseEntity.badRequest().body(bindingResult.getFieldError().getDefaultMessage());
+            }
+            String email = dto.getEmail();
             if (userService.isEmailExists(email)) {
                 if (userService.getByEmail(email).isEmailConfirm()) {
                     ResponseErrorDto errorDto = ResponseErrorDto.builder()
@@ -46,7 +53,7 @@ public class UserController {
                         .build();
                 return ResponseEntity.ok().body(errorDto);
             }
-            User savedUser = userService.createUser(email);
+            User savedUser = userService.createUserBeforeEmailValidation(email);
             UserDTO userDTO = UserDTO.builder()
                     .email(savedUser.getEmail())
                     .build();
@@ -63,7 +70,13 @@ public class UserController {
     // 2nd logic in create User
     // 회원가입 Form에서 이메일 검증 api => Form Data로 넘어와야함
     @PostMapping("/key")
-    private ResponseEntity<?> getKeyFromUser(@RequestParam String postKey) {
+    private ResponseEntity<?> getKeyFromUser(
+            @RequestBody @Validated UserKeyRequestDto dto,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getFieldError().getDefaultMessage());
+        }
+        String postKey = dto.getUserKey();
         try {
             userService.updateUserConfirm(postKey);
             return ResponseEntity.ok(HttpStatus.OK);
@@ -81,7 +94,7 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userCreateRequestDto) {
         try {
-            User updatedUser = userService.updateUser(userCreateRequestDto);
+            User updatedUser = userService.createUserAfterEmailValidation(userCreateRequestDto);
             UserDTO userDTO = UserDTO.builder()
                     .email(updatedUser.getEmail())
                     .username(updatedUser.getUsername())
