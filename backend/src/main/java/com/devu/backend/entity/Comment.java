@@ -31,11 +31,11 @@ public class Comment extends BaseTime{
     * comment 작성 할때만, User and Post 영속성 전이를 통해 Persist
     * */
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
 
     public void updateContent(String contents) {
