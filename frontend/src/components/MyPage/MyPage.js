@@ -121,7 +121,13 @@ const MyPage = () => {
   const deleteAccount = async () => {
     if (window.confirm('정말 탈퇴하시겠습니까?')) {
       await axios
-        .delete(process.env.REACT_APP_DB_HOST + `/api/user`)
+        .delete(process.env.REACT_APP_DB_HOST + `/api/user`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `${localStorage.getItem('accessToken')}`,
+            'X-AUTH-ACCESS-TOKEN': `${localStorage.getItem('accessToken')}`,
+          },
+        })
         .then(() => {
           localStorage.removeItem('username');
           localStorage.removeItem('accessToken');
