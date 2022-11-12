@@ -37,7 +37,7 @@ const Register = () => {
         email: email,
       };
       await axios
-        .post(process.env.REACT_APP_DB_HOST + `/email`, data, {
+        .post(process.env.REACT_APP_DB_HOST + `/email`, JSON.stringify(data), {
           headers: {
             'Content-Type': 'application/json',
           },
