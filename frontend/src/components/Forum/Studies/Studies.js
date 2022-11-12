@@ -139,9 +139,7 @@ const Studies = () => {
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      fetchData();
-    }
+    if (e.key === 'Enter') fetchData();
   };
 
   const handleTags = (tag) => {

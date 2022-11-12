@@ -46,11 +46,10 @@ const StudiesWrite = () => {
   };
 
   const handleWrite = async () => {
-    if (
-      postContent.title !== '' &&
-      postContent.content !== '' &&
-      postTags[0] !== ''
-    ) {
+    if (postTags.length == 0) alert('태그를 선택해주세요!');
+    else if (postContent.content == '') alert('내용을 작성해주세요!');
+    else if (postContent.title == '') alert('제목을 작성해주세요!');
+    else {
       const formData = new FormData();
       formData.append('title', postContent.title);
       formData.append('username', username);
@@ -70,7 +69,7 @@ const StudiesWrite = () => {
           navigate(-1);
         })
         .catch(() => alert('글 등록 실패..'));
-    } else alert('글을 작성해주세요!');
+    }
   };
 
   return (

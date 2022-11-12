@@ -26,7 +26,9 @@ const ChatsWrite = () => {
   };
 
   const handleWrite = async () => {
-    if (postContent.title !== '' && postContent.content !== '') {
+    if (postContent.content == '') alert('내용을 작성해주세요!');
+    else if (postContent.title == '') alert('제목을 작성해주세요!');
+    else {
       const formData = new FormData();
       formData.append('title', postContent.title);
       formData.append('username', username);
@@ -45,8 +47,6 @@ const ChatsWrite = () => {
           navigate(-1);
         })
         .catch(() => alert('글 등록 실패..'));
-    } else {
-      alert('글을 작성해주세요!');
     }
   };
 

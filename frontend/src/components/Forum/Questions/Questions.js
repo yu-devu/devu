@@ -67,12 +67,12 @@ const Questions = () => {
     window.scrollTo(0, 0);
     fetchLikeData();
     setLike(1);
+    console.log('postSize : ' + postSize);
   }, [currentPage, selectedTag, status, order, isLike]);
 
   const fetchData = async () => {
-    const res = await axios.get(
-      process.env.REACT_APP_DB_HOST + `/community/questions`,
-      {
+    await axios
+      .get(process.env.REACT_APP_DB_HOST + `/community/questions`, {
         params: {
           page: currentPage,
           status: status,
@@ -80,35 +80,75 @@ const Questions = () => {
           tags: selectedTag.join(','), // join(",")으로 해야 ?tags=REACT,SPRING으로 parameter 전송할 수 있음.
           s: sentence,
         },
-      }
-    );
+      })
+      .then((res) => {
+        const _postData = res.data.map(
+          (rowData) => (
+            setLastIdx(lastIdx + 1),
+            {
+              id: rowData.id,
+              title: rowData.title,
+              content: rowData.content,
+              hit: rowData.hit,
+              like: rowData.like,
+              username: rowData.username,
+              postYear: rowData.createAt.substr(0, 4),
+              postMonth: rowData.createAt.substr(5, 2),
+              postDay: rowData.createAt.substr(8, 2),
+              postHour: rowData.createAt.substr(11, 2),
+              postMinute: rowData.createAt.substr(14, 2),
+              postSecond: rowData.createAt.substr(17, 2),
+              tags: rowData.tags,
+              questionsStatus: rowData.questionStatus,
+              commentsSize: rowData.commentsSize,
+            }
+          )
+        );
+        console.log(_postData);
+        setPostData(_postData);
+        setLoading(false);
+        CKEditor.instances.textarea_id.getData();
+      })
+      .catch((e) => console.log(e));
+    // const res = await axios.get(
+    //   process.env.REACT_APP_DB_HOST + `/community/questions`,
+    //   {
+    //     params: {
+    //       page: currentPage,
+    //       status: status,
+    //       order: order,
+    //       tags: selectedTag.join(','), // join(",")으로 해야 ?tags=REACT,SPRING으로 parameter 전송할 수 있음.
+    //       s: sentence,
+    //     },
+    //   }
+    // );
 
-    const _postData = await res.data.map(
-      (rowData) => (
-        setLastIdx(lastIdx + 1),
-        {
-          id: rowData.id,
-          title: rowData.title,
-          content: rowData.content,
-          hit: rowData.hit,
-          like: rowData.like,
-          username: rowData.username,
-          postYear: rowData.createAt.substr(0, 4),
-          postMonth: rowData.createAt.substr(5, 2),
-          postDay: rowData.createAt.substr(8, 2),
-          postHour: rowData.createAt.substr(11, 2),
-          postMinute: rowData.createAt.substr(14, 2),
-          postSecond: rowData.createAt.substr(17, 2),
-          tags: rowData.tags,
-          questionsStatus: rowData.questionStatus,
-          commentsSize: rowData.commentsSize,
-        }
-      )
-    );
-    console.log(_postData);
-    setPostData(_postData);
-    setLoading(false);
-    CKEditor.instances.textarea_id.getData();
+    // const _postData = await res.data.map(
+    //   (rowData) => (
+    //     setLastIdx(lastIdx + 1),
+    //     {
+    //       id: rowData.id,
+    //       title: rowData.title,
+    //       content: rowData.content,
+    //       hit: rowData.hit,
+    //       like: rowData.like,
+    //       username: rowData.username,
+    //       postYear: rowData.createAt.substr(0, 4),
+    //       postMonth: rowData.createAt.substr(5, 2),
+    //       postDay: rowData.createAt.substr(8, 2),
+    //       postHour: rowData.createAt.substr(11, 2),
+    //       postMinute: rowData.createAt.substr(14, 2),
+    //       postSecond: rowData.createAt.substr(17, 2),
+    //       tags: rowData.tags,
+    //       questionsStatus: rowData.questionStatus,
+    //       commentsSize: rowData.commentsSize,
+    //     }
+    //   )
+    // );
+    // console.log(_postData);
+    // setPostData(_postData);
+    // setLoading(false);
+    // CKEditor.instances.textarea_id.getData();
   };
 
   const fetchLikeData = async () => {
@@ -156,9 +196,7 @@ const Questions = () => {
   const fetchPageSize = async () => {
     await axios
       .get(process.env.REACT_APP_DB_HOST + `/community/questions/size`)
-      .then((res) => {
-        setPostSize(res.data);
-      })
+      .then((res) => setPostSize(res.data))
       .catch((e) => console.log(e));
   };
 

@@ -24,7 +24,7 @@ const Chats = () => {
   let month = now.getMonth() + 1;
   let date = now.getDate();
 
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(3);
   const [postSize, setPostSize] = useState(0);
   const [postsPerPage] = useState(10);
   const [postData, setPostData] = useState([]);
@@ -48,17 +48,17 @@ const Chats = () => {
     window.scrollTo(0, 0);
     fetchLikeData();
     setLike(1);
-  }, [currentPage, selectedTag, status, order, isLike]);
+  }, [currentPage, status, order, isLike]);
 
   const fetchData = async () => {
     await axios
       .get(process.env.REACT_APP_DB_HOST + `/community/chats`, {
         params: {
           page: currentPage,
-          tags: selectedTag.join(','), // join(",")으로 해야 ?tags=REACT,SPRING으로 parameter 전송할 수 있음.
-          s: sentence,
-          status: status,
+          // status: status,
           order: order,
+          // tags: selectedTag.join(','), // join(",")으로 해야 ?tags=REACT,SPRING으로 parameter 전송할 수 있음.
+          s: sentence,
         },
       })
       .then((res) => {
@@ -82,6 +82,7 @@ const Chats = () => {
             }
           )
         );
+        console.log(_postData);
         setPostData(_postData);
         setLoading(false);
         CKEditor.instances.textarea_id.setData(postData.content);
@@ -119,9 +120,7 @@ const Chats = () => {
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      fetchData();
-    }
+    if (e.key === 'Enter') fetchData();
   };
 
   const fetchPageSize = async () => {
