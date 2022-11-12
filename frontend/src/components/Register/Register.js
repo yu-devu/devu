@@ -52,15 +52,20 @@ const Register = () => {
   };
 
   const checkAuthkey = async () => {
-    const data = {
-      postKey: authkey,
-    };
+    // const data = {
+    //   postKey: authkey,
+    // };
+    // await axios
+    //   .post(process.env.REACT_APP_DB_HOST + `/key`, JSON.stringify(data), {
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //   })
+    const formData = new FormData();
+    formData.append('postKey', authkey);
+    // formData.append('userKey', authkey);
     await axios
-      .post(process.env.REACT_APP_DB_HOST + `/key`, JSON.stringify(data), {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+      .post(process.env.REACT_APP_DB_HOST + `/key`, formData)
       .then(() => {
         alert('인증확인 완료!');
         showInformationInput();
