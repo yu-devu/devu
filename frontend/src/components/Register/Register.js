@@ -65,7 +65,11 @@ const Register = () => {
     formData.append('postKey', authkey);
     // formData.append('userKey', authkey);
     await axios
-      .post(process.env.REACT_APP_DB_HOST + `/key`, formData)
+      .post(process.env.REACT_APP_DB_HOST + `/key`, formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
       .then(() => {
         alert('인증확인 완료!');
         showInformationInput();
