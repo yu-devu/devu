@@ -71,7 +71,7 @@ public class UserController {
     // 회원가입 Form에서 이메일 검증 api => Form Data로 넘어와야함
     @PostMapping("/key")
     private ResponseEntity<?> getKeyFromUser(
-            @RequestBody @Validated UserKeyRequestDto dto,
+            @RequestBody UserKeyRequestDto dto,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(bindingResult.getFieldError().getDefaultMessage());
