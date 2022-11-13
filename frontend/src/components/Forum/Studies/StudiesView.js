@@ -185,7 +185,7 @@ const StudiesView = () => {
                             {postData.like}
                           </button>
                         </div>
-                        <div className="questions-sidebar-btn">
+                        {/* <div className="questions-sidebar-btn">
                           <img className="img-detail-like" src={share} alt="" />
                           <button className="detail-sidebar-btn">공유</button>
                         </div>
@@ -196,7 +196,7 @@ const StudiesView = () => {
                             alt=""
                           />
                           <button className="detail-sidebar-btn">신고</button>
-                        </div>
+                        </div> */}
                       </div>
                       <div className="question-detail-top">
                         <div className="questions-profile">
@@ -326,14 +326,14 @@ const StudiesView = () => {
                           {postData.like}
                         </button>
                       </div>
-                      <div className="studies-sidebar-btn">
+                      {/* <div className="studies-sidebar-btn">
                         <img className="img-detail-like" src={share} alt="" />
                         <button className="detail-sidebar-btn">공유</button>
                       </div>
                       <div className="studies-sidebar-btn">
                         <img className="img-detail-like" src={warning} alt="" />
                         <button className="detail-sidebar-btn">신고</button>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <div className="studies-content-bottom">

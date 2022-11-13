@@ -150,7 +150,7 @@ const MyPage = () => {
               <h1>{username}님 안녕하세요</h1>
             </div>
             <div className="mypage-btns">
-              <button className="btn-change-info">정보변경</button>
+              {/* <button className="btn-change-info">정보변경</button> */}
               <button
                 className="btn-delete-info"
                 onClick={() => {
@@ -528,7 +528,7 @@ const MyPage = () => {
               <h1>{username}님 안녕하세요</h1>
             </div>
             <div>
-              <button className="btn-change-info">정보변경</button>
+              {/* <button className="btn-change-info">정보변경</button> */}
               <button
                 className="btn-delete-info"
                 onClick={() => {

@@ -43,7 +43,7 @@ const Register = () => {
           },
         })
         .then((res) => {
-          if (res.data.error) alert(res.data.error);
+          // if (res.data.error) alert(res.data.error);
           setClickAuthkey(true);
           showValidateInput();
         })

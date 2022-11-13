@@ -162,7 +162,7 @@ const ChatsView = () => {
                             {postData.like}
                           </button>
                         </div>
-                        <div className="questions-sidebar-btn">
+                        {/* <div className="questions-sidebar-btn">
                           <img className="img-detail-like" src={share} alt="" />
                           <button className="detail-sidebar-btn">공유</button>
                         </div>
@@ -173,7 +173,7 @@ const ChatsView = () => {
                             alt=""
                           />
                           <button className="detail-sidebar-btn">신고</button>
-                        </div>
+                        </div> */}
                       </div>
                       <div className="question-detail-top">
                         <div className="questions-profile">
@@ -300,14 +300,14 @@ const ChatsView = () => {
                           {postData.like}
                         </button>
                       </div>
-                      <div className="chats-sidebar-btn">
+                      {/* <div className="chats-sidebar-btn">
                         <img className="img-detail-like" src={share} alt="" />
                         <button className="detail-sidebar-btn">공유</button>
                       </div>
                       <div className="chats-sidebar-btn">
                         <img className="img-detail-like" src={warning} alt="" />
                         <button className="detail-sidebar-btn">신고</button>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <div className="chats-content-bottom">
