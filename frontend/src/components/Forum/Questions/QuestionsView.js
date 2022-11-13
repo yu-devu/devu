@@ -186,7 +186,7 @@ const QuestionsView = () => {
                               {postData.like}
                             </button>
                           </div>
-                          <div className="questions-sidebar-btn">
+                          {/* <div className="questions-sidebar-btn">
                             <img
                               className="img-detail-like"
                               src={share}
@@ -201,7 +201,7 @@ const QuestionsView = () => {
                               alt=""
                             />
                             <button className="detail-sidebar-btn">신고</button>
-                          </div>
+                          </div> */}
                         </div>
                         <div className="question-detail-top">
                           <div className="questions-profile">
@@ -321,7 +321,7 @@ const QuestionsView = () => {
                             {postData.like}
                           </button>
                         </div>
-                        <div className="questions-sidebar-btn">
+                        {/* <div className="questions-sidebar-btn">
                           <img className="img-detail-like" src={share} alt="" />
                           <button className="detail-sidebar-btn">공유</button>
                         </div>
@@ -332,7 +332,7 @@ const QuestionsView = () => {
                             alt=""
                           />
                           <button className="detail-sidebar-btn">신고</button>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   )}
@@ -389,7 +389,7 @@ const QuestionsView = () => {
                               {postData.like}
                             </button>
                           </div>
-                          <div className="questions-sidebar-btn">
+                          {/* <div className="questions-sidebar-btn">
                             <img
                               className="img-detail-like"
                               src={share}
@@ -404,7 +404,7 @@ const QuestionsView = () => {
                               alt=""
                             />
                             <button className="detail-sidebar-btn">신고</button>
-                          </div>
+                          </div> */}
                         </div>
                         <div className="question-detail-top">
                           <div className="questions-profile">
@@ -524,7 +524,7 @@ const QuestionsView = () => {
                             {postData.like}
                           </button>
                         </div>
-                        <div className="questions-sidebar-btn">
+                        {/* <div className="questions-sidebar-btn">
                           <img className="img-detail-like" src={share} alt="" />
                           <button className="detail-sidebar-btn">공유</button>
                         </div>
@@ -535,7 +535,7 @@ const QuestionsView = () => {
                             alt=""
                           />
                           <button className="detail-sidebar-btn">신고</button>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   )}

@@ -53,11 +53,11 @@ function ChangePassword() {
               },
             }
           )
-          .then((res) => {
+          .then(() => {
             alert('비밀번호 변경 완료');
             navigate('/');
           })
-          .catch((e) => console.log(e));
+          .catch(() => alert('새로운 비밀번호를 입력해주세요.'));
       } else alert('비밀번호를 양식에 맞게 입력해주세요.');
     } else alert('비밀번호가 일치하지 않습니다.');
   };

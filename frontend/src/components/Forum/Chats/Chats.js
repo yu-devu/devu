@@ -24,7 +24,7 @@ const Chats = () => {
   let month = now.getMonth() + 1;
   let date = now.getDate();
 
-  const [currentPage, setCurrentPage] = useState(3);
+  const [currentPage, setCurrentPage] = useState(0);
   const [postSize, setPostSize] = useState(0);
   const [postsPerPage] = useState(10);
   const [postData, setPostData] = useState([]);
