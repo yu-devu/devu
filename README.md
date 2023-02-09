@@ -8,5 +8,5 @@
 - Route 53으로 호스팅, 도메인은 가비아 통해 구매
 
 =======
-## 도메인
-- https://devu.site
+## 시연영상
+- https://www.youtube.com/watch?v=S9mMeduJZ28&ab_channel=%E3%85%85%E3%85%85%E3%85%87
